@@ -429,14 +429,20 @@ function buildThemePicker() {
  * ------------------------------------------------------------------ */
 
 function startHeroMeter() {
-  const el = document.getElementById("hero-meter");
-  if (!el) return;
+  const heroEl = document.getElementById("hero-meter");
+  const navEl = document.getElementById("nav-meter-value");
+  if (!heroEl && !navEl) return;
 
   const fmt = (n) => Math.floor(n).toLocaleString("en-US");
   const start = 1472318; // the meter has been running long before you arrived
+  const write = (v) => {
+    const text = fmt(v);
+    if (heroEl) heroEl.textContent = text;
+    if (navEl) navEl.textContent = text;
+  };
 
   if (reduceMotion) {
-    el.textContent = fmt(start);
+    write(start);
     return;
   }
 
@@ -446,7 +452,7 @@ function startHeroMeter() {
     if (last === null) last = ts;
     value += (ts - last) * 3.2;
     last = ts;
-    el.textContent = fmt(value);
+    write(value);
     window.requestAnimationFrame(step);
   };
   window.requestAnimationFrame(step);
@@ -1105,3 +1111,177 @@ registerActivate("s8-2", (isReducedMotion) => {
     outcomeCard.classList.add("opacity-100", "scale-100");
   }
 });
+
+/* ------------------------------------------------------------------ *
+ * Interactive instruments — hands-on controls layered on the beats.
+ * Progressive enhancement: the scroll animations stand alone; these let
+ * the reader drive the same instruments by hand. All runtime styling is
+ * set via element.style / classList per FE-001 (no inline HTML styles).
+ * ------------------------------------------------------------------ */
+
+// Nav meter — the hero's unwatched counter follows you down the page.
+// startHeroMeter() already writes its value; this only toggles visibility.
+function setupNavMeter() {
+  const chip = document.getElementById("nav-meter");
+  const hero = document.getElementById("s1-1");
+  if (!chip || !hero) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        chip.classList.toggle("hidden", e.isIntersecting);
+        chip.classList.toggle("flex", !e.isIntersecting);
+      });
+    },
+    { root: tower, threshold: 0.1 },
+  );
+  io.observe(hero);
+}
+
+// S3.1 — approximate tokenizer playground: type a sentence, watch it split.
+function setupTokenizerPlayground() {
+  const input = document.getElementById("s31-input");
+  const chipsEl = document.getElementById("s31-chips");
+  const countEl = document.getElementById("s31-count");
+  const costEl = document.getElementById("s31-cost");
+  if (!input || !chipsEl || !countEl || !costEl) return;
+
+  // Same five semantic hues as the S3.1 quote chips. `secondary` is skipped —
+  // it renders near-gray in the corporate theme (FE-001).
+  const CHIP_STYLES = [
+    "bg-primary/15 border-primary/40 text-primary",
+    "bg-info/15 border-info/40 text-info",
+    "bg-accent/15 border-accent/40 text-accent",
+    "bg-success/15 border-success/40 text-success",
+    "bg-warning/15 border-warning/40 text-warning",
+  ];
+  const OPUS_INPUT_PER_TOKEN = 5 / 1e6; // $5 per 1M input tokens (July 2026 list price)
+  const SESSION_TURNS = 50;
+  const MAX_CHIPS = 48;
+
+  // Crude BPE-ish chunker: short words stay whole, longer words split into
+  // ≤4-char pieces, punctuation stands alone, "_" marks a leading space.
+  const tokenize = (text) => {
+    const tokens = [];
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    words.forEach((word, w) => {
+      const parts = word.match(/[\p{L}\p{N}]+|[^\p{L}\p{N}]/gu) || [word];
+      let firstPiece = true;
+      parts.forEach((part) => {
+        const pieces = part.length <= 4 ? [part] : part.match(/.{1,4}/g) || [part];
+        pieces.forEach((piece) => {
+          tokens.push((firstPiece && w > 0 ? "_" : "") + piece);
+          firstPiece = false;
+        });
+      });
+    });
+    return tokens;
+  };
+
+  const render = () => {
+    const tokens = tokenize(input.value);
+    chipsEl.textContent = "";
+    tokens.slice(0, MAX_CHIPS).forEach((tok, i) => {
+      const chip = document.createElement("span");
+      chip.className =
+        "rounded-md border px-2 py-1 font-mono text-xs font-semibold " +
+        CHIP_STYLES[i % CHIP_STYLES.length];
+      chip.textContent = tok;
+      chipsEl.appendChild(chip);
+    });
+    if (tokens.length > MAX_CHIPS) {
+      const more = document.createElement("span");
+      more.className = "px-2 py-1 font-mono text-xs text-base-content/40";
+      more.textContent = `+${tokens.length - MAX_CHIPS} more`;
+      chipsEl.appendChild(more);
+    }
+    countEl.textContent = String(tokens.length);
+    const sessionCost = tokens.length * SESSION_TURNS * OPUS_INPUT_PER_TOKEN;
+    costEl.textContent = `$${sessionCost.toFixed(4)}`;
+  };
+
+  input.addEventListener("input", render);
+}
+
+// S2.5 — drag the customer's quality bar; the financial winner flips with it.
+function setupThresholdSlider() {
+  const slider = document.getElementById("s25-threshold");
+  const valueEl = document.getElementById("s25-threshold-value");
+  const verdictEl = document.getElementById("s25-verdict");
+  const winner = document.getElementById("s25-winner");
+  const markers = document.querySelectorAll("#s2-5 .s25-marker");
+  if (!slider || !valueEl || !verdictEl) return;
+
+  const QUALITY_CHEAP = 95;
+  const QUALITY_PREMIUM = 99;
+
+  const update = () => {
+    const t = Number(slider.value);
+    valueEl.textContent = String(t);
+    markers.forEach((m) => {
+      m.style.left = `${t}%`;
+    });
+    if (t <= QUALITY_CHEAP) {
+      verdictEl.textContent = `At ${t}%, both models clear the bar — the cheaper one wins ≈5× outcome per euro.`;
+    } else if (t <= QUALITY_PREMIUM) {
+      verdictEl.textContent = `At ${t}%, only the premium model clears the bar — now the 5× price actually buys something.`;
+    } else {
+      verdictEl.textContent = "Neither model reaches 100%. Rethink the task, not the model.";
+    }
+    if (winner) winner.classList.toggle("opacity-0", t > QUALITY_CHEAP);
+  };
+
+  slider.addEventListener("input", update);
+}
+
+// S4.3 — drag the context-window fill; symptoms light up past the threshold.
+function setupContextGaugeSlider() {
+  const slider = document.getElementById("s43-slider");
+  const pctEl = document.getElementById("s43-pct");
+  const gauge = document.querySelector("#s4-3 .context-gauge-fill");
+  const risk = document.querySelector("#s4-3 .s4-3-risk");
+  if (!slider || !pctEl || !gauge) return;
+
+  const update = () => {
+    // The activate animation eases over 1.5s; dragging needs to feel direct.
+    gauge.style.transitionDuration = "120ms";
+    const v = Number(slider.value);
+    pctEl.textContent = String(v);
+    gauge.style.width = `${v}%`;
+    if (risk) {
+      risk.classList.toggle("opacity-0", v <= 50);
+      risk.classList.toggle("translate-y-4", v <= 50);
+    }
+  };
+
+  slider.addEventListener("input", update);
+}
+
+// S5.2 — scale the workload; the daily spread scales with it.
+function setupFixesSlider() {
+  const slider = document.getElementById("s52-slider");
+  const fixesEl = document.getElementById("s52-fixes");
+  const lowEl = document.getElementById("s52-low");
+  const highEl = document.getElementById("s52-high");
+  if (!slider || !fixesEl || !lowEl || !highEl) return;
+
+  // Per-fix cost of the illustrative bug fix (~226k input / ~16.4k output):
+  // cheapest vs. priciest row of the S5.2 comparison.
+  const COST_LOW = 0.1126; // DeepSeek V4 Pro
+  const COST_HIGH = 1.5403; // Claude Opus 4.8
+
+  const update = () => {
+    const n = Number(slider.value);
+    fixesEl.textContent = String(n);
+    lowEl.textContent = `$${Math.round(n * COST_LOW)}`;
+    highEl.textContent = `$${Math.round(n * COST_HIGH)}`;
+  };
+
+  slider.addEventListener("input", update);
+}
+
+setupNavMeter();
+setupTokenizerPlayground();
+setupThresholdSlider();
+setupContextGaugeSlider();
+setupFixesSlider();
