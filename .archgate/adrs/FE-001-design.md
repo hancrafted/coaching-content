@@ -43,12 +43,27 @@ All UI styling and component building must be done using **Tailwind CSS v4** and
   - Example: `<section class="relative z-0 ...">` wrapping `<div class="pointer-events-none absolute inset-0 -z-10 ...">` for the background layer.
 - Verify decorative/background layers that rely on daisyUI semantic colors (e.g. `from-base-100` scrims over a background image) in at least one light theme (e.g. `corporate`) and one dark theme (e.g. `night`) before shipping. Semantic colors invert contrast direction between themes, so an opacity/filter mix tuned by eye in one theme can look washed out, too loud, or muddy in another.
 
+#### Cycling Semantic Colors for Multi-Element Palettes
+
+- When cycling through daisyUI semantic colors to visually distinguish many small, repeated elements (token/tag chips, category badges, chart legend swatches, calendar entries, etc.), avoid relying on `secondary` as one of the cycle colors. In this project's default `corporate` theme, `secondary` renders at markedly lower chroma than the other semantic hues (roughly 0.046, versus ~0.12–0.20 for `primary`, `accent`, `info`, `success`, and `warning`, measured via computed `color`), so it reads as near-gray next to them and undermines an otherwise colorful, distinct-looking set.
+  - Prefer cycling through `primary`, `accent`, `info`, `success`, `warning` (adding `error` too if a "danger/negative" connotation is acceptable for the content being represented) for a palette where every entry is visibly distinct.
+  - If `secondary` must be included in a multi-color palette, spot-check it visually in the corporate (default) theme before shipping — chroma for a given semantic color name is theme-defined and can vary significantly across the project's configured themes (`corporate`, `business`, `luxury`, `night`, `dim`).
+
+#### Animated Dimensions & Theme-Aware SVG in Data Visualizations
+
+- **Animate size in JavaScript, never via an inline HTML `style` attribute.** When an element's dimension must change at runtime (a bar fill %, a gauge width, stacked-bar segment widths), give the resting element a Tailwind class for its initial state (e.g. `basis-0`, `w-[10%]`), store the animation target in a `data-*` attribute, and set `element.style.width` / `element.style.flexBasis` from JS on activation. Setting `element.style` in JS is permitted under this ADR — only inline `style="..."` in the HTML source is disallowed. This keeps the markup passing `no-raw-inline-styles` while still driving arbitrary computed sizes, and it avoids polluting Tailwind's build with dozens of one-off `w-[NN%]` arbitrary values. Used across the token-economy page's context meter, workday stacked bars, and fullness gauge.
+  - Example markup: `<div class="s4-1-seg shrink-0 grow-0 basis-0 bg-primary transition-all duration-500" data-basis="22"></div>` driven by `seg.style.flexBasis = seg.dataset.basis + "%"` in the beat's activation handler.
+- **Theme SVG with `currentColor` and semantic color utilities, not hardcoded hex.** SVG is exempt from the inline-`style` ban, but a hardcoded `fill="#1e40af"` / `stroke="#000"` will not re-skin when the `data-theme` changes. Instead color SVG strokes/fills with `stroke="currentColor"` (or `fill="currentColor"`) plus a `text-*` utility on the `<svg>` or element (e.g. `class="text-primary"`), or use the semantic `fill-*` / `stroke-*` utilities — including opacity modifiers — which Tailwind v4 + daisyUI generate and which invert correctly across themes.
+  - Example: `<svg class="text-primary"><path stroke="currentColor" fill="none" d="…"/><rect class="fill-base-content/5"/><line class="stroke-base-content/20"/></svg>`. Animate stroke draw by setting `path.style.strokeDasharray` / `strokeDashoffset` in JS (not in the HTML source).
+
 ### Don't
 
 - Do not use inline styles `<div style="...">` for layout or standard styling.
 - Do not write custom `@apply` classes in CSS files when utility classes can be used directly.
 - Do not import other UI or CSS libraries (e.g., Bootstrap, Bulma, Material Design) into the project.
 - Do not apply a `-z-*` utility to a child element without also giving its intended containing element an explicit `z-*` value (e.g. `z-0`) — otherwise the child is not scoped to that container's stacking context.
+- Do not hardcode hex colors on SVG elements (`fill="#1e40af"`, `stroke="#000"`) — they will not re-skin across themes. Use `currentColor` + a `text-*` utility or the semantic `fill-*` / `stroke-*` utilities instead.
+- Do not bake runtime-animated dimensions into the HTML as inline `style="width: …"` attributes — set them from JavaScript via `element.style` on activation instead.
 
 ## Consequences
 
