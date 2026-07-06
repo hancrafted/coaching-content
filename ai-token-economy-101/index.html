@@ -9,436 +9,55 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-dark: #090d16;
-      --bg-surface: rgba(17, 24, 39, 0.6);
-      --border-color: rgba(255, 255, 255, 0.08);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --primary: #3b82f6;
-      --accent: #a855f7;
-      --accent-cyan: #06b6d4;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.12) 0%, transparent 50%);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Top Navigation bar */
-    .top-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 1.5rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 10;
-      pointer-events: none;
-    }
-
-    .back-btn {
-      pointer-events: auto;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.85rem;
-      padding: 0.5rem 1rem;
-      border-radius: 9999px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      transition: all 0.2s ease;
-    }
-
-    .back-btn:hover {
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateX(-2px);
-    }
-
-    .presentation-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    /* Slides Container */
-    .slides-container {
-      flex: 1;
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .slide {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: none; /* Managed by JS (flex when active) */
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 4rem 6rem;
-      background-color: transparent;
-    }
-
-    .slide.active {
-      display: flex;
-    }
-
-    /* Slide Content Layouts */
-    .slide-content {
-      max-width: 900px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    /* Typography */
-    .slide h2 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.025em;
-      background: linear-gradient(to right, #ffffff, #e2e8f0, var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .slide h3 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 2rem;
-      color: #ffffff;
-      margin-bottom: 0.5rem;
-    }
-
-    .slide p {
-      font-size: 1.25rem;
-      color: var(--text-muted);
-      font-weight: 300;
-      line-height: 1.6;
-    }
-
-    .highlight-text {
-      background: linear-gradient(to right, #3b82f6, #06b6d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 700;
-    }
-
-    /* Title Slide Specifics */
-    .title-slide {
-      text-align: center;
-      gap: 1.5rem;
-    }
-
-    .title-slide h1 {
-      font-family: 'Outfit', sans-serif;
-      font-size: 5rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      background: linear-gradient(to right, #3b82f6, #60a5fa, #a855f7, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
-    }
-
-    .title-slide p.subtitle {
-      font-size: 1.75rem;
-      color: var(--text-muted);
-      font-weight: 300;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .title-slide .meta {
-      margin-top: 2rem;
-      font-size: 1rem;
-      color: rgba(255,255,255,0.4);
-    }
-
-    .instructions-badge {
-      display: inline-block;
-      margin-top: 3rem;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-color);
-      padding: 0.75rem 1.5rem;
-      border-radius: 9999px;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .instructions-badge kbd {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 0.1rem 0.4rem;
-      color: #ffffff;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.8rem;
-    }
-
-    /* Standard Lists & Grids */
-    ul.slide-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    ul.slide-list li {
-      font-size: 1.35rem;
-      position: relative;
-      padding-left: 2rem;
-      color: var(--text-muted);
-      font-weight: 350;
-    }
-
-    ul.slide-list li::before {
-      content: '✦';
-      position: absolute;
-      left: 0;
-      color: var(--accent-cyan);
-    }
-
-    ul.slide-list li strong {
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    .grid-2col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
-      align-items: start;
-    }
-
-    .grid-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      padding: 1.75rem;
-    }
-
-    /* Code Snippets */
-    pre {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-color);
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.95rem;
-      overflow-x: auto;
-      color: #e2e8f0;
-      line-height: 1.5;
-    }
-
-    .code-comment { color: #64748b; }
-    .code-keyword { color: #f472b6; }
-    .code-string { color: #34d399; }
-    .code-function { color: #60a5fa; }
-
-    /* Interactive Slide controls */
-    .controls {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      z-index: 10;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 9999px;
-      padding: 0.5rem;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-
-    .control-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      width: 2.5rem;
-      height: 2.5rem;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: all 0.2s ease;
-    }
-
-    .control-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-    }
-
-    .slide-number {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 0 0.75rem;
-      color: var(--text-muted);
-      min-width: 4rem;
-      text-align: center;
-    }
-
-    /* Slide Progress Bar */
-    .progress-container {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.03);
-      z-index: 10;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(to right, var(--primary), var(--accent));
-      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* VIEW TRANSITION ANIMATIONS (Right-to-Left / Left-to-Right Sliding) */
-    ::view-transition-group(root) {
-      animation: 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-    }
-
-    /* Forward Navigation (Slide Left) */
-    @keyframes slide-to-left {
-      to { transform: translateX(-100%); opacity: 0; }
-    }
-    @keyframes slide-from-right {
-      from { transform: translateX(100%); opacity: 0; }
-    }
-
-    html:active-view-transition-type(forward)::view-transition-old(root) {
-      animation-name: slide-to-left;
-    }
-    html:active-view-transition-type(forward)::view-transition-new(root) {
-      animation-name: slide-from-right;
-    }
-
-    /* Backward Navigation (Slide Right) */
-    @keyframes slide-to-right {
-      to { transform: translateX(100%); opacity: 0; }
-    }
-    @keyframes slide-from-left {
-      from { transform: translateX(-100%); opacity: 0; }
-    }
-
-    html:active-view-transition-type(backward)::view-transition-old(root) {
-      animation-name: slide-to-right;
-    }
-    html:active-view-transition-type(backward)::view-transition-new(root) {
-      animation-name: slide-from-left;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      ::view-transition-group(root) {
-        animation: none !important;
-      }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .slide {
-        padding: 4rem 2rem;
-      }
-      .slide h2 {
-        font-size: 2.25rem;
-      }
-      .slide h3 {
-        font-size: 1.5rem;
-      }
-      .title-slide h1 {
-        font-size: 3rem;
-      }
-      .title-slide p.subtitle {
-        font-size: 1.25rem;
-      }
-      .grid-2col {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="../src/style.css">
 </head>
-<body>
+<body class="bg-brand-slide bg-[radial-gradient(circle_at_0%_0%,rgba(59,130,246,0.12)_0%,transparent_50%),radial-gradient(circle_at_100%_100%,rgba(168,85,247,0.12)_0%,transparent_50%)] bg-no-repeat bg-fixed text-slate-50 font-sans h-screen w-screen overflow-hidden flex flex-col leading-relaxed">
 
   <!-- Top navigation HUD -->
-  <nav class="top-nav">
-    <a href="../index.html" class="back-btn" id="back-to-dashboard">
+  <nav class="fixed top-0 left-0 right-0 p-6 flex justify-between items-center z-10 pointer-events-none">
+    <a href="../index.html" class="pointer-events-auto bg-gray-900/60 border border-white/8 text-slate-400 hover:text-white hover:border-white/20 hover:-translate-x-0.5 px-4 py-2 rounded-full flex items-center gap-2 backdrop-blur-md transition-all duration-200 text-xs font-semibold" id="back-to-dashboard">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       Dashboard
     </a>
-    <span class="presentation-title">AI Token Economy 101</span>
+    <span class="font-display text-sm text-slate-400 font-semibold tracking-wider uppercase">AI Token Economy 101</span>
   </nav>
 
   <!-- Slide presentation viewport -->
-  <main class="slides-container" id="slides-viewport">
+  <main class="flex-1 relative w-full h-full" id="slides-viewport">
     
     <!-- Slide 1: Title Slide -->
-    <section class="slide title-slide" id="slide-1">
-      <h1>AI Token Economy 101</h1>
-      <p class="subtitle">Value coordination and transactional flows in autonomous agent networks.</p>
-      <p class="meta">Authored by Han &bull; 2026 Edition</p>
-      <div class="instructions-badge">
-        Use <kbd>&rarr;</kbd> or <kbd>Space</kbd> to advance. <kbd>&larr;</kbd> to go back.
+    <section class="slide active flex flex-col justify-center items-center text-center px-8 md:px-24 py-16" id="slide-1">
+      <h1 class="font-display text-5xl md:text-8xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-400 to-purple-500 mb-6">
+        AI Token Economy 101
+      </h1>
+      <p class="text-xl md:text-3xl text-slate-400 font-light max-w-3xl mx-auto leading-relaxed">
+        Value coordination and transactional flows in autonomous agent networks.
+      </p>
+      <p class="mt-8 text-sm md:text-base text-slate-500 font-normal">Authored by Han &bull; 2026 Edition</p>
+      <div class="inline-block mt-12 bg-white/4 border border-white/8 px-6 py-3 rounded-full text-sm text-slate-400">
+        Use <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-xs">&rarr;</kbd> or <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-xs">Space</kbd> to advance. <kbd class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-xs">&larr;</kbd> to go back.
       </div>
     </section>
 
     <!-- Slide 2: Context / The Problem -->
     <section class="slide" id="slide-2">
-      <div class="slide-content">
-        <h2>The Paradigm Shift</h2>
-        <p>Why do artificial intelligence networks require their own native economy? Traditional APIs and billing models fall short in autonomous swarms.</p>
-        <div class="grid-2col">
-          <div class="grid-card">
-            <h3>Human-to-Machine</h3>
-            <p>SaaS billing models (credit cards, monthly seats, invoicing) are designed for slow-scale human interaction and static access patterns.</p>
+      <div class="max-w-4xl w-full flex flex-col gap-8">
+        <h2 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400">
+          The Paradigm Shift
+        </h2>
+        <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
+          Why do artificial intelligence networks require their own native economy? Traditional APIs and billing models fall short in autonomous swarms.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <div class="bg-gray-900/60 border border-white/8 rounded-2xl p-6">
+            <h3 class="font-display text-2xl md:text-3xl font-bold text-white mb-2">Human-to-Machine</h3>
+            <p class="text-base text-slate-400 font-light">SaaS billing models (credit cards, monthly seats, invoicing) are designed for slow-scale human interaction and static access patterns.</p>
           </div>
-          <div class="grid-card">
-            <h3>Machine-to-Machine</h3>
-            <p>Agents interact sub-second, make millions of cross-system queries, and require <span class="highlight-text">micropayments</span> to settle resource usage instantly.</p>
+          <div class="bg-gray-900/60 border border-white/8 rounded-2xl p-6">
+            <h3 class="font-display text-2xl md:text-3xl font-bold text-white mb-2">Machine-to-Machine</h3>
+            <p class="text-base text-slate-400 font-light">Agents interact sub-second, make millions of cross-system queries, and require <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 font-bold">micropayments</span> to settle resource usage instantly.</p>
           </div>
         </div>
       </div>
@@ -446,58 +65,78 @@
 
     <!-- Slide 3: What is an AI Token Economy? -->
     <section class="slide" id="slide-3">
-      <div class="slide-content">
-        <h2>Defining the Token Economy</h2>
-        <p>A closed-loop economic layer governing transaction validation, prioritization, and resource constraints among computational systems.</p>
-        <ul class="slide-list">
-          <li><strong>Resource Allocation:</strong> Distributes GPU cycles, RAM, and context windows based on market demand.</li>
-          <li><strong>Sybil Prevention:</strong> Requires cost-per-request to prevent malicious agents from spamming networks.</li>
-          <li><strong>Dynamic Pricing:</strong> Cost of inference automatically rises during periods of high demand.</li>
-          <li><strong>Staking Loops:</strong> Agents deposit security collateral to guarantee task quality and compliance.</li>
+      <div class="max-w-4xl w-full flex flex-col gap-8">
+        <h2 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400">
+          Defining the Token Economy
+        </h2>
+        <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
+          A closed-loop economic layer governing transaction validation, prioritization, and resource constraints among computational systems.
+        </p>
+        <ul class="space-y-5">
+          <li class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400">
+            <strong class="text-white font-semibold">Resource Allocation:</strong> Distributes GPU cycles, RAM, and context windows based on market demand.
+          </li>
+          <li class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400">
+            <strong class="text-white font-semibold">Sybil Prevention:</strong> Requires cost-per-request to prevent malicious agents from spamming networks.
+          </li>
+          <li class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400">
+            <strong class="text-white font-semibold">Dynamic Pricing:</strong> Cost of inference automatically rises during periods of high demand.
+          </li>
+          <li class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400">
+            <strong class="text-white font-semibold">Staking Loops:</strong> Agents deposit security collateral to guarantee task quality and compliance.
+          </li>
         </ul>
       </div>
     </section>
 
     <!-- Slide 4: Transaction Flow example -->
     <section class="slide" id="slide-4">
-      <div class="slide-content">
-        <h2>Agent Transaction Lifecycle</h2>
-        <p>How agents settle dynamic work requests programmatically. Below is a sample transaction definition.</p>
-        <pre><code><span class="code-keyword">const</span> transaction = {
-  id: <span class="code-string">"tx_8f93e1a"</span>,
-  sender: <span class="code-string">"research-agent-01"</span>,
-  receiver: <span class="code-string">"vector-db-service"</span>,
-  amount: <span class="code-keyword">0.0025</span>, <span class="code-comment">// settled in native UT (Utility Tokens)</span>
+      <div class="max-w-4xl w-full flex flex-col gap-8">
+        <h2 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400">
+          Agent Transaction Lifecycle
+        </h2>
+        <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
+          How agents settle dynamic work requests programmatically. Below is a sample transaction definition.
+        </p>
+        <pre class="bg-black/40 border border-white/8 rounded-xl p-6 font-mono text-sm overflow-x-auto text-slate-200 leading-relaxed"><code><span class="text-pink-400">const</span> transaction = {
+  id: <span class="text-emerald-400">"tx_8f93e1a"</span>,
+  sender: <span class="text-emerald-400">"research-agent-01"</span>,
+  receiver: <span class="text-emerald-400">"vector-db-service"</span>,
+  amount: <span class="text-pink-400">0.0025</span>, <span class="text-slate-500">// settled in native UT (Utility Tokens)</span>
   payload: {
-    operation: <span class="code-string">"semantic_search"</span>,
-    limit: <span class="code-keyword">50</span>
+    operation: <span class="text-emerald-400">"semantic_search"</span>,
+    limit: <span class="text-pink-400">50</span>
   },
-  signature: <span class="code-string">"0x98f...7c2"</span> <span class="code-comment">// Crytographically signed by Agent Private Key</span>
+  signature: <span class="text-emerald-400">"0x98f...7c2"</span> <span class="text-slate-500">// Cryptographically signed by Agent Private Key</span>
 };
 
-<span class="code-keyword">await</span> NetworkRegistry.<span class="code-function">settle</span>(transaction);</code></pre>
+<span class="text-pink-400">await</span> NetworkRegistry.<span class="text-blue-400">settle</span>(transaction);</code></pre>
       </div>
     </section>
 
     <!-- Slide 5: Strategic Pillars -->
     <section class="slide" id="slide-5">
-      <div class="slide-content">
-        <h2>Core Implementation Pillars</h2>
-        <p>A robust token economy depends on four interlocking layers to operate reliably at sub-second scales.</p>
-        <div class="grid-2col">
+      <div class="max-w-4xl w-full flex flex-col gap-8">
+        <h2 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400">
+          Core Implementation Pillars
+        </h2>
+        <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
+          A robust token economy depends on four interlocking layers to operate reliably at sub-second scales.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           <div>
-            <h3 style="color: var(--accent-cyan);">1. Identity (DID)</h3>
-            <p style="font-size: 1.05rem; margin-bottom: 1.5rem;">Decentralized Identifiers for every agent, linked securely to cryptographic wallets.</p>
+            <h3 class="font-display text-2xl font-bold text-cyan-400 mb-2">1. Identity (DID)</h3>
+            <p class="text-base text-slate-400 font-light mb-6">Decentralized Identifiers for every agent, linked securely to cryptographic wallets.</p>
             
-            <h3 style="color: var(--accent-cyan);">2. Settlement Engine</h3>
-            <p style="font-size: 1.05rem;">Ultra-low latency ledgers (L3s or State Channels) to resolve micropayments instantly.</p>
+            <h3 class="font-display text-2xl font-bold text-cyan-400 mb-2">2. Settlement Engine</h3>
+            <p class="text-base text-slate-400 font-light">Ultra-low latency ledgers (L3s or State Channels) to resolve micropayments instantly.</p>
           </div>
           <div>
-            <h3 style="color: var(--accent); ">3. Security Rules</h3>
-            <p style="font-size: 1.05rem; margin-bottom: 1.5rem;">Programmatic constraints (e.g. daily allowance thresholds, auto-locking, and alerts).</p>
+            <h3 class="font-display text-2xl font-bold text-purple-400 mb-2">3. Security Rules</h3>
+            <p class="text-base text-slate-400 font-light mb-6">Programmatic constraints (e.g. daily allowance thresholds, auto-locking, and alerts).</p>
             
-            <h3 style="color: var(--accent); ">4. Reputation</h3>
-            <p style="font-size: 1.05rem;">On-chain metrics tracking agent uptime, task success ratios, and past SLA compliance.</p>
+            <h3 class="font-display text-2xl font-bold text-purple-400 mb-2">4. Reputation</h3>
+            <p class="text-base text-slate-400 font-light">On-chain metrics tracking agent uptime, task success ratios, and past SLA compliance.</p>
           </div>
         </div>
       </div>
@@ -505,13 +144,15 @@
 
     <!-- Slide 6: Summary / Conclusion -->
     <section class="slide" id="slide-6">
-      <div class="slide-content" style="text-align: center; gap: 1.5rem;">
-        <h2>The Roadmap Ahead</h2>
-        <p style="font-size: 1.5rem; margin-top: 1rem; max-width: 750px; margin-left: auto; margin-right: auto;">
+      <div class="max-w-4xl w-full flex flex-col justify-center items-center text-center gap-8">
+        <h2 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400">
+          The Roadmap Ahead
+        </h2>
+        <p class="text-xl md:text-2xl text-slate-300 font-light leading-relaxed max-w-3xl">
           "The future economy is not built by human hands, but by machine consensus trading micro-utility at macro scale."
         </p>
-        <div style="margin-top: 2rem;">
-          <a href="../index.html" class="back-btn" style="display: inline-flex; pointer-events: auto; padding: 0.75rem 1.5rem; font-size: 1rem;" id="dashboard-return-btn">
+        <div class="mt-8">
+          <a href="../index.html" class="pointer-events-auto bg-gray-900/60 border border-white/8 text-slate-400 hover:text-white hover:border-white/20 px-6 py-3 rounded-full flex items-center gap-2 backdrop-blur-md transition-all duration-200 text-sm font-semibold" id="dashboard-return-btn">
             Return to Dashboard
           </a>
         </div>
@@ -521,14 +162,14 @@
   </main>
 
   <!-- Interactive Controls HUD -->
-  <div class="controls" id="slide-controls">
-    <button class="control-btn" id="prev-btn" aria-label="Previous Slide">
+  <div class="fixed bottom-8 right-8 flex items-center gap-4 z-10 bg-gray-900/60 border border-white/8 rounded-full p-2 backdrop-blur-md" id="slide-controls">
+    <button class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/8 transition-all duration-200 cursor-pointer" id="prev-btn" aria-label="Previous Slide">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
-    <div class="slide-number" id="slide-num-hud">1 / 6</div>
-    <button class="control-btn" id="next-btn" aria-label="Next Slide">
+    <div class="font-display text-sm font-semibold px-3 text-slate-400 min-w-[4rem] text-center" id="slide-num-hud">1 / 6</div>
+    <button class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/8 transition-all duration-200 cursor-pointer" id="next-btn" aria-label="Next Slide">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -536,8 +177,8 @@
   </div>
 
   <!-- Bottom progress HUD -->
-  <div class="progress-container">
-    <div class="progress-bar" id="slide-progress"></div>
+  <div class="fixed bottom-0 left-0 right-0 h-1.5 bg-white/3 z-10">
+    <div class="h-full w-0 bg-gradient-to-r from-blue-500 to-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)] transition-all duration-300 ease-out" id="slide-progress"></div>
   </div>
 
   <script type="module" src="./presentation.js"></script>

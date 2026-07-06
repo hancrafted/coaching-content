@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: "Fira Code", monospace;
+
+  --color-brand-dark: #030712;
+  --color-brand-card: rgba(17, 24, 39, 0.7);
+  --color-brand-slide: #090d16;
+}
+
+/* Custom class layout definitions for slides using Tailwind's compiler */
+.slide {
+  @apply absolute inset-0 hidden flex-col justify-center items-center px-8 md:px-24 py-16 bg-transparent;
+}
+
+.slide.active {
+  @apply flex;
+}
+
+/* Custom keyframe animations for Slide Navigation View Transitions */
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes slide-from-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes slide-to-right {
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes slide-from-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* View Transition Group Configuration */
+::view-transition-group(root) {
+  animation: 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+html:active-view-transition-type(forward)::view-transition-old(root) {
+  animation-name: slide-to-left;
+}
+html:active-view-transition-type(forward)::view-transition-new(root) {
+  animation-name: slide-from-right;
+}
+html:active-view-transition-type(backward)::view-transition-old(root) {
+  animation-name: slide-to-right;
+}
+html:active-view-transition-type(backward)::view-transition-new(root) {
+  animation-name: slide-from-left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root) {
+    animation: none !important;
+  }
+}

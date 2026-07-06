@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve, relative, join } from 'path';
 import { readdirSync, statSync } from 'fs';
 import { fileURLToPath } from 'url';
+import tailwindcss from '@tailwindcss/vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = resolve(__filename, '..');
@@ -36,6 +37,7 @@ function getHtmlInputs(dir, fileList = {}) {
 }
 
 export default defineConfig({
+  plugins: [tailwindcss()],
   // Base configuration should match repository name for sub-path hosting on GitHub Pages
   base: '/coaching-content/',
   build: {

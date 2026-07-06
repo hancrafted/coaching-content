@@ -1,3 +1,5 @@
+import '../src/style.css';
+
 // Presentation Slide Engine
 
 const slides = document.querySelectorAll('.slide');
