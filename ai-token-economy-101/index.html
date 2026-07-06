@@ -1,13 +1,48 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="corporate" class="h-full scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Token Economy 101 - Presentation</title>
+
+    <!-- Apply saved theme before first paint to avoid a flash of the default theme -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem("token-economy-theme");
+        if (savedTheme) {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
+      } catch (e) {
+        /* localStorage unavailable — fall back to the default theme */
+      }
+    </script>
+
+    <title>The AI Token Economy — What AI Costs, and Why It's Now Everyone's Job</title>
     <meta
       name="description"
-      content="An interactive slide presentation introducing the core principles of AI tokenized economics."
+      content="AI is a billed freelancer with amnesia and no visible meter. A 20-minute field guide to the token economy: what AI actually costs, why the meter stays invisible, and why every employee — and every leader — now owns a budget they never signed up to manage."
     />
+
+    <!-- Open Graph / social embed (placeholders — final image + URL set by the platform wrapper) -->
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="The AI Token Economy — What AI Costs, and Why It's Now Everyone's Job"
+    />
+    <meta
+      property="og:description"
+      content="What an AI actually costs, why the meter stays invisible, and why every employee now owns a budget they never signed up to manage."
+    />
+    <meta property="og:image" content="./og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="The AI Token Economy — What AI Costs, and Why It's Now Everyone's Job"
+    />
+    <meta
+      name="twitter:description"
+      content="What an AI actually costs, why the meter stays invisible, and why every employee now owns a budget they never signed up to manage."
+    />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,322 +52,385 @@
     />
     <link rel="stylesheet" href="../src/style.css" />
   </head>
-  <body
-    class="bg-brand-slide bg-[radial-gradient(circle_at_0%_0%,rgba(59,130,246,0.12)_0%,transparent_50%),radial-gradient(circle_at_100%_100%,rgba(168,85,247,0.12)_0%,transparent_50%)] bg-no-repeat bg-fixed text-slate-50 font-sans h-screen w-screen overflow-hidden flex flex-col leading-relaxed"
-  >
-    <!-- Top navigation HUD -->
-    <nav
-      class="fixed top-0 left-0 right-0 p-6 flex justify-between items-center z-10 pointer-events-none"
-    >
-      <a
-        href="../index.html"
-        class="pointer-events-auto bg-gray-900/60 border border-white/8 text-slate-400 hover:text-white hover:border-white/20 hover:-translate-x-0.5 px-4 py-2 rounded-full flex items-center gap-2 backdrop-blur-md transition-all duration-200 text-xs font-semibold"
-        id="back-to-dashboard"
-      >
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+
+  <body class="h-full overflow-hidden bg-base-100 text-base-content font-sans antialiased">
+    <div class="drawer h-full">
+      <input id="toc-drawer" type="checkbox" class="drawer-toggle" />
+
+      <!-- ============ MAIN COLUMN ============ -->
+      <div class="drawer-content flex h-full flex-col overflow-hidden">
+        <!-- Top navbar -->
+        <header
+          class="navbar z-30 min-h-14 shrink-0 border-b border-base-200 bg-base-100/90 px-2 backdrop-blur md:px-4"
         >
-          <path
-            d="M10 12L6 8L10 4"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        Dashboard
-      </a>
-      <span class="font-display text-sm text-slate-400 font-semibold tracking-wider uppercase"
-        >AI Token Economy 101</span
-      >
-    </nav>
-
-    <!-- Slide presentation viewport -->
-    <main class="flex-1 relative w-full h-full" id="slides-viewport">
-      <!-- Slide 1: Title Slide -->
-      <section
-        class="slide active flex flex-col justify-center items-center text-center px-8 md:px-24 py-16"
-        id="slide-1"
-      >
-        <h1
-          class="font-display text-5xl md:text-8xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-400 to-purple-500 mb-6"
-        >
-          AI Token Economy 101
-        </h1>
-        <p class="text-xl md:text-3xl text-slate-400 font-light max-w-3xl mx-auto leading-relaxed">
-          Value coordination and transactional flows in autonomous agent networks.
-        </p>
-        <p class="mt-8 text-sm md:text-base text-slate-500 font-normal">
-          Authored by Han &bull; 2026 Edition
-        </p>
-        <div
-          class="inline-block mt-12 bg-white/4 border border-white/8 px-6 py-3 rounded-full text-sm text-slate-400"
-        >
-          Use
-          <kbd
-            class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-xs"
-            >&rarr;</kbd
-          >
-          or
-          <kbd
-            class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-xs"
-            >Space</kbd
-          >
-          to advance.
-          <kbd
-            class="bg-white/10 px-2 py-0.5 rounded border border-white/20 text-white font-mono text-xs"
-            >&larr;</kbd
-          >
-          to go back.
-        </div>
-      </section>
-
-      <!-- Slide 2: Context / The Problem -->
-      <section class="slide" id="slide-2">
-        <div class="max-w-4xl w-full flex flex-col gap-8">
-          <h2
-            class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400"
-          >
-            The Paradigm Shift
-          </h2>
-          <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
-            Why do artificial intelligence networks require their own native economy? Traditional
-            APIs and billing models fall short in autonomous swarms.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            <div class="bg-gray-900/60 border border-white/8 rounded-2xl p-6">
-              <h3 class="font-display text-2xl md:text-3xl font-bold text-white mb-2">
-                Human-to-Machine
-              </h3>
-              <p class="text-base text-slate-400 font-light">
-                SaaS billing models (credit cards, monthly seats, invoicing) are designed for
-                slow-scale human interaction and static access patterns.
-              </p>
-            </div>
-            <div class="bg-gray-900/60 border border-white/8 rounded-2xl p-6">
-              <h3 class="font-display text-2xl md:text-3xl font-bold text-white mb-2">
-                Machine-to-Machine
-              </h3>
-              <p class="text-base text-slate-400 font-light">
-                Agents interact sub-second, make millions of cross-system queries, and require
-                <span
-                  class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 font-bold"
-                  >micropayments</span
-                >
-                to settle resource usage instantly.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 3: What is an AI Token Economy? -->
-      <section class="slide" id="slide-3">
-        <div class="max-w-4xl w-full flex flex-col gap-8">
-          <h2
-            class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400"
-          >
-            Defining the Token Economy
-          </h2>
-          <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
-            A closed-loop economic layer governing transaction validation, prioritization, and
-            resource constraints among computational systems.
-          </p>
-          <ul class="space-y-5">
-            <li
-              class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400"
+          <div class="navbar-start gap-1">
+            <label
+              for="toc-drawer"
+              class="btn btn-ghost btn-sm btn-square lg:hidden"
+              aria-label="Open contents"
             >
-              <strong class="text-white font-semibold">Resource Allocation:</strong> Distributes GPU
-              cycles, RAM, and context windows based on market demand.
-            </li>
-            <li
-              class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400"
-            >
-              <strong class="text-white font-semibold">Sybil Prevention:</strong> Requires
-              cost-per-request to prevent malicious agents from spamming networks.
-            </li>
-            <li
-              class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400"
-            >
-              <strong class="text-white font-semibold">Dynamic Pricing:</strong> Cost of inference
-              automatically rises during periods of high demand.
-            </li>
-            <li
-              class="text-lg md:text-xl text-slate-400 font-light pl-8 relative before:content-['✦'] before:absolute before:left-0 before:text-cyan-400"
-            >
-              <strong class="text-white font-semibold">Staking Loops:</strong> Agents deposit
-              security collateral to guarantee task quality and compliance.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Slide 4: Transaction Flow example -->
-      <section class="slide" id="slide-4">
-        <div class="max-w-4xl w-full flex flex-col gap-8">
-          <h2
-            class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400"
-          >
-            Agent Transaction Lifecycle
-          </h2>
-          <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
-            How agents settle dynamic work requests programmatically. Below is a sample transaction
-            definition.
-          </p>
-          <pre
-            class="bg-black/40 border border-white/8 rounded-xl p-6 font-mono text-sm overflow-x-auto text-slate-200 leading-relaxed"
-          ><code><span class="text-pink-400">const</span> transaction = {
-  id: <span class="text-emerald-400">"tx_8f93e1a"</span>,
-  sender: <span class="text-emerald-400">"research-agent-01"</span>,
-  receiver: <span class="text-emerald-400">"vector-db-service"</span>,
-  amount: <span class="text-pink-400">0.0025</span>, <span class="text-slate-500">// settled in native UT (Utility Tokens)</span>
-  payload: {
-    operation: <span class="text-emerald-400">"semantic_search"</span>,
-    limit: <span class="text-pink-400">50</span>
-  },
-  signature: <span class="text-emerald-400">"0x98f...7c2"</span> <span class="text-slate-500">// Cryptographically signed by Agent Private Key</span>
-};
-
-<span class="text-pink-400">await</span> NetworkRegistry.<span class="text-blue-400">settle</span>(transaction);</code></pre>
-        </div>
-      </section>
-
-      <!-- Slide 5: Strategic Pillars -->
-      <section class="slide" id="slide-5">
-        <div class="max-w-4xl w-full flex flex-col gap-8">
-          <h2
-            class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400"
-          >
-            Core Implementation Pillars
-          </h2>
-          <p class="text-lg md:text-xl text-slate-400 font-light leading-relaxed">
-            A robust token economy depends on four interlocking layers to operate reliably at
-            sub-second scales.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            <div>
-              <h3 class="font-display text-2xl font-bold text-cyan-400 mb-2">1. Identity (DID)</h3>
-              <p class="text-base text-slate-400 font-light mb-6">
-                Decentralized Identifiers for every agent, linked securely to cryptographic wallets.
-              </p>
-
-              <h3 class="font-display text-2xl font-bold text-cyan-400 mb-2">
-                2. Settlement Engine
-              </h3>
-              <p class="text-base text-slate-400 font-light">
-                Ultra-low latency ledgers (L3s or State Channels) to resolve micropayments
-                instantly.
-              </p>
-            </div>
-            <div>
-              <h3 class="font-display text-2xl font-bold text-purple-400 mb-2">
-                3. Security Rules
-              </h3>
-              <p class="text-base text-slate-400 font-light mb-6">
-                Programmatic constraints (e.g. daily allowance thresholds, auto-locking, and
-                alerts).
-              </p>
-
-              <h3 class="font-display text-2xl font-bold text-purple-400 mb-2">4. Reputation</h3>
-              <p class="text-base text-slate-400 font-light">
-                On-chain metrics tracking agent uptime, task success ratios, and past SLA
-                compliance.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Slide 6: Summary / Conclusion -->
-      <section class="slide" id="slide-6">
-        <div class="max-w-4xl w-full flex flex-col justify-center items-center text-center gap-8">
-          <h2
-            class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-cyan-400"
-          >
-            The Roadmap Ahead
-          </h2>
-          <p class="text-xl md:text-2xl text-slate-300 font-light leading-relaxed max-w-3xl">
-            "The future economy is not built by human hands, but by machine consensus trading
-            micro-utility at macro scale."
-          </p>
-          <div class="mt-8">
-            <a
-              href="../index.html"
-              class="pointer-events-auto bg-gray-900/60 border border-white/8 text-slate-400 hover:text-white hover:border-white/20 px-6 py-3 rounded-full flex items-center gap-2 backdrop-blur-md transition-all duration-200 text-sm font-semibold"
-              id="dashboard-return-btn"
-            >
-              Return to Dashboard
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </label>
+            <a href="../index.html" class="btn btn-ghost btn-sm gap-2 normal-case">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 12L6 8L10 4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Dashboard
             </a>
           </div>
+          <div class="navbar-center hidden sm:flex">
+            <span class="font-display text-sm font-semibold tracking-wide md:text-base"
+              >The AI Token Economy</span
+            >
+          </div>
+          <div class="navbar-end">
+            <!-- Theme picker injected by presentation.js -->
+            <div id="theme-picker"></div>
+          </div>
+        </header>
+
+        <!-- Mobile progress bar (rail carries progress on desktop) -->
+        <div class="h-1 shrink-0 bg-base-200 lg:hidden">
+          <div
+            id="progress-mobile"
+            class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+          ></div>
         </div>
-      </section>
-    </main>
 
-    <!-- Interactive Controls HUD -->
-    <div
-      class="fixed bottom-8 right-8 flex items-center gap-4 z-10 bg-gray-900/60 border border-white/8 rounded-full p-2 backdrop-blur-md"
-      id="slide-controls"
-    >
-      <button
-        class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/8 transition-all duration-200 cursor-pointer"
-        id="prev-btn"
-        aria-label="Previous Slide"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <!-- Rail + tower -->
+        <div
+          class="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[19rem_1fr] lg:grid-rows-[minmax(0,1fr)]"
         >
-          <path
-            d="M15 18L9 12L15 6"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-      <div
-        class="font-display text-sm font-semibold px-3 text-slate-400 min-w-[4rem] text-center"
-        id="slide-num-hud"
-      >
-        1 / 6
+          <!-- Desktop sticky rail -->
+          <aside
+            class="hidden min-h-0 overflow-y-auto border-r border-base-200 bg-base-200/40 lg:flex lg:flex-col"
+          >
+            <div class="border-b border-base-200 p-5">
+              <p class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50">
+                Contents
+              </p>
+              <div class="mt-3 h-1 overflow-hidden rounded-full bg-base-300">
+                <div
+                  id="progress-desktop"
+                  class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+                ></div>
+              </div>
+            </div>
+            <nav id="toc-desktop" class="flex-1 p-3" aria-label="Table of contents"></nav>
+          </aside>
+
+          <!-- The scroll tower -->
+          <main
+            id="tower"
+            class="min-h-0 flex-1 snap-y snap-proximity overflow-y-auto scroll-smooth"
+          >
+            <!-- ========== SECTION 1 — Pre-Intro ========== -->
+            <!-- S1.1 · HERO -->
+            <section
+              id="s1-1"
+              class="beat relative flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="1"
+              data-section-title="Pre-Intro"
+              data-beat="S1.1"
+              data-assertion="Everyone's talking about what AI can do. Almost nobody's talking about what it costs."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-8 font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  AI Token Economy · A 20-minute field guide
+                </p>
+                <h1
+                  class="font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl"
+                >
+                  <span class="block text-base-content"
+                    >Everyone's talking about what AI can do.</span
+                  >
+                  <span class="mt-3 block text-base-content/40"
+                    >Almost nobody's talking about what it
+                    <span
+                      class="text-primary underline decoration-primary/40 decoration-4 underline-offset-8"
+                      >costs</span
+                    >.</span
+                  >
+                </h1>
+                <p
+                  class="mt-10 max-w-2xl text-lg font-light leading-relaxed text-base-content/70 md:text-xl"
+                >
+                  What an AI actually costs, why the meter stays invisible, and why every employee —
+                  and every leader — now owns a budget they never signed up to manage.
+                </p>
+                <p class="mt-4 text-sm text-base-content/50">For everyone. Not just engineers.</p>
+              </div>
+
+              <!-- Ambient, unwatched meter — the through-line of the whole talk -->
+              <div
+                class="pointer-events-none absolute bottom-24 right-6 select-none text-right md:right-16 lg:right-24"
+              >
+                <p
+                  class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/40"
+                >
+                  tokens billed · unwatched
+                </p>
+                <p
+                  id="hero-meter"
+                  class="mt-1 font-mono text-2xl leading-none tabular-nums text-base-content/30 md:text-4xl"
+                >
+                  0
+                </p>
+              </div>
+
+              <!-- Scroll cue -->
+              <a
+                href="#s2-1"
+                data-toc-jump="s2-1"
+                class="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-base-content/40 transition-colors hover:text-primary"
+                aria-label="Scroll to the first section"
+              >
+                <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em]">scroll</span>
+                <svg
+                  class="animate-bounce motion-reduce:animate-none"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6 9l6 6 6-6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </a>
+            </section>
+
+            <!-- ========== SECTION 2 — Intro ========== -->
+            <section
+              id="s2-1"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="Intro"
+              data-beat="S2.1"
+              data-assertion="Imagine you're handed a brilliant freelancer with three strange flaws."
+            ></section>
+
+            <section
+              id="s2-2"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="Intro"
+              data-beat="S2.2"
+              data-assertion="Obviously it's an LLM. So how would you lead it — and how would you teach your team to?"
+            ></section>
+
+            <section
+              id="s2-3"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="Intro"
+              data-beat="S2.3"
+              data-assertion="Every AI era spawned its own discipline. The newest one doesn't have a settled name yet."
+            ></section>
+
+            <section
+              id="s2-4"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="Intro"
+              data-beat="S2.4"
+              data-assertion="For a human freelancer you'd demand a business case. AI bills you the same money — invisibly, over many prompts."
+            ></section>
+
+            <section
+              id="s2-5"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="Intro"
+              data-beat="S2.5"
+              data-assertion="You're now accountable for a budget you never signed up to manage — and the winner optimizes outcome per euro."
+            ></section>
+
+            <!-- ========== SECTION 3 — What Is a Token ========== -->
+            <section
+              id="s3-1"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="What Is a Token"
+              data-beat="S3.1"
+              data-assertion="What's actually billed is tokens — and the meter never stops."
+            ></section>
+
+            <section
+              id="s3-2"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="What Is a Token"
+              data-beat="S3.2"
+              data-assertion="Most tools are built so you can't see the meter. Here's what it looks like when you can."
+            ></section>
+
+            <section
+              id="s3-3"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="What Is a Token"
+              data-beat="S3.3"
+              data-assertion="Real visibility is a CLI thing; most browser tools hide it — so build a sense of cost, not just a number."
+            ></section>
+
+            <!-- ========== SECTION 4 — Managing Context ========== -->
+            <section
+              id="s4-1"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="4"
+              data-section-title="Managing Context"
+              data-beat="S4.1"
+              data-assertion="Tokens pile up in the context window — the model's attention span, and it fills up."
+            ></section>
+
+            <section
+              id="s4-2"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="4"
+              data-section-title="Managing Context"
+              data-beat="S4.2"
+              data-assertion="The tool auto-manages some of it — but it can't guarantee the important stuff survives."
+            ></section>
+
+            <section
+              id="s4-3"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="4"
+              data-section-title="Managing Context"
+              data-beat="S4.3"
+              data-assertion="Below 50% is the smart zone; above it the model loses the plot — so monitor, compact, and hand off."
+            ></section>
+
+            <!-- ========== SECTION 5 — Agentic vs Chat ========== -->
+            <section
+              id="s5-1"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Agentic vs Chat"
+              data-beat="S5.1"
+              data-assertion="One simple bug fix quietly runs to ~55,000 tokens."
+            ></section>
+
+            <!-- ========== SECTION 6 — Model Tiers ========== -->
+            <section
+              id="s6-1"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="6"
+              data-section-title="Model Tiers"
+              data-beat="S6.1"
+              data-assertion="Don't pay premium prices for a task that doesn't need judgment."
+            ></section>
+
+            <!-- ========== SECTION 7 — Tools & Tips ========== -->
+            <section
+              id="s7-1"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="7"
+              data-section-title="Tools & Tips"
+              data-beat="S7.1"
+              data-assertion="Two kinds of levers cut waste: ones you automate, and ones your team practices."
+            ></section>
+
+            <!-- ========== SECTION 8 — Closer ========== -->
+            <section
+              id="s8-1"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="8"
+              data-section-title="Closer"
+              data-beat="S8.1"
+              data-assertion="If you do one thing: run /context once, and actually read it."
+            ></section>
+
+            <section
+              id="s8-2"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="8"
+              data-section-title="Closer"
+              data-beat="S8.2"
+              data-assertion="The winner isn't who spends the most on AI, or who refuses it — it's whoever's teaching their people to use it economically."
+            ></section>
+
+            <!-- Footer -->
+            <footer
+              class="snap-start border-t border-base-200 bg-base-200/40 px-6 py-16 md:px-16 lg:px-24"
+            >
+              <div class="mx-auto flex max-w-4xl flex-col gap-2">
+                <p class="font-display font-semibold">The AI Token Economy</p>
+                <p class="text-sm text-base-content/60">A talk by Han · RIB Software · 2026</p>
+                <a href="../index.html" class="link-hover link w-fit text-sm text-primary"
+                  >← Back to dashboard</a
+                >
+              </div>
+            </footer>
+          </main>
+        </div>
       </div>
-      <button
-        class="w-10 h-10 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/8 transition-all duration-200 cursor-pointer"
-        id="next-btn"
-        aria-label="Next Slide"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 18L15 12L9 6"
-            stroke="currentColor"
-            stroke-width="2.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-    </div>
 
-    <!-- Bottom progress HUD -->
-    <div class="fixed bottom-0 left-0 right-0 h-1.5 bg-white/3 z-10">
-      <div
-        class="h-full w-0 bg-gradient-to-r from-blue-500 to-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)] transition-all duration-300 ease-out"
-        id="slide-progress"
-      ></div>
+      <!-- ============ MOBILE DRAWER (table of contents) ============ -->
+      <div class="drawer-side z-50">
+        <label for="toc-drawer" aria-label="Close contents" class="drawer-overlay"></label>
+        <aside class="flex min-h-full w-72 flex-col bg-base-200">
+          <div class="flex items-center justify-between border-b border-base-300 p-4">
+            <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+              >Contents</span
+            >
+            <label for="toc-drawer" class="btn btn-ghost btn-xs btn-square" aria-label="Close">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </label>
+          </div>
+          <nav
+            id="toc-mobile"
+            class="flex-1 overflow-y-auto p-3"
+            aria-label="Table of contents"
+          ></nav>
+        </aside>
+      </div>
     </div>
 
     <script type="module" src="./presentation.js"></script>
