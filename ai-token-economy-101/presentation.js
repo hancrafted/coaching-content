@@ -426,9 +426,9 @@ function startHeroMeter() {
  * Registered before Init so they exist when the first beat activates.
  * ------------------------------------------------------------------ */
 
-// S2.1 — the freelancer's three flaws reveal in sequence.
+// S2.1 — the freelancer's three strengths and three flaws reveal in sequence.
 registerActivate("s2-1", (reduced) => {
-  const flaws = document.querySelectorAll("#s2-1 [data-flaw]");
+  const flaws = document.querySelectorAll("#s2-1 [data-reveal]");
   flaws.forEach((el, i) => {
     const show = () => el.classList.remove("opacity-0", "translate-y-3");
     if (reduced) show();

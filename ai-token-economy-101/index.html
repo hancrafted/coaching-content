@@ -153,39 +153,51 @@
             <!-- S1.1 · HERO -->
             <section
               id="s1-1"
-              class="beat relative flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="1"
               data-section-title="Pre-Intro"
               data-beat="S1.1"
-              data-assertion="Everyone's talking about what AI can do. Almost nobody's talking about what it costs."
+              data-assertion="The AI Token Economy is foundational for everyone, not just engineers — every employee from junior to senior now owns a budget they never signed up to manage."
             >
+              <!--
+                Ambient hero backdrop. The source illustration splits capability icons
+                (left) from cost/infrastructure (right) — the same pivot as the copy —
+                so it's cropped to keep that divide, desaturated so it reads as texture
+                rather than a stock photo, and scrimmed with the theme's own base color
+                so it stays legible (and on-theme) across all five daisyUI themes.
+                Confined to the top half of the section so it stays a header accent
+                rather than washing over the whole viewport.
+              -->
+              <div
+                class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-1/2 overflow-hidden"
+                aria-hidden="true"
+              >
+                <img
+                  src="./assets/hero.webp"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover object-top opacity-[0.45] saturate-[0.45] contrast-125"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-100/35 to-base-100"
+                ></div>
+              </div>
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
-                <p class="mb-8 font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
-                  AI Token Economy · A 20-minute field guide
-                </p>
                 <h1
                   class="font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl"
                 >
-                  <span class="block text-base-content"
-                    >Everyone's talking about what AI can do.</span
-                  >
-                  <span class="mt-3 block text-base-content/40"
-                    >Almost nobody's talking about what it
-                    <span
-                      class="text-primary underline decoration-primary/40 decoration-4 underline-offset-8"
-                      >costs</span
-                    >.</span
-                  >
+                  <span class="block text-base-content">The AI Token Economy</span>
                 </h1>
                 <p
                   class="mt-10 max-w-2xl text-lg font-light leading-relaxed text-base-content/70 md:text-xl"
                 >
-                  What an AI actually costs, why the meter stays invisible, and why every employee —
-                  and every leader — now owns a budget they never signed up to manage.
+                  Why it is foundational for everyone, not just engineers.
                 </p>
-                <p class="mt-4 text-sm text-base-content/50">For everyone. Not just engineers.</p>
+                <p class="mt-4 max-w-2xl text-base leading-relaxed text-base-content/50">
+                  Every employee from junior to senior now owns a budget they never signed up to
+                  manage. A survival guide.
+                </p>
               </div>
 
               <!-- Ambient, unwatched meter — the through-line of the whole talk -->
@@ -239,7 +251,7 @@
               data-section="2"
               data-section-title="Intro"
               data-beat="S2.1"
-              data-assertion="Imagine you're handed a brilliant freelancer with three strange flaws."
+              data-assertion="Thought experiment: imagine you're handed a brilliant freelancer with three strange flaws."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-6xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
@@ -250,108 +262,111 @@
                 <h2
                   class="max-w-4xl font-display text-3xl font-extrabold leading-tight tracking-tight md:text-5xl"
                 >
-                  Imagine you're handed a brilliant freelancer with
-                  <span class="text-primary">three strange flaws</span>.
+                  <span class="block text-base-content/50">Thought experiment:</span>
+                  Imagine you're assign a freelancer with these
+                  <span class="text-primary">weird characterstics</span>.
                 </h2>
-
-                <div class="mt-12 grid gap-6 lg:grid-cols-[20rem_1fr]">
-                  <!-- Contractor dossier — the résumé, in humanist type -->
-                  <div class="card border border-base-300 bg-base-200/60">
-                    <div class="card-body gap-4">
-                      <div class="flex items-center gap-4">
-                        <div class="avatar placeholder">
-                          <div
-                            class="w-14 rounded-full bg-primary/15 text-primary ring-2 ring-primary/30"
-                          >
-                            <span class="font-mono text-lg font-medium">AI</span>
-                          </div>
-                        </div>
-                        <div>
-                          <p
-                            class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/40"
-                          >
-                            contractor file
-                          </p>
-                          <h3 class="font-display text-xl font-bold">The Freelancer</h3>
-                        </div>
-                      </div>
-                      <p class="text-base font-light leading-relaxed text-base-content/70">
-                        Extraordinary on paper — takes on anything, never tires, and is always sure
-                        it's right.
+                <div class="mt-12 grid items-center gap-6 lg:grid-cols-[1fr_13rem_1fr]">
+                  <!-- The three strengths — what it says on the résumé -->
+                  <div class="grid gap-3">
+                    <div
+                      data-reveal
+                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                    >
+                      <span
+                        class="w-fit rounded-md bg-success/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-success"
+                        >strength (?)</span
+                      >
+                      <h4 class="font-display text-lg font-semibold">Fast & well-read</h4>
+                      <p class="text-sm leading-relaxed text-base-content/60">
+                        Knows about everything you ask them, and can produce results fast without
+                        needing a break.
                       </p>
-                      <div class="flex flex-wrap gap-2">
-                        <span class="badge badge-sm badge-outline">Tireless</span>
-                        <span class="badge badge-sm badge-outline">Takes anything</span>
-                        <span class="badge badge-sm badge-outline">Always confident</span>
-                      </div>
                     </div>
+
+                    <div
+                      data-reveal
+                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                    >
+                      <span
+                        class="w-fit rounded-md bg-success/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-success"
+                        >strength (?)</span
+                      >
+                      <h4 class="font-display text-lg font-semibold">Accepts any task</h4>
+                      <p class="text-sm leading-relaxed text-base-content/60">
+                        No task too big or too niche — it'll take a swing at whatever you hand it.
+                      </p>
+                    </div>
+
+                    <div
+                      data-reveal
+                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                    >
+                      <span
+                        class="w-fit rounded-md bg-success/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-success"
+                        >strength (?)</span
+                      >
+                      <h4 class="font-display text-lg font-semibold">Tireless</h4>
+                      <p class="text-sm leading-relaxed text-base-content/60">
+                        Never stops, never sleeps, unless you stop paying.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- The pivot — one hire, trending up on one side and cracking on the other -->
+                  <div class="flex justify-center self-stretch">
+                    <img
+                      src="./assets/freelancer.webp"
+                      alt="A figure seen from behind, split down the middle: glowing intact circuitry trending upward on the left, cracked circuitry trending downward on the right."
+                      class="h-full max-h-[40rem] w-auto object-contain"
+                    />
                   </div>
 
                   <!-- The three flaws — the machine leaking through, in mono fault codes -->
                   <div class="grid gap-3">
                     <div
-                      data-flaw
-                      class="flex translate-y-3 items-start gap-4 rounded-box border border-base-300 bg-base-100 p-5 opacity-0 transition-all duration-500 ease-out"
+                      data-reveal
+                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
-                        class="mt-0.5 shrink-0 rounded-md bg-base-200 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-base-content/50"
-                        >fault · silent</span
+                        class="w-fit rounded-md bg-error/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-error"
+                        >flaw</span
                       >
-                      <div>
-                        <h4 class="font-display text-lg font-semibold">
-                          It never asks a question.
-                        </h4>
-                        <p class="mt-1 text-sm leading-relaxed text-base-content/60">
-                          It runs with whatever you hand it — including your wrong assumptions — and
-                          won't flag them.
-                        </p>
-                      </div>
+                      <h4 class="font-display text-lg font-semibold">No questions.</h4>
+                      <p class="text-sm leading-relaxed text-base-content/60">
+                        Assumes the gaps, fills them with whatever comes to mind.
+                      </p>
                     </div>
 
                     <div
-                      data-flaw
-                      class="flex translate-y-3 items-start gap-4 rounded-box border border-base-300 bg-base-100 p-5 opacity-0 transition-all duration-500 ease-out"
+                      data-reveal
+                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
-                        class="mt-0.5 shrink-0 rounded-md bg-base-200 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-base-content/50"
-                        >fault · metered</span
+                        class="w-fit rounded-md bg-error/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-error"
+                        >flaw</span
                       >
-                      <div class="min-w-0">
-                        <h4 class="font-display text-lg font-semibold">It bills for every word.</h4>
-                        <p class="mt-1 text-sm leading-relaxed text-base-content/60">
-                          Every word you say and every word it says back — charged. It never quotes
-                          you a price.
-                        </p>
-                        <p
-                          class="mt-2 font-mono text-[0.7rem] tabular-nums tracking-wide text-base-content/40"
-                        >
-                          in · out · cache&nbsp;&nbsp;—&nbsp;&nbsp;all on the clock
-                        </p>
-                      </div>
+                      <h4 class="font-display text-lg font-semibold">Eager to please/bill.</h4>
+                      <p class="text-sm leading-relaxed text-base-content/60">
+                        It bills you for every word you say and every word it says back.
+                      </p>
                     </div>
 
                     <div
-                      data-flaw
-                      class="flex translate-y-3 items-start gap-4 rounded-box border border-base-300 bg-base-100 p-5 opacity-0 transition-all duration-500 ease-out"
+                      data-reveal
+                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
-                        class="mt-0.5 shrink-0 rounded-md bg-base-200 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-base-content/50"
-                        >fault · amnesiac</span
+                        class="w-fit rounded-md bg-error/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-error"
+                        >flaw</span
                       >
-                      <div>
-                        <h4 class="font-display text-lg font-semibold">It remembers nothing.</h4>
-                        <p class="mt-1 text-sm leading-relaxed text-base-content/60">
-                          Every new conversation starts from zero. Yesterday's work never happened.
-                        </p>
-                      </div>
+                      <h4 class="font-display text-lg font-semibold">It remembers nothing.</h4>
+                      <p class="text-sm leading-relaxed text-base-content/60">
+                        Every new conversation starts from zero. Yesterday's work never happened.
+                      </p>
                     </div>
                   </div>
                 </div>
-
-                <p class="mt-10 max-w-2xl text-lg font-light leading-relaxed text-base-content/70">
-                  On paper, the hire of a lifetime. In practice, three flaws quietly decide what it
-                  costs you — and one of them is a meter you can't see.
-                </p>
               </div>
             </section>
 
@@ -372,9 +387,8 @@
                 <h2
                   class="max-w-4xl font-display text-3xl font-extrabold leading-tight tracking-tight md:text-5xl"
                 >
-                  Obviously it's an LLM. So how would you
-                  <span class="text-primary">lead it</span> — and how would you
-                  <span class="text-primary">teach your team to</span>?
+                  It's an LLM, <span class="text-primary">BUT</span> if it were a human, how would
+                  you manage it?
                 </h2>
 
                 <!-- Two doors: the individual contributor and the leader -->
