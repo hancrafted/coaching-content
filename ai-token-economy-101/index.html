@@ -1005,7 +1005,129 @@
               data-section-title="What Is a Token"
               data-beat="S3.1"
               data-assertion="What's actually billed is tokens — and the meter never stops."
-            ></section>
+            >
+              <div class="beat-inner flex flex-col gap-8 w-full max-w-5xl mx-auto">
+                <div class="prose max-w-none">
+                  <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+                    Text resolves into billable tokens
+                  </h2>
+                  <p class="text-xl opacity-80">
+                    AI doesn't read words. It reads tokens, and every token has a cost.
+                    Understanding this conversion is the first step to managing your AI economy.
+                  </p>
+                </div>
+
+                <div
+                  data-viz="s3-1"
+                  class="border border-base-300 bg-base-200/50 rounded-box p-8 md:p-12 overflow-hidden flex flex-col items-center justify-center min-h-[400px]"
+                >
+                  <div
+                    class="relative w-full max-w-4xl flex items-center justify-center min-h-[150px]"
+                  >
+                    <!-- Original text that fades out -->
+                    <div
+                      class="s3-1-text absolute inset-0 text-3xl font-medium text-center flex items-center justify-center transition-opacity duration-700"
+                    >
+                      "Write a python script to parse a csv file."
+                    </div>
+                    <!-- Tokenized text that scales in -->
+                    <div
+                      class="s3-1-tokens flex flex-wrap justify-center gap-3 opacity-0 transition-opacity duration-700"
+                    >
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">"Write</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_a</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_python</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_script</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_to</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_parse</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_a</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_csv</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                      <span
+                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
+                      >
+                        <span class="text-xl font-mono">_file."</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
+                          >Billable</span
+                        >
+                      </span>
+                    </div>
+                  </div>
+                  <!-- Dimensions -->
+                  <div
+                    class="s3-1-dimensions mt-12 flex flex-wrap justify-center gap-4 opacity-0 transition-opacity duration-700"
+                  >
+                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
+                      1. Input / Context
+                    </div>
+                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
+                      2. Output / Generated
+                    </div>
+                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
+                      3. Cached / Reused
+                    </div>
+                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
+                      4. Search / Retrieval
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <section
               id="s3-2"
@@ -1014,7 +1136,105 @@
               data-section-title="What Is a Token"
               data-beat="S3.2"
               data-assertion="Most tools are built so you can't see the meter. Here's what it looks like when you can."
-            ></section>
+            >
+              <div class="beat-inner flex flex-col gap-8 w-full max-w-5xl mx-auto mt-24">
+                <div class="prose max-w-none">
+                  <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+                    The live /context + /usage
+                  </h2>
+                  <p class="text-xl opacity-80">
+                    Monitoring the context window is critical. It fills up quickly with system
+                    rules, chat history, and parsed files. Here is an illustrative snapshot of
+                    context allocation.
+                  </p>
+                </div>
+
+                <div
+                  data-viz="s3-2"
+                  class="border border-base-300 bg-base-200/50 rounded-box p-8 overflow-hidden flex flex-col gap-8"
+                >
+                  <!-- Context Meter Motif (Reusable) -->
+                  <div
+                    class="context-meter-container w-full bg-base-100 rounded-box p-6 border border-base-300 shadow-sm"
+                  >
+                    <div class="flex justify-between items-end mb-4">
+                      <div>
+                        <h3 class="font-bold text-xl">Context Window</h3>
+                        <div class="text-sm opacity-70 mt-1">Capacity: 200,000 tokens</div>
+                      </div>
+                      <div class="text-right">
+                        <div
+                          class="text-3xl font-mono font-bold text-primary s3-2-counter tabular-nums"
+                        >
+                          0
+                        </div>
+                        <div class="text-xs font-bold opacity-70 uppercase tracking-widest mt-1">
+                          Tokens Used
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Meter Bar -->
+                    <div
+                      class="w-full bg-base-300 rounded-full h-8 overflow-hidden relative border border-base-content/10 shadow-inner"
+                    >
+                      <!-- Reusable meter bar: scales width via JS -->
+                      <div
+                        class="context-meter-fill h-full bg-primary transition-all duration-1000 ease-out"
+                        style="width: 0%"
+                      ></div>
+                      <!-- Threshold marker -->
+                      <div
+                        class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-error/70 z-10"
+                        title="50% threshold"
+                      ></div>
+                    </div>
+                    <div class="flex justify-between text-xs mt-3 font-mono font-bold opacity-60">
+                      <span>0%</span>
+                      <span>50%</span>
+                      <span>100%</span>
+                    </div>
+                  </div>
+
+                  <!-- Terminal Mockup -->
+                  <div
+                    class="mockup-code bg-neutral text-neutral-content w-full shadow-lg border border-neutral-focus"
+                  >
+                    <pre data-prefix="$"><code class="text-success">/context</code></pre>
+                    <div class="s3-2-terminal-lines">
+                      <!-- Lines will be revealed by JS -->
+                      <pre
+                        data-prefix=">"
+                        class="s3-2-line hidden"
+                      ><code>Analyzing current session context...</code></pre>
+                      <pre
+                        data-prefix=">"
+                        class="s3-2-line hidden"
+                      ><code>Files loaded: 14</code></pre>
+                      <pre
+                        data-prefix=">"
+                        class="s3-2-line hidden text-info"
+                      ><code>System prompt: 2,450 tokens</code></pre>
+                      <pre
+                        data-prefix=">"
+                        class="s3-2-line hidden text-info"
+                      ><code>Conversation history: 18,200 tokens</code></pre>
+                      <pre
+                        data-prefix=">"
+                        class="s3-2-line hidden text-info"
+                      ><code>File contents: 34,350 tokens</code></pre>
+                      <pre
+                        data-prefix=">"
+                        class="text-warning s3-2-line hidden"
+                      ><code>-----------------------------------</code></pre>
+                      <pre
+                        data-prefix=">"
+                        class="text-primary font-bold s3-2-line hidden text-lg"
+                      ><code>Total Context: 55,000 / 200,000 (27.5%)</code></pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <section
               id="s3-3"
@@ -1023,7 +1243,77 @@
               data-section-title="What Is a Token"
               data-beat="S3.3"
               data-assertion="Real visibility is a CLI thing; most browser tools hide it — so build a sense of cost, not just a number."
-            ></section>
+            >
+              <div class="beat-inner flex flex-col gap-8 w-full max-w-5xl mx-auto mt-24">
+                <div class="prose max-w-none">
+                  <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+                    CLI transparency vs web obscurity
+                  </h2>
+                  <p class="text-xl opacity-80">
+                    Web UIs hide the true cost of operations behind abstract credits or vague
+                    limits. The CLI forces you to face the raw numbers, building an intuition for
+                    the token economy.
+                  </p>
+                </div>
+
+                <div data-viz="s3-3" class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-[400px]">
+                  <!-- CLI Side -->
+                  <div class="flex flex-col gap-4">
+                    <h3 class="text-center font-bold uppercase tracking-widest text-sm opacity-50">
+                      CLI Tool (e.g. Claude Code)
+                    </h3>
+                    <div
+                      class="mockup-code bg-neutral text-neutral-content flex-grow shadow-lg border border-neutral-focus"
+                    >
+                      <pre data-prefix="$" class="text-success"><code>commit changes</code></pre>
+                      <div class="s3-3-cli-lines opacity-0 transition-opacity duration-1000">
+                        <pre
+                          data-prefix=">"
+                          class="text-info mt-2"
+                        ><code>Reading 5 files...</code></pre>
+                        <pre data-prefix=">"><code>Tokens in: 12,450 ($0.037)</code></pre>
+                        <pre data-prefix=">"><code>Tokens out:   840 ($0.012)</code></pre>
+                        <pre
+                          data-prefix=">"
+                          class="text-error font-bold mt-4"
+                        ><code>Total Cost: $0.049</code></pre>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Web UI Side -->
+                  <div class="flex flex-col gap-4">
+                    <h3 class="text-center font-bold uppercase tracking-widest text-sm opacity-50">
+                      Web Interface
+                    </h3>
+                    <div
+                      class="border border-base-300 bg-base-100 rounded-box flex-grow flex flex-col items-center justify-center p-8 shadow-sm"
+                    >
+                      <div
+                        class="s3-3-web-ui opacity-0 transition-opacity duration-1000 flex flex-col items-center w-full max-w-xs gap-6"
+                      >
+                        <div class="loading loading-spinner loading-lg text-primary"></div>
+                        <div class="text-center">
+                          <div class="font-medium text-lg">Generating response...</div>
+                          <div class="text-sm opacity-50">This may take a moment.</div>
+                        </div>
+                        <div class="w-full mt-4 p-4 bg-base-200 rounded-lg">
+                          <div class="flex justify-between text-xs mb-2 font-bold">
+                            <span>Usage Limit</span>
+                            <span class="text-warning">Approaching</span>
+                          </div>
+                          <progress
+                            class="progress progress-warning w-full"
+                            value="80"
+                            max="100"
+                          ></progress>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <!-- ========== SECTION 4 — Managing Context ========== -->
             <section
@@ -1033,7 +1323,95 @@
               data-section-title="Managing Context"
               data-beat="S4.1"
               data-assertion="Tokens pile up in the context window — the model's attention span, and it fills up."
-            ></section>
+            >
+              <div
+                class="beat-inner flex flex-col justify-center h-full px-8 lg:px-20 max-w-6xl mx-auto"
+              >
+                <div class="mb-12 max-w-3xl">
+                  <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
+                    Context window = attention span
+                  </h2>
+                  <p class="text-xl text-base-content/80">
+                    Every interaction fills the memory. A fresh thread is a fresh mind. A long
+                    thread is a tired one. Let's look at how fast that fills up.
+                  </p>
+                </div>
+
+                <div class="visualization" data-viz="s4-1">
+                  <!-- diverging lanes and context meter -->
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- Plain chat -->
+                    <div class="space-y-4">
+                      <h3 class="text-2xl font-semibold opacity-70">Plain Chat</h3>
+                      <div class="chat chat-end">
+                        <div
+                          class="chat-bubble chat-bubble-primary opacity-0 translate-y-4 chat-msg transition-all duration-500"
+                        >
+                          Write a quick email...
+                        </div>
+                      </div>
+                      <div class="chat chat-start">
+                        <div
+                          class="chat-bubble chat-bubble-secondary opacity-0 translate-y-4 chat-msg transition-all duration-500"
+                        >
+                          Here is a draft...
+                        </div>
+                      </div>
+                      <div class="chat chat-end">
+                        <div
+                          class="chat-bubble chat-bubble-primary opacity-0 translate-y-4 chat-msg transition-all duration-500"
+                        >
+                          Make it shorter.
+                        </div>
+                      </div>
+
+                      <div class="mt-8">
+                        <div class="flex justify-between text-sm mb-1 font-mono">
+                          <span>Fresh</span>
+                          <span>20%</span>
+                        </div>
+                        <progress
+                          class="progress progress-success w-full context-meter-slow transition-all duration-1000"
+                          value="10"
+                          max="100"
+                        ></progress>
+                      </div>
+                    </div>
+
+                    <!-- Agentic -->
+                    <div class="space-y-4">
+                      <h3 class="text-2xl font-semibold opacity-70">Agentic Action</h3>
+                      <div class="chat chat-end">
+                        <div
+                          class="chat-bubble chat-bubble-primary opacity-0 translate-y-4 agent-msg transition-all duration-500"
+                        >
+                          Refactor this app.
+                        </div>
+                      </div>
+                      <div
+                        class="font-mono text-sm opacity-0 transition-opacity duration-500 agent-log text-warning bg-base-200 p-2 rounded"
+                      >
+                        > Reading 12 files...<br />
+                        > Running tests...<br />
+                        > Applying patches...
+                      </div>
+
+                      <div class="mt-8">
+                        <div class="flex justify-between text-sm mb-1 font-mono">
+                          <span>Fresh</span>
+                          <span>95% (4PM tired)</span>
+                        </div>
+                        <progress
+                          class="progress progress-error w-full context-meter-fast transition-all duration-1000"
+                          value="10"
+                          max="100"
+                        ></progress>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <section
               id="s4-2"
@@ -1042,7 +1420,59 @@
               data-section-title="Managing Context"
               data-beat="S4.2"
               data-assertion="The tool auto-manages some of it — but it can't guarantee the important stuff survives."
-            ></section>
+            >
+              <div
+                class="beat-inner flex flex-col justify-center h-full px-8 lg:px-20 max-w-6xl mx-auto"
+              >
+                <div class="mb-12 max-w-3xl">
+                  <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">The lost middle</h2>
+                  <p class="text-xl text-base-content/80">
+                    LLMs pay attention to the beginning (system prompt) and the end (recent
+                    messages). The middle gets blurry. Some auto-compaction helps, but context
+                    degrades.
+                  </p>
+                </div>
+
+                <div class="visualization" data-viz="s4-2">
+                  <div
+                    class="mockup-window border border-base-content/10 bg-base-300 max-w-2xl mx-auto"
+                  >
+                    <div class="flex flex-col px-6 py-8 bg-base-200 space-y-4 font-mono text-sm">
+                      <div class="p-4 bg-base-100 rounded border-l-4 border-primary">
+                        <span class="text-primary font-bold block mb-1">System Prompt</span>
+                        "You are an expert coder..."
+                      </div>
+
+                      <div
+                        class="p-4 bg-base-100 rounded opacity-100 blur-0 transition-all duration-1000 mid-msg"
+                      >
+                        [Message 12: read file utils.js]
+                      </div>
+                      <div
+                        class="p-4 bg-base-100 rounded opacity-100 blur-0 transition-all duration-1000 mid-msg"
+                      >
+                        [Message 13: modify api.js]
+                      </div>
+                      <div
+                        class="flex items-center justify-center -my-2 opacity-0 scale-95 transition-all duration-700 auto-compact-badge"
+                      >
+                        <span class="badge badge-warning badge-sm">Auto-compaction (partial)</span>
+                      </div>
+                      <div
+                        class="p-4 bg-base-100 rounded opacity-100 blur-0 transition-all duration-1000 mid-msg"
+                      >
+                        [Message 14: read config.json]
+                      </div>
+
+                      <div class="p-4 bg-base-100 rounded border-l-4 border-secondary">
+                        <span class="text-secondary font-bold block mb-1">Latest Request</span>
+                        "Why is the build failing now?"
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <section
               id="s4-3"
@@ -1051,7 +1481,80 @@
               data-section-title="Managing Context"
               data-beat="S4.3"
               data-assertion="Below 50% is the smart zone; above it the model loses the plot — so monitor, compact, and hand off."
-            ></section>
+            >
+              <div
+                class="beat-inner flex flex-col justify-center h-full px-8 lg:px-20 max-w-6xl mx-auto"
+              >
+                <div class="mb-12 max-w-3xl">
+                  <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
+                    Fullness gauge &amp; Levers
+                  </h2>
+                  <p class="text-xl text-base-content/80">
+                    At 50% capacity, the model starts getting "dumb." Watch the gauge. When it
+                    crosses the threshold, pull the levers: monitor with <code>/context</code>, or
+                    compact via handoff.
+                  </p>
+                </div>
+
+                <div class="visualization" data-viz="s4-3">
+                  <div class="max-w-2xl mx-auto space-y-12">
+                    <!-- The Gauge -->
+                    <div class="relative pt-8 pb-4">
+                      <!-- 50% threshold line -->
+                      <div
+                        class="absolute left-1/2 top-0 bottom-0 w-px border-l-2 border-dashed border-base-content/50 z-10"
+                      >
+                        <div
+                          class="absolute -top-6 -translate-x-1/2 whitespace-nowrap text-xs font-mono font-bold text-base-content/70"
+                        >
+                          50% Smart / Dumb threshold
+                        </div>
+                      </div>
+
+                      <div
+                        class="h-8 w-full bg-base-300 rounded-full overflow-hidden relative border border-base-content/10"
+                      >
+                        <!-- Green below, Red above -->
+                        <div class="absolute top-0 bottom-0 left-0 w-1/2 bg-success/20"></div>
+                        <div class="absolute top-0 bottom-0 right-0 w-1/2 bg-error/20"></div>
+
+                        <!-- Needle / Fill bar -->
+                        <div
+                          class="h-full bg-gradient-to-r from-success to-error transition-all duration-[1500ms] ease-out context-gauge-fill w-[10%] relative rounded-full"
+                        >
+                          <!-- Actual needle indicator -->
+                          <div
+                            class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-1.5 h-10 bg-base-content rounded-full shadow-md z-20"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Levers -->
+                    <div class="grid grid-cols-2 gap-8 mt-8">
+                      <div
+                        class="card bg-base-200 border border-base-content/10 shadow-sm opacity-0 translate-y-4 lever-1 transition-all duration-500"
+                      >
+                        <div class="card-body">
+                          <h3 class="card-title text-lg font-mono text-primary">/context</h3>
+                          <p class="text-sm">Monitor fullness proactively before it degrades.</p>
+                        </div>
+                      </div>
+                      <div
+                        class="card bg-base-200 border border-base-content/10 shadow-sm opacity-0 translate-y-4 lever-2 transition-all duration-500"
+                      >
+                        <div class="card-body">
+                          <h3 class="card-title text-lg font-mono text-secondary">Handoff</h3>
+                          <p class="text-sm">
+                            Compact knowledge into a clean summary and start a new session.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <!-- ========== SECTION 5 — Agentic vs Chat ========== -->
             <section
@@ -1165,7 +1668,269 @@
               data-section-title="Model Tiers"
               data-beat="S6.1"
               data-assertion="Don't pay premium prices for a task that doesn't need judgment."
-            ></section>
+            >
+              <div class="beat-inner flex flex-col gap-8 w-full max-w-6xl mx-auto px-4 py-12">
+                <div class="beat-header text-center lg:text-left mb-12">
+                  <h2 class="text-4xl md:text-5xl font-bold text-primary tracking-tight mb-4">
+                    Tiered Model Stack: Matching Capability to Risk
+                  </h2>
+                  <p class="text-lg md:text-xl text-base-content/80 max-w-3xl">
+                    Engineers route tasks based on speed and cost. Leaders must route based on
+                    stakes and strategic value. Both perspectives map to the exact same tiered
+                    stack.
+                  </p>
+                </div>
+
+                <div class="model-stack-ladder relative flex flex-col gap-4" data-viz="s6-1">
+                  <!-- Gradient line behind rungs (desktop only) -->
+                  <div
+                    class="hidden lg:block absolute left-[12.5%] top-4 bottom-4 w-1 bg-gradient-to-b from-error via-info to-success rounded-full opacity-30"
+                  ></div>
+
+                  <!-- Rung 1: Gemini Flat-rate -->
+                  <div
+                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-error p-6 rounded-box shadow-sm relative z-10"
+                    style="transition-delay: 100ms"
+                  >
+                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
+                      <span class="text-xs font-bold uppercase tracking-wider text-error mb-1"
+                        >Highest Stakes</span
+                      >
+                      <span class="text-sm text-base-content/70">Enterprise / Unlimited</span>
+                    </div>
+                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
+                      <h3 class="text-xl font-bold text-base-content">Gemini Flat-rate</h3>
+                    </div>
+                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
+                      <div
+                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Engineer</span
+                        >
+                        <p class="text-sm font-mono text-base-content/90">
+                          Massive batch processing & CI/CD integration
+                        </p>
+                      </div>
+                      <div
+                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Leader</span
+                        >
+                        <p class="text-sm text-base-content/90">
+                          Fixed OPEX for organization-wide AI enablement
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rung 2: Opus -->
+                  <div
+                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-warning p-6 rounded-box shadow-sm relative z-10"
+                    style="transition-delay: 250ms"
+                  >
+                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
+                      <span class="text-xs font-bold uppercase tracking-wider text-warning mb-1"
+                        >High Stakes</span
+                      >
+                      <span class="text-sm text-base-content/70">Complex Logic / Synthesis</span>
+                    </div>
+                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
+                      <h3 class="text-xl font-bold text-base-content">Opus</h3>
+                    </div>
+                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
+                      <div
+                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Engineer</span
+                        >
+                        <p class="text-sm font-mono text-base-content/90">
+                          System architecture & cross-file refactoring
+                        </p>
+                      </div>
+                      <div
+                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Leader</span
+                        >
+                        <p class="text-sm text-base-content/90">
+                          High-risk decision synthesis & strategy drafting
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rung 3: Sonnet / Gemini Pro -->
+                  <div
+                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-info p-6 rounded-box shadow-sm relative z-10"
+                    style="transition-delay: 400ms"
+                  >
+                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
+                      <span class="text-xs font-bold uppercase tracking-wider text-info mb-1"
+                        >Core Workhorse</span
+                      >
+                      <span class="text-sm text-base-content/70">Daily Productivity</span>
+                    </div>
+                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
+                      <h3 class="text-xl font-bold text-base-content">Sonnet / Gemini Pro</h3>
+                    </div>
+                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
+                      <div
+                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Engineer</span
+                        >
+                        <p class="text-sm font-mono text-base-content/90">
+                          Feature development & code generation
+                        </p>
+                      </div>
+                      <div
+                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Leader</span
+                        >
+                        <p class="text-sm text-base-content/90">
+                          Document drafting & data analysis
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rung 4: Flash High -->
+                  <div
+                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-success p-6 rounded-box shadow-sm relative z-10"
+                    style="transition-delay: 550ms"
+                  >
+                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
+                      <span class="text-xs font-bold uppercase tracking-wider text-success mb-1"
+                        >Low Latency</span
+                      >
+                      <span class="text-sm text-base-content/70">Real-time / Agents</span>
+                    </div>
+                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
+                      <h3 class="text-xl font-bold text-base-content">Flash High</h3>
+                    </div>
+                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
+                      <div
+                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Engineer</span
+                        >
+                        <p class="text-sm font-mono text-base-content/90">
+                          RAG pipelines & multi-agent orchestration
+                        </p>
+                      </div>
+                      <div
+                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Leader</span
+                        >
+                        <p class="text-sm text-base-content/90">
+                          Customer-facing chatbots & live support
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rung 5: Haiku / Flash Low -->
+                  <div
+                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-success border-opacity-50 p-6 rounded-box shadow-sm relative z-10"
+                    style="transition-delay: 700ms"
+                  >
+                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
+                      <span
+                        class="text-xs font-bold uppercase tracking-wider text-success text-opacity-70 mb-1"
+                        >Volume / Micro</span
+                      >
+                      <span class="text-sm text-base-content/70">Mass Classification</span>
+                    </div>
+                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
+                      <h3 class="text-xl font-bold text-base-content">Haiku / Flash Low</h3>
+                    </div>
+                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
+                      <div
+                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Engineer</span
+                        >
+                        <p class="text-sm font-mono text-base-content/90">
+                          Log parsing, tagging & basic extraction
+                        </p>
+                      </div>
+                      <div
+                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Leader</span
+                        >
+                        <p class="text-sm text-base-content/90">
+                          Large scale semantic search & sentiment
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rung 6: Deepseek voice -->
+                  <div
+                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-base-300 p-6 rounded-box shadow-sm relative z-10"
+                    style="transition-delay: 850ms"
+                  >
+                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
+                      <span
+                        class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-1"
+                        >Lowest Stakes</span
+                      >
+                      <span class="text-sm text-base-content/70">Commodity / Specialized</span>
+                    </div>
+                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
+                      <h3 class="text-xl font-bold text-base-content">Deepseek voice</h3>
+                    </div>
+                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
+                      <div
+                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Engineer</span
+                        >
+                        <p class="text-sm font-mono text-base-content/90">
+                          Local coding assist & specific narrow tasks
+                        </p>
+                      </div>
+                      <div
+                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
+                      >
+                        <span
+                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
+                          >Leader</span
+                        >
+                        <p class="text-sm text-base-content/90">
+                          Low-value, high-volume internal tooling
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <!-- ========== SECTION 7 — Tools & Tips ========== -->
             <section
@@ -1175,7 +1940,194 @@
               data-section-title="Tools & Tips"
               data-beat="S7.1"
               data-assertion="Two kinds of levers cut waste: ones you automate, and ones your team practices."
-            ></section>
+            >
+              <div class="beat-inner flex flex-col gap-8 w-full max-w-5xl mx-auto">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-primary tracking-tight">
+                  Two Levers for Context: Automate vs. Practice
+                </h2>
+
+                <p class="text-xl md:text-2xl text-base-content/80 max-w-3xl">
+                  You can't ignore the context economy. Reclaim headroom by automating the heavy
+                  lifting, and establish team practices for leaner, more effective prompts.
+                </p>
+
+                <div
+                  data-viz="s7-1"
+                  class="relative w-full rounded-2xl bg-base-200 border border-base-300 p-6 md:p-10"
+                >
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <!-- Bucket 1: Automated -->
+                    <div
+                      class="s7-bucket opacity-0 translate-y-8 transition-all duration-700 ease-out flex flex-col gap-6"
+                      style="transition-delay: 100ms"
+                    >
+                      <div class="flex items-center gap-4 border-b border-base-300 pb-4">
+                        <div
+                          class="w-12 h-12 rounded-xl bg-primary text-primary-content flex items-center justify-center shadow-sm"
+                        >
+                          <svg
+                            class="w-7 h-7"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                            ></path>
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <h3 class="text-3xl font-semibold text-base-content tracking-tight">
+                          Automated
+                        </h3>
+                      </div>
+
+                      <ul class="flex flex-col gap-4">
+                        <li
+                          class="s7-item opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                          style="transition-delay: 300ms"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-success"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content">Headroom</span>
+                            <span
+                              class="badge badge-success badge-sm shrink-0 uppercase text-xs font-bold tracking-wider"
+                              >High ROI</span
+                            >
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Automatic context summarization before limits are hit.
+                          </p>
+                        </li>
+
+                        <li
+                          class="s7-item opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                          style="transition-delay: 450ms"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-success"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content"
+                              >Retrieval-Augmented Tooling (RTK)</span
+                            >
+                            <span
+                              class="badge badge-success badge-sm shrink-0 uppercase text-xs font-bold tracking-wider"
+                              >High ROI</span
+                            >
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Search and fetch only the necessary code chunks.
+                          </p>
+                        </li>
+
+                        <li
+                          class="s7-item opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-error/40 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                          style="transition-delay: 600ms"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-error"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content/50 line-through"
+                              >Caveman Methods</span
+                            >
+                            <span
+                              class="badge badge-error badge-sm shrink-0 uppercase text-xs font-bold tracking-wider"
+                              >Net-Negative</span
+                            >
+                          </div>
+                          <p class="text-base text-error font-medium">
+                            Blindly dumping entire repositories into context destroys output
+                            quality.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <!-- Bucket 2: Team Practices -->
+                    <div
+                      class="s7-bucket opacity-0 translate-y-8 transition-all duration-700 ease-out flex flex-col gap-6"
+                      style="transition-delay: 250ms"
+                    >
+                      <div class="flex items-center gap-4 border-b border-base-300 pb-4">
+                        <div
+                          class="w-12 h-12 rounded-xl bg-secondary text-secondary-content flex items-center justify-center shadow-sm"
+                        >
+                          <svg
+                            class="w-7 h-7"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            ></path>
+                          </svg>
+                        </div>
+                        <h3 class="text-3xl font-semibold text-base-content tracking-tight">
+                          Team Practices
+                        </h3>
+                      </div>
+
+                      <ul class="flex flex-col gap-4">
+                        <li
+                          class="s7-item opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                          style="transition-delay: 750ms"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content"
+                              >Edit, Don't Restart</span
+                            >
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Modify previous prompts instead of accumulating context linearly with
+                            "no, do this instead".
+                          </p>
+                        </li>
+
+                        <li
+                          class="s7-item opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                          style="transition-delay: 900ms"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content">Session Hygiene</span>
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Start fresh sessions for new tasks; avoid reusing bloated mega-threads.
+                          </p>
+                        </li>
+
+                        <li
+                          class="s7-item opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                          style="transition-delay: 1050ms"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content"
+                              >Match Billing to Value</span
+                            >
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Use smaller models for routine tasks to save your heavy-reasoning
+                            budget.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <!-- ========== SECTION 8 — Closer ========== -->
             <section
@@ -1185,7 +2137,59 @@
               data-section-title="Closer"
               data-beat="S8.1"
               data-assertion="If you do one thing: run /context once, and actually read it."
-            ></section>
+            >
+              <div
+                class="beat-inner flex flex-col gap-6 w-full max-w-4xl mx-auto my-auto p-6 lg:p-12 min-h-screen justify-center transition-all duration-700 opacity-0 translate-y-4"
+                data-beat="s8-1"
+              >
+                <div class="prose max-w-none">
+                  <h3 class="text-sm font-bold tracking-widest uppercase text-base-content/50 mb-2">
+                    Section 8.1
+                  </h3>
+                  <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4 leading-tight">
+                    Start building the context.
+                  </h2>
+                  <p class="text-lg text-base-content/80 mb-8 max-w-2xl">
+                    The token economy rewards context above all else. A team operating with shared
+                    rules, clear definitions, and structured memory scales effortlessly.
+                  </p>
+                </div>
+
+                <div
+                  class="bg-base-200 border border-base-300 rounded-xl p-8 md:p-12 flex flex-col items-center gap-10 shadow-sm"
+                >
+                  <!-- The echoed context meter -->
+                  <div class="w-full max-w-lg flex flex-col gap-2">
+                    <div class="flex justify-between items-end mb-1 font-mono text-sm">
+                      <span class="text-base-content/70">/context capacity</span>
+                      <span class="font-bold text-primary" id="s81-meter-text">0%</span>
+                    </div>
+                    <progress
+                      id="s81-meter-progress"
+                      class="progress progress-primary w-full h-4"
+                      value="0"
+                      max="100"
+                    ></progress>
+                    <div
+                      class="flex justify-between text-xs text-base-content/50 mt-1 uppercase tracking-widest"
+                    >
+                      <span>Fragmented</span>
+                      <span>Cohesive</span>
+                    </div>
+                  </div>
+
+                  <div class="divider text-base-content/30 max-w-md w-full mx-auto">then</div>
+
+                  <a
+                    href="#"
+                    class="btn btn-primary btn-lg px-12 shadow-lg hover:scale-105 transition-transform"
+                    id="s81-cta"
+                  >
+                    Book the Workshop
+                  </a>
+                </div>
+              </div>
+            </section>
 
             <section
               id="s8-2"
@@ -1194,7 +2198,101 @@
               data-section-title="Closer"
               data-beat="S8.2"
               data-assertion="The winner isn't who spends the most on AI, or who refuses it — it's whoever's teaching their people to use it economically."
-            ></section>
+            >
+              <div
+                class="beat-inner flex flex-col gap-6 w-full max-w-5xl mx-auto my-auto p-6 lg:p-12 min-h-screen justify-center transition-all duration-700 opacity-0 translate-y-4"
+                data-beat="s8-2"
+              >
+                <div class="prose max-w-none mb-4">
+                  <h3 class="text-sm font-bold tracking-widest uppercase text-base-content/50 mb-2">
+                    Section 8.2
+                  </h3>
+                  <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4 leading-tight">
+                    Lead your people to lead the AI.
+                  </h2>
+                  <p class="text-lg text-base-content/80 max-w-2xl">
+                    The freelancer you hired isn't going away. They bill by the word and they get
+                    dumber under load. But the gap between their baseline output and a curated
+                    result is where your leverage lies.
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch mt-4">
+                  <!-- Freelancer Callback -->
+                  <div
+                    class="card bg-base-200 border border-base-300 shadow-sm relative overflow-hidden group"
+                  >
+                    <div
+                      class="absolute top-0 left-0 w-1 h-full bg-error transition-all duration-1000 origin-top"
+                      id="s82-flaw-bar"
+                      style="transform: scaleY(0)"
+                    ></div>
+                    <div class="card-body">
+                      <h3
+                        class="card-title text-base-content/60 flex gap-2 items-center text-sm mb-4"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
+                        The Unmanaged AI
+                      </h3>
+                      <ul class="space-y-4 font-mono text-sm">
+                        <li
+                          class="flex items-center gap-3 opacity-0 translate-x-[-10px] transition-all duration-500 delay-300 s82-flaw"
+                        >
+                          <span class="badge badge-error badge-sm"></span> Bills by the word
+                        </li>
+                        <li
+                          class="flex items-center gap-3 opacity-0 translate-x-[-10px] transition-all duration-500 delay-700 s82-flaw"
+                        >
+                          <span class="badge badge-error badge-sm"></span> Never asks questions
+                        </li>
+                        <li
+                          class="flex items-center gap-3 opacity-0 translate-x-[-10px] transition-all duration-500 delay-1100 s82-flaw"
+                        >
+                          <span class="badge badge-error badge-sm"></span> Dumber under load
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- Outcome per Euro -->
+                  <div
+                    class="card bg-primary text-primary-content shadow-lg transform transition-all duration-1000 scale-95 opacity-0 delay-1000"
+                    id="s82-outcome-card"
+                  >
+                    <div class="card-body flex flex-col justify-center">
+                      <h3
+                        class="font-medium text-primary-content/80 uppercase tracking-widest text-xs mb-2"
+                      >
+                        The Upskilling Gap
+                      </h3>
+                      <div class="flex items-baseline gap-2 mb-2">
+                        <span class="text-6xl font-black tabular-nums"
+                          >10<span class="text-4xl text-primary-content/60">×</span></span
+                        >
+                      </div>
+                      <p class="text-lg font-medium">Outcome per Euro</p>
+                      <p class="text-primary-content/70 text-sm mt-4">
+                        Your cost is fixed. The quality multiplier depends entirely on the system
+                        you build around it.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
 
             <!-- Footer -->
             <footer

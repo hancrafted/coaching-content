@@ -579,3 +579,465 @@ if (beatById[hashId]) {
 
 setupObserver();
 startHeroMeter();
+
+/* --- Injected by Map-Reduce --- */
+
+// SECTION JS
+// Register S3.1
+registerActivate("s3-1", (isReducedMotion) => {
+  const container = document.getElementById("s3-1");
+  if (!container) return;
+
+  // isReducedMotion passed as arg
+  const textEl = container.querySelector(".s3-1-text");
+  const tokensEl = container.querySelector(".s3-1-tokens");
+  const chips = container.querySelectorAll(".token-chip");
+  const dimensionsEl = container.querySelector(".s3-1-dimensions");
+
+  if (isReducedMotion) {
+    if (textEl) textEl.style.opacity = "0";
+    if (tokensEl) tokensEl.style.opacity = "1";
+    chips.forEach((chip) => {
+      chip.style.opacity = "1";
+      chip.style.transform = "translateY(0)";
+    });
+    if (dimensionsEl) dimensionsEl.style.opacity = "1";
+    return;
+  }
+
+  // Reveal logic
+  if (textEl && tokensEl) {
+    textEl.style.opacity = "0";
+    tokensEl.style.opacity = "1";
+
+    // Stagger chips
+    chips.forEach((chip, i) => {
+      setTimeout(
+        () => {
+          chip.style.opacity = "1";
+          chip.style.transform = "translateY(0)";
+        },
+        300 + i * 100,
+      );
+    });
+
+    if (dimensionsEl) {
+      setTimeout(
+        () => {
+          dimensionsEl.style.opacity = "1";
+        },
+        300 + chips.length * 100 + 200,
+      );
+    }
+  }
+});
+
+// Register S3.2
+registerActivate("s3-2", (isReducedMotion) => {
+  const container = document.getElementById("s3-2");
+  if (!container) return;
+
+  // isReducedMotion passed as arg
+
+  const meterFill = container.querySelector(".context-meter-fill");
+  const counterEl = container.querySelector(".s3-2-counter");
+  const lines = container.querySelectorAll(".s3-2-line");
+
+  const targetTokens = 55000;
+  const maxTokens = 200000;
+  const targetPercent = (targetTokens / maxTokens) * 100;
+
+  if (isReducedMotion) {
+    if (meterFill) meterFill.style.width = `${targetPercent}%`;
+    if (counterEl) counterEl.textContent = targetTokens.toLocaleString();
+    lines.forEach((line) => {
+      line.classList.remove("hidden");
+      line.style.opacity = "1";
+    });
+    return;
+  }
+
+  // Typewriter lines
+  let delay = 200;
+  lines.forEach((line, i) => {
+    setTimeout(() => {
+      line.classList.remove("hidden");
+      // trigger reflow
+      void line.offsetWidth;
+      line.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 200,
+        fill: "forwards",
+      });
+
+      // When the last line shows, animate meter
+      if (i === lines.length - 1) {
+        animateMeter();
+      }
+    }, delay);
+    delay += 500; // 500ms per line
+  });
+
+  function animateMeter() {
+    if (meterFill) {
+      meterFill.style.width = `${targetPercent}%`;
+    }
+
+    // Simple counter animation
+    let startTimestamp = null;
+    const duration = 1000; // 1s
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      // easeOutQuart
+      const easeProgress = 1 - Math.pow(1 - progress, 4);
+      const currentVal = Math.floor(easeProgress * targetTokens);
+
+      if (counterEl) {
+        counterEl.textContent = currentVal.toLocaleString();
+      }
+
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        if (counterEl) counterEl.textContent = targetTokens.toLocaleString();
+      }
+    };
+    window.requestAnimationFrame(step);
+  }
+});
+
+// Register S3.3
+registerActivate("s3-3", (isReducedMotion) => {
+  const container = document.getElementById("s3-3");
+  if (!container) return;
+
+  // isReducedMotion passed as arg
+
+  const cliLines = container.querySelector(".s3-3-cli-lines");
+  const webUi = container.querySelector(".s3-3-web-ui");
+
+  if (isReducedMotion) {
+    if (cliLines) cliLines.style.opacity = "1";
+    if (webUi) webUi.style.opacity = "1";
+    return;
+  }
+
+  // Reveal side by side
+  setTimeout(() => {
+    if (cliLines) cliLines.style.opacity = "1";
+  }, 400);
+
+  setTimeout(() => {
+    if (webUi) webUi.style.opacity = "1";
+  }, 1000);
+});
+
+// SECTION JS
+// BEAT S4.1
+registerActivate("s4-1", (isReducedMotion) => {
+  const container = document.getElementById("s4-1");
+  if (!container) return;
+
+  const slowMeter = container.querySelector(".context-meter-slow");
+  const fastMeter = container.querySelector(".context-meter-fast");
+  const chatMsgs = container.querySelectorAll(".chat-msg");
+  const agentMsgs = container.querySelectorAll(".agent-msg");
+  const agentLog = container.querySelector(".agent-log");
+
+  if (isReducedMotion) {
+    if (slowMeter) slowMeter.value = 20;
+    if (fastMeter) fastMeter.value = 95;
+    [...chatMsgs, ...agentMsgs].forEach((b) => {
+      b.classList.remove("opacity-0", "translate-y-4");
+      b.classList.add("opacity-100", "translate-y-0");
+    });
+    if (agentLog) agentLog.classList.remove("opacity-0");
+    return;
+  }
+
+  // Animate plain chat
+  chatMsgs.forEach((msg, i) => {
+    setTimeout(
+      () => {
+        msg.classList.remove("opacity-0", "translate-y-4");
+        msg.classList.add("opacity-100", "translate-y-0");
+        if (slowMeter) slowMeter.value = 10 + (i + 1) * 3;
+      },
+      200 + i * 400,
+    );
+  });
+
+  // Animate agentic chat
+  setTimeout(() => {
+    agentMsgs.forEach((msg) => {
+      msg.classList.remove("opacity-0", "translate-y-4");
+      msg.classList.add("opacity-100", "translate-y-0");
+    });
+  }, 200);
+
+  setTimeout(() => {
+    if (agentLog) agentLog.classList.remove("opacity-0");
+    if (fastMeter) fastMeter.value = 95;
+  }, 800);
+});
+
+// BEAT S4.2
+registerActivate("s4-2", (isReducedMotion) => {
+  const container = document.getElementById("s4-2");
+  if (!container) return;
+
+  const midMsgs = container.querySelectorAll(".mid-msg");
+  const badge = container.querySelector(".auto-compact-badge");
+
+  if (isReducedMotion) {
+    midMsgs.forEach((msg) => {
+      msg.classList.remove("opacity-100", "blur-0");
+      msg.classList.add("opacity-30", "blur-[2px]");
+    });
+    if (badge) {
+      badge.classList.remove("opacity-0", "scale-95");
+      badge.classList.add("opacity-100", "scale-100");
+    }
+    return;
+  }
+
+  // Trigger transitions
+  setTimeout(() => {
+    midMsgs.forEach((msg) => {
+      msg.classList.remove("opacity-100", "blur-0");
+      msg.classList.add("opacity-30", "blur-[2px]");
+    });
+    if (badge) {
+      badge.classList.remove("opacity-0", "scale-95");
+      badge.classList.add("opacity-100", "scale-100");
+    }
+  }, 400);
+});
+
+// BEAT S4.3
+registerActivate("s4-3", (isReducedMotion) => {
+  const container = document.getElementById("s4-3");
+  if (!container) return;
+
+  const gauge = container.querySelector(".context-gauge-fill");
+  const levers = container.querySelectorAll(".lever-1, .lever-2");
+
+  if (isReducedMotion) {
+    if (gauge) gauge.style.width = "85%";
+    levers.forEach((l) => {
+      l.classList.remove("opacity-0", "translate-y-4");
+      l.classList.add("opacity-100", "translate-y-0");
+    });
+    return;
+  }
+
+  // Start animation across threshold
+  setTimeout(() => {
+    if (gauge) gauge.style.width = "85%";
+  }, 300);
+
+  setTimeout(() => {
+    levers.forEach((l, i) => {
+      setTimeout(() => {
+        l.classList.remove("opacity-0", "translate-y-4");
+        l.classList.add("opacity-100", "translate-y-0");
+      }, i * 200);
+    });
+  }, 1000);
+});
+
+// SECTION JS
+// BEAT S5.1
+registerActivate("s5-1", (reduced) => {
+  const odo = document.getElementById("s5-odometer");
+  const panel = document.getElementById("s5-meter");
+  const steps = Array.from(document.querySelectorAll("#s5-1 [data-step]"));
+  if (!odo) return;
+
+  const stops = [4000, 11000, 17000, 55000];
+  const brighten = (el) => el && el.classList.remove("opacity-30", "scale-[0.98]");
+
+  if (reduced) {
+    odo.textContent = nf(55000);
+    steps.forEach(brighten);
+    return;
+  }
+
+  let from = 0;
+  const run = (i) => {
+    if (i >= stops.length) return;
+    const isPunch = i === stops.length - 1;
+    brighten(steps[i]);
+    countUp(odo, stops[i], {
+      from,
+      duration: isPunch ? 1500 : 650,
+      onDone: () => {
+        from = stops[i];
+        if (isPunch && panel) {
+          panel.classList.add("scale-105", "shadow-primary/20");
+          window.setTimeout(() => panel.classList.remove("scale-105", "shadow-primary/20"), 260);
+        }
+        if (!isPunch) window.setTimeout(() => run(i + 1), 520);
+      },
+    });
+  };
+  run(0);
+});
+
+// SECTION JS
+
+registerActivate("s6-1", (isReducedMotion) => {
+  const container = document.getElementById("s6-1");
+  if (!container) return;
+
+  const rungs = container.querySelectorAll(".ladder-rung");
+
+  if (isReducedMotion) {
+    rungs.forEach((rung) => {
+      rung.classList.remove("opacity-0", "translate-y-4");
+      rung.classList.add("opacity-100", "translate-y-0");
+      rung.style.transitionDelay = "0ms";
+      rung.style.transitionDuration = "0ms";
+    });
+  } else {
+    // Small timeout to ensure DOM is ready and transitions trigger on first render
+    setTimeout(() => {
+      rungs.forEach((rung) => {
+        rung.classList.remove("opacity-0", "translate-y-4");
+        rung.classList.add("opacity-100", "translate-y-0");
+      });
+    }, 50);
+  }
+});
+
+// SECTION JS
+registerActivate("s7-1", (isReducedMotion) => {
+  const isActive = true;
+
+  const viz = document.querySelector('[data-viz="s7-1"]');
+  if (!viz) return;
+
+  const buckets = viz.querySelectorAll(".s7-bucket");
+  const items = viz.querySelectorAll(".s7-item");
+
+  if (isActive) {
+    if (isReducedMotion) {
+      buckets.forEach((el) => {
+        el.style.transition = "none";
+        el.style.transitionDelay = "0ms";
+        el.classList.remove("opacity-0", "translate-y-8");
+      });
+      items.forEach((el) => {
+        el.style.transition = "none";
+        el.style.transitionDelay = "0ms";
+        el.classList.remove("opacity-0", "translate-x-4");
+      });
+    } else {
+      // Restore inline styles for stagger
+      buckets.forEach((el) => (el.style.transition = ""));
+      items.forEach((el) => (el.style.transition = ""));
+
+      // Allow browser to apply styles before removing classes
+      requestAnimationFrame(() => {
+        buckets.forEach((el) => el.classList.remove("opacity-0", "translate-y-8"));
+        items.forEach((el) => el.classList.remove("opacity-0", "translate-x-4"));
+      });
+    }
+  } else {
+    if (!isReducedMotion) {
+      buckets.forEach((el) => el.classList.add("opacity-0", "translate-y-8"));
+      items.forEach((el) => el.classList.add("opacity-0", "translate-x-4"));
+    }
+  }
+});
+
+// SECTION JS
+// Section 8.1
+registerActivate("s8-1", (isReducedMotion) => {
+  const el = document.getElementById("s8-1");
+  if (!el) return;
+
+  // isReducedMotion passed as arg
+  el.classList.remove("opacity-0", "translate-y-4");
+
+  const meter = el.querySelector("#s81-meter-progress");
+  const text = el.querySelector("#s81-meter-text");
+
+  if (isReducedMotion) {
+    if (meter) meter.value = 100;
+    if (text) text.textContent = "100%";
+    return;
+  }
+
+  if (meter && text) {
+    // Animate meter fill over 1.5s
+    let start = null;
+    const duration = 1500;
+
+    const animateMeter = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+
+      // Easing out cubic
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const value = Math.floor(easeProgress * 100);
+
+      meter.value = value;
+      text.textContent = `${value}%`;
+
+      if (progress < 1) {
+        requestAnimationFrame(animateMeter);
+      }
+    };
+
+    // Reset state just in case it was triggered multiple times
+    meter.value = 0;
+    text.textContent = "0%";
+
+    setTimeout(() => {
+      requestAnimationFrame(animateMeter);
+    }, 500); // slight delay after section reveal
+  }
+});
+
+// Section 8.2
+registerActivate("s8-2", (isReducedMotion) => {
+  const el = document.getElementById("s8-2");
+  if (!el) return;
+
+  // isReducedMotion passed as arg
+  el.classList.remove("opacity-0", "translate-y-4");
+
+  const flawBar = el.querySelector("#s82-flaw-bar");
+  const flaws = el.querySelectorAll(".s82-flaw");
+  const outcomeCard = el.querySelector("#s82-outcome-card");
+
+  if (isReducedMotion) {
+    if (flawBar) flawBar.style.transform = "scaleY(1)";
+    flaws.forEach((f) => f.classList.remove("opacity-0", "translate-x-[-10px]"));
+    if (outcomeCard) outcomeCard.classList.remove("opacity-0", "scale-95");
+    return;
+  }
+
+  // Unmanaged AI callback animations
+  if (flawBar) {
+    setTimeout(() => {
+      flawBar.style.transform = "scaleY(1)";
+    }, 200);
+  }
+
+  flaws.forEach((flaw) => {
+    // Relying on CSS transitions configured in the HTML elements
+    // Classes: transition-all duration-500 delay-[300|700|1100]
+    flaw.classList.remove("opacity-0", "translate-x-[-10px]");
+  });
+
+  if (outcomeCard) {
+    // Using setTimeout here since the delay-1000 class might not be enough if we just change classes
+    // Actually, changing class adds the style, CSS delay applies to the transition.
+    // Let's remove opacity-0 to trigger the transition.
+    outcomeCard.classList.remove("opacity-0", "scale-95");
+    outcomeCard.classList.add("opacity-100", "scale-100");
+  }
+});
