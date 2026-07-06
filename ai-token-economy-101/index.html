@@ -2013,7 +2013,7 @@
               data-section="6"
               data-section-title="Model Tiers"
               data-beat="S6.1"
-              data-assertion="Don't pay premium prices for a task that doesn't need judgment."
+              data-assertion="One workflow, many models — route each task to the cheapest model that can do it well."
             >
               <div class="beat-inner flex flex-col gap-8 w-full max-w-6xl mx-auto px-4 py-12">
                 <p
@@ -2021,264 +2021,236 @@
                 >
                   S6.1 · Model Tiers
                 </p>
-                <div class="beat-header text-center lg:text-left mb-12">
+                <div class="beat-header text-center lg:text-left mb-8">
                   <h2 class="text-4xl md:text-5xl font-bold text-primary tracking-tight mb-4">
-                    Tiered Model Stack: Matching Capability to Risk
+                    My Real Model Stack: One Workflow, Many Models
                   </h2>
                   <p class="text-lg md:text-xl text-base-content/80 max-w-3xl">
-                    Engineers route tasks based on speed and cost. Leaders must route based on
-                    stakes and strategic value. Both perspectives map to the exact same tiered
-                    stack.
+                    This is how I actually route a single project — left to right, from first idea
+                    to shipped code. Each phase pulls a different mix: flat-rate web chat for cheap
+                    thinking, frontier reasoning where the specs decide everything, then a lean CLI
+                    stack for execution. The model shifts as the stakes do.
                   </p>
                 </div>
 
-                <div class="model-stack-ladder relative flex flex-col gap-4" data-viz="s6-1">
-                  <!-- Gradient line behind rungs (desktop only) -->
-                  <div
-                    class="hidden lg:block absolute left-[12.5%] top-4 bottom-4 w-1 bg-gradient-to-b from-error via-info to-success rounded-full opacity-30"
-                  ></div>
+                <!-- Capability-tier legend: model badge color = capability tier -->
+                <div
+                  class="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8 text-sm text-base-content/80"
+                >
+                  <span class="font-mono text-xs uppercase tracking-wider text-base-content/50">
+                    Capability tier
+                  </span>
+                  <span class="flex items-center gap-2">
+                    <span class="badge badge-warning badge-sm"></span>Frontier — Opus (heavy
+                    reasoning, sparingly)
+                  </span>
+                  <span class="flex items-center gap-2">
+                    <span class="badge badge-info badge-sm"></span>Workhorse — Sonnet · Gemini Pro
+                  </span>
+                  <span class="flex items-center gap-2">
+                    <span class="badge badge-success badge-sm"></span>Economy — Haiku · Flash
+                    (cheap, use freely)
+                  </span>
+                </div>
 
-                  <!-- Rung 1: Gemini Flat-rate -->
+                <div
+                  class="model-flow flex flex-col lg:flex-row items-stretch gap-4"
+                  data-viz="s6-1"
+                >
+                  <!-- Phase 1 — Ideation & Refinement -->
                   <div
-                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-error p-6 rounded-box shadow-sm relative z-10"
-                    style="transition-delay: 100ms"
+                    class="phase-col opacity-0 translate-y-4 transition-all duration-700 ease-out card bg-base-200 shadow-sm border-t-4 border-primary/50 flex-1"
                   >
-                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
-                      <span class="text-xs font-bold uppercase tracking-wider text-error mb-1"
-                        >Highest Stakes</span
-                      >
-                      <span class="text-sm text-base-content/70">Enterprise / Unlimited</span>
-                    </div>
-                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
-                      <h3 class="text-xl font-bold text-base-content">Gemini Flat-rate</h3>
-                    </div>
-                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
-                      <div
-                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Engineer</span
+                    <div class="card-body gap-4 p-6">
+                      <div class="phase-header">
+                        <div class="flex items-center gap-3 mb-1">
+                          <span class="badge badge-primary badge-lg font-mono font-bold">1</span>
+                          <h3 class="font-display text-xl font-bold text-base-content">
+                            Ideation & Refinement
+                          </h3>
+                        </div>
+                        <p
+                          class="pl-11 font-mono text-xs uppercase tracking-wider text-base-content/50"
                         >
-                        <p class="text-sm font-mono text-base-content/90">
-                          Massive batch processing & CI/CD integration
+                          Web chat · flat-rate
                         </p>
                       </div>
-                      <div
-                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Leader</span
-                        >
-                        <p class="text-sm text-base-content/90">
-                          Fixed OPEX for organization-wide AI enablement
-                        </p>
-                      </div>
+                      <ul class="flex flex-col gap-3">
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <span class="font-semibold text-base-content">Simple research</span>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-success">Gemini Flash 3.5</span>
+                          </div>
+                        </li>
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <span class="font-semibold text-base-content">Q&amp;A</span>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-success">Gemini Flash 3.5</span>
+                          </div>
+                        </li>
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <span class="font-semibold text-base-content">Initial grill</span>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-info">Gemini Pro 3.1</span>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
 
-                  <!-- Rung 2: Opus -->
+                  <!-- Flow arrow 1→2 -->
                   <div
-                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-warning p-6 rounded-box shadow-sm relative z-10"
-                    style="transition-delay: 250ms"
+                    class="phase-arrow opacity-0 transition-opacity duration-500 flex shrink-0 items-center justify-center self-center text-base-content/30"
                   >
-                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
-                      <span class="text-xs font-bold uppercase tracking-wider text-warning mb-1"
-                        >High Stakes</span
-                      >
-                      <span class="text-sm text-base-content/70">Complex Logic / Synthesis</span>
-                    </div>
-                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
-                      <h3 class="text-xl font-bold text-base-content">Opus</h3>
-                    </div>
-                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
-                      <div
-                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Engineer</span
+                    <svg
+                      class="h-8 w-8 rotate-90 lg:rotate-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5 12h14M13 6l6 6-6 6"
+                      />
+                    </svg>
+                  </div>
+
+                  <!-- Phase 2 — Specs & Planning -->
+                  <div
+                    class="phase-col opacity-0 translate-y-4 transition-all duration-700 ease-out card bg-base-200 shadow-sm border-t-4 border-primary/50 flex-1"
+                  >
+                    <div class="card-body gap-4 p-6">
+                      <div class="phase-header">
+                        <div class="flex items-center gap-3 mb-1">
+                          <span class="badge badge-primary badge-lg font-mono font-bold">2</span>
+                          <h3 class="font-display text-xl font-bold text-base-content">
+                            Specs & Planning
+                          </h3>
+                        </div>
+                        <p
+                          class="pl-11 font-mono text-xs uppercase tracking-wider text-base-content/50"
                         >
-                        <p class="text-sm font-mono text-base-content/90">
-                          System architecture & cross-file refactoring
+                          Claude Code CLI · Desktop
                         </p>
                       </div>
-                      <div
-                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Leader</span
-                        >
-                        <p class="text-sm text-base-content/90">
-                          High-risk decision synthesis & strategy drafting
-                        </p>
-                      </div>
+                      <ul class="flex flex-col gap-3">
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <div class="flex items-center justify-between gap-2">
+                            <span class="font-semibold text-base-content">Write PRD + grill</span>
+                            <span class="badge badge-ghost badge-sm shrink-0">CLI</span>
+                          </div>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-warning">Opus 4.8</span>
+                          </div>
+                        </li>
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <div class="flex items-center justify-between gap-2">
+                            <span class="font-semibold text-base-content">Deep research</span>
+                            <span class="badge badge-ghost badge-sm shrink-0">CLI</span>
+                          </div>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-info">Sonnet 5</span>
+                            <span class="text-base-content/40">&rarr;</span>
+                            <span class="badge badge-warning">Opus 4.8</span>
+                            <span class="ml-1 text-xs text-base-content/50"
+                              >search &rarr; reasoning</span
+                            >
+                          </div>
+                        </li>
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <div class="flex items-center justify-between gap-2">
+                            <span class="font-semibold text-base-content"
+                              >Format specs · type-check</span
+                            >
+                            <span class="badge badge-ghost badge-sm shrink-0">Desktop</span>
+                          </div>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-info">Sonnet 5</span>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
 
-                  <!-- Rung 3: Sonnet / Gemini Pro -->
+                  <!-- Flow arrow 2→3 -->
                   <div
-                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-info p-6 rounded-box shadow-sm relative z-10"
-                    style="transition-delay: 400ms"
+                    class="phase-arrow opacity-0 transition-opacity duration-500 flex shrink-0 items-center justify-center self-center text-base-content/30"
                   >
-                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
-                      <span class="text-xs font-bold uppercase tracking-wider text-info mb-1"
-                        >Core Workhorse</span
-                      >
-                      <span class="text-sm text-base-content/70">Daily Productivity</span>
-                    </div>
-                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
-                      <h3 class="text-xl font-bold text-base-content">Sonnet / Gemini Pro</h3>
-                    </div>
-                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
-                      <div
-                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Engineer</span
-                        >
-                        <p class="text-sm font-mono text-base-content/90">
-                          Feature development & code generation
-                        </p>
-                      </div>
-                      <div
-                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Leader</span
-                        >
-                        <p class="text-sm text-base-content/90">
-                          Document drafting & data analysis
-                        </p>
-                      </div>
-                    </div>
+                    <svg
+                      class="h-8 w-8 rotate-90 lg:rotate-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      aria-hidden="true"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M5 12h14M13 6l6 6-6 6"
+                      />
+                    </svg>
                   </div>
 
-                  <!-- Rung 4: Flash High -->
+                  <!-- Phase 3 — Execution -->
                   <div
-                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-success p-6 rounded-box shadow-sm relative z-10"
-                    style="transition-delay: 550ms"
+                    class="phase-col opacity-0 translate-y-4 transition-all duration-700 ease-out card bg-base-200 shadow-sm border-t-4 border-primary/50 flex-1"
                   >
-                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
-                      <span class="text-xs font-bold uppercase tracking-wider text-success mb-1"
-                        >Low Latency</span
-                      >
-                      <span class="text-sm text-base-content/70">Real-time / Agents</span>
-                    </div>
-                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
-                      <h3 class="text-xl font-bold text-base-content">Flash High</h3>
-                    </div>
-                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
-                      <div
-                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Engineer</span
+                    <div class="card-body gap-4 p-6">
+                      <div class="phase-header">
+                        <div class="flex items-center gap-3 mb-1">
+                          <span class="badge badge-primary badge-lg font-mono font-bold">3</span>
+                          <h3 class="font-display text-xl font-bold text-base-content">
+                            Execution
+                          </h3>
+                        </div>
+                        <p
+                          class="pl-11 font-mono text-xs uppercase tracking-wider text-base-content/50"
                         >
-                        <p class="text-sm font-mono text-base-content/90">
-                          RAG pipelines & multi-agent orchestration
+                          All CLI
                         </p>
                       </div>
-                      <div
-                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Leader</span
-                        >
-                        <p class="text-sm text-base-content/90">
-                          Customer-facing chatbots & live support
-                        </p>
-                      </div>
+                      <ul class="flex flex-col gap-3">
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <span class="font-semibold text-base-content">Commits</span>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-success">Gemini Flash 3.5 Low</span>
+                          </div>
+                        </li>
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <span class="font-semibold text-base-content">Coding</span>
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-info">Sonnet 5</span>
+                            <span class="text-xs text-base-content/40">or</span>
+                            <span class="badge badge-info">Gemini Pro 3.1</span>
+                          </div>
+                        </li>
+                        <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
+                          <span class="font-semibold text-base-content"
+                            >Code / file exploration</span
+                          >
+                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
+                            <span class="badge badge-success">Haiku 4.5</span>
+                            <span class="text-xs text-base-content/40">or</span>
+                            <span class="badge badge-success">Gemini Flash 3.5</span>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
+                </div>
 
-                  <!-- Rung 5: Haiku / Flash Low -->
-                  <div
-                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-success border-opacity-50 p-6 rounded-box shadow-sm relative z-10"
-                    style="transition-delay: 700ms"
-                  >
-                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
-                      <span
-                        class="text-xs font-bold uppercase tracking-wider text-success text-opacity-70 mb-1"
-                        >Volume / Micro</span
-                      >
-                      <span class="text-sm text-base-content/70">Mass Classification</span>
-                    </div>
-                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
-                      <h3 class="text-xl font-bold text-base-content">Haiku / Flash Low</h3>
-                    </div>
-                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
-                      <div
-                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Engineer</span
-                        >
-                        <p class="text-sm font-mono text-base-content/90">
-                          Log parsing, tagging & basic extraction
-                        </p>
-                      </div>
-                      <div
-                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Leader</span
-                        >
-                        <p class="text-sm text-base-content/90">
-                          Large scale semantic search & sentiment
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Rung 6: Deepseek voice -->
-                  <div
-                    class="ladder-rung opacity-0 translate-y-4 transition-all duration-700 ease-out flex flex-col lg:flex-row gap-4 lg:gap-8 bg-base-200 lg:border-l-4 border-l-4 lg:border-l-0 border-base-300 p-6 rounded-box shadow-sm relative z-10"
-                    style="transition-delay: 850ms"
-                  >
-                    <div class="rung-stakes lg:w-1/4 flex flex-col justify-center">
-                      <span
-                        class="text-xs font-bold uppercase tracking-wider text-base-content/50 mb-1"
-                        >Lowest Stakes</span
-                      >
-                      <span class="text-sm text-base-content/70">Commodity / Specialized</span>
-                    </div>
-                    <div class="rung-tier lg:w-1/4 flex flex-col justify-center">
-                      <h3 class="text-xl font-bold text-base-content">Deepseek voice</h3>
-                    </div>
-                    <div class="rung-examples lg:w-2/4 flex flex-col lg:flex-row gap-4 w-full">
-                      <div
-                        class="engineer-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Engineer</span
-                        >
-                        <p class="text-sm font-mono text-base-content/90">
-                          Local coding assist & specific narrow tasks
-                        </p>
-                      </div>
-                      <div
-                        class="leader-example bg-base-100 p-4 rounded-lg flex-1 shadow-xs border border-base-300"
-                      >
-                        <span
-                          class="text-xs font-bold uppercase tracking-wide text-base-content/50 block mb-2"
-                          >Leader</span
-                        >
-                        <p class="text-sm text-base-content/90">
-                          Low-value, high-volume internal tooling
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                <!-- Decision-maker bridge: the routing principle -->
+                <div class="mt-8 rounded-box border-l-4 border-primary bg-base-200 p-6">
+                  <p class="text-base md:text-lg text-base-content/90">
+                    <span class="font-bold text-primary">The pattern:</span> flat-rate and economy
+                    models handle anything that doesn't need judgment; frontier reasoning is
+                    reserved for the few steps where the stakes justify it. Same discipline whether
+                    you're writing the code or signing the invoice.
+                  </p>
                 </div>
               </div>
             </section>

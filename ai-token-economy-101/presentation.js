@@ -292,11 +292,12 @@ document.addEventListener("click", (e) => {
 
   const toggle = e.target.closest("[data-section-toggle]");
   if (toggle) {
+    e.preventDefault();
     const num = toggle.getAttribute("data-section-toggle");
-    const section = sections.find((s) => String(s.num) === String(num));
-    if (section && section.beats[0]) {
-      scrollToBeat(section.beats[0].id);
-      closeDrawer();
+    const beatsEl = document.querySelector(`[data-section-beats="${num}"]`);
+    if (beatsEl) {
+      const isExpanded = !beatsEl.classList.contains("hidden");
+      setSectionExpanded(num, !isExpanded);
     }
   }
 });
@@ -915,24 +916,42 @@ registerActivate("s6-1", (isReducedMotion) => {
   const container = document.getElementById("s6-1");
   if (!container) return;
 
-  const rungs = container.querySelectorAll(".ladder-rung");
+  const cols = container.querySelectorAll(".phase-col");
+  const arrows = container.querySelectorAll(".phase-arrow");
+
+  const revealCol = (col) => {
+    col.classList.remove("opacity-0", "translate-y-4");
+    col.classList.add("opacity-100", "translate-y-0");
+  };
+  const revealArrow = (arrow) => {
+    arrow.classList.remove("opacity-0");
+    arrow.classList.add("opacity-100");
+  };
 
   if (isReducedMotion) {
-    rungs.forEach((rung) => {
-      rung.classList.remove("opacity-0", "translate-y-4");
-      rung.classList.add("opacity-100", "translate-y-0");
-      rung.style.transitionDelay = "0ms";
-      rung.style.transitionDuration = "0ms";
+    cols.forEach((col) => {
+      col.style.transitionDuration = "0ms";
+      revealCol(col);
     });
-  } else {
-    // Small timeout to ensure DOM is ready and transitions trigger on first render
-    setTimeout(() => {
-      rungs.forEach((rung) => {
-        rung.classList.remove("opacity-0", "translate-y-4");
-        rung.classList.add("opacity-100", "translate-y-0");
-      });
-    }, 50);
+    arrows.forEach((arrow) => {
+      arrow.style.transitionDuration = "0ms";
+      revealArrow(arrow);
+    });
+    return;
   }
+
+  // Reveal phases left -> right, arrows easing in between them, so the eye
+  // reads the workflow as a pipeline that flows across the columns.
+  setTimeout(() => {
+    cols.forEach((col, i) => {
+      col.style.transitionDelay = i * 220 + "ms";
+      revealCol(col);
+    });
+    arrows.forEach((arrow, i) => {
+      arrow.style.transitionDelay = i * 220 + 130 + "ms";
+      revealArrow(arrow);
+    });
+  }, 50);
 });
 
 // SECTION JS
