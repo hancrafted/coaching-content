@@ -1,4 +1,4 @@
-import './style.css';
+import "./style.css";
 
 // Global JS / shared logic
-console.log('Coaching Content Hub Initialized.');
+console.log("Coaching Content Hub Initialized.");
