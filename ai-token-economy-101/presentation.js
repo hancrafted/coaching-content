@@ -114,7 +114,7 @@ function renderSection(section) {
       <button
         type="button"
         data-section-toggle="${section.num}"
-        class="toc-section-header flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left transition-colors hover:bg-base-300/50"
+        class="toc-section-header cursor-pointer flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left transition-colors hover:bg-base-300/50"
       >
         <span class="flex min-w-0 items-center gap-2">
           <span class="font-mono text-xs text-base-content/40">${pad2(section.num)}</span>
@@ -688,13 +688,14 @@ registerActivate("s3-2", (isReducedMotion) => {
   const pctEl = container.querySelector(".s3-2-pct");
   const cats = container.querySelectorAll(".s3-2-cat");
 
-  // Exact block pattern from a real /context (10x10): F=used ⛁, P=partial ⛀,
-  // E=free ⛶, B=autocompact buffer ⛝.
+  // Exact block pattern from a real /context (10x10): each letter = a category.
+  // S=System prompt, T=System tools, M=MCP tools, A=small cats (agents/memory),
+  // K=Skills, G=Messages, E=free ⛶, B=autocompact buffer ⛝.
   const PATTERN = [
-    "FFFFFFFFFF",
-    "FFFFFFFFFF",
-    "FFFFFFFFPP",
-    "FPEEEEEEEE",
+    "SSSSSTTTTT",
+    "TTTTTTTTTT",
+    "TTTTTTMMKA",
+    "GGGGGGGGGG",
     "EEEEEEEEEE",
     "EEEEEEEEEE",
     "EEEEEEEEEE",
@@ -702,10 +703,23 @@ registerActivate("s3-2", (isReducedMotion) => {
     "EEEBBBBBBB",
     "BBBBBBBBBB",
   ].join("");
-  const GLYPH = { F: "⛁", P: "⛀", E: "⛶", B: "⛝" };
+  const GLYPH = {
+    S: "⛁",
+    T: "⛁",
+    M: "⛁",
+    A: "⛀",
+    K: "⛁",
+    G: "⛁",
+    E: "⛶",
+    B: "⛝",
+  };
   const CLS = {
-    F: "text-primary",
-    P: "text-primary/50",
+    S: "text-info",
+    T: "text-primary",
+    M: "text-accent",
+    A: "text-secondary/50",
+    K: "text-error",
+    G: "text-warning",
     E: "text-neutral-content/25",
     B: "text-warning/60",
   };
@@ -725,8 +739,8 @@ registerActivate("s3-2", (isReducedMotion) => {
     cells = [...gridEl.querySelectorAll("span")];
   }
 
-  const targetTokens = 59.7;
-  const targetPct = 30;
+  const targetTokens = 79.5;
+  const targetPct = 40;
   const fmtK = (v) => v.toFixed(1) + "k";
 
   if (isReducedMotion) {
