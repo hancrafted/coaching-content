@@ -632,219 +632,243 @@ registerActivate("s3-1", (isReducedMotion) => {
   }
 });
 
-// Register S3.2
+// Register S3.2 — faithful animated reproduction of Claude Code's /context (CLI)
 registerActivate("s3-2", (isReducedMotion) => {
   const container = document.getElementById("s3-2");
   if (!container) return;
 
-  // isReducedMotion passed as arg
+  const gridEl = container.querySelector(".s3-2-grid");
+  const tokensEl = container.querySelector(".s3-2-tokens");
+  const pctEl = container.querySelector(".s3-2-pct");
+  const cats = container.querySelectorAll(".s3-2-cat");
 
-  const meterFill = container.querySelector(".context-meter-fill");
-  const counterEl = container.querySelector(".s3-2-counter");
-  const lines = container.querySelectorAll(".s3-2-line");
+  // Exact block pattern from a real /context (10x10): F=used ⛁, P=partial ⛀,
+  // E=free ⛶, B=autocompact buffer ⛝.
+  const PATTERN = [
+    "FFFFFFFFFF",
+    "FFFFFFFFFF",
+    "FFFFFFFFPP",
+    "FPEEEEEEEE",
+    "EEEEEEEEEE",
+    "EEEEEEEEEE",
+    "EEEEEEEEEE",
+    "EEEEEEEEEE",
+    "EEEBBBBBBB",
+    "BBBBBBBBBB",
+  ].join("");
+  const GLYPH = { F: "⛁", P: "⛀", E: "⛶", B: "⛝" };
+  const CLS = {
+    F: "text-primary",
+    P: "text-primary/50",
+    E: "text-neutral-content/25",
+    B: "text-warning/60",
+  };
 
-  const targetTokens = 55000;
-  const maxTokens = 200000;
-  const targetPercent = (targetTokens / maxTokens) * 100;
+  // Build the grid once.
+  let cells = [];
+  if (gridEl && !gridEl.dataset.built) {
+    PATTERN.split("").forEach((ch) => {
+      const s = document.createElement("span");
+      s.textContent = GLYPH[ch];
+      s.className = CLS[ch] + " opacity-0 transition-opacity duration-200";
+      gridEl.appendChild(s);
+      cells.push(s);
+    });
+    gridEl.dataset.built = "1";
+  } else if (gridEl) {
+    cells = [...gridEl.querySelectorAll("span")];
+  }
+
+  const targetTokens = 59.7;
+  const targetPct = 30;
+  const fmtK = (v) => v.toFixed(1) + "k";
 
   if (isReducedMotion) {
-    if (meterFill) meterFill.style.width = `${targetPercent}%`;
-    if (counterEl) counterEl.textContent = targetTokens.toLocaleString();
-    lines.forEach((line) => {
-      line.classList.remove("hidden");
-      line.style.opacity = "1";
-    });
+    cells.forEach((c) => c.classList.remove("opacity-0"));
+    cats.forEach((c) => c.classList.remove("opacity-0"));
+    if (tokensEl) tokensEl.textContent = fmtK(targetTokens);
+    if (pctEl) pctEl.textContent = targetPct;
     return;
   }
 
-  // Typewriter lines
-  let delay = 200;
-  lines.forEach((line, i) => {
-    setTimeout(() => {
-      line.classList.remove("hidden");
-      // trigger reflow
-      void line.offsetWidth;
-      line.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration: 200,
-        fill: "forwards",
-      });
+  // Sweep the grid in, cell by cell.
+  cells.forEach((c, i) => setTimeout(() => c.classList.remove("opacity-0"), i * 12));
 
-      // When the last line shows, animate meter
-      if (i === lines.length - 1) {
-        animateMeter();
-      }
-    }, delay);
-    delay += 500; // 500ms per line
-  });
-
-  function animateMeter() {
-    if (meterFill) {
-      meterFill.style.width = `${targetPercent}%`;
+  // Count the header up while the grid fills.
+  const duration = Math.max(cells.length * 12, 900);
+  let start = null;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const p = Math.min((ts - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    if (tokensEl) tokensEl.textContent = fmtK(eased * targetTokens);
+    if (pctEl) pctEl.textContent = Math.round(eased * targetPct);
+    if (p < 1) {
+      window.requestAnimationFrame(step);
+    } else {
+      if (tokensEl) tokensEl.textContent = fmtK(targetTokens);
+      if (pctEl) pctEl.textContent = targetPct;
     }
+  };
+  window.requestAnimationFrame(step);
 
-    // Simple counter animation
-    let startTimestamp = null;
-    const duration = 1000; // 1s
-
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      // easeOutQuart
-      const easeProgress = 1 - Math.pow(1 - progress, 4);
-      const currentVal = Math.floor(easeProgress * targetTokens);
-
-      if (counterEl) {
-        counterEl.textContent = currentVal.toLocaleString();
-      }
-
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      } else {
-        if (counterEl) counterEl.textContent = targetTokens.toLocaleString();
-      }
-    };
-    window.requestAnimationFrame(step);
-  }
+  // Stagger the category legend.
+  cats.forEach((c, i) => setTimeout(() => c.classList.remove("opacity-0"), 300 + i * 110));
 });
 
-// Register S3.3
+// Register S3.3 — obscurity / token-addiction hypothesis (comic + initiation→hook)
 registerActivate("s3-3", (isReducedMotion) => {
   const container = document.getElementById("s3-3");
   if (!container) return;
 
-  // isReducedMotion passed as arg
-
-  const cliLines = container.querySelector(".s3-3-cli-lines");
-  const webUi = container.querySelector(".s3-3-web-ui");
+  const comic = container.querySelector(".s3-3-comic");
+  const cards = container.querySelectorAll(".s3-3-card");
+  const reveal = (el) => el && el.classList.remove("opacity-0", "translate-y-4", "scale-95");
 
   if (isReducedMotion) {
-    if (cliLines) cliLines.style.opacity = "1";
-    if (webUi) webUi.style.opacity = "1";
+    reveal(comic);
+    cards.forEach(reveal);
     return;
   }
 
-  // Reveal side by side
-  setTimeout(() => {
-    if (cliLines) cliLines.style.opacity = "1";
-  }, 400);
-
-  setTimeout(() => {
-    if (webUi) webUi.style.opacity = "1";
-  }, 1000);
+  setTimeout(() => reveal(comic), 150);
+  cards.forEach((c, i) => setTimeout(() => reveal(c), 700 + i * 250));
 });
 
 // SECTION JS
-// BEAT S4.1
+// BEAT S4.1 — context window fills like a human workday (stacked bar per lane)
 registerActivate("s4-1", (isReducedMotion) => {
   const container = document.getElementById("s4-1");
   if (!container) return;
 
-  const slowMeter = container.querySelector(".context-meter-slow");
-  const fastMeter = container.querySelector(".context-meter-fast");
-  const chatMsgs = container.querySelectorAll(".chat-msg");
-  const agentMsgs = container.querySelectorAll(".agent-msg");
-  const agentLog = container.querySelector(".agent-log");
+  const lanes = container.querySelectorAll(".s4-1-lane");
+
+  const analyze = (lane) => {
+    const segs = lane.querySelectorAll(".s4-1-seg");
+    const pctEl = lane.querySelector(".s4-1-pct");
+    const stateEl = lane.querySelector(".s4-1-state");
+    let sum = 0;
+    segs.forEach((seg) => (sum += Number(seg.dataset.basis || 0)));
+    const endState = sum > 60 ? "running on fumes" : "still sharp";
+    return { segs, pctEl, stateEl, sum, endState };
+  };
+
+  const fillInstant = (info) => {
+    info.segs.forEach((seg) => (seg.style.flexBasis = seg.dataset.basis + "%"));
+    if (info.pctEl) info.pctEl.textContent = info.sum;
+    if (info.stateEl) info.stateEl.textContent = info.endState;
+  };
+
+  const lanesInfo = [...lanes].map(analyze);
 
   if (isReducedMotion) {
-    if (slowMeter) slowMeter.value = 20;
-    if (fastMeter) fastMeter.value = 95;
-    [...chatMsgs, ...agentMsgs].forEach((b) => {
-      b.classList.remove("opacity-0", "translate-y-4");
-      b.classList.add("opacity-100", "translate-y-0");
-    });
-    if (agentLog) agentLog.classList.remove("opacity-0");
+    lanesInfo.forEach(fillInstant);
     return;
   }
 
-  // Animate plain chat
-  chatMsgs.forEach((msg, i) => {
+  // Grow each lane's segments left→right, ticking the % readout up as it fills.
+  // Both lanes run at once so the agentic lane visibly outpaces plain chat.
+  const stepMs = 320;
+  lanesInfo.forEach((info) => {
+    let acc = 0;
+    info.segs.forEach((seg, i) => {
+      setTimeout(
+        () => {
+          seg.style.flexBasis = seg.dataset.basis + "%";
+          acc += Number(seg.dataset.basis || 0);
+          if (info.pctEl) info.pctEl.textContent = acc;
+        },
+        200 + i * stepMs,
+      );
+    });
     setTimeout(
       () => {
-        msg.classList.remove("opacity-0", "translate-y-4");
-        msg.classList.add("opacity-100", "translate-y-0");
-        if (slowMeter) slowMeter.value = 10 + (i + 1) * 3;
+        if (info.stateEl) info.stateEl.textContent = info.endState;
       },
-      200 + i * 400,
+      200 + info.segs.length * stepMs + 100,
     );
   });
-
-  // Animate agentic chat
-  setTimeout(() => {
-    agentMsgs.forEach((msg) => {
-      msg.classList.remove("opacity-0", "translate-y-4");
-      msg.classList.add("opacity-100", "translate-y-0");
-    });
-  }, 200);
-
-  setTimeout(() => {
-    if (agentLog) agentLog.classList.remove("opacity-0");
-    if (fastMeter) fastMeter.value = 95;
-  }, 800);
 });
 
-// BEAT S4.2
+// BEAT S4.2 — the lost middle == human serial-position curve (primacy + recency)
 registerActivate("s4-2", (isReducedMotion) => {
   const container = document.getElementById("s4-2");
   if (!container) return;
 
-  const midMsgs = container.querySelectorAll(".mid-msg");
-  const badge = container.querySelector(".auto-compact-badge");
+  const curve = container.querySelector(".s4-2-curve");
+  const mids = container.querySelectorAll(".s4-2-mid");
+  const annos = container.querySelectorAll(".s4-2-anno");
+  const badge = container.querySelector(".s4-2-badge");
+
+  const blurMids = () =>
+    mids.forEach((m) => {
+      m.classList.remove("opacity-100", "blur-0");
+      m.classList.add("opacity-30", "blur-[2px]");
+    });
+  const showAnnos = () => annos.forEach((a) => a.classList.remove("opacity-0"));
+  const showBadge = () => {
+    if (!badge) return;
+    badge.classList.remove("opacity-0", "scale-95");
+    badge.classList.add("opacity-100", "scale-100");
+  };
+
+  if (curve) {
+    const len = curve.getTotalLength();
+    curve.style.strokeDasharray = String(len);
+    if (isReducedMotion) {
+      curve.style.strokeDashoffset = "0";
+    } else {
+      curve.style.strokeDashoffset = String(len);
+      // force layout so the offset is applied before we transition it away
+      void curve.getBoundingClientRect();
+      curve.style.transition = "stroke-dashoffset 1400ms ease-in-out";
+      window.requestAnimationFrame(() => {
+        curve.style.strokeDashoffset = "0";
+      });
+    }
+  }
 
   if (isReducedMotion) {
-    midMsgs.forEach((msg) => {
-      msg.classList.remove("opacity-100", "blur-0");
-      msg.classList.add("opacity-30", "blur-[2px]");
-    });
-    if (badge) {
-      badge.classList.remove("opacity-0", "scale-95");
-      badge.classList.add("opacity-100", "scale-100");
-    }
+    blurMids();
+    showAnnos();
+    showBadge();
     return;
   }
 
-  // Trigger transitions
-  setTimeout(() => {
-    midMsgs.forEach((msg) => {
-      msg.classList.remove("opacity-100", "blur-0");
-      msg.classList.add("opacity-30", "blur-[2px]");
-    });
-    if (badge) {
-      badge.classList.remove("opacity-0", "scale-95");
-      badge.classList.add("opacity-100", "scale-100");
-    }
-  }, 400);
+  setTimeout(showAnnos, 600);
+  setTimeout(blurMids, 900);
+  setTimeout(showBadge, 1600);
 });
 
-// BEAT S4.3
+// BEAT S4.3 — fullness gauge: hallucination onset past the ~50% threshold
 registerActivate("s4-3", (isReducedMotion) => {
   const container = document.getElementById("s4-3");
   if (!container) return;
 
   const gauge = container.querySelector(".context-gauge-fill");
-  const levers = container.querySelectorAll(".lever-1, .lever-2");
+  const risk = container.querySelector(".s4-3-risk");
+  const levers = container.querySelectorAll(".s4-3-lever");
+
+  const showRisk = () => {
+    if (risk) risk.classList.remove("opacity-0", "translate-y-4");
+  };
+  const revealLever = (l) => l.classList.remove("opacity-0", "translate-y-4");
 
   if (isReducedMotion) {
     if (gauge) gauge.style.width = "85%";
-    levers.forEach((l) => {
-      l.classList.remove("opacity-0", "translate-y-4");
-      l.classList.add("opacity-100", "translate-y-0");
-    });
+    showRisk();
+    levers.forEach(revealLever);
     return;
   }
 
-  // Start animation across threshold
+  // Needle sweeps past the 50% line, the hallucination panel lights up, levers follow.
   setTimeout(() => {
     if (gauge) gauge.style.width = "85%";
   }, 300);
-
+  setTimeout(showRisk, 1150);
   setTimeout(() => {
-    levers.forEach((l, i) => {
-      setTimeout(() => {
-        l.classList.remove("opacity-0", "translate-y-4");
-        l.classList.add("opacity-100", "translate-y-0");
-      }, i * 200);
-    });
-  }, 1000);
+    levers.forEach((l, i) => setTimeout(() => revealLever(l), i * 200));
+  }, 1900);
 });
 
 // SECTION JS

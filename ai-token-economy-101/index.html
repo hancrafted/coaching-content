@@ -1132,11 +1132,12 @@
                 </p>
                 <div class="prose max-w-none">
                   <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
-                    Text resolves into billable tokens
+                    Tokens are the basic unit of data for LLMs.
                   </h2>
                   <p class="text-xl opacity-80">
-                    AI doesn't read words. It reads tokens, and every token has a cost.
-                    Understanding this conversion is the first step to managing your AI economy.
+                    AI doesn't deal with words but with numbers to predict statistically the next
+                    likely token. Every token is roughly 3/4 of a word and represented as a unique
+                    number.
                   </p>
                 </div>
 
@@ -1151,101 +1152,109 @@
                     <div
                       class="s3-1-text absolute inset-0 text-3xl font-medium text-center flex items-center justify-center transition-opacity duration-700"
                     >
-                      "Write a python script to parse a csv file."
+                      "Insanity is doing the same thing over and over again and expecting different
+                      results."
                     </div>
-                    <!-- Tokenized text that scales in -->
+                    <!-- Tokenized text that scales in — Einstein quote, real token IDs on hover -->
                     <div
-                      class="s3-1-tokens flex flex-wrap justify-center gap-3 opacity-0 transition-opacity duration-700"
+                      class="s3-1-tokens flex flex-wrap justify-center gap-x-2 gap-y-6 opacity-0 transition-opacity duration-700"
                     >
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">"Write</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 13345">
+                        <span
+                          class="token-chip bg-primary/15 border border-primary/40 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >Ins</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_a</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 90197">
+                        <span
+                          class="token-chip bg-info/15 border border-info/40 text-info px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >anity</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_python</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 382">
+                        <span
+                          class="token-chip bg-accent/15 border border-accent/40 text-accent px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_is</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_script</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 5306">
+                        <span
+                          class="token-chip bg-info/15 border border-info/40 text-info px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_doing</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_to</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 290">
+                        <span
+                          class="token-chip bg-success/15 border border-success/40 text-success px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_the</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_parse</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 2684">
+                        <span
+                          class="token-chip bg-warning/15 border border-warning/40 text-warning px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_same</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_a</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 4435">
+                        <span
+                          class="token-chip bg-primary/15 border border-primary/40 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_thing</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_csv</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 1072">
+                        <span
+                          class="token-chip bg-success/15 border border-success/40 text-success px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_over</span
                         >
                       </span>
-                      <span
-                        class="token-chip bg-primary/10 border border-primary/30 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 flex flex-col items-center gap-1 transition-all duration-500"
-                      >
-                        <span class="text-xl font-mono">_file."</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60"
-                          >Billable</span
+                      <span class="tooltip cursor-help" data-tip="Token ID 326">
+                        <span
+                          class="token-chip bg-accent/15 border border-accent/40 text-accent px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_and</span
                         >
                       </span>
-                    </div>
-                  </div>
-                  <!-- Dimensions -->
-                  <div
-                    class="s3-1-dimensions mt-12 flex flex-wrap justify-center gap-4 opacity-0 transition-opacity duration-700"
-                  >
-                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
-                      1. Input / Context
-                    </div>
-                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
-                      2. Output / Generated
-                    </div>
-                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
-                      3. Cached / Reused
-                    </div>
-                    <div class="badge badge-outline badge-lg p-4 font-mono font-bold bg-base-100">
-                      4. Search / Retrieval
+                      <span class="tooltip cursor-help" data-tip="Token ID 1072">
+                        <span
+                          class="token-chip bg-info/15 border border-info/40 text-info px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_over</span
+                        >
+                      </span>
+                      <span class="tooltip cursor-help" data-tip="Token ID 2418">
+                        <span
+                          class="token-chip bg-success/15 border border-success/40 text-success px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_again</span
+                        >
+                      </span>
+                      <span class="tooltip cursor-help" data-tip="Token ID 326">
+                        <span
+                          class="token-chip bg-warning/15 border border-warning/40 text-warning px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_and</span
+                        >
+                      </span>
+                      <span class="tooltip cursor-help" data-tip="Token ID 35885">
+                        <span
+                          class="token-chip bg-primary/15 border border-primary/40 text-primary px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_expecting</span
+                        >
+                      </span>
+                      <span class="tooltip cursor-help" data-tip="Token ID 2647">
+                        <span
+                          class="token-chip bg-warning/15 border border-warning/40 text-warning px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_different</span
+                        >
+                      </span>
+                      <span class="tooltip cursor-help" data-tip="Token ID 4376">
+                        <span
+                          class="token-chip bg-accent/15 border border-accent/40 text-accent px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >_results</span
+                        >
+                      </span>
+                      <span class="tooltip cursor-help" data-tip="Token ID 13">
+                        <span
+                          class="token-chip bg-info/15 border border-info/40 text-info px-3 py-2 rounded-lg shadow-sm opacity-0 translate-y-4 transition-all duration-500 font-mono text-lg font-semibold"
+                          >.</span
+                        >
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1266,98 +1275,154 @@
                 </p>
                 <div class="prose max-w-none">
                   <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
-                    The live /context + /usage
+                    How to measure token usage?
                   </h2>
                   <p class="text-xl opacity-80">
-                    Monitoring the context window is critical. It fills up quickly with system
-                    rules, chat history, and parsed files. Here is an illustrative snapshot of
-                    context allocation.
+                    You don't need to know the exact token usage of every request. You should
+                    develop a sense of how much tokens a task requires, ideally based on which model
+                    you are planning to use.
                   </p>
                 </div>
 
-                <div
-                  data-viz="s3-2"
-                  class="border border-base-300 bg-base-200/50 rounded-box p-8 overflow-hidden flex flex-col gap-8"
-                >
-                  <!-- Context Meter Motif (Reusable) -->
+                <div data-viz="s3-2" class="flex flex-col gap-6">
+                  <!-- Faithful reproduction of Claude Code's /context (CLI) -->
                   <div
-                    class="context-meter-container w-full bg-base-100 rounded-box p-6 border border-base-300 shadow-sm"
+                    class="overflow-hidden rounded-box border border-neutral bg-neutral text-neutral-content shadow-lg"
                   >
-                    <div class="flex justify-between items-end mb-4">
-                      <div>
-                        <h3 class="font-bold text-xl">Context Window</h3>
-                        <div class="text-sm opacity-70 mt-1">Capacity: 200,000 tokens</div>
-                      </div>
-                      <div class="text-right">
-                        <div
-                          class="text-3xl font-mono font-bold text-primary s3-2-counter tabular-nums"
-                        >
-                          0
-                        </div>
-                        <div class="text-xs font-bold opacity-70 uppercase tracking-widest mt-1">
-                          Tokens Used
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Meter Bar -->
                     <div
-                      class="w-full bg-base-300 rounded-full h-8 overflow-hidden relative border border-base-content/10 shadow-inner"
+                      class="flex items-center gap-1.5 border-b border-neutral-content/10 px-4 py-3"
                     >
-                      <!-- Reusable meter bar: scales width via JS -->
-                      <div
-                        class="context-meter-fill h-full bg-primary transition-all duration-1000 ease-out"
-                        style="width: 0%"
-                      ></div>
-                      <!-- Threshold marker -->
-                      <div
-                        class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-error/70 z-10"
-                        title="50% threshold"
-                      ></div>
+                      <span class="h-3 w-3 rounded-full bg-error/70"></span>
+                      <span class="h-3 w-3 rounded-full bg-warning/70"></span>
+                      <span class="h-3 w-3 rounded-full bg-success/70"></span>
+                      <span class="ml-3 font-mono text-xs text-neutral-content/50"
+                        >claude-code — /context</span
+                      >
                     </div>
-                    <div class="flex justify-between text-xs mt-3 font-mono font-bold opacity-60">
-                      <span>0%</span>
-                      <span>50%</span>
-                      <span>100%</span>
+                    <div class="p-6 font-mono">
+                      <div class="mb-5 text-sm text-success">$ /context</div>
+                      <div class="grid gap-8 md:grid-cols-[auto_1fr]">
+                        <!-- block grid (built + animated by JS) -->
+                        <div
+                          class="s3-2-grid grid grid-cols-10 gap-1 text-lg leading-none"
+                          aria-hidden="true"
+                        ></div>
+                        <!-- readout -->
+                        <div class="min-w-0 text-sm">
+                          <div class="mb-4">
+                            <div class="font-bold">Sonnet 5</div>
+                            <div class="text-neutral-content/50">claude-sonnet-5</div>
+                            <div class="mt-1">
+                              <span class="s3-2-tokens font-bold tabular-nums text-primary"
+                                >0.0k</span
+                              ><span class="text-neutral-content/60">/200k tokens (</span
+                              ><span class="s3-2-pct font-bold tabular-nums text-primary">0</span
+                              ><span class="text-neutral-content/60">%)</span>
+                            </div>
+                          </div>
+                          <div
+                            class="mb-2 text-[0.65rem] uppercase tracking-widest text-neutral-content/50"
+                          >
+                            Estimated usage by category
+                          </div>
+                          <ul class="space-y-1">
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-primary">⛁</span>System prompt</span
+                              ><span class="tabular-nums text-neutral-content/70">9.4k · 4.7%</span>
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-primary">⛁</span>System tools</span
+                              ><span class="tabular-nums text-neutral-content/70"
+                                >42.9k · 21.5%</span
+                              >
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-primary">⛁</span>MCP tools</span
+                              ><span class="tabular-nums text-neutral-content/70">3.9k · 2.0%</span>
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-primary">⛁</span>Custom agents</span
+                              ><span class="tabular-nums text-neutral-content/70">703 · 0.4%</span>
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-primary">⛁</span>Memory files</span
+                              ><span class="tabular-nums text-neutral-content/70">407 · 0.2%</span>
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-primary">⛁</span>Skills</span
+                              ><span class="tabular-nums text-neutral-content/70">2.2k · 1.1%</span>
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-primary">⛁</span>Messages</span
+                              ><span class="tabular-nums text-neutral-content/70">137 · 0.1%</span>
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-neutral-content/30">⛶</span>Free space</span
+                              ><span class="tabular-nums text-neutral-content/70"
+                                >107.3k · 53.6%</span
+                              >
+                            </li>
+                            <li
+                              class="s3-2-cat flex items-center justify-between gap-4 opacity-0 transition-opacity duration-300"
+                            >
+                              <span class="flex items-center gap-2"
+                                ><span class="text-warning">⛝</span>Autocompact buffer</span
+                              ><span class="tabular-nums text-neutral-content/70">33k · 16.5%</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Terminal Mockup -->
-                  <div
-                    class="mockup-code bg-neutral text-neutral-content w-full shadow-lg border border-neutral-focus"
-                  >
-                    <pre data-prefix="$"><code class="text-success">/context</code></pre>
-                    <div class="s3-2-terminal-lines">
-                      <!-- Lines will be revealed by JS -->
-                      <pre
-                        data-prefix=">"
-                        class="s3-2-line hidden"
-                      ><code>Analyzing current session context...</code></pre>
-                      <pre
-                        data-prefix=">"
-                        class="s3-2-line hidden"
-                      ><code>Files loaded: 14</code></pre>
-                      <pre
-                        data-prefix=">"
-                        class="s3-2-line hidden text-info"
-                      ><code>System prompt: 2,450 tokens</code></pre>
-                      <pre
-                        data-prefix=">"
-                        class="s3-2-line hidden text-info"
-                      ><code>Conversation history: 18,200 tokens</code></pre>
-                      <pre
-                        data-prefix=">"
-                        class="s3-2-line hidden text-info"
-                      ><code>File contents: 34,350 tokens</code></pre>
-                      <pre
-                        data-prefix=">"
-                        class="text-warning s3-2-line hidden"
-                      ><code>-----------------------------------</code></pre>
-                      <pre
-                        data-prefix=">"
-                        class="text-primary font-bold s3-2-line hidden text-lg"
-                      ><code>Total Context: 55,000 / 200,000 (27.5%)</code></pre>
+                  <!-- The same panel in the desktop app (real screenshot) -->
+                  <figure class="mx-auto w-full max-w-md">
+                    <div
+                      class="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm"
+                    >
+                      <div class="flex items-center gap-1.5 border-b border-base-300 px-4 py-2.5">
+                        <span class="h-2.5 w-2.5 rounded-full bg-base-content/20"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-base-content/20"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-base-content/20"></span>
+                        <span class="ml-3 font-mono text-xs text-base-content/40"
+                          >Claude Code · desktop</span
+                        >
+                      </div>
+                      <img
+                        src="./assets/context-window-claude-code.webp"
+                        alt="Claude Code desktop /context panel: the same category breakdown with token counts and percentages"
+                        class="w-full"
+                        loading="lazy"
+                      />
                     </div>
-                  </div>
+                    <figcaption class="mt-2 text-center text-xs text-base-content/50">
+                      Same meter, one keystroke away — the desktop app's /context panel.
+                    </figcaption>
+                  </figure>
                 </div>
               </div>
             </section>
@@ -1368,78 +1433,81 @@
               data-section="3"
               data-section-title="What Is a Token"
               data-beat="S3.3"
-              data-assertion="Real visibility is a CLI thing; most browser tools hide it — so build a sense of cost, not just a number."
+              data-assertion="Vendors profit when the meter is invisible — treat hidden cost as a design choice, not an accident, and build a sense of it."
             >
               <div class="beat-inner flex flex-col gap-8 w-full max-w-5xl mx-auto mt-24">
                 <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
                   S3.3 · What Is a Token
                 </p>
-                <div class="prose max-w-none">
-                  <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
-                    CLI transparency vs web obscurity
+                <div class="max-w-3xl">
+                  <span
+                    class="mb-4 inline-block rounded-full border border-warning/40 bg-warning/10 px-3 py-1 font-mono text-xs uppercase tracking-widest text-warning"
+                    >A hypothesis — not an accusation</span
+                  >
+                  <h2 class="mb-4 text-4xl font-bold text-primary md:text-5xl">
+                    The meter is hidden on purpose
                   </h2>
                   <p class="text-xl opacity-80">
-                    Web UIs hide the true cost of operations behind abstract credits or vague
-                    limits. The CLI forces you to face the raw numbers, building an intuition for
-                    the token economy.
+                    Follow the incentive. A vendor earns more every time you reach for a bigger
+                    model and burn more tokens — so the first taste is generous and the cost is
+                    abstracted away behind credits, vague limits, and a spinner where a number
+                    should be. You can't manage what you can't see. That's the hook.
                   </p>
                 </div>
 
-                <div data-viz="s3-3" class="grid grid-cols-1 md:grid-cols-2 gap-8 min-h-[400px]">
-                  <!-- CLI Side -->
-                  <div class="flex flex-col gap-4">
-                    <h3 class="text-center font-bold uppercase tracking-widest text-sm opacity-50">
-                      CLI Tool (e.g. Claude Code)
-                    </h3>
+                <div data-viz="s3-3" class="flex flex-col gap-8">
+                  <figure
+                    class="s3-3-comic mx-auto w-full max-w-4xl scale-95 opacity-0 transition-all duration-700 ease-out"
+                  >
+                    <img
+                      src="./assets/token-additction.webp"
+                      alt="Two-panel comic. Left, 'The Initiation': a smiling vendor hands a glowing bottle labelled 'unlimited tokens' to a delighted crowd. Right, 'The Hook': the same people, now anxious, feed credits into an AI machine as red billing alerts flash."
+                      class="w-full rounded-box border border-base-300 shadow-lg"
+                      loading="lazy"
+                    />
+                    <figcaption class="mt-2 text-center text-xs text-base-content/50">
+                      The initiation, then the hook. (Credit: internet)
+                    </figcaption>
+                  </figure>
+
+                  <div class="grid gap-6 md:grid-cols-2">
                     <div
-                      class="mockup-code bg-neutral text-neutral-content flex-grow shadow-lg border border-neutral-focus"
+                      class="s3-3-card card translate-y-4 border border-base-content/10 bg-base-200 opacity-0 shadow-sm transition-all duration-500"
                     >
-                      <pre data-prefix="$" class="text-success"><code>commit changes</code></pre>
-                      <div class="s3-3-cli-lines opacity-0 transition-opacity duration-1000">
-                        <pre
-                          data-prefix=">"
-                          class="text-info mt-2"
-                        ><code>Reading 5 files...</code></pre>
-                        <pre data-prefix=">"><code>Tokens in: 12,450 ($0.037)</code></pre>
-                        <pre data-prefix=">"><code>Tokens out:   840 ($0.012)</code></pre>
-                        <pre
-                          data-prefix=">"
-                          class="text-error font-bold mt-4"
-                        ><code>Total Cost: $0.049</code></pre>
+                      <div class="card-body">
+                        <h3 class="card-title text-lg">
+                          <span class="font-mono text-sm text-success">01</span> The initiation
+                        </h3>
+                        <p class="text-sm opacity-80">
+                          Unlimited, on the house. The intelligence feels like magic and the bill is
+                          invisible — so you build the habit.
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="s3-3-card card translate-y-4 border border-error/30 bg-error/5 opacity-0 shadow-sm transition-all duration-500"
+                    >
+                      <div class="card-body">
+                        <h3 class="card-title text-lg">
+                          <span class="font-mono text-sm text-error">02</span> The hook
+                        </h3>
+                        <p class="text-sm opacity-80">
+                          Now you're fluent — and the meter's gone. Out of credits? Just top up. The
+                          number you'd need to push back never shows.
+                        </p>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Web UI Side -->
-                  <div class="flex flex-col gap-4">
-                    <h3 class="text-center font-bold uppercase tracking-widest text-sm opacity-50">
-                      Web Interface
-                    </h3>
-                    <div
-                      class="border border-base-300 bg-base-100 rounded-box flex-grow flex flex-col items-center justify-center p-8 shadow-sm"
+                  <p
+                    class="rounded-box border border-base-content/10 bg-base-200 p-4 text-center text-sm"
+                  >
+                    <span class="font-semibold text-primary"
+                      >This is why the CLI meter matters:</span
                     >
-                      <div
-                        class="s3-3-web-ui opacity-0 transition-opacity duration-1000 flex flex-col items-center w-full max-w-xs gap-6"
-                      >
-                        <div class="loading loading-spinner loading-lg text-primary"></div>
-                        <div class="text-center">
-                          <div class="font-medium text-lg">Generating response...</div>
-                          <div class="text-sm opacity-50">This may take a moment.</div>
-                        </div>
-                        <div class="w-full mt-4 p-4 bg-base-200 rounded-lg">
-                          <div class="flex justify-between text-xs mb-2 font-bold">
-                            <span>Usage Limit</span>
-                            <span class="text-warning">Approaching</span>
-                          </div>
-                          <progress
-                            class="progress progress-warning w-full"
-                            value="80"
-                            max="100"
-                          ></progress>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    it's the one place the number is right in front of you — the same
+                    <code>/context</code> you just saw.
+                  </p>
                 </div>
               </div>
             </section>
@@ -1453,93 +1521,144 @@
               data-beat="S4.1"
               data-assertion="Tokens pile up in the context window — the model's attention span, and it fills up."
             >
-              <div
-                class="beat-inner flex flex-col justify-center h-full px-8 lg:px-20 max-w-6xl mx-auto"
-              >
+              <div class="beat-inner mx-auto flex h-full w-full max-w-6xl flex-col justify-center">
                 <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
                   S4.1 · Managing Context
                 </p>
-                <div class="mb-12 max-w-3xl">
-                  <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
+                <div class="mb-10 max-w-3xl">
+                  <h2 class="mb-6 text-4xl font-bold text-primary lg:text-5xl">
                     Context window = attention span
                   </h2>
                   <p class="text-xl text-base-content/80">
-                    Every interaction fills the memory. A fresh thread is a fresh mind. A long
-                    thread is a tired one. Let's look at how fast that fills up.
+                    Picture the context window as a person's focus across a workday. It never starts
+                    empty — boot-up (system prompt, tools, skills, memory) already fills ~10% before
+                    you say a word. Then every message resends the <em>entire</em> history, so the
+                    bar fills left to right: fresh at 9&nbsp;AM, running on fumes by 5. A plain chat
+                    stays light; an agent balloons fast.
                   </p>
                 </div>
 
-                <div class="visualization" data-viz="s4-1">
-                  <!-- diverging lanes and context meter -->
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                    <!-- Plain chat -->
-                    <div class="space-y-4">
-                      <h3 class="text-2xl font-semibold opacity-70">Plain Chat</h3>
-                      <div class="chat chat-end">
-                        <div
-                          class="chat-bubble chat-bubble-primary opacity-0 translate-y-4 chat-msg transition-all duration-500"
-                        >
-                          Write a quick email...
-                        </div>
-                      </div>
-                      <div class="chat chat-start">
-                        <div
-                          class="chat-bubble chat-bubble-secondary opacity-0 translate-y-4 chat-msg transition-all duration-500"
-                        >
-                          Here is a draft...
-                        </div>
-                      </div>
-                      <div class="chat chat-end">
-                        <div
-                          class="chat-bubble chat-bubble-primary opacity-0 translate-y-4 chat-msg transition-all duration-500"
-                        >
-                          Make it shorter.
-                        </div>
-                      </div>
+                <div class="visualization space-y-8" data-viz="s4-1">
+                  <!-- Legend -->
+                  <div
+                    class="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs text-base-content/70"
+                  >
+                    <span class="flex items-center gap-2"
+                      ><span class="inline-block h-3 w-3 rounded-sm bg-neutral"></span>Boot-up
+                      (system · tools · skills · memory)</span
+                    >
+                    <span class="flex items-center gap-2"
+                      ><span class="inline-block h-3 w-3 rounded-sm bg-primary"></span>Your
+                      messages</span
+                    >
+                    <span class="flex items-center gap-2"
+                      ><span class="inline-block h-3 w-3 rounded-sm bg-accent"></span>Model
+                      replies</span
+                    >
+                    <span class="flex items-center gap-2"
+                      ><span class="inline-block h-3 w-3 rounded-sm bg-warning"></span>Tool calls ·
+                      files read</span
+                    >
+                  </div>
 
-                      <div class="mt-8">
-                        <div class="flex justify-between text-sm mb-1 font-mono">
-                          <span>Fresh</span>
-                          <span>20%</span>
-                        </div>
-                        <progress
-                          class="progress progress-success w-full context-meter-slow transition-all duration-1000"
-                          value="10"
-                          max="100"
-                        ></progress>
-                      </div>
+                  <!-- Lane: plain chat -->
+                  <div class="s4-1-lane space-y-2">
+                    <div class="flex items-baseline justify-between">
+                      <h3 class="text-lg font-semibold">Plain chat</h3>
+                      <span class="font-mono text-sm text-base-content/70"
+                        ><span class="s4-1-pct tabular-nums font-bold text-success">10</span>% ·
+                        <span class="s4-1-state">fresh</span></span
+                      >
                     </div>
-
-                    <!-- Agentic -->
-                    <div class="space-y-4">
-                      <h3 class="text-2xl font-semibold opacity-70">Agentic Action</h3>
-                      <div class="chat chat-end">
-                        <div
-                          class="chat-bubble chat-bubble-primary opacity-0 translate-y-4 agent-msg transition-all duration-500"
+                    <div
+                      class="relative flex h-14 w-full overflow-hidden rounded-box border border-base-content/10 bg-base-300"
+                    >
+                      <div
+                        class="s4-1-seg flex shrink-0 grow-0 basis-0 items-center overflow-hidden bg-neutral text-neutral-content transition-all duration-500 ease-out"
+                        data-basis="10"
+                      >
+                        <span class="truncate px-2 font-mono text-[0.6rem] uppercase tracking-wide"
+                          >Boot-up</span
                         >
-                          Refactor this app.
-                        </div>
                       </div>
                       <div
-                        class="font-mono text-sm opacity-0 transition-opacity duration-500 agent-log text-warning bg-base-200 p-2 rounded"
-                      >
-                        > Reading 12 files...<br />
-                        > Running tests...<br />
-                        > Applying patches...
-                      </div>
+                        class="s4-1-seg shrink-0 grow-0 basis-0 bg-primary transition-all duration-500 ease-out"
+                        data-basis="5"
+                      ></div>
+                      <div
+                        class="s4-1-seg shrink-0 grow-0 basis-0 bg-accent transition-all duration-500 ease-out"
+                        data-basis="4"
+                      ></div>
+                      <div
+                        class="s4-1-seg shrink-0 grow-0 basis-0 bg-primary transition-all duration-500 ease-out"
+                        data-basis="4"
+                      ></div>
+                      <div
+                        class="s4-1-seg shrink-0 grow-0 basis-0 bg-accent transition-all duration-500 ease-out"
+                        data-basis="4"
+                      ></div>
+                    </div>
+                  </div>
 
-                      <div class="mt-8">
-                        <div class="flex justify-between text-sm mb-1 font-mono">
-                          <span>Fresh</span>
-                          <span>95% (4PM tired)</span>
-                        </div>
-                        <progress
-                          class="progress progress-error w-full context-meter-fast transition-all duration-1000"
-                          value="10"
-                          max="100"
-                        ></progress>
+                  <!-- Lane: agentic -->
+                  <div class="s4-1-lane space-y-2">
+                    <div class="flex items-baseline justify-between">
+                      <h3 class="text-lg font-semibold">Agentic coding</h3>
+                      <span class="font-mono text-sm text-base-content/70"
+                        ><span class="s4-1-pct tabular-nums font-bold text-error">10</span>% ·
+                        <span class="s4-1-state">fresh</span></span
+                      >
+                    </div>
+                    <div
+                      class="relative flex h-14 w-full overflow-hidden rounded-box border border-base-content/10 bg-base-300"
+                    >
+                      <div
+                        class="s4-1-seg flex shrink-0 grow-0 basis-0 items-center overflow-hidden bg-neutral text-neutral-content transition-all duration-500 ease-out"
+                        data-basis="10"
+                      >
+                        <span class="truncate px-2 font-mono text-[0.6rem] uppercase tracking-wide"
+                          >Boot-up</span
+                        >
+                      </div>
+                      <div
+                        class="s4-1-seg flex shrink-0 grow-0 basis-0 items-center overflow-hidden bg-primary text-primary-content transition-all duration-500 ease-out"
+                        data-basis="6"
+                      >
+                        <span class="truncate px-2 font-mono text-[0.6rem]">"Refactor this"</span>
+                      </div>
+                      <div
+                        class="s4-1-seg flex shrink-0 grow-0 basis-0 items-center overflow-hidden bg-warning text-warning-content transition-all duration-500 ease-out"
+                        data-basis="22"
+                      >
+                        <span class="truncate px-2 font-mono text-[0.6rem]">reads 12 files</span>
+                      </div>
+                      <div
+                        class="s4-1-seg flex shrink-0 grow-0 basis-0 items-center overflow-hidden bg-warning/80 text-warning-content transition-all duration-500 ease-out"
+                        data-basis="16"
+                      >
+                        <span class="truncate px-2 font-mono text-[0.6rem]">runs tests</span>
+                      </div>
+                      <div
+                        class="s4-1-seg flex shrink-0 grow-0 basis-0 items-center overflow-hidden bg-warning/70 text-warning-content transition-all duration-500 ease-out"
+                        data-basis="17"
+                      >
+                        <span class="truncate px-2 font-mono text-[0.6rem]">tool output</span>
+                      </div>
+                      <div
+                        class="s4-1-seg flex shrink-0 grow-0 basis-0 items-center overflow-hidden bg-error text-error-content transition-all duration-500 ease-out"
+                        data-basis="14"
+                      >
+                        <span class="truncate px-2 font-mono text-[0.6rem]">applies patch</span>
                       </div>
                     </div>
+                  </div>
+
+                  <!-- Shared workday axis -->
+                  <div class="flex justify-between px-1 font-mono text-xs text-base-content/60">
+                    <span>9 AM · fresh</span>
+                    <span>12 PM</span>
+                    <span>3 PM</span>
+                    <span>5 PM · full</span>
                   </div>
                 </div>
               </div>
@@ -1553,56 +1672,122 @@
               data-beat="S4.2"
               data-assertion="The tool auto-manages some of it — but it can't guarantee the important stuff survives."
             >
-              <div
-                class="beat-inner flex flex-col justify-center h-full px-8 lg:px-20 max-w-6xl mx-auto"
-              >
+              <div class="beat-inner mx-auto flex h-full w-full max-w-5xl flex-col justify-center">
                 <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
                   S4.2 · Managing Context
                 </p>
-                <div class="mb-12 max-w-3xl">
-                  <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">The lost middle</h2>
+                <div class="mb-10 max-w-3xl">
+                  <h2 class="mb-6 text-4xl font-bold text-primary lg:text-5xl">The lost middle</h2>
                   <p class="text-xl text-base-content/80">
-                    LLMs pay attention to the beginning (system prompt) and the end (recent
-                    messages). The middle gets blurry. Some auto-compaction helps, but context
-                    degrades.
+                    It's not a quirk — it's the same curve your own memory follows. Models attend
+                    hardest to the <strong>beginning</strong> and the <strong>most recent</strong>;
+                    the middle blurs. A critical instruction buried ten messages back may as well
+                    not be there.
                   </p>
                 </div>
 
-                <div class="visualization" data-viz="s4-2">
-                  <div
-                    class="mockup-window border border-base-content/10 bg-base-300 max-w-2xl mx-auto"
-                  >
-                    <div class="flex flex-col px-6 py-8 bg-base-200 space-y-4 font-mono text-sm">
-                      <div class="p-4 bg-base-100 rounded border-l-4 border-primary">
-                        <span class="text-primary font-bold block mb-1">System Prompt</span>
-                        "You are an expert coder..."
+                <div class="visualization space-y-8" data-viz="s4-2">
+                  <!-- Serial-position curve -->
+                  <div class="relative">
+                    <svg
+                      viewBox="0 0 900 300"
+                      class="h-auto w-full text-primary"
+                      role="img"
+                      aria-label="U-shaped serial-position curve: attention is high at the start and end and low in the middle"
+                    >
+                      <rect
+                        x="330"
+                        y="0"
+                        width="240"
+                        height="300"
+                        class="fill-base-content/5"
+                      ></rect>
+                      <line
+                        x1="40"
+                        y1="270"
+                        x2="860"
+                        y2="270"
+                        class="stroke-base-content/20"
+                        stroke-width="2"
+                      ></line>
+                      <path
+                        class="s4-2-curve"
+                        d="M 60 80 C 230 80, 300 240, 450 240 C 600 240, 670 80, 840 80"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"
+                      ></path>
+                    </svg>
+                    <div
+                      class="s4-2-anno absolute left-[3%] top-0 opacity-0 transition-opacity duration-700"
+                    >
+                      <div class="font-mono text-xs font-bold uppercase tracking-wide text-primary">
+                        Primacy
                       </div>
+                      <div class="text-xs text-base-content/70">the setup sticks</div>
+                    </div>
+                    <div
+                      class="s4-2-anno absolute right-[3%] top-0 text-right opacity-0 transition-opacity duration-700"
+                    >
+                      <div class="font-mono text-xs font-bold uppercase tracking-wide text-primary">
+                        Recency
+                      </div>
+                      <div class="text-xs text-base-content/70">the latest is vivid</div>
+                    </div>
+                    <div
+                      class="s4-2-anno absolute bottom-4 left-1/2 -translate-x-1/2 text-center opacity-0 transition-opacity duration-700"
+                    >
+                      <div
+                        class="font-mono text-xs font-bold uppercase tracking-wide text-base-content/60"
+                      >
+                        The lost middle
+                      </div>
+                    </div>
+                  </div>
 
-                      <div
-                        class="p-4 bg-base-100 rounded opacity-100 blur-0 transition-all duration-1000 mid-msg"
-                      >
-                        [Message 12: read file utils.js]
-                      </div>
-                      <div
-                        class="p-4 bg-base-100 rounded opacity-100 blur-0 transition-all duration-1000 mid-msg"
-                      >
-                        [Message 13: modify api.js]
-                      </div>
-                      <div
-                        class="flex items-center justify-center -my-2 opacity-0 scale-95 transition-all duration-700 auto-compact-badge"
-                      >
-                        <span class="badge badge-warning badge-sm">Auto-compaction (partial)</span>
-                      </div>
-                      <div
-                        class="p-4 bg-base-100 rounded opacity-100 blur-0 transition-all duration-1000 mid-msg"
-                      >
-                        [Message 14: read config.json]
-                      </div>
+                  <!-- Message chips aligned under the curve -->
+                  <div class="flex items-stretch gap-2 font-mono text-xs">
+                    <div class="flex-1 rounded border-l-4 border-primary bg-base-200 p-3">
+                      <span class="block font-bold text-primary">System prompt</span>"You are an
+                      expert coder…"
+                    </div>
+                    <div
+                      class="s4-2-mid flex-1 rounded bg-base-200 p-3 opacity-100 blur-0 transition-all duration-1000"
+                    >
+                      [msg 12: read utils.js]
+                    </div>
+                    <div
+                      class="s4-2-mid flex-1 rounded bg-base-200 p-3 opacity-100 blur-0 transition-all duration-1000"
+                    >
+                      [msg 13: modify api.js]
+                    </div>
+                    <div
+                      class="s4-2-mid flex-1 rounded bg-base-200 p-3 opacity-100 blur-0 transition-all duration-1000"
+                    >
+                      [msg 14: read config.json]
+                    </div>
+                    <div class="flex-1 rounded border-l-4 border-accent bg-base-200 p-3">
+                      <span class="block font-bold text-accent">Latest request</span>"Why is the
+                      build failing?"
+                    </div>
+                  </div>
 
-                      <div class="p-4 bg-base-100 rounded border-l-4 border-secondary">
-                        <span class="text-secondary font-bold block mb-1">Latest Request</span>
-                        "Why is the build failing now?"
-                      </div>
+                  <!-- Human analogy + mitigation -->
+                  <div class="grid gap-4 md:grid-cols-[2fr_1fr]">
+                    <div class="rounded-box border border-base-content/10 bg-base-200 p-4 text-sm">
+                      <span class="font-semibold text-primary">Same as people:</span> you recall the
+                      first and last speakers in a long meeting, not the ones in between.
+                      Psychologists call it the <strong>serial-position effect</strong> — primacy +
+                      recency — and the <strong>peak-end rule</strong> is its cousin.
+                    </div>
+                    <div
+                      class="s4-2-badge flex scale-95 items-center justify-center rounded-box border border-warning/40 bg-warning/10 p-4 text-center opacity-0 transition-all duration-700"
+                    >
+                      <span class="text-sm"
+                        ><span class="badge badge-warning badge-sm mr-1">Auto-compaction</span>
+                        claws some back — partial, not guaranteed.</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -1617,79 +1802,102 @@
               data-beat="S4.3"
               data-assertion="Below 50% is the smart zone; above it the model loses the plot — so monitor, compact, and hand off."
             >
-              <div
-                class="beat-inner flex flex-col justify-center h-full px-8 lg:px-20 max-w-6xl mx-auto"
-              >
+              <div class="beat-inner mx-auto flex h-full w-full max-w-4xl flex-col justify-center">
                 <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
                   S4.3 · Managing Context
                 </p>
-                <div class="mb-12 max-w-3xl">
-                  <h2 class="text-4xl lg:text-5xl font-bold text-primary mb-6">
-                    Fullness gauge &amp; Levers
+                <div class="mb-10 max-w-3xl">
+                  <h2 class="mb-6 text-4xl font-bold text-primary lg:text-5xl">
+                    When does it start hallucinating?
                   </h2>
                   <p class="text-xl text-base-content/80">
-                    At 50% capacity, the model starts getting "dumb." Watch the gauge. When it
-                    crosses the threshold, pull the levers: monitor with <code>/context</code>, or
-                    compact via handoff.
+                    Roughly once the window passes <strong>~half full</strong>. Below that is the
+                    smart zone — grounded and reliable. Past it, quality degrades and the model
+                    starts filling gaps with plausible fiction. So do two things: monitor with
+                    <code>/context</code>, and compact via a handoff.
                   </p>
                 </div>
 
-                <div class="visualization" data-viz="s4-3">
-                  <div class="max-w-2xl mx-auto space-y-12">
-                    <!-- The Gauge -->
-                    <div class="relative pt-8 pb-4">
-                      <!-- 50% threshold line -->
+                <div class="visualization space-y-10" data-viz="s4-3">
+                  <!-- Fullness gauge -->
+                  <div class="relative pb-2 pt-8">
+                    <div
+                      class="absolute bottom-6 left-1/2 top-0 z-10 w-px border-l-2 border-dashed border-base-content/50"
+                    >
                       <div
-                        class="absolute left-1/2 top-0 bottom-0 w-px border-l-2 border-dashed border-base-content/50 z-10"
+                        class="absolute -top-6 -translate-x-1/2 whitespace-nowrap font-mono text-xs font-bold text-base-content/70"
                       >
-                        <div
-                          class="absolute -top-6 -translate-x-1/2 whitespace-nowrap text-xs font-mono font-bold text-base-content/70"
-                        >
-                          50% Smart / Dumb threshold
-                        </div>
-                      </div>
-
-                      <div
-                        class="h-8 w-full bg-base-300 rounded-full overflow-hidden relative border border-base-content/10"
-                      >
-                        <!-- Green below, Red above -->
-                        <div class="absolute top-0 bottom-0 left-0 w-1/2 bg-success/20"></div>
-                        <div class="absolute top-0 bottom-0 right-0 w-1/2 bg-error/20"></div>
-
-                        <!-- Needle / Fill bar -->
-                        <div
-                          class="h-full bg-gradient-to-r from-success to-error transition-all duration-[1500ms] ease-out context-gauge-fill w-[10%] relative rounded-full"
-                        >
-                          <!-- Actual needle indicator -->
-                          <div
-                            class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-1.5 h-10 bg-base-content rounded-full shadow-md z-20"
-                          ></div>
-                        </div>
+                        ~50% · hallucination onset
                       </div>
                     </div>
-
-                    <!-- Levers -->
-                    <div class="grid grid-cols-2 gap-8 mt-8">
+                    <div
+                      class="relative h-10 w-full overflow-hidden rounded-full border border-base-content/10 bg-base-300"
+                    >
+                      <div class="absolute inset-y-0 left-0 w-1/2 bg-success/20"></div>
+                      <div class="absolute inset-y-0 right-0 w-1/2 bg-error/20"></div>
                       <div
-                        class="card bg-base-200 border border-base-content/10 shadow-sm opacity-0 translate-y-4 lever-1 transition-all duration-500"
+                        class="context-gauge-fill relative h-full w-[10%] rounded-full bg-gradient-to-r from-success to-error transition-all duration-[1500ms] ease-out"
                       >
-                        <div class="card-body">
-                          <h3 class="card-title text-lg font-mono text-primary">/context</h3>
-                          <p class="text-sm">Monitor fullness proactively before it degrades.</p>
-                        </div>
+                        <div
+                          class="absolute right-0 top-1/2 z-20 h-12 w-1.5 -translate-y-1/2 translate-x-1/2 rounded-full bg-base-content shadow-md"
+                        ></div>
                       </div>
-                      <div
-                        class="card bg-base-200 border border-base-content/10 shadow-sm opacity-0 translate-y-4 lever-2 transition-all duration-500"
-                      >
-                        <div class="card-body">
-                          <h3 class="card-title text-lg font-mono text-secondary">Handoff</h3>
-                          <p class="text-sm">
-                            Compact knowledge into a clean summary and start a new session.
-                          </p>
-                        </div>
+                    </div>
+                    <div class="mt-3 flex justify-between font-mono text-xs font-bold">
+                      <span class="text-success">Smart zone · grounded</span>
+                      <span class="text-error">Danger zone · hallucinates</span>
+                    </div>
+                  </div>
+
+                  <!-- Hallucination symptoms (light up past the threshold) -->
+                  <div
+                    class="s4-3-risk translate-y-4 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500"
+                  >
+                    <div
+                      class="mb-2 flex items-center gap-2 font-mono text-sm font-bold text-error"
+                    >
+                      <span class="badge badge-error badge-sm">past ~50%</span> what "losing the
+                      plot" looks like
+                    </div>
+                    <ul class="grid gap-1 text-sm text-base-content/80 md:grid-cols-3">
+                      <li>· misremembers the middle</li>
+                      <li>· contradicts earlier steps</li>
+                      <li>· invents files &amp; APIs that don't exist</li>
+                    </ul>
+                    <div class="mt-2 font-mono text-xs text-base-content/50">
+                      ~illustrative threshold, not an exact number
+                    </div>
+                  </div>
+
+                  <!-- Two levers -->
+                  <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div
+                      class="s4-3-lever card translate-y-4 border border-base-content/10 bg-base-200 opacity-0 shadow-sm transition-all duration-500"
+                    >
+                      <div class="card-body">
+                        <h3 class="card-title font-mono text-lg text-primary">
+                          Monitor · /context
+                        </h3>
+                        <p class="text-sm">
+                          Watch the gauge before it degrades — catch it while it's still grounded.
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="s4-3-lever card translate-y-4 border border-base-content/10 bg-base-200 opacity-0 shadow-sm transition-all duration-500"
+                    >
+                      <div class="card-body">
+                        <h3 class="card-title font-mono text-lg text-accent">Compact · handoff</h3>
+                        <p class="text-sm">
+                          Summarize where you are into a clean handoff, then start fresh from it.
+                        </p>
                       </div>
                     </div>
                   </div>
+
+                  <p class="text-center font-mono text-sm text-base-content/60">
+                    → and every step adds to the bill. Let's do the math.
+                  </p>
                 </div>
               </div>
             </section>
