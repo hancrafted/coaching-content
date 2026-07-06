@@ -37,11 +37,18 @@ All UI styling and component building must be done using **Tailwind CSS v4** and
 - Switch themes at runtime by setting the `data-theme` attribute on the `<html>` element (e.g. from a theme picker), and persist the user's choice to `localStorage`.
 - To avoid a flash of the default theme (FOUC), read the saved theme from `localStorage` and set `data-theme` in a small inline `<script>` in `<head>` **before first paint**. Inline `<script>` is permitted under this ADR; only inline `style="..."` attributes and `<style>` blocks are disallowed.
 
+#### Layering Decorative Backgrounds (Tailwind z-index)
+
+- Give any container that hosts negative z-index decorative/background children (e.g. a `bg-[url('...')]` ambient backdrop placed behind text) an explicit `z-*` utility such as `z-0`, not just `relative`. Tailwind's `-z-10` utility only stacks correctly **within** a container that establishes its own CSS stacking context; `position: relative` alone does not establish one — only `relative`/`absolute` combined with an explicit `z-index` value does. Without it, the `-z-10` child escapes the intended container's stacking context entirely and can render fully invisible or behind unrelated ancestor content instead of just behind its sibling text.
+  - Example: `<section class="relative z-0 ...">` wrapping `<div class="pointer-events-none absolute inset-0 -z-10 ...">` for the background layer.
+- Verify decorative/background layers that rely on daisyUI semantic colors (e.g. `from-base-100` scrims over a background image) in at least one light theme (e.g. `corporate`) and one dark theme (e.g. `night`) before shipping. Semantic colors invert contrast direction between themes, so an opacity/filter mix tuned by eye in one theme can look washed out, too loud, or muddy in another.
+
 ### Don't
 
 - Do not use inline styles `<div style="...">` for layout or standard styling.
 - Do not write custom `@apply` classes in CSS files when utility classes can be used directly.
 - Do not import other UI or CSS libraries (e.g., Bootstrap, Bulma, Material Design) into the project.
+- Do not apply a `-z-*` utility to a child element without also giving its intended containing element an explicit `z-*` value (e.g. `z-0`) — otherwise the child is not scoped to that container's stacking context.
 
 ## Consequences
 
