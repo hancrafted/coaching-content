@@ -35,5 +35,5 @@ Always run these commands from the repository root:
 
 ## Design Theme & Libraries
 
-- **daisyUI v5**: Import `@plugin "daisyui";` in `src/style.css` under the `@import "tailwindcss";` directive. Use semantic daisyUI class names (e.g. `btn`, `card`, `alert`) to keep the design cohesive and responsive.
+- **daisyUI v5**: Import `@plugin "daisyui";` in `src/style.css` under the `@import "tailwindcss";` directive. Use semantic daisyUI class names (e.g. `btn`, `card`, `alert`) to keep the design cohesive and responsive. Read https://daisyui.com/llms.txt if you need more guidance for more complex ui development.
 - **Tailwind CSS v4**: Set up theme custom properties (fonts, custom colors, animations) inside the `@theme` block in `src/style.css` instead of deprecated `tailwind.config.js` configurations.
