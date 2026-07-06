@@ -12,11 +12,41 @@ import "../src/style.css";
 
 const STORAGE_KEY = "token-economy-theme";
 const THEMES = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "cupcake", label: "Cupcake" },
+  { value: "bumblebee", label: "Bumblebee" },
+  { value: "emerald", label: "Emerald" },
   { value: "corporate", label: "Corporate" },
-  { value: "business", label: "Business" },
+  { value: "synthwave", label: "Synthwave" },
+  { value: "retro", label: "Retro" },
+  { value: "cyberpunk", label: "Cyberpunk" },
+  { value: "valentine", label: "Valentine" },
+  { value: "halloween", label: "Halloween" },
+  { value: "garden", label: "Garden" },
+  { value: "forest", label: "Forest" },
+  { value: "aqua", label: "Aqua" },
+  { value: "lofi", label: "Lofi" },
+  { value: "pastel", label: "Pastel" },
+  { value: "fantasy", label: "Fantasy" },
+  { value: "wireframe", label: "Wireframe" },
+  { value: "black", label: "Black" },
   { value: "luxury", label: "Luxury" },
+  { value: "dracula", label: "Dracula" },
+  { value: "cmyk", label: "CMYK" },
+  { value: "autumn", label: "Autumn" },
+  { value: "business", label: "Business" },
+  { value: "acid", label: "Acid" },
+  { value: "lemonade", label: "Lemonade" },
   { value: "night", label: "Night" },
+  { value: "coffee", label: "Coffee" },
+  { value: "winter", label: "Winter" },
   { value: "dim", label: "Dim" },
+  { value: "nord", label: "Nord" },
+  { value: "sunset", label: "Sunset" },
+  { value: "caramellatte", label: "Caramellatte" },
+  { value: "abyss", label: "Abyss" },
+  { value: "silk", label: "Silk" },
 ];
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -380,7 +410,7 @@ function buildThemePicker() {
       </div>
       <ul
         tabindex="0"
-        class="menu dropdown-content z-50 mt-2 w-44 rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
+        class="menu dropdown-content z-50 mt-2 max-h-80 w-48 overflow-y-auto rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
       >
         ${items}
       </ul>
@@ -437,41 +467,56 @@ registerActivate("s2-1", (reduced) => {
   });
 });
 
-// S5.1 — odometer climbs step by step, pauses, then jumps to the ~55k punch.
+// S5.1 — the agentic loop: workflow-step cards reveal top→bottom while the
+// cumulative "context" markers count up, compounding to the running total.
 registerActivate("s5-1", (reduced) => {
-  const odo = document.getElementById("s5-odometer");
-  const panel = document.getElementById("s5-meter");
-  const steps = Array.from(document.querySelectorAll("#s5-1 [data-step]"));
-  if (!odo) return;
-
-  const stops = [4000, 11000, 17000, 55000];
-  const brighten = (el) => el && el.classList.remove("opacity-30");
+  const steps = Array.from(document.querySelectorAll("#s5-1 .s5-step"));
+  const cums = Array.from(document.querySelectorAll("#s5-1 [data-cum]"));
+  const reveal = (el) => el.classList.remove("opacity-0", "translate-y-2");
 
   if (reduced) {
-    odo.textContent = nf(55000);
-    steps.forEach(brighten);
+    steps.forEach(reveal);
+    cums.forEach((el) => (el.textContent = nf(Number(el.dataset.cum))));
     return;
   }
 
+  steps.forEach((el, i) => window.setTimeout(() => reveal(el), 100 + i * 120));
+
+  // After the cards are in, walk the cumulative markers so each one carries on
+  // from the previous total — the context visibly compounding.
   let from = 0;
   const run = (i) => {
-    if (i >= stops.length) return;
-    const isPunch = i === stops.length - 1;
-    brighten(steps[i]);
-    countUp(odo, stops[i], {
+    if (i >= cums.length) return;
+    const target = Number(cums[i].dataset.cum);
+    countUp(cums[i], target, {
       from,
-      duration: isPunch ? 1500 : 650,
+      duration: 480,
       onDone: () => {
-        from = stops[i];
-        if (isPunch && panel) {
-          panel.classList.add("scale-105");
-          window.setTimeout(() => panel.classList.remove("scale-105"), 260);
-        }
-        if (!isPunch) window.setTimeout(() => run(i + 1), 520);
+        from = target;
+        window.setTimeout(() => run(i + 1), 140);
       },
     });
   };
-  run(0);
+  window.setTimeout(() => run(0), 500 + steps.length * 120);
+});
+
+// S5.2 — the same usage priced across models: rows reveal, cost bars fill.
+registerActivate("s5-2", (reduced) => {
+  const rows = Array.from(document.querySelectorAll("#s5-2 .s5-model-row"));
+  const bars = Array.from(document.querySelectorAll("#s5-2 .s5-bar"));
+  const reveal = (el) => el.classList.remove("opacity-0", "translate-y-2");
+  const fill = (bar) => {
+    bar.style.width = bar.dataset.width + "%";
+  };
+
+  if (reduced) {
+    rows.forEach(reveal);
+    bars.forEach(fill);
+    return;
+  }
+
+  rows.forEach((el, i) => window.setTimeout(() => reveal(el), 120 + i * 150));
+  bars.forEach((bar, i) => window.setTimeout(() => fill(bar), 320 + i * 150));
 });
 
 // S2.2 — one figure branches into a team; the 5–20× multiplier counts up.
@@ -870,44 +915,6 @@ registerActivate("s4-3", (isReducedMotion) => {
   setTimeout(() => {
     levers.forEach((l, i) => setTimeout(() => revealLever(l), i * 200));
   }, 1900);
-});
-
-// SECTION JS
-// BEAT S5.1
-registerActivate("s5-1", (reduced) => {
-  const odo = document.getElementById("s5-odometer");
-  const panel = document.getElementById("s5-meter");
-  const steps = Array.from(document.querySelectorAll("#s5-1 [data-step]"));
-  if (!odo) return;
-
-  const stops = [4000, 11000, 17000, 55000];
-  const brighten = (el) => el && el.classList.remove("opacity-30", "scale-[0.98]");
-
-  if (reduced) {
-    odo.textContent = nf(55000);
-    steps.forEach(brighten);
-    return;
-  }
-
-  let from = 0;
-  const run = (i) => {
-    if (i >= stops.length) return;
-    const isPunch = i === stops.length - 1;
-    brighten(steps[i]);
-    countUp(odo, stops[i], {
-      from,
-      duration: isPunch ? 1500 : 650,
-      onDone: () => {
-        from = stops[i];
-        if (isPunch && panel) {
-          panel.classList.add("scale-105", "shadow-primary/20");
-          window.setTimeout(() => panel.classList.remove("scale-105", "shadow-primary/20"), 260);
-        }
-        if (!isPunch) window.setTimeout(() => run(i + 1), 520);
-      },
-    });
-  };
-  run(0);
 });
 
 // SECTION JS

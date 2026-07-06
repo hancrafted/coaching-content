@@ -1907,101 +1907,466 @@
               id="s5-1"
               class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
               data-section="5"
-              data-section-title="Agentic vs Chat"
+              data-section-title="Cost of Agentic AI"
               data-beat="S5.1"
-              data-assertion="One simple bug fix quietly runs to ~55,000 tokens."
+              data-assertion="Every step re-sends everything before it, so one bug fix compounds to ~73,000 tokens of context."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-6xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
                 <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
-                  S5.1 · Agentic vs Chat
+                  S5.1 · Cost of Agentic AI
                 </p>
                 <h2
                   class="max-w-4xl font-display text-3xl font-extrabold leading-tight tracking-tight md:text-5xl"
                 >
-                  One simple bug fix quietly runs to
-                  <span class="text-primary">~55,000 tokens</span>.
+                  One small bug fix compounds to
+                  <span class="text-primary">~73,000 tokens</span> of context.
                 </h2>
+                <p class="mt-4 max-w-2xl text-lg font-light leading-relaxed text-base-content/70">
+                  Agentic AI runs in a loop: think, call a tool, read the result, think again. Every
+                  step is appended to the context — and the whole thing is re-sent on the next step.
+                  Watch the running total climb.
+                </p>
 
-                <div class="mt-12 grid items-center gap-8 lg:grid-cols-[1fr_auto]">
-                  <!-- The step ladder — humanist labels, mono subtotals -->
-                  <ol class="grid gap-3">
-                    <li
-                      data-step
-                      class="flex items-baseline justify-between gap-4 rounded-box border border-base-300 bg-base-100 px-5 py-4 opacity-30 transition-all duration-500"
+                <div class="mt-10 flex flex-col gap-4" data-viz="s5-1">
+                  <!-- GROUP A — the context it always carries -->
+                  <div
+                    class="s5-group grid gap-3 lg:grid-cols-[1fr_9rem] lg:items-stretch lg:gap-6"
+                  >
+                    <div class="flex flex-col gap-2">
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-primary bg-primary/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >System prompt
+                          <span class="font-normal text-base-content/50"
+                            >· rules, tools, memory</span
+                          ></span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+35,000</span
+                        >
+                      </div>
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-accent bg-accent/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >User query
+                          <span class="font-normal text-base-content/50"
+                            >· the bug report</span
+                          ></span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+1,000</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="s5-cum flex items-center justify-between gap-2 rounded-lg bg-info/5 px-4 py-2 lg:flex-col lg:items-end lg:justify-center lg:rounded-none lg:bg-transparent lg:border-l-2 lg:border-info/40 lg:px-0 lg:pl-5"
                     >
-                      <span class="text-sm leading-snug text-base-content/80 md:text-base"
-                        >Your request + the system prompt it always carries</span
-                      >
-                      <span class="shrink-0 font-mono text-sm tabular-nums text-base-content/50"
-                        >~4k</span
-                      >
-                    </li>
-                    <li
-                      data-step
-                      class="flex items-baseline justify-between gap-4 rounded-box border border-base-300 bg-base-100 px-5 py-4 opacity-30 transition-all duration-500"
-                    >
-                      <span class="text-sm leading-snug text-base-content/80 md:text-base"
-                        >It reads one file to understand the code</span
-                      >
-                      <span class="shrink-0 font-mono text-sm tabular-nums text-base-content/50"
-                        >~11k</span
-                      >
-                    </li>
-                    <li
-                      data-step
-                      class="flex items-baseline justify-between gap-4 rounded-box border border-base-300 bg-base-100 px-5 py-4 opacity-30 transition-all duration-500"
-                    >
-                      <span class="text-sm leading-snug text-base-content/80 md:text-base"
-                        >It reads a second file</span
-                      >
-                      <span class="shrink-0 font-mono text-sm tabular-nums text-base-content/50"
-                        >~17k</span
-                      >
-                    </li>
-                    <li
-                      data-step
-                      class="flex items-baseline justify-between gap-4 rounded-box border border-primary/40 bg-primary/5 px-5 py-4 opacity-30 transition-all duration-500"
-                    >
-                      <span class="text-sm font-medium leading-snug text-base-content md:text-base"
-                        >It reasons, then writes the patch</span
+                      <span class="font-mono text-[0.6rem] uppercase tracking-widest text-info/60"
+                        >context</span
                       >
                       <span
-                        class="shrink-0 font-mono text-sm font-semibold tabular-nums text-primary"
-                        >~55k</span
+                        class="s5-cum-num font-mono text-2xl font-bold tabular-nums text-info md:text-3xl"
+                        data-cum="36000"
+                        >0</span
                       >
-                    </li>
-                  </ol>
+                    </div>
+                  </div>
 
-                  <!-- The odometer — the running meter, in the machine's own typeface -->
+                  <!-- GROUP B — reads the first file -->
                   <div
-                    id="s5-meter"
-                    class="rounded-box border border-base-300 bg-base-200/60 px-8 py-10 text-center transition-transform duration-500 ease-out lg:w-80"
+                    class="s5-group grid gap-3 lg:grid-cols-[1fr_9rem] lg:items-stretch lg:gap-6"
                   >
-                    <p
-                      class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/40"
+                    <div class="flex flex-col gap-2">
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-warning bg-warning/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Thought #1</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+4,000</span
+                        >
+                      </div>
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-info bg-info/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Tool call · read file #1</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+200</span
+                        >
+                      </div>
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-success bg-success/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Tool result · file #1 contents</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+12,000</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="s5-cum flex items-center justify-between gap-2 rounded-lg bg-info/5 px-4 py-2 lg:flex-col lg:items-end lg:justify-center lg:rounded-none lg:bg-transparent lg:border-l-2 lg:border-info/40 lg:px-0 lg:pl-5"
                     >
-                      cumulative cost · one bug fix
-                    </p>
-                    <p
-                      class="mt-4 font-mono text-6xl font-medium leading-none tabular-nums md:text-7xl"
+                      <span class="font-mono text-[0.6rem] uppercase tracking-widest text-info/60"
+                        >context</span
+                      >
+                      <span
+                        class="s5-cum-num font-mono text-2xl font-bold tabular-nums text-info md:text-3xl"
+                        data-cum="52200"
+                        >0</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- GROUP C — reads the second file -->
+                  <div
+                    class="s5-group grid gap-3 lg:grid-cols-[1fr_9rem] lg:items-stretch lg:gap-6"
+                  >
+                    <div class="flex flex-col gap-2">
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-warning bg-warning/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Thought #2</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+4,000</span
+                        >
+                      </div>
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-info bg-info/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Tool call · read file #2</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+200</span
+                        >
+                      </div>
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-success bg-success/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Tool result · file #2 contents</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+9,000</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="s5-cum flex items-center justify-between gap-2 rounded-lg bg-info/5 px-4 py-2 lg:flex-col lg:items-end lg:justify-center lg:rounded-none lg:bg-transparent lg:border-l-2 lg:border-info/40 lg:px-0 lg:pl-5"
                     >
-                      <span class="text-primary/50">~</span
-                      ><span id="s5-odometer" class="text-primary">0</span>
-                    </p>
-                    <p
-                      class="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-base-content/40"
+                      <span class="font-mono text-[0.6rem] uppercase tracking-widest text-info/60"
+                        >context</span
+                      >
+                      <span
+                        class="s5-cum-num font-mono text-2xl font-bold tabular-nums text-info md:text-3xl"
+                        data-cum="65400"
+                        >0</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- GROUP D — reasons, then writes the patch -->
+                  <div
+                    class="s5-group grid gap-3 lg:grid-cols-[1fr_9rem] lg:items-stretch lg:gap-6"
+                  >
+                    <div class="flex flex-col gap-2">
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-warning bg-warning/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Thought #3</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+4,000</span
+                        >
+                      </div>
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-info bg-info/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Tool call · code patch</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+3,000</span
+                        >
+                      </div>
+                      <div
+                        class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-success bg-success/5 px-4 py-3"
+                      >
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Tool result · write success</span
+                        >
+                        <span
+                          class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                          >+50</span
+                        >
+                      </div>
+                    </div>
+                    <div
+                      class="s5-cum flex items-center justify-between gap-2 rounded-lg bg-info/5 px-4 py-2 lg:flex-col lg:items-end lg:justify-center lg:rounded-none lg:bg-transparent lg:border-l-2 lg:border-info/40 lg:px-0 lg:pl-5"
                     >
-                      tokens · illustrative, rounded
-                    </p>
+                      <span class="font-mono text-[0.6rem] uppercase tracking-widest text-info/60"
+                        >context</span
+                      >
+                      <span
+                        class="s5-cum-num font-mono text-2xl font-bold tabular-nums text-info md:text-3xl"
+                        data-cum="72450"
+                        >0</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Final response + running total -->
+                  <div
+                    class="s5-group grid gap-3 lg:grid-cols-[1fr_9rem] lg:items-stretch lg:gap-6"
+                  >
+                    <div
+                      class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-base-content/30 bg-base-200 px-4 py-3"
+                    >
+                      <span class="text-sm font-medium text-base-content md:text-base"
+                        >Final response</span
+                      >
+                      <span
+                        class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
+                        >+1,000</span
+                      >
+                    </div>
+                    <div
+                      class="s5-cum flex items-center justify-between gap-2 rounded-lg bg-info/5 px-4 py-2 lg:flex-col lg:items-end lg:justify-center lg:rounded-none lg:bg-transparent lg:border-l-2 lg:border-info/40 lg:px-0 lg:pl-5"
+                    >
+                      <span class="font-mono text-[0.6rem] uppercase tracking-widest text-info/60"
+                        >context</span
+                      >
+                      <span
+                        class="s5-cum-num font-mono text-2xl font-bold tabular-nums text-info md:text-3xl"
+                        data-cum="73450"
+                        >0</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Grand total -->
+                  <div
+                    class="mt-2 flex items-center justify-between gap-4 rounded-box border border-info/50 bg-info/10 px-5 py-4"
+                  >
+                    <span class="font-display text-base font-bold text-base-content md:text-lg"
+                      >Total context · one bug fix</span
+                    >
+                    <span
+                      class="s5-total font-mono text-3xl font-bold tabular-nums text-info md:text-4xl"
+                      data-cum="73450"
+                      >0</span
+                    >
                   </div>
                 </div>
 
-                <p class="mt-10 max-w-2xl text-lg font-light leading-relaxed text-base-content/70">
-                  Two files. One patch. No feature, no research — just a fix. Every step re-sends
-                  everything before it, so the bill compounds. The numbers are round and
-                  illustrative; the shape is real.
+                <p class="mt-8 max-w-2xl text-base font-light leading-relaxed text-base-content/60">
+                  ~73k tokens sounds cheap. But because every step re-sends the whole context, the
+                  model actually reads far more than that — which is where the bill really comes
+                  from. <span class="font-normal text-base-content/80">Next: what it costs.</span>
+                </p>
+                <p class="mt-3 font-mono text-xs text-base-content/40">
+                  Illustrative example flow · numbers rounded
+                </p>
+              </div>
+            </section>
+            <!-- ========== SECTION 5 (cont) — S5.2 Pricing ========== -->
+            <section
+              id="s5-2"
+              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Cost of Agentic AI"
+              data-beat="S5.2"
+              data-assertion="Same bug fix, ~14× cost swing — DeepSeek ~$0.11 vs Opus ~$1.54."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-6xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S5.2 · Cost of Agentic AI
+                </p>
+                <h2
+                  class="max-w-4xl font-display text-3xl font-extrabold leading-tight tracking-tight md:text-5xl"
+                >
+                  The same bug fix, <span class="text-primary">priced across models</span>.
+                </h2>
+
+                <!-- Usage summary: input vs output tokens -->
+                <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:max-w-3xl">
+                  <div class="rounded-box border border-base-300 bg-base-200/60 p-5">
+                    <p
+                      class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/40"
+                    >
+                      Billed input
+                    </p>
+                    <p
+                      class="mt-2 font-mono text-3xl font-bold tabular-nums text-base-content md:text-4xl"
+                    >
+                      ~226,000
+                    </p>
+                    <p class="mt-1 text-sm text-base-content/60">
+                      tokens — the ~73k context, re-sent on every step
+                    </p>
+                  </div>
+                  <div class="rounded-box border border-base-300 bg-base-200/60 p-5">
+                    <p
+                      class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/40"
+                    >
+                      Billed output
+                    </p>
+                    <p
+                      class="mt-2 font-mono text-3xl font-bold tabular-nums text-base-content md:text-4xl"
+                    >
+                      ~16,400
+                    </p>
+                    <p class="mt-1 text-sm text-base-content/60">
+                      tokens — the model's thoughts, calls & patch
+                    </p>
+                  </div>
+                </div>
+                <p class="mt-4 max-w-2xl text-sm leading-relaxed text-base-content/60">
+                  The trap: the final context is only ~73k tokens, but because it's re-sent every
+                  step, you pay for <span class="text-base-content/80">~226k input</span> to fix one
+                  bug.
+                </p>
+
+                <!-- Cost comparison bars -->
+                <div class="mt-10 flex flex-col gap-4" data-viz="s5-2">
+                  <!-- DeepSeek V4 Pro -->
+                  <div
+                    class="s5-model-row translate-y-2 opacity-0 transition-all duration-500 rounded-box border border-base-300 bg-base-100 p-4"
+                  >
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                      <span class="font-semibold text-base-content">DeepSeek V4 Pro</span>
+                      <span class="font-mono text-xs text-base-content/50"
+                        >$0.435 / $0.87 per 1M</span
+                      >
+                    </div>
+                    <div class="mt-3 flex items-center gap-3">
+                      <div class="h-6 flex-1 overflow-hidden rounded-full bg-base-200">
+                        <div
+                          class="s5-bar h-full w-0 rounded-full bg-success transition-[width] duration-1000 ease-out"
+                          data-width="7.3"
+                        ></div>
+                      </div>
+                      <span
+                        class="shrink-0 font-mono text-lg font-bold tabular-nums text-base-content md:text-xl"
+                        >$0.11</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Gemini 3.5 Flash -->
+                  <div
+                    class="s5-model-row translate-y-2 opacity-0 transition-all duration-500 rounded-box border border-base-300 bg-base-100 p-4"
+                  >
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                      <span class="font-semibold text-base-content">Gemini 3.5 Flash</span>
+                      <span class="font-mono text-xs text-base-content/50"
+                        >$1.50 / $9.00 per 1M</span
+                      >
+                    </div>
+                    <div class="mt-3 flex items-center gap-3">
+                      <div class="h-6 flex-1 overflow-hidden rounded-full bg-base-200">
+                        <div
+                          class="s5-bar h-full w-0 rounded-full bg-info transition-[width] duration-1000 ease-out"
+                          data-width="31.6"
+                        ></div>
+                      </div>
+                      <span
+                        class="shrink-0 font-mono text-lg font-bold tabular-nums text-base-content md:text-xl"
+                        >$0.49</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Claude Sonnet 5 -->
+                  <div
+                    class="s5-model-row translate-y-2 opacity-0 transition-all duration-500 rounded-box border border-base-300 bg-base-100 p-4"
+                  >
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                      <span class="font-semibold text-base-content"
+                        >Claude Sonnet 5
+                        <span class="font-normal text-base-content/50">· intro rate</span></span
+                      >
+                      <span class="font-mono text-xs text-base-content/50"
+                        >$2.00 / $10.00 per 1M</span
+                      >
+                    </div>
+                    <div class="mt-3 flex items-center gap-3">
+                      <div class="h-6 flex-1 overflow-hidden rounded-full bg-base-200">
+                        <div
+                          class="s5-bar h-full w-0 rounded-full bg-warning transition-[width] duration-1000 ease-out"
+                          data-width="40"
+                        ></div>
+                      </div>
+                      <span
+                        class="shrink-0 font-mono text-lg font-bold tabular-nums text-base-content md:text-xl"
+                        >$0.62</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Claude Opus 4.8 -->
+                  <div
+                    class="s5-model-row translate-y-2 opacity-0 transition-all duration-500 rounded-box border border-error/40 bg-error/5 p-4"
+                  >
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                      <span class="font-semibold text-base-content">Claude Opus 4.8</span>
+                      <span class="font-mono text-xs text-base-content/50"
+                        >$5.00 / $25.00 per 1M</span
+                      >
+                    </div>
+                    <div class="mt-3 flex items-center gap-3">
+                      <div class="h-6 flex-1 overflow-hidden rounded-full bg-base-200">
+                        <div
+                          class="s5-bar h-full w-0 rounded-full bg-error transition-[width] duration-1000 ease-out"
+                          data-width="100"
+                        ></div>
+                      </div>
+                      <span
+                        class="shrink-0 font-mono text-lg font-bold tabular-nums text-error md:text-xl"
+                        >$1.54</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Decision-maker bridge -->
+                <div class="mt-8 rounded-box border-l-4 border-primary bg-base-200 p-6">
+                  <p class="text-base leading-relaxed text-base-content/90 md:text-lg">
+                    <span class="font-bold text-primary">~14× spread</span> for identical output. At
+                    ~50 fixes a day, that's roughly <span class="font-mono">$6</span> vs
+                    <span class="font-mono">$77</span> per developer per day — before anyone's
+                    shipped a single feature. This is why routing (S6) matters.
+                  </p>
+                </div>
+
+                <p class="mt-4 max-w-3xl text-xs leading-relaxed text-base-content/40">
+                  List prices per 1M tokens, July 2026. Sonnet 5 shown at the introductory rate ($2
+                  / $10 through Aug 31, 2026; $3 / $15 standard after). Prompt caching can cut
+                  re-sent input cost substantially — these are the un-cached figures.
                 </p>
               </div>
             </section>
