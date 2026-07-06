@@ -1,118 +1,213 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="corporate" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coaching Content Hub</title>
+
+    <!-- Apply saved theme before first paint — shares a theme with the workshop pages -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem("token-economy-theme");
+        if (savedTheme) {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
+      } catch (e) {
+        /* localStorage unavailable — fall back to the default theme */
+      }
+    </script>
+
+    <title>Coaching Content Hub — AI Leadership Workshops</title>
     <meta
       name="description"
-      content="Central Hub for Interactive Workshops and Technical Presentations by Han."
+      content="Practical workshops on AI literacy and cost for decision-makers — CTOs, VPs, and team leads. No engineering background required."
     />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./src/style.css" />
   </head>
-  <body
-    class="bg-brand-dark bg-[radial-gradient(circle_at_10%_20%,rgba(59,130,246,0.15)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(168,85,247,0.15)_0%,transparent_40%)] bg-no-repeat bg-fixed text-gray-100 min-h-screen flex flex-col font-sans leading-relaxed"
-  >
-    <header class="py-16 px-8 text-center max-w-6xl mx-auto w-full">
-      <h1
-        class="font-display text-5xl md:text-6xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-400 to-purple-500 drop-shadow-[0_0_30px_rgba(96,165,250,0.2)]"
-      >
-        Coaching Content Hub
-      </h1>
-      <p class="text-xl text-gray-400 max-w-xl mx-auto font-light">
-        A centralized workshop and presentation platform powered by Vite & View Transitions.
-      </p>
+  <body class="flex min-h-full flex-col bg-base-100 font-sans text-base-content antialiased">
+    <!-- Identity bar -->
+    <header class="border-b border-base-200 px-6 py-4 md:px-16 lg:px-24">
+      <div class="mx-auto flex max-w-7xl items-center justify-between">
+        <span class="font-display text-sm font-semibold tracking-wide">Coaching Content Hub</span>
+        <span
+          class="hidden font-mono text-xs uppercase tracking-[0.25em] text-base-content/40 sm:inline"
+          >AI Leadership Workshops</span
+        >
+      </div>
     </header>
 
-    <main class="flex-1 max-w-6xl mx-auto w-full px-8 pb-16">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        <!-- Presentation Card 1 -->
-        <article
-          class="bg-brand-card/70 border border-white/8 backdrop-blur-xl rounded-3xl p-8 flex flex-col h-full relative overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:border-blue-500/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6),0_0_30px_rgba(59,130,246,0.1)] group"
-          id="card-token-economy"
+    <!-- Hero — the thesis, typographic -->
+    <section class="relative px-6 py-24 md:px-16 lg:px-24">
+      <div class="mx-auto max-w-7xl">
+        <p class="mb-8 font-mono text-xs uppercase tracking-[0.3em] text-primary/60">
+          For CTOs, VPs &amp; team leads
+        </p>
+        <h1
+          class="font-display text-5xl font-extrabold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl"
         >
-          <!-- Hover Border Accent -->
-          <div
-            class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          ></div>
+          <span class="block">Your team is already spending</span>
+          <span class="block">money on AI.</span>
+          <span class="mt-2 block text-primary">Does anyone know how much?</span>
+        </h1>
+        <p
+          class="mt-8 max-w-2xl text-lg font-light leading-relaxed text-base-content/60 md:text-xl"
+        >
+          Workshops that turn AI from an invisible cost into a budget your team can actually manage
+          — built for decision-makers, not engineers.
+        </p>
+      </div>
 
-          <span
-            class="self-start bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 text-blue-300 text-xs font-semibold px-3 py-1 rounded-full mb-5 tracking-wider uppercase"
-          >
-            Interactive Slide Deck
-          </span>
-          <h2 class="font-display text-2xl font-bold text-white mb-3">AI Token Economy 101</h2>
-          <p class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow">
-            An in-depth introduction to value creation, agent-to-agent transactions, utility
-            mechanics, and incentive design in decentralized artificial intelligence ecosystems.
-          </p>
-          <div class="flex justify-between items-center mt-auto">
-            <span class="text-xs text-gray-400">Est: 15 mins</span>
-            <a
-              href="./ai-token-economy-101/index.html"
-              class="text-blue-400 font-semibold group-hover:text-purple-400 transition-colors duration-200 inline-flex items-center gap-2 text-sm"
-              id="link-token-economy"
-            >
-              Launch Deck
-              <svg
-                class="transform group-hover:translate-x-1.5 transition-transform duration-300"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+      <!-- Ambient, unwatched meter — the thesis this hub is selling, made literal -->
+      <div
+        class="pointer-events-none absolute bottom-8 right-6 select-none text-right md:right-16 lg:right-24"
+        aria-hidden="true"
+      >
+        <p class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/30">
+          tokens billed · unwatched
+        </p>
+        <p
+          id="hub-meter"
+          class="mt-1 font-mono text-2xl leading-none tabular-nums text-base-content/20 md:text-4xl"
+        >
+          0
+        </p>
+      </div>
+    </section>
+
+    <!-- Workshops — an editorial list, not a card grid -->
+    <main class="flex-1 border-t border-base-200 px-6 pb-24 pt-16 md:px-16 lg:px-24">
+      <div class="mx-auto max-w-7xl">
+        <p class="mb-12 font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
+          Workshops
+        </p>
+
+        <!-- Featured workshop -->
+        <article class="border-b border-base-200 pb-16" id="card-token-economy">
+          <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-16">
+            <div class="shrink-0 lg:w-56">
+              <span
+                class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-wider text-primary"
+                >Available now</span
               >
-                <path
-                  d="M6 12L10 8L6 4"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </a>
+              <p class="mt-4 font-mono text-sm tabular-nums text-base-content/50">20 min</p>
+              <p class="font-mono text-xs text-base-content/40">CTOs · VPs · team leads</p>
+            </div>
+            <div class="flex-1">
+              <h2 class="font-display text-3xl font-bold leading-tight md:text-4xl">
+                The AI Token Economy
+              </h2>
+              <p class="mt-4 max-w-2xl text-base font-light leading-relaxed text-base-content/60">
+                What an AI actually costs, why the meter stays invisible, and why every employee —
+                from junior to senior — now owns a budget they never signed up to manage.
+              </p>
+              <div class="mt-8">
+                <a
+                  href="./ai-token-economy-101/index.html"
+                  class="btn btn-primary gap-2"
+                  id="link-token-economy"
+                >
+                  Start the workshop
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 12h14M12 5l7 7-7 7"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
           </div>
         </article>
 
-        <!-- Placeholder for future slide decks -->
-        <article
-          class="bg-brand-card/30 border border-white/4 backdrop-blur-xl rounded-3xl p-8 flex flex-col h-full relative overflow-hidden opacity-50 cursor-not-allowed"
-          id="card-placeholder-1"
-        >
-          <span
-            class="self-start bg-white/5 border border-transparent text-gray-400 text-xs font-semibold px-3 py-1 rounded-full mb-5 tracking-wider uppercase"
+        <!-- Coming soon -->
+        <div class="mt-12 grid gap-6 md:grid-cols-2">
+          <article
+            class="cursor-not-allowed rounded-box border border-base-200 p-6 opacity-50"
+            id="card-placeholder-1"
+            aria-disabled="true"
           >
-            Coming Soon
-          </span>
-          <h2 class="font-display text-2xl font-bold text-white/70 mb-3">
-            Multi-Agent Systems & Swarms
-          </h2>
-          <p class="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">
-            Practical engineering patterns for designing robust swarms of specialized language model
-            agents with dynamic routing and message passing protocols.
-          </p>
-          <div class="flex justify-between items-center mt-auto">
-            <span class="text-xs text-gray-500">Status: In Draft</span>
-            <span class="text-gray-500 text-sm font-semibold"> Locked </span>
-          </div>
-        </article>
+            <span class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/40"
+              >In draft</span
+            >
+            <h2 class="mt-3 font-display text-xl font-semibold text-base-content/70">
+              Multi-Agent Systems &amp; Swarms
+            </h2>
+            <p class="mt-2 text-sm font-light leading-relaxed text-base-content/40">
+              Engineering patterns for designing robust swarms of specialized agents with dynamic
+              routing.
+            </p>
+          </article>
+
+          <article
+            class="cursor-not-allowed rounded-box border border-dashed border-base-content/15 p-6 opacity-40"
+            aria-disabled="true"
+          >
+            <span class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/30"
+              >Planned</span
+            >
+            <h2 class="mt-3 font-display text-xl font-semibold text-base-content/50">
+              More workshops
+            </h2>
+            <p class="mt-2 text-sm font-light leading-relaxed text-base-content/30">
+              More sessions on AI leadership are planned for 2026.
+            </p>
+          </article>
+        </div>
       </div>
     </main>
 
-    <footer
-      class="py-16 px-8 text-center text-gray-400 text-sm border-t border-white/8 max-w-6xl w-full mx-auto mt-auto"
-    >
-      <p class="mb-2">&copy; 2026 Coaching Content Hub. Crafted with Vite and Tailwind CSS v4.</p>
-      <p>Use keyboard arrow keys or spacebar to navigate slides once launched.</p>
+    <footer class="border-t border-base-200 px-6 py-10 md:px-16 lg:px-24">
+      <div
+        class="mx-auto flex max-w-7xl flex-col gap-2 text-center sm:flex-row sm:justify-between sm:text-left"
+      >
+        <p class="font-mono text-xs text-base-content/30">&copy; 2026 Han</p>
+        <p class="font-mono text-xs text-base-content/30">
+          Built with Vite · Tailwind CSS v4 · daisyUI v5
+        </p>
+      </div>
     </footer>
 
+    <!-- Ambient meter — same metaphor as the workshop it introduces: a cost that never stops -->
+    <script>
+      (function () {
+        var el = document.getElementById("hub-meter");
+        if (!el) return;
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var fmt = function (n) {
+          return Math.floor(n).toLocaleString("en-US");
+        };
+        var value = 1472318; // the meter has been running long before you arrived
+        if (reduced) {
+          el.textContent = fmt(value);
+          return;
+        }
+        var last = null;
+        function step(ts) {
+          if (last === null) last = ts;
+          value += (ts - last) * 3.2;
+          last = ts;
+          el.textContent = fmt(value);
+          window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+      })();
+    </script>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>
