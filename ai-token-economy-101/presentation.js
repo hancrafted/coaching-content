@@ -164,6 +164,70 @@ function setActive(id) {
   if (window.location.hash !== hash) {
     window.history.replaceState(null, "", hash);
   }
+
+  // A section taller than the viewport may never cross the reveal ratio;
+  // becoming the active beat is a reliable second trigger for its instrument.
+  fireActivate(id);
+}
+
+/* ------------------------------------------------------------------ *
+ * Viz kit — shared instruments reused across beats
+ *
+ * The through-line of the talk is a meter that is normally invisible, so
+ * every beat's evidence is an *instrument*: a number that counts, a bar
+ * that fills, chips that tally. Cost is always rendered in the machine's
+ * own typeface (font-mono tabular-nums); the human side stays humanist.
+ *
+ * Each beat may register an `activate` callback that fires ONCE, the first
+ * time the beat is substantially in view (or becomes the active beat). It
+ * receives `reduced` (prefers-reduced-motion) and must render the final
+ * state instantly when true.
+ * ------------------------------------------------------------------ */
+
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+const nf = (n) => Math.round(n).toLocaleString("en-US");
+
+/**
+ * rAF count-up. Writes to `el.textContent` from `from`→`to`.
+ * @param {(n:number)=>string} [opts.format] formatter (default en-US integer)
+ * @param {()=>void} [opts.onDone] fired when the count settles
+ */
+function countUp(el, to, opts = {}) {
+  const { duration = 1400, from = 0, format = nf, easing = easeOutCubic, onDone } = opts;
+  if (reduceMotion) {
+    el.textContent = format(to);
+    if (onDone) onDone();
+    return;
+  }
+  let startTs = null;
+  const step = (ts) => {
+    if (startTs === null) startTs = ts;
+    const t = Math.min(1, (ts - startTs) / duration);
+    el.textContent = format(from + (to - from) * easing(t));
+    if (t < 1) {
+      window.requestAnimationFrame(step);
+    } else if (onDone) {
+      onDone();
+    }
+  };
+  window.requestAnimationFrame(step);
+}
+
+const activateRegistry = {};
+const activated = new Set();
+
+/** A beat registers its on-activation animation here (keyed by section id). */
+function registerActivate(id, fn) {
+  activateRegistry[id] = fn;
+}
+
+/** Fire a beat's activate callback exactly once. */
+function fireActivate(id) {
+  if (activated.has(id)) return;
+  const fn = activateRegistry[id];
+  if (!fn) return;
+  activated.add(id);
+  fn(reduceMotion);
 }
 
 /* ------------------------------------------------------------------ *
@@ -182,6 +246,8 @@ function setupObserver() {
       entries.forEach((e) => {
         ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
         if (e.isIntersecting && e.intersectionRatio > 0.1) revealBeat(e.target);
+        // Animate the beat's instrument once it is substantially in view.
+        if (e.isIntersecting && e.intersectionRatio > 0.35) fireActivate(e.target.id);
       });
 
       let bestId = null;
@@ -354,6 +420,140 @@ function startHeroMeter() {
   };
   window.requestAnimationFrame(step);
 }
+
+/* ------------------------------------------------------------------ *
+ * Beat instruments — each registers its on-activation animation.
+ * Registered before Init so they exist when the first beat activates.
+ * ------------------------------------------------------------------ */
+
+// S2.1 — the freelancer's three flaws reveal in sequence.
+registerActivate("s2-1", (reduced) => {
+  const flaws = document.querySelectorAll("#s2-1 [data-flaw]");
+  flaws.forEach((el, i) => {
+    const show = () => el.classList.remove("opacity-0", "translate-y-3");
+    if (reduced) show();
+    else window.setTimeout(show, 160 + i * 260);
+  });
+});
+
+// S5.1 — odometer climbs step by step, pauses, then jumps to the ~55k punch.
+registerActivate("s5-1", (reduced) => {
+  const odo = document.getElementById("s5-odometer");
+  const panel = document.getElementById("s5-meter");
+  const steps = Array.from(document.querySelectorAll("#s5-1 [data-step]"));
+  if (!odo) return;
+
+  const stops = [4000, 11000, 17000, 55000];
+  const brighten = (el) => el && el.classList.remove("opacity-30");
+
+  if (reduced) {
+    odo.textContent = nf(55000);
+    steps.forEach(brighten);
+    return;
+  }
+
+  let from = 0;
+  const run = (i) => {
+    if (i >= stops.length) return;
+    const isPunch = i === stops.length - 1;
+    brighten(steps[i]);
+    countUp(odo, stops[i], {
+      from,
+      duration: isPunch ? 1500 : 650,
+      onDone: () => {
+        from = stops[i];
+        if (isPunch && panel) {
+          panel.classList.add("scale-105");
+          window.setTimeout(() => panel.classList.remove("scale-105"), 260);
+        }
+        if (!isPunch) window.setTimeout(() => run(i + 1), 520);
+      },
+    });
+  };
+  run(0);
+});
+
+// S2.2 — one figure branches into a team; the 5–20× multiplier counts up.
+registerActivate("s2-2", (reduced) => {
+  const mult = document.getElementById("s22-mult");
+  const leaves = document.querySelectorAll("#s2-2 [data-branch]");
+
+  if (reduced) {
+    if (mult) mult.textContent = "20";
+    leaves.forEach((el) => el.classList.remove("opacity-0"));
+    return;
+  }
+
+  leaves.forEach((el, i) =>
+    window.setTimeout(() => el.classList.remove("opacity-0"), 220 + i * 180),
+  );
+  if (mult) countUp(mult, 20, { duration: 1200 });
+});
+
+// S2.3 — four eras reveal left→right; the token-economy foundation draws in last.
+registerActivate("s2-3", (reduced) => {
+  const eras = document.querySelectorAll("#s2-3 [data-era]");
+  const foundation = document.getElementById("s23-foundation");
+  const reveal = (el) => el.classList.remove("opacity-0", "translate-y-4");
+
+  if (reduced) {
+    eras.forEach(reveal);
+    if (foundation) foundation.style.width = "100%";
+    return;
+  }
+
+  eras.forEach((el, i) => window.setTimeout(() => reveal(el), 120 + i * 180));
+  if (foundation) {
+    window.setTimeout(
+      () => {
+        foundation.style.width = "100%";
+      },
+      120 + eras.length * 180 + 200,
+    );
+  }
+});
+
+// S2.4 — AI charges drip in and the running total climbs to match the signed invoice.
+registerActivate("s2-4", (reduced) => {
+  const total = document.getElementById("s24-total");
+  const drips = document.querySelectorAll("#s2-4 [data-drip]");
+  const euro = (n) => nf(n);
+
+  if (reduced) {
+    if (total) total.textContent = euro(3200);
+    drips.forEach((el) => el.classList.remove("opacity-0"));
+    return;
+  }
+
+  drips.forEach((el, i) =>
+    window.setTimeout(() => el.classList.remove("opacity-0"), 200 + i * 160),
+  );
+  if (total) countUp(total, 3200, { duration: 1600, format: euro });
+});
+
+// S2.5 — quality/value bars fill; the cheaper option is crowned the winner.
+registerActivate("s2-5", (reduced) => {
+  const fills = document.querySelectorAll("#s2-5 [data-fill]");
+  const counts = document.querySelectorAll("#s2-5 [data-count]");
+  const winner = document.getElementById("s25-winner");
+  const applyFills = () =>
+    fills.forEach((el) => {
+      el.style.width = `${el.dataset.fill}%`;
+    });
+
+  if (reduced) {
+    applyFills();
+    counts.forEach((el) => {
+      el.textContent = el.dataset.countTo;
+    });
+    if (winner) winner.classList.remove("opacity-0");
+    return;
+  }
+
+  window.setTimeout(applyFills, 150);
+  counts.forEach((el) => countUp(el, Number(el.dataset.countTo), { duration: 1200 }));
+  if (winner) window.setTimeout(() => winner.classList.remove("opacity-0"), 900);
+});
 
 /* ------------------------------------------------------------------ *
  * Init
