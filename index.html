@@ -1,79 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coaching Content Hub</title>
-  <meta name="description" content="Central Hub for Interactive Workshops and Technical Presentations by Han.">
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./src/style.css">
-</head>
-<body class="bg-brand-dark bg-[radial-gradient(circle_at_10%_20%,rgba(59,130,246,0.15)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(168,85,247,0.15)_0%,transparent_40%)] bg-no-repeat bg-fixed text-gray-100 min-h-screen flex flex-col font-sans leading-relaxed">
-  <header class="py-16 px-8 text-center max-w-6xl mx-auto w-full">
-    <h1 class="font-display text-5xl md:text-6xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-400 to-purple-500 drop-shadow-[0_0_30px_rgba(96,165,250,0.2)]">
-      Coaching Content Hub
-    </h1>
-    <p class="text-xl text-gray-400 max-w-xl mx-auto font-light">
-      A centralized workshop and presentation platform powered by Vite & View Transitions.
-    </p>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coaching Content Hub</title>
+    <meta
+      name="description"
+      content="Central Hub for Interactive Workshops and Technical Presentations by Han."
+    />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body
+    class="bg-brand-dark bg-[radial-gradient(circle_at_10%_20%,rgba(59,130,246,0.15)_0%,transparent_40%),radial-gradient(circle_at_90%_80%,rgba(168,85,247,0.15)_0%,transparent_40%)] bg-no-repeat bg-fixed text-gray-100 min-h-screen flex flex-col font-sans leading-relaxed"
+  >
+    <header class="py-16 px-8 text-center max-w-6xl mx-auto w-full">
+      <h1
+        class="font-display text-5xl md:text-6xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-400 to-purple-500 drop-shadow-[0_0_30px_rgba(96,165,250,0.2)]"
+      >
+        Coaching Content Hub
+      </h1>
+      <p class="text-xl text-gray-400 max-w-xl mx-auto font-light">
+        A centralized workshop and presentation platform powered by Vite & View Transitions.
+      </p>
+    </header>
 
-  <main class="flex-1 max-w-6xl mx-auto w-full px-8 pb-16">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-      <!-- Presentation Card 1 -->
-      <article class="bg-brand-card/70 border border-white/8 backdrop-blur-xl rounded-3xl p-8 flex flex-col h-full relative overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:border-blue-500/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6),0_0_30px_rgba(59,130,246,0.1)] group" id="card-token-economy">
-        <!-- Hover Border Accent -->
-        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
-        <span class="self-start bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 text-blue-300 text-xs font-semibold px-3 py-1 rounded-full mb-5 tracking-wider uppercase">
-          Interactive Slide Deck
-        </span>
-        <h2 class="font-display text-2xl font-bold text-white mb-3">
-          AI Token Economy 101
-        </h2>
-        <p class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow">
-          An in-depth introduction to value creation, agent-to-agent transactions, utility mechanics, and incentive design in decentralized artificial intelligence ecosystems.
-        </p>
-        <div class="flex justify-between items-center mt-auto">
-          <span class="text-xs text-gray-400">Est: 15 mins</span>
-          <a href="./ai-token-economy-101/index.html" class="text-blue-400 font-semibold group-hover:text-purple-400 transition-colors duration-200 inline-flex items-center gap-2 text-sm" id="link-token-economy">
-            Launch Deck
-            <svg class="transform group-hover:translate-x-1.5 transition-transform duration-300" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
-      </article>
-      
-      <!-- Placeholder for future slide decks -->
-      <article class="bg-brand-card/30 border border-white/4 backdrop-blur-xl rounded-3xl p-8 flex flex-col h-full relative overflow-hidden opacity-50 cursor-not-allowed" id="card-placeholder-1">
-        <span class="self-start bg-white/5 border border-transparent text-gray-400 text-xs font-semibold px-3 py-1 rounded-full mb-5 tracking-wider uppercase">
-          Coming Soon
-        </span>
-        <h2 class="font-display text-2xl font-bold text-white/70 mb-3">
-          Multi-Agent Systems & Swarms
-        </h2>
-        <p class="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">
-          Practical engineering patterns for designing robust swarms of specialized language model agents with dynamic routing and message passing protocols.
-        </p>
-        <div class="flex justify-between items-center mt-auto">
-          <span class="text-xs text-gray-500">Status: In Draft</span>
-          <span class="text-gray-500 text-sm font-semibold">
-            Locked
+    <main class="flex-1 max-w-6xl mx-auto w-full px-8 pb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+        <!-- Presentation Card 1 -->
+        <article
+          class="bg-brand-card/70 border border-white/8 backdrop-blur-xl rounded-3xl p-8 flex flex-col h-full relative overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:border-blue-500/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.6),0_0_30px_rgba(59,130,246,0.1)] group"
+          id="card-token-economy"
+        >
+          <!-- Hover Border Accent -->
+          <div
+            class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+
+          <span
+            class="self-start bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 text-blue-300 text-xs font-semibold px-3 py-1 rounded-full mb-5 tracking-wider uppercase"
+          >
+            Interactive Slide Deck
           </span>
-        </div>
-      </article>
-    </div>
-  </main>
+          <h2 class="font-display text-2xl font-bold text-white mb-3">AI Token Economy 101</h2>
+          <p class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow">
+            An in-depth introduction to value creation, agent-to-agent transactions, utility
+            mechanics, and incentive design in decentralized artificial intelligence ecosystems.
+          </p>
+          <div class="flex justify-between items-center mt-auto">
+            <span class="text-xs text-gray-400">Est: 15 mins</span>
+            <a
+              href="./ai-token-economy-101/index.html"
+              class="text-blue-400 font-semibold group-hover:text-purple-400 transition-colors duration-200 inline-flex items-center gap-2 text-sm"
+              id="link-token-economy"
+            >
+              Launch Deck
+              <svg
+                class="transform group-hover:translate-x-1.5 transition-transform duration-300"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 12L10 8L6 4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+          </div>
+        </article>
 
-  <footer class="py-16 px-8 text-center text-gray-400 text-sm border-t border-white/8 max-w-6xl w-full mx-auto mt-auto">
-    <p class="mb-2">&copy; 2026 Coaching Content Hub. Crafted with Vite and Tailwind CSS v4.</p>
-    <p>Use keyboard arrow keys or spacebar to navigate slides once launched.</p>
-  </footer>
+        <!-- Placeholder for future slide decks -->
+        <article
+          class="bg-brand-card/30 border border-white/4 backdrop-blur-xl rounded-3xl p-8 flex flex-col h-full relative overflow-hidden opacity-50 cursor-not-allowed"
+          id="card-placeholder-1"
+        >
+          <span
+            class="self-start bg-white/5 border border-transparent text-gray-400 text-xs font-semibold px-3 py-1 rounded-full mb-5 tracking-wider uppercase"
+          >
+            Coming Soon
+          </span>
+          <h2 class="font-display text-2xl font-bold text-white/70 mb-3">
+            Multi-Agent Systems & Swarms
+          </h2>
+          <p class="text-gray-500 text-sm leading-relaxed mb-8 flex-grow">
+            Practical engineering patterns for designing robust swarms of specialized language model
+            agents with dynamic routing and message passing protocols.
+          </p>
+          <div class="flex justify-between items-center mt-auto">
+            <span class="text-xs text-gray-500">Status: In Draft</span>
+            <span class="text-gray-500 text-sm font-semibold"> Locked </span>
+          </div>
+        </article>
+      </div>
+    </main>
 
-  <script type="module" src="./src/main.js"></script>
-</body>
+    <footer
+      class="py-16 px-8 text-center text-gray-400 text-sm border-t border-white/8 max-w-6xl w-full mx-auto mt-auto"
+    >
+      <p class="mb-2">&copy; 2026 Coaching Content Hub. Crafted with Vite and Tailwind CSS v4.</p>
+      <p>Use keyboard arrow keys or spacebar to navigate slides once launched.</p>
+    </footer>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>
