@@ -410,7 +410,7 @@ function buildThemePicker() {
       </div>
       <ul
         tabindex="0"
-        class="menu dropdown-content z-50 mt-2 max-h-80 w-48 overflow-y-auto rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
+        class="menu dropdown-content z-50 mt-2 max-h-80 w-48 flex-col flex-nowrap overflow-y-auto rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
       >
         ${items}
       </ul>
