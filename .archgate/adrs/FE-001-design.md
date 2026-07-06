@@ -31,6 +31,12 @@ All UI styling and component building must be done using **Tailwind CSS v4** and
 - Import `tailwindcss` and the `daisyui` plugin in the main CSS entry file (`src/style.css`).
 - Use daisyUI semantic colors (`bg-base-100`, `text-primary`, etc.) instead of hardcoded hex values or generic Tailwind colors (e.g., `bg-red-500`) to support automatic theme switching.
 
+#### Theming (daisyUI v5)
+
+- Configure the enabled themes inside the daisyUI plugin config block in `src/style.css`, e.g. `@plugin "daisyui" { themes: corporate --default, business, luxury; }`. The bare `@plugin "daisyui";` only enables the default `light`/`dark` themes — it does **not** enable a curated set.
+- Switch themes at runtime by setting the `data-theme` attribute on the `<html>` element (e.g. from a theme picker), and persist the user's choice to `localStorage`.
+- To avoid a flash of the default theme (FOUC), read the saved theme from `localStorage` and set `data-theme` in a small inline `<script>` in `<head>` **before first paint**. Inline `<script>` is permitted under this ADR; only inline `style="..."` attributes and `<style>` blocks are disallowed.
+
 ### Don't
 
 - Do not use inline styles `<div style="...">` for layout or standard styling.
@@ -53,6 +59,6 @@ All UI styling and component building must be done using **Tailwind CSS v4** and
 
 This ADR is enforced by automated checks in `.archgate/adrs/FE-001-design.rules.ts`:
 
-1. `tailwind-and-daisyui-imported`: Ensures that the main style entry (`src/style.css`) imports tailwindcss and the daisyui plugin.
+1. `tailwind-and-daisyui-imported`: Ensures that the main style entry (`src/style.css`) imports tailwindcss and the daisyui plugin. This check accepts **both** the bare `@plugin "daisyui";` form and the daisyUI v5 config-block form `@plugin "daisyui" { ... }` (used to enable a curated theme set).
 2. `no-raw-inline-styles`: Warns/errors on the usage of raw inline `style="..."` tags in HTML files when Tailwind utility classes should be used instead.
 3. `no-style-tags-in-html`: Ensures `<style>` blocks are not used in HTML files, keeping styling centralized and utility-driven.

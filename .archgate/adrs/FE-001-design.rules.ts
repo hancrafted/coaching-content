@@ -11,10 +11,10 @@ export default {
 
         const content = await ctx.readFile("src/style.css");
 
-        const hasTailwind =
-          content.includes('@import "tailwindcss";') || content.includes("@import 'tailwindcss';");
-        const hasDaisyUi =
-          content.includes('@plugin "daisyui";') || content.includes("@plugin 'daisyui';");
+        // Accept both the bare import and the daisyUI v5 config-block form
+        // (e.g. `@plugin "daisyui" { themes: corporate --default, ...; }`).
+        const hasTailwind = /@import\s+["']tailwindcss["']\s*;/.test(content);
+        const hasDaisyUi = /@plugin\s+["']daisyui["']\s*[;{]/.test(content);
 
         if (!hasTailwind) {
           ctx.report.violation({
