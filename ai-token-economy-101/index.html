@@ -51,6 +51,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="./animation.css" />
   </head>
 
   <body class="h-full overflow-hidden bg-base-100 text-base-content font-sans antialiased">
@@ -167,7 +168,7 @@
               data-section="1"
               data-section-title="Intro"
               data-beat="S1.1"
-              data-assertion="The AI Token Economy is foundational for everyone, not just engineers — every employee from junior to senior now owns a budget they never signed up to manage."
+              data-assertion="AI can give you and the people you lead super powers, but it comes with hidden managing responsibilities you didn't sign up for. A general overview."
             >
               <!--
                 Ambient hero backdrop. The source illustration splits capability icons
@@ -185,7 +186,7 @@
                 <img
                   src="./assets/hero.webp"
                   alt=""
-                  class="absolute inset-0 h-full w-full object-cover object-top opacity-[0.45] saturate-[0.45] contrast-125"
+                  class="absolute inset-0 h-full w-full object-cover object-top opacity-100 saturate-[0.45] contrast-125"
                 />
                 <div
                   class="absolute inset-0 bg-gradient-to-b from-base-100 via-base-100/35 to-base-100"
@@ -203,11 +204,11 @@
                   <span class="block text-base-content">The AI Token Economy</span>
                 </h1>
                 <p class="mt-10 text-lg font-light leading-relaxed text-base-content/70 md:text-xl">
-                  Why it is foundational for everyone, not just engineers.
+                  AI can give you and the people you lead super powers, but it comes with hidden
+                  managing responsibilities you didn't sign up for.
                 </p>
                 <p class="mt-4 text-base leading-relaxed text-base-content/50">
-                  Every employee from junior to senior now owns a budget they never signed up to
-                  manage. A survival guide.
+                  A general overview.
                 </p>
               </div>
 
@@ -281,7 +282,7 @@
                   <div class="grid gap-3">
                     <div
                       data-reveal
-                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                      class="s21-card relative flex translate-y-3 flex-col gap-2 overflow-hidden rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
                         class="w-fit rounded-md bg-success/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-success"
@@ -292,11 +293,21 @@
                         Knows about everything you ask them, and can produce results fast without
                         needing a break.
                       </p>
+                      <span aria-hidden="true" class="s21-shimmer text-success"></span>
+                      <span
+                        aria-hidden="true"
+                        class="s21-frame s21-frame--comet text-success"
+                      ></span>
+                      <span aria-hidden="true" class="s21-motif s21-motif--zip text-success">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                          <path d="M13 2 3 14h7l-1 8 11-12h-7z" />
+                        </svg>
+                      </span>
                     </div>
 
                     <div
                       data-reveal
-                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                      class="s21-card relative flex translate-y-3 flex-col gap-2 overflow-hidden rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
                         class="w-fit rounded-md bg-success/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-success"
@@ -306,11 +317,36 @@
                       <p class="text-sm leading-relaxed text-base-content/60">
                         No task too big or too niche — it'll take a swing at whatever you hand it.
                       </p>
+                      <span
+                        aria-hidden="true"
+                        class="s21-frame s21-frame--draw text-success"
+                      ></span>
+                      <span aria-hidden="true" class="s21-motif s21-motif--check text-success">
+                        <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5">
+                          <rect
+                            x="3"
+                            y="3"
+                            width="18"
+                            height="18"
+                            rx="4"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                          <path
+                            class="s21-tick"
+                            d="M7 12.5 10.5 16 17 8.5"
+                            stroke="currentColor"
+                            stroke-width="2.4"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
                     </div>
 
                     <div
                       data-reveal
-                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                      class="s21-card relative flex translate-y-3 flex-col gap-2 overflow-hidden rounded-box border border-success/30 bg-success/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
                         class="w-fit rounded-md bg-success/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-success"
@@ -320,6 +356,21 @@
                       <p class="text-sm leading-relaxed text-base-content/60">
                         Never stops, never sleeps, unless you stop paying.
                       </p>
+                      <span
+                        aria-hidden="true"
+                        class="s21-frame s21-frame--march text-success"
+                      ></span>
+                      <span aria-hidden="true" class="s21-motif s21-motif--loop text-success">
+                        <svg viewBox="0 0 24 12" fill="none" class="h-4 w-7">
+                          <path
+                            class="s21-inf"
+                            d="M2 6C2 1.5 9 1.5 12 6C15 10.5 22 10.5 22 6C22 1.5 15 1.5 12 6C9 10.5 2 10.5 2 6Z"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </span>
                     </div>
                   </div>
 
@@ -336,7 +387,7 @@
                   <div class="grid gap-3">
                     <div
                       data-reveal
-                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                      class="s21-card relative flex translate-y-3 flex-col gap-2 overflow-hidden rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
                         class="w-fit rounded-md bg-error/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-error"
@@ -346,11 +397,18 @@
                       <p class="text-sm leading-relaxed text-base-content/60">
                         Assumes the gaps, fills them with whatever comes to mind.
                       </p>
+                      <span aria-hidden="true" class="s21-frame s21-frame--gap text-error"></span>
+                      <span aria-hidden="true" class="s21-motif s21-motif--noq text-error">
+                        <span class="relative font-display text-xl font-bold leading-none">
+                          ?
+                          <span class="s21-slash"></span>
+                        </span>
+                      </span>
                     </div>
 
                     <div
                       data-reveal
-                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                      class="s21-card relative flex translate-y-3 flex-col gap-2 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
                         class="w-fit rounded-md bg-error/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-error"
@@ -360,20 +418,163 @@
                       <p class="text-sm leading-relaxed text-base-content/60">
                         It bills you for every word you say and every word it says back.
                       </p>
+                      <span aria-hidden="true" class="s21-frame s21-frame--ching text-error"></span>
+                      <span aria-hidden="true" class="s21-bills text-error">
+                        <span class="s21-bill">
+                          <svg viewBox="0 0 28 18" fill="none" class="h-3.5 w-6">
+                            <rect
+                              x="1"
+                              y="1"
+                              width="26"
+                              height="16"
+                              rx="2.5"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                            />
+                            <circle cx="14" cy="9" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <line
+                              x1="14"
+                              y1="4.5"
+                              x2="14"
+                              y2="13.5"
+                              stroke="currentColor"
+                              stroke-width="1.2"
+                            />
+                          </svg>
+                        </span>
+                        <span class="s21-bill">
+                          <svg viewBox="0 0 28 18" fill="none" class="h-3.5 w-6">
+                            <rect
+                              x="1"
+                              y="1"
+                              width="26"
+                              height="16"
+                              rx="2.5"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                            />
+                            <circle cx="14" cy="9" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <line
+                              x1="14"
+                              y1="4.5"
+                              x2="14"
+                              y2="13.5"
+                              stroke="currentColor"
+                              stroke-width="1.2"
+                            />
+                          </svg>
+                        </span>
+                        <span class="s21-bill">
+                          <svg viewBox="0 0 28 18" fill="none" class="h-3.5 w-6">
+                            <rect
+                              x="1"
+                              y="1"
+                              width="26"
+                              height="16"
+                              rx="2.5"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                            />
+                            <circle cx="14" cy="9" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <line
+                              x1="14"
+                              y1="4.5"
+                              x2="14"
+                              y2="13.5"
+                              stroke="currentColor"
+                              stroke-width="1.2"
+                            />
+                          </svg>
+                        </span>
+                        <span class="s21-bill">
+                          <svg viewBox="0 0 28 18" fill="none" class="h-3.5 w-6">
+                            <rect
+                              x="1"
+                              y="1"
+                              width="26"
+                              height="16"
+                              rx="2.5"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                            />
+                            <circle cx="14" cy="9" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <line
+                              x1="14"
+                              y1="4.5"
+                              x2="14"
+                              y2="13.5"
+                              stroke="currentColor"
+                              stroke-width="1.2"
+                            />
+                          </svg>
+                        </span>
+                        <span class="s21-bill">
+                          <svg viewBox="0 0 28 18" fill="none" class="h-3.5 w-6">
+                            <rect
+                              x="1"
+                              y="1"
+                              width="26"
+                              height="16"
+                              rx="2.5"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                            />
+                            <circle cx="14" cy="9" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <line
+                              x1="14"
+                              y1="4.5"
+                              x2="14"
+                              y2="13.5"
+                              stroke="currentColor"
+                              stroke-width="1.2"
+                            />
+                          </svg>
+                        </span>
+                        <span class="s21-bill">
+                          <svg viewBox="0 0 28 18" fill="none" class="h-3.5 w-6">
+                            <rect
+                              x="1"
+                              y="1"
+                              width="26"
+                              height="16"
+                              rx="2.5"
+                              stroke="currentColor"
+                              stroke-width="1.5"
+                            />
+                            <circle cx="14" cy="9" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <line
+                              x1="14"
+                              y1="4.5"
+                              x2="14"
+                              y2="13.5"
+                              stroke="currentColor"
+                              stroke-width="1.2"
+                            />
+                          </svg>
+                        </span>
+                      </span>
                     </div>
 
                     <div
                       data-reveal
-                      class="flex translate-y-3 flex-col gap-2 rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
+                      class="s21-card relative flex translate-y-3 flex-col gap-2 overflow-hidden rounded-box border border-error/30 bg-error/5 p-5 opacity-0 transition-all duration-500 ease-out"
                     >
                       <span
                         class="w-fit rounded-md bg-error/10 px-2 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-error"
                         >flaw</span
                       >
-                      <h4 class="font-display text-lg font-semibold">It remembers nothing.</h4>
-                      <p class="text-sm leading-relaxed text-base-content/60">
+                      <h4 class="s21-fade font-display text-lg font-semibold">
+                        It remembers nothing.
+                      </h4>
+                      <p class="s21-fade text-sm leading-relaxed text-base-content/60">
                         Every new conversation starts from zero. Yesterday's work never happened.
                       </p>
+                      <span aria-hidden="true" class="s21-frame s21-frame--wipe text-error"></span>
+                      <span
+                        aria-hidden="true"
+                        class="s21-motif s21-motif--mem font-mono text-xl font-bold text-error"
+                        >0</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -2133,12 +2334,31 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-primary bg-primary/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >System prompt
-                          <span class="font-normal text-base-content/50"
-                            >· rules, tools, memory</span
-                          ></span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="Before it sees any code, the agent is loaded with its full rulebook: how to behave, every tool it can call, and any project memory. All 35k tokens ride along on every step that follows."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >System prompt
+                            <span class="font-normal text-base-content/50"
+                              >· rules, tools, memory</span
+                            ></span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+35,000</span
@@ -2147,12 +2367,31 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-accent bg-accent/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >User query
-                          <span class="font-normal text-base-content/50"
-                            >· the bug report</span
-                          ></span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="Your actual request, plus any stack trace you pasted in. Tiny on its own, but it too gets re-sent on every single step of the loop."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >User query
+                            <span class="font-normal text-base-content/50"
+                              >· the bug report</span
+                            ></span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+1,000</span
@@ -2181,9 +2420,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-warning bg-warning/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Thought #1</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="The agent reasons out loud about where the bug likely lives and which file to open first. That inner monologue is billable tokens, and it stays in the transcript for good."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Thought #1</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+4,000</span
@@ -2192,9 +2450,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-info bg-info/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Tool call · read file #1</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="The agent emits a structured request to open the first suspect file. A short instruction to send, but a distinct step that gets appended to the context."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Tool call · read file #1</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+200</span
@@ -2203,9 +2480,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-success bg-success/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Tool result · file #1 contents</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="The whole file comes back, not just the buggy function. A 400-line file is ~12k tokens the agent now carries for the rest of the task."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Tool result · file #1 contents</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+12,000</span
@@ -2234,9 +2530,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-warning bg-warning/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Thought #2</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="Having read the first file, the agent realizes the real culprit sits in a helper module, and reasons about where to look next."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Thought #2</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+4,000</span
@@ -2245,9 +2560,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-info bg-info/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Tool call · read file #2</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="A second file-open request goes out. Cheap to send, but it stacks on top of everything already in the context."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Tool call · read file #2</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+200</span
@@ -2256,9 +2590,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-success bg-success/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Tool result · file #2 contents</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="The second file lands in context in full. Now both files are hauled along on every future turn, whether or not they are still needed."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Tool result · file #2 contents</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+9,000</span
@@ -2287,9 +2640,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-warning bg-warning/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Thought #3</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="The agent connects the two files and works out the fix in its head before writing a single line of code."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Thought #3</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+4,000</span
@@ -2298,9 +2670,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-info bg-info/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Tool call · code patch</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="The agent writes the actual diff: the old lines, the new lines, and where they go. Producing the fix costs more than the request that asked for it."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Tool call · code patch</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+3,000</span
@@ -2309,9 +2700,28 @@
                       <div
                         class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-success bg-success/5 px-4 py-3"
                       >
-                        <span class="text-sm font-medium text-base-content md:text-base"
-                          >Tool result · write success</span
-                        >
+                        <div class="flex min-w-0 items-center gap-2.5">
+                          <span
+                            class="tooltip tooltip-right shrink-0"
+                            data-tip="The editor replies with a one-line confirmation that the file saved. Trivial in size, yet still a step that is appended and re-sent."
+                          >
+                            <button
+                              type="button"
+                              aria-label="Show detail"
+                              class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                            >
+                              <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                                <path
+                                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                                />
+                                <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                              </svg>
+                            </button>
+                          </span>
+                          <span class="text-sm font-medium text-base-content md:text-base"
+                            >Tool result · write success</span
+                          >
+                        </div>
                         <span
                           class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                           >+50</span
@@ -2339,9 +2749,28 @@
                     <div
                       class="s5-step translate-y-2 opacity-0 transition-all duration-500 flex items-center justify-between gap-4 rounded-lg border-l-4 border-base-content/30 bg-base-200 px-4 py-3"
                     >
-                      <span class="text-sm font-medium text-base-content md:text-base"
-                        >Final response</span
-                      >
+                      <div class="flex min-w-0 items-center gap-2.5">
+                        <span
+                          class="tooltip tooltip-right shrink-0"
+                          data-tip="The agent explains what it changed and why, in plain English for you. The final layer on a context stack now roughly 73k tokens tall."
+                        >
+                          <button
+                            type="button"
+                            aria-label="Show detail"
+                            class="flex cursor-help text-base-content/40 transition-colors hover:text-base-content/80"
+                          >
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                              <path
+                                d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"
+                              />
+                              <path d="M11 7h2v2h-2zm0 4h2v6h-2z" />
+                            </svg>
+                          </button>
+                        </span>
+                        <span class="text-sm font-medium text-base-content md:text-base"
+                          >Final response</span
+                        >
+                      </div>
                       <span
                         class="s5-cost shrink-0 font-mono text-sm font-bold tabular-nums text-error md:text-base"
                         >+1,000</span
@@ -2441,9 +2870,10 @@
                   </div>
                 </div>
                 <p class="mt-4 text-sm leading-relaxed text-base-content/60">
-                  The trap: the final context is only ~73k tokens, but because it's re-sent every
-                  step, you pay for <span class="text-base-content/80">~226k input</span> to fix one
-                  bug.
+                  The trap: you aren't billed for the context window capacity itself, but strictly
+                  for the actual tokens processed. Because the model is stateless, each step
+                  requires re-sending the entire history — meaning you pay for
+                  <span class="text-base-content/80">~226k input tokens</span> just to fix one bug.
                 </p>
 
                 <!-- Cost comparison bars -->
@@ -2678,7 +3108,7 @@
                           <span class="font-semibold text-base-content">Simple research</span>
                           <div class="mt-2 flex flex-wrap items-center gap-1.5">
                             <span class="badge badge-success h-auto py-1 text-center"
-                              >Gemini Flash 3.5</span
+                              >Gemini 3.5 Flash (High)</span
                             >
                           </div>
                         </li>
@@ -2686,7 +3116,7 @@
                           <span class="font-semibold text-base-content">Q&amp;A</span>
                           <div class="mt-2 flex flex-wrap items-center gap-1.5">
                             <span class="badge badge-success h-auto py-1 text-center"
-                              >Gemini Flash 3.5</span
+                              >Gemini 3.5 Flash (High)</span
                             >
                           </div>
                         </li>
@@ -2699,12 +3129,17 @@
                           >
                           <div class="mt-2 flex flex-wrap items-center gap-1.5">
                             <span class="badge badge-info h-auto py-1 text-center"
-                              >Gemini Pro 3.1</span
+                              >Gemini 3.1 Pro (High)</span
                             >
                           </div>
                         </li>
                         <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
-                          <span class="font-semibold text-base-content">Voice notes → text</span>
+                          <span class="font-semibold text-base-content"
+                            >Voice notes → text
+                            <span class="font-normal text-base-content/50"
+                              >· Custom workflow via Hermes and Discord during my commute</span
+                            ></span
+                          >
                           <div class="mt-2 flex flex-wrap items-center gap-1.5">
                             <span class="badge badge-success h-auto py-1 text-center"
                               >DeepSeek V4 Pro</span
@@ -2762,10 +3197,25 @@
                             <span class="font-semibold text-base-content">Write PRD + grill</span>
                             <span class="badge badge-ghost badge-sm shrink-0">CLI</span>
                           </div>
-                          <div class="mt-2 flex flex-wrap items-center gap-1.5">
-                            <span class="badge badge-warning h-auto py-1 text-center"
-                              >Opus 4.8</span
-                            >
+                          <div class="mt-2 flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                              <span class="text-xs text-base-content/60"
+                                >Complex (Architecture, Initial Project Setup)</span
+                              >
+                              <span class="text-base-content/40">&rarr;</span>
+                              <span class="badge badge-warning h-auto py-1 text-center"
+                                >Opus 4.8</span
+                              >
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5">
+                              <span class="text-xs text-base-content/60"
+                                >Medium (Feature Refinement, Medium changes)</span
+                              >
+                              <span class="text-base-content/40">&rarr;</span>
+                              <span class="badge badge-info h-auto py-1 text-center"
+                                >Gemini 3.1 Pro (High)</span
+                              >
+                            </div>
                           </div>
                         </li>
                         <li class="task-row rounded-lg border border-base-300 bg-base-100 p-4">
@@ -2842,7 +3292,7 @@
                           <span class="font-semibold text-base-content">Commits</span>
                           <div class="mt-2 flex flex-wrap items-center gap-1.5">
                             <span class="badge badge-success h-auto py-1 text-center"
-                              >Gemini Flash 3.5 Low</span
+                              >Gemini 3.5 Flash (Low)</span
                             >
                           </div>
                         </li>
@@ -2852,7 +3302,7 @@
                             <span class="badge badge-info h-auto py-1 text-center">Sonnet 5</span>
                             <span class="text-xs text-base-content/40">or</span>
                             <span class="badge badge-info h-auto py-1 text-center"
-                              >Gemini Pro 3.1</span
+                              >Gemini 3.1 Pro (High)</span
                             >
                           </div>
                         </li>
@@ -2866,7 +3316,7 @@
                             >
                             <span class="text-xs text-base-content/40">or</span>
                             <span class="badge badge-success h-auto py-1 text-center"
-                              >Gemini Flash 3.5</span
+                              >Gemini 3.5 Flash (High)</span
                             >
                           </div>
                         </li>
@@ -2890,11 +3340,11 @@
             <!-- ========== SECTION 7 — Tools & Tips ========== -->
             <section
               id="s7-1"
-              class="beat flex min-h-screen snap-start flex-col justify-center border-t border-base-200 px-6 py-24 md:px-16 lg:px-24"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="7"
               data-section-title="Tools & Tips"
               data-beat="S7.1"
-              data-assertion="Two kinds of levers cut waste: ones you automate, and ones your team practices."
+              data-assertion="Three levers to improve your token economy"
             >
               <div
                 class="beat-inner mx-auto w-full max-w-7xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
@@ -2905,18 +3355,18 @@
                 <h2
                   class="font-display text-3xl font-extrabold leading-tight tracking-tight md:text-5xl"
                 >
-                  Two levers for context: <span class="text-primary">automate vs. practice</span>.
+                  Three levers to improve your token economy
                 </h2>
                 <p class="mt-4 text-lg font-light leading-relaxed text-base-content/70">
-                  You can't ignore the context economy. Reclaim headroom by automating the heavy
-                  lifting, and establish team practices for leaner, more effective prompts.
+                  Some basic practical things you can try out
+                  <span class="text-primary">today</span> and grow to a habit
                 </p>
 
                 <div
                   data-viz="s7-1"
                   class="mt-12 relative w-full rounded-2xl bg-base-200 border border-base-300 p-6 md:p-10"
                 >
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
                     <!-- Bucket 1: Automated -->
                     <div
                       class="s7-bucket delay-[100ms] opacity-0 translate-y-8 transition-all duration-700 ease-out flex flex-col gap-6"
@@ -2965,10 +3415,6 @@
                                 >Headroom</a
                               ></span
                             >
-                            <span
-                              class="badge badge-success badge-sm shrink-0 uppercase text-xs font-bold tracking-wider"
-                              >High ROI</span
-                            >
                           </div>
                           <p class="text-base text-base-content/70">
                             Headroom compresses everything your AI agent reads — tool outputs, logs,
@@ -2990,10 +3436,6 @@
                                 class="link link-hover text-primary"
                                 >rtk</a
                               ></span
-                            >
-                            <span
-                              class="badge badge-success badge-sm shrink-0 uppercase text-xs font-bold tracking-wider"
-                              >High ROI</span
                             >
                           </div>
                           <p class="text-base text-base-content/70">
@@ -3030,10 +3472,6 @@
                                 >OpenRouter</a
                               >)</span
                             >
-                            <span
-                              class="badge badge-success badge-sm shrink-0 uppercase text-xs font-bold tracking-wider"
-                              >High ROI</span
-                            >
                           </div>
                           <p class="text-base text-base-content/70">
                             Dynamically route tasks to the most cost-efficient capable model per
@@ -3042,21 +3480,81 @@
                         </li>
 
                         <li
-                          class="s7-item delay-[700ms] opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-error/40 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                          class="s7-item delay-[700ms] opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
                         >
-                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-error"></div>
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-success"></div>
                           <div class="flex items-start justify-between gap-4">
-                            <span class="font-bold text-lg text-base-content/50 line-through"
-                              >Caveman Methods</span
-                            >
-                            <span
-                              class="badge badge-error badge-sm shrink-0 uppercase text-xs font-bold tracking-wider"
-                              >Net-Negative</span
+                            <span class="font-bold text-lg text-base-content"
+                              ><a
+                                href="https://github.com/juliusbrussee/caveman"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="link link-hover text-primary"
+                                >caveman</a
+                              ></span
                             >
                           </div>
-                          <p class="text-base text-error font-medium">
-                            Blindly dumping entire repositories into context destroys output
-                            quality.
+                          <p class="text-base text-base-content/70">
+                            Enforces a highly compressed, telegraphic style for AI agent outputs,
+                            saving up to 75% on output tokens without losing accuracy.
+                          </p>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <!-- Bucket 1.5: Agent Steering -->
+                    <div
+                      class="s7-bucket delay-[175ms] opacity-0 translate-y-8 transition-all duration-700 ease-out flex flex-col gap-6"
+                    >
+                      <div class="flex items-center gap-4 border-b border-base-300 pb-4">
+                        <div
+                          class="w-12 h-12 rounded-xl bg-accent text-accent-content flex items-center justify-center shadow-sm"
+                        >
+                          <svg
+                            class="w-7 h-7"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                            ></path>
+                          </svg>
+                        </div>
+                        <h3 class="text-3xl font-semibold text-base-content tracking-tight">
+                          Agent Steering
+                        </h3>
+                      </div>
+
+                      <ul class="flex flex-col gap-4">
+                        <li
+                          class="s7-item delay-[400ms] opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-accent"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content">Memory Files</span>
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Persist critical context across sessions using shared files like
+                            <code class="text-xs font-semibold font-mono">AGENTS.md</code>,
+                            <code class="text-xs font-semibold font-mono">CLAUDE.md</code>, and
+                            Agent profiles.
+                          </p>
+                        </li>
+
+                        <li
+                          class="s7-item delay-[550ms] opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-accent"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content">Skills</span>
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Provide specialized guides and operational instructions for specific
+                            tasks, separating domain knowledge from base behavior.
                           </p>
                         </li>
                       </ul>
@@ -3151,6 +3649,19 @@
                           <p class="text-base text-base-content/70">
                             Work directly in the terminal for transparent token tracking and leaner
                             context reuse.
+                          </p>
+                        </li>
+
+                        <li
+                          class="s7-item delay-[1350ms] opacity-0 translate-x-4 transition-all duration-500 ease-out bg-base-100 p-5 rounded-xl border border-base-300 shadow-sm flex flex-col gap-2 relative overflow-hidden"
+                        >
+                          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary"></div>
+                          <div class="flex items-start justify-between gap-4">
+                            <span class="font-bold text-lg text-base-content">Workflow</span>
+                          </div>
+                          <p class="text-base text-base-content/70">
+                            Structure how the agent operates — explicit planning passes, feedback
+                            loops, and verification steps before execution.
                           </p>
                         </li>
                       </ul>
