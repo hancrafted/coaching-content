@@ -56,6 +56,13 @@ All UI styling and component building must be done using **Tailwind CSS v4** and
 - **Theme SVG with `currentColor` and semantic color utilities, not hardcoded hex.** SVG is exempt from the inline-`style` ban, but a hardcoded `fill="#1e40af"` / `stroke="#000"` will not re-skin when the `data-theme` changes. Instead color SVG strokes/fills with `stroke="currentColor"` (or `fill="currentColor"`) plus a `text-*` utility on the `<svg>` or element (e.g. `class="text-primary"`), or use the semantic `fill-*` / `stroke-*` utilities — including opacity modifiers — which Tailwind v4 + daisyUI generate and which invert correctly across themes.
   - Example: `<svg class="text-primary"><path stroke="currentColor" fill="none" d="…"/><rect class="fill-base-content/5"/><line class="stroke-base-content/20"/></svg>`. Animate stroke draw by setting `path.style.strokeDasharray` / `strokeDashoffset` in JS (not in the HTML source).
 
+#### Complex Keyframe & Hover Animations
+
+- **Put complex animations in a dedicated, page-scoped stylesheet — never in the HTML.** When a hover, keyframe, or animated-border effect cannot be expressed with Tailwind utilities and variants (e.g. `hover:`, `group-hover:`, `motion-safe:`, `transition-*`), the Decision's "complex animations" carve-out applies: create a dedicated CSS file next to the page (e.g. `ai-token-economy-101/animation.css`), put all `@keyframes` and animation classes there, and link it from the page's `<head>` with `<link rel="stylesheet" href="./animation.css" />`. Vite's multi-page build bundles the linked stylesheet automatically. This satisfies the `no-style-tags-in-html` and `no-raw-inline-styles` rules, which forbid `<style>` blocks and inline `style="..."` in the HTML source. Reserve this escape hatch for genuinely complex motion — reach for Tailwind utilities first.
+- **Keep custom-CSS colors theme-aware with `currentColor` and `color-mix`.** Inside the animation stylesheet, paint with `currentColor` and set the hue in the markup via a semantic Tailwind `text-*` utility on the animated element (e.g. `class="s21-frame text-success"`). For translucent effects (glows, shimmers, gradient borders), use `color-mix(in oklab, currentColor <pct>, transparent)` rather than `rgba()` or hex. Both resolve against the active daisyUI theme, so the animation re-skins correctly across themes; a hardcoded hex or `rgba()` does not.
+  - Example: `.s21-shimmer::before { background: linear-gradient(100deg, transparent, color-mix(in oklab, currentColor 22%, transparent), transparent); }` with the element carrying `text-success` in the markup.
+- **Mark decorative animation elements `aria-hidden` and gate motion behind `prefers-reduced-motion`.** Purely decorative overlays (border-frame layers, corner glyphs, shimmer sweeps) MUST carry `aria-hidden="true"`. Wrap all animation in `@media (prefers-reduced-motion: reduce)` that disables the animations (`animation: none`) and hides the decorative overlays, so reduced-motion users get the static, fully-legible card.
+
 ### Don't
 
 - Do not use inline styles `<div style="...">` for layout or standard styling.
@@ -64,6 +71,8 @@ All UI styling and component building must be done using **Tailwind CSS v4** and
 - Do not apply a `-z-*` utility to a child element without also giving its intended containing element an explicit `z-*` value (e.g. `z-0`) — otherwise the child is not scoped to that container's stacking context.
 - Do not hardcode hex colors on SVG elements (`fill="#1e40af"`, `stroke="#000"`) — they will not re-skin across themes. Use `currentColor` + a `text-*` utility or the semantic `fill-*` / `stroke-*` utilities instead.
 - Do not bake runtime-animated dimensions into the HTML as inline `style="width: …"` attributes — set them from JavaScript via `element.style` on activation instead.
+- Do not place `@keyframes` or animation rules in a `<style>` block or an inline `style="..."` attribute in HTML — put complex animations in a dedicated linked stylesheet (e.g. `animation.css`) instead.
+- Do not hardcode colors (hex or `rgba()`) inside the animation stylesheet — drive them from `currentColor` (set via a semantic `text-*` utility on the element) and `color-mix(in oklab, currentColor <pct>, transparent)` so they stay theme-aware.
 
 ## Consequences
 
