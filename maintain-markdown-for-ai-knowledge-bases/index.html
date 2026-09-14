@@ -62,24 +62,16 @@
     =========================================================================
     COLOUR LANGUAGE — established here, reused by every later section.
     -------------------------------------------------------------------------
-      primary                 = HUMAN.    The actor the talk argues is the
-                                          load-bearing one. Used for the human
-                                          region of the Venn, human-signed
-                                          fields, the human pass, and the
-                                          progress/active-state chrome.
-      neutral / base-content  = MACHINE.  Deliberately desaturated — mechanical
-                                          checking is the settled, boring part
-                                          of the argument. Machine passes,
-                                          machine-signed fields, the "resolves
-                                          cleanly" result.
-      accent                  = AI.       The ambiguous middle. AI passes, the
-                                          "?" label on the Venn's AI region,
-                                          generated-by fields.
-
-      secondary is NOT used for any of the three actors. Per ADR FE-001 it
-      renders at markedly lower chroma than the other semantic hues in the
-      default corporate theme (~0.046 vs ~0.12–0.20), so it reads near-gray —
-      unacceptable for the region the talk argues matters most.
+      primary                 = MACHINE.  Syntactic parsing, hermetic harness,
+                                          mechanical validation, deterministic
+                                          checks.
+      secondary               = HUMAN.    The load-bearing actor the talk argues
+                                          matters most. Verification curve, human
+                                          judgment, human-signed fields, operator
+                                          governance.
+      accent                  = AI.       The ambiguous accelerator. Recommendations,
+                                          creation curve, generated-by fields,
+                                          needs verification.
 
       Semantic daisyUI tokens only. This file carries no inline style attributes
       and no embedded stylesheet block: complex motion lives in ./animation.css,
@@ -181,6 +173,32 @@
               </div>
             </div>
             <nav id="toc-desktop" class="flex-1 p-3" aria-label="Table of contents"></nav>
+            <div class="border-t border-base-200 p-3">
+              <button
+                type="button"
+                id="rail-toggle-notes"
+                class="btn btn-outline btn-sm w-full justify-between gap-2 border-base-300 font-normal hover:border-secondary hover:bg-secondary/10 hover:text-secondary"
+                title="Toggle speaker notes overlay (press N)"
+              >
+                <span class="flex items-center gap-2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Speaker notes</span>
+                </span>
+                <kbd class="kbd kbd-xs font-mono">N</kbd>
+              </button>
+            </div>
           </aside>
 
           <!--
@@ -193,15 +211,15 @@
             preserved for the reader who opens the shared link after the talk.
           -->
           <main id="tower" class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
-            <!-- ========== SECTION 1 — Opening ========== -->
-            <!-- S1.1 · HERO — the only finished section in this ticket -->
+            <!-- ========== SECTION 1 — Intro ========== -->
             <section
               id="s1-1"
               class="beat relative z-0 flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="1"
-              data-section-title="Opening"
+              data-section-title="Intro"
+              data-slide-title="Intro"
               data-beat="S1.1"
-              data-assertion="AI collapsed the cost of writing documentation and raised the cost of verifying it. The work moved."
+              data-assertion="Intro"
             >
               <!--
                 HERO BACKDROP — and the hero image slot.
@@ -244,10 +262,10 @@
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
-                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S1.1 · The Shift
+                  S1.1 · Intro
                 </p>
                 <h1
                   class="translate-y-3 font-display text-4xl font-extrabold leading-[1.02] tracking-tight opacity-0 transition-all duration-500 ease-out md:text-6xl lg:text-7xl"
@@ -259,7 +277,7 @@
                 <!--
                   The thesis, and the first application of the colour language:
                   writing is the half AI took over (accent), verifying is the half
-                  that landed on a human (primary).
+                  that landed on a human (secondary).
                 -->
                 <p
                   class="mt-10 translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out md:text-xl"
@@ -267,7 +285,7 @@
                 >
                   AI collapsed the cost of <span class="font-medium text-accent">writing</span>
                   documentation and raised the cost of
-                  <span class="font-medium text-primary">verifying</span> it. The work moved — and
+                  <span class="font-medium text-secondary">verifying</span> it. The work moved — and
                   the verifying half is nobody else's job.
                 </p>
                 <p
@@ -276,13 +294,71 @@
                 >
                   Han Che
                 </p>
+
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-8 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
+                <aside
+                  data-speaker-notes
+                  class="mt-8 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
+                  <p>
+                    Open on the thesis: AI made writing documentation almost costless, which means
+                    documentation volume exploded. But generating text is not verifying it.
+                  </p>
+                  <p class="mt-3">
+                    When agents act on stale, hallucinated, or unverified documents, they fail
+                    silently and catastrophically. The real engineering work didn't disappear — it
+                    shifted entirely from authoring prose to building high-fidelity verification
+                    boundaries.
+                  </p>
+                </aside>
               </div>
 
               <!-- Scroll cue -->
               <a
                 href="#s2-1"
                 data-toc-jump="s2-1"
-                class="absolute inset-x-0 bottom-8 mx-auto flex w-fit items-center gap-2 rounded-full border border-base-300 bg-base-100/70 px-4 py-2 text-xs text-base-content/60 backdrop-blur transition-colors hover:text-primary"
+                class="absolute inset-x-0 bottom-8 mx-auto flex w-fit items-center gap-2 rounded-full border border-base-300 bg-base-100/70 px-4 py-2 text-xs text-base-content/60 backdrop-blur transition-colors hover:text-secondary"
               >
                 <span class="font-mono uppercase tracking-[0.2em]">Scroll</span>
                 <svg
@@ -310,6 +386,7 @@
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="2"
               data-section-title="Markdown in AI workflows"
+              data-slide-title="Markdown in AI workflows"
               data-beat="S2.1"
               data-assertion="A single format at the junction of Context, Knowledge, and Instructions."
             >
@@ -335,22 +412,59 @@
                   A plain text file with nothing mechanical underneath. What matters is how and when
                   it is consumed: as <span class="font-medium text-primary">context</span>, as
                   <span class="font-medium text-accent">knowledge</span>, as
-                  <span class="font-medium text-base-content">instruction</span>.
+                  <span class="font-medium text-secondary">instruction</span>.
                 </p>
 
                 <!-- Hub and spoke mount -->
                 <figure data-hub-spoke class="mt-4"></figure>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     Start by leveling the room: a markdown file is just a plain text file. There is
                     no runtime engine, no compiler, no relational database, and nothing mechanical
@@ -368,12 +482,13 @@
               </div>
             </section>
 
-            <!-- ========== SECTION 3 — The Maintenance Gap ========== -->
+            <!-- ========== SECTION 3 — Volume Outruns Review ========== -->
             <section
               id="s3-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="3"
-              data-section-title="The maintenance gap"
+              data-section-title="Volume outruns review"
+              data-slide-title="Volume outruns review"
               data-beat="S3.1"
               data-assertion="Creation effort collapses after AI; verification effort climbs with volume. The crossover is where the work moved."
             >
@@ -384,7 +499,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S3.1 · The Maintenance Gap
+                  S3.1 · Volume Outruns Review
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -398,22 +513,59 @@
                 >
                   Effort over time, anchored at the day the document reached production.
                   <span class="font-medium text-accent">Creation</span> collapses with AI.
-                  <span class="font-medium text-primary">Verification</span> climbs with volume.
+                  <span class="font-medium text-secondary">Verification</span> climbs with volume.
                 </p>
 
                 <!-- Diverging curves mount -->
                 <figure data-curves class="mt-4"></figure>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     Before day zero — when the document reaches production — authoring was the hard
                     part. Writing by hand was slow and expensive, so verification was quiet because
@@ -433,12 +585,13 @@
               </div>
             </section>
 
-            <!-- ========== SECTION 4 — Verification Boundaries ========== -->
+            <!-- ========== SECTION 4 — Where Verification Happens ========== -->
             <section
               id="s4-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="4"
               data-section-title="Where verification happens"
+              data-slide-title="Where verification happens"
               data-beat="S4.1"
               data-assertion="What a machine can check, what AI can help with, and what only a human can check."
             >
@@ -455,7 +608,7 @@
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  Where documentation verification actually happens
+                  Where verification happens
                 </h2>
                 <p
                   class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
@@ -472,22 +625,54 @@
                   re-rendered by section 9 with data-venn-emphasis="human".
                 -->
                 <figure data-venn data-venn-emphasis="establish" class="mt-2"></figure>
-                <!--
-                  SPEAKER NOTES — hidden until ticket 04 builds the presenter-controls
-                  toggle that flips the `hidden` class on every [data-speaker-notes].
-                  They carry the spoken-only material: the accelerator-not-a-solution
-                  argument and the freelancer-with-amnesia callback, neither of which
-                  appears on the slide.
-                -->
+
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
+                <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     AI is an accelerator here, not a solution. It will run the fact-check, chase the
                     hard numbers, flag the paragraph that smells wrong — and every answer it hands
@@ -505,14 +690,16 @@
               </div>
             </section>
 
-            <!-- ========== SECTION 5 — Where the effort goes: The three verification passes ========== -->
+            <!-- ========== SECTION 5 — Where the effort goes ========== -->
+            <!-- S5.1: Machine verification -->
             <section
               id="s5-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="5"
               data-section-title="Where the effort goes"
+              data-slide-title="What the machine verifies"
               data-beat="S5.1"
-              data-assertion="The machine pass resolves cleanly."
+              data-assertion="What the machine verifies"
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
@@ -521,35 +708,35 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S5.1 · Pass 1: Machine Verification
+                  S5.1 · Machine Verification
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  Where the effort goes: Pass 1 — What the machine verifies
+                  What the machine verifies
                 </h2>
                 <p
                   class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
                   Syntactic and structural checks that run deterministically in milliseconds without
-                  an LLM. Syntax parses, URLs resolve, and ISO dates validate.
+                  an LLM. Syntax parses, URI format is validated, and ISO dates validate.
                 </p>
 
                 <!-- 2-col layout: IDE view on left, passes on right -->
                 <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
                   <div class="lg:col-span-6" data-frontmatter-mount="s5-1"></div>
                   <div class="lg:col-span-6 space-y-4">
-                    <!-- Machine pass card -->
+                    <!-- Machine check card -->
                     <div
-                      class="pass-card rounded-xl border border-base-300 bg-base-100/90 p-5 text-success shadow-sm transition-all duration-500"
+                      class="pass-card rounded-xl border border-base-300 bg-base-100/90 p-5 shadow-sm transition-all duration-500"
                       data-pass="machine"
                     >
                       <div class="flex items-center justify-between border-b border-base-200 pb-3">
                         <span
-                          class="badge badge-neutral badge-sm font-mono uppercase tracking-wider"
-                          >Machine pass</span
+                          class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content"
+                          >Machine check</span
                         >
                         <span
                           class="font-mono text-xs font-semibold text-success flex items-center gap-1.5"
@@ -584,15 +771,14 @@
                         <li class="flex items-start gap-2">
                           <span class="text-success font-bold">✓</span>
                           <span
-                            ><strong>Resource:</strong>
-                            https://intranet.example.com/people-ops/handbook reachable (HTTP
-                            200)</span
+                            ><strong>Resource:</strong> present and well-formed URI
+                            (https://intranet.example.com/people-ops/handbook#onboarding)</span
                           >
                         </li>
                         <li class="flex items-start gap-2">
                           <span class="text-success font-bold">✓</span>
                           <span
-                            ><strong>Staleness:</strong> 2025-07-01T00:00:00Z parses with valid ISO
+                            ><strong>Staleness:</strong> 2026-07-01T00:00:00Z parses with valid ISO
                             timestamp</span
                           >
                         </li>
@@ -605,83 +791,151 @@
                   </div>
                 </div>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     Point out that OKF only requires type. The staleness date is optional. The
-                    machine pass passes not because the format demanded it, but because our own lint
-                    rule checked for it.
+                    machine check passes not because the format demanded it, but because our own
+                    lint rule checked for it.
                   </p>
                   <p class="mt-3">
-                    The machine checks syntax, parses dates, and verifies that the link resolves.
-                    Everything it was asked to check resolves cleanly. Mechanical checking is the
-                    settled, easy part of the talk.
+                    markdown-harness is hermetic: it runs offline without external HTTP requests.
+                    The resource check confirms the URI is present and well-formed. Mechanical
+                    checking is the settled, deterministic part of the workflow.
                   </p>
                 </aside>
               </div>
             </section>
 
+            <!-- S5.2: AI acceleration -->
             <section
               id="s5-2"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="5"
               data-section-title="Where the effort goes"
+              data-slide-title="What AI accelerates"
               data-beat="S5.2"
-              data-assertion="The AI pass returns an answer that itself needs checking."
+              data-assertion="What AI accelerates"
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
-                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-accent opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S5.2 · Pass 2: AI Assistance
+                  S5.2 · AI Acceleration
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  Where the effort goes: Pass 2 — What AI can check
+                  What AI accelerates
                 </h2>
                 <p
                   class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
                   Cross-referencing prose against source handbooks to flag discrepancies for human
-                  review. The answer comes back amber: rapid, insightful, and itself in need of
-                  checking.
+                  review. The answer comes back rapid, insightful, and itself in need of checking.
                 </p>
 
                 <!-- 2-col layout: block on left, passes on right -->
                 <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
                   <div class="lg:col-span-6" data-frontmatter-mount="s5-2"></div>
-                  <div class="lg:col-span-6 space-y-4">
-                    <!-- Machine pass (compact) -->
+                  <div class="lg:col-span-6 space-y-2">
+                    <!-- Machine check (compact) -->
                     <div
-                      class="pass-card rounded-xl border border-base-300/60 bg-base-100/50 p-3.5 text-xs text-base-content/60 flex items-center justify-between"
+                      class="pass-card flex items-center justify-between rounded-xl border border-base-300/60 bg-base-100/50 p-3.5 text-xs text-base-content/60"
                     >
-                      <span class="font-mono">1. Machine pass</span>
-                      <span class="text-success font-mono font-medium">✓ Resolved cleanly</span>
+                      <span class="font-mono">Machine check</span>
+                      <span class="font-mono font-medium text-success">✓ Resolved cleanly</span>
                     </div>
 
-                    <!-- AI pass card (active) -->
+                    <!-- Loop-back curved arrow to machine check -->
+                    <div class="flex items-center justify-end pr-4 py-0.5">
+                      <div
+                        class="flex items-center gap-1.5 font-mono text-[11px] italic text-base-content/60"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          class="stroke-current text-accent"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M9 6L5 10l4 4"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M5 10h10a4 4 0 0 1 4 4v4"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span>fast and cheap to re-run</span>
+                      </div>
+                    </div>
+
+                    <!-- AI recommendation card (active) -->
                     <div
                       class="pass-card rounded-xl border border-accent/40 bg-accent/5 p-5 text-warning shadow-sm ring-1 ring-accent/20 transition-all duration-500"
                       data-pass="ai"
                     >
                       <div class="flex items-center justify-between border-b border-accent/20 pb-3">
                         <span
-                          class="badge badge-outline border-accent text-accent badge-sm font-mono uppercase tracking-wider"
-                          >AI pass</span
+                          class="badge badge-outline border-accent font-mono text-accent badge-sm uppercase tracking-wider"
+                          >AI recommendation</span
                         >
                         <span
                           class="font-mono text-xs font-semibold text-warning flex items-center gap-1.5"
@@ -711,9 +965,10 @@
                             class="text-accent font-mono uppercase text-[10px] tracking-wider block mb-1"
                             >Observation</strong
                           >
-                          Compared <code class="font-mono text-primary">onboarding.md</code> against
-                          linked People Ops handbook. Section 4 of the handbook updated equipment
-                          lead times from 5 working days to 7 working days.
+                          Compared
+                          <code class="font-mono text-base-content font-medium">onboarding.md</code>
+                          against linked People Ops handbook. Section 4 of the handbook updated
+                          equipment lead times from 5 working days to 7 working days.
                         </p>
                         <p class="mt-2 text-base-content/70">
                           <strong
@@ -729,24 +984,61 @@
                       >
                         <span class="font-bold">?</span>
                         <span
-                          >Accelerator, not resolution: this finding is itself a claim requiring
-                          verification.</span
+                          >Automated recommendation, not verified ground truth: this finding
+                          requires human confirmation.</span
                         >
                       </p>
                     </div>
                   </div>
                 </div>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     Now an AI inspects the file. It ingested the linked handbook and caught a
                     discrepancy: equipment lead time changed from 5 to 7 days. It proposes a
@@ -761,121 +1053,242 @@
               </div>
             </section>
 
+            <!-- S5.3: Human judgment -->
             <section
               id="s5-3"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="5"
               data-section-title="Where the effort goes"
+              data-slide-title="What remains human"
               data-beat="S5.3"
-              data-assertion="The human pass stays open, and is the last thing on screen before the section ends."
+              data-assertion="What remains human"
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
-                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S5.3 · Pass 3: Human Ground Truth
+                  S5.3 · Human Judgment
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  Where the effort goes: Pass 3 — The human judgment that remains
+                  What remains human
                 </h2>
                 <p
                   class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
                   Is the policy still in force? Is the owner correct? Ground truth that no machine
-                  or model can know. This pass deliberately stays open on screen.
+                  or model can know. This judgment stays open on screen.
                 </p>
 
                 <!-- 2-col layout: block on left, passes on right -->
                 <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
                   <div class="lg:col-span-6" data-frontmatter-mount="s5-3"></div>
-                  <div class="lg:col-span-6 space-y-4">
-                    <!-- Machine pass (compact) -->
+                  <div class="lg:col-span-6 space-y-2">
+                    <!-- Machine check (compact) -->
                     <div
                       data-pass="machine"
-                      class="pass-card rounded-xl border border-base-300/60 bg-base-100/50 p-3 text-xs text-base-content/60 flex items-center justify-between"
+                      class="pass-card flex items-center justify-between rounded-xl border border-base-300/60 bg-base-100/50 p-3 text-xs text-base-content/60"
                     >
-                      <span class="font-mono">1. Machine pass</span>
-                      <span class="text-success font-mono font-medium">✓ Resolved cleanly</span>
+                      <span class="font-mono">Machine check</span>
+                      <span class="font-mono font-medium text-success">✓ Resolved cleanly</span>
                     </div>
 
-                    <!-- AI pass (compact) -->
+                    <!-- AI recommendation (compact) -->
                     <div
                       data-pass="ai"
-                      class="pass-card rounded-xl border border-accent/30 bg-accent/5 p-3 text-xs text-base-content/70 flex items-center justify-between"
+                      class="pass-card flex items-center justify-between rounded-xl border border-accent/30 bg-accent/5 p-3 text-xs text-base-content/70"
                     >
-                      <span class="font-mono">2. AI pass</span>
-                      <span class="text-warning font-mono font-medium"
-                        >⚠ Claim returned (needs check)</span
+                      <span class="font-mono">AI recommendation</span>
+                      <span class="font-mono font-medium text-warning"
+                        >⚠ Discrepancy flagged (needs check)</span
                       >
                     </div>
 
-                    <!-- Human pass card (active and UNRESOLVED) -->
+                    <!-- Loop-back curved arrow to AI recommendation -->
+                    <div class="flex items-center justify-end pr-4 py-0.5">
+                      <div
+                        class="flex items-center gap-1.5 font-mono text-[11px] italic text-base-content/60"
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          class="stroke-current text-secondary"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M9 6L5 10l4 4"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M5 10h10a4 4 0 0 1 4 4v4"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span>selective re-check, not a full re-run</span>
+                      </div>
+                    </div>
+
+                    <!-- Human judgment card (active, visibly heavier) -->
                     <div
-                      class="pass-card rounded-xl border-2 border-primary bg-primary/5 p-5 shadow-md ring-2 ring-primary/20 transition-all duration-500"
+                      class="pass-card rounded-2xl border-2 border-secondary bg-secondary/5 p-6 shadow-lg ring-2 ring-secondary/20 transition-all duration-500"
                       data-pass="human"
                     >
                       <div
-                        class="flex items-center justify-between border-b border-primary/20 pb-3"
+                        class="flex items-center justify-between border-b border-secondary/20 pb-3.5"
                       >
                         <span
-                          class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content"
-                          >Human pass</span
+                          class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content"
+                          >Human judgment</span
                         >
                         <span
-                          class="font-mono text-xs font-bold text-primary flex items-center gap-2"
+                          class="font-mono text-xs font-bold text-secondary flex items-center gap-2"
                         >
                           <span
-                            class="deck-unsettled inline-block h-3 w-3 rounded-full border border-dashed border-primary"
+                            class="deck-unsettled inline-block h-3 w-3 rounded-full border border-dashed border-secondary"
                             aria-hidden="true"
                           ></span>
                           Open · Unresolved
                         </span>
                       </div>
-                      <div class="mt-4 space-y-3 text-xs text-base-content/90">
-                        <div class="flex items-start gap-2.5">
-                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
-                          <span>Does the buddy coffee on day one still match team practice?</span>
-                        </div>
-                        <div class="flex items-start gap-2.5">
-                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
-                          <span>Does People Ops still close payroll on the 20th?</span>
-                        </div>
-                        <div class="flex items-start gap-2.5">
-                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
-                          <span
-                            >Is
-                            <code class="font-mono text-primary font-medium">@m.okonkwo</code> still
-                            the active maintainer for onboarding?</span
+
+                      <div class="mt-5 space-y-4 text-xs text-base-content/90">
+                        <!-- Group 1: Onboarding example (concrete) -->
+                        <div>
+                          <p
+                            class="font-mono text-[10px] font-bold uppercase tracking-wider text-secondary/80 mb-2"
                           >
+                            Onboarding playbook verification (this document)
+                          </p>
+                          <div
+                            class="space-y-2 rounded-lg border border-secondary/20 bg-base-100/60 p-3"
+                          >
+                            <div class="flex items-start gap-2.5">
+                              <span class="font-mono font-bold text-secondary mt-0.5">?</span>
+                              <span
+                                >Does the buddy coffee on day one still match team practice?</span
+                              >
+                            </div>
+                            <div class="flex items-start gap-2.5">
+                              <span class="font-mono font-bold text-secondary mt-0.5">?</span>
+                              <span>Does People Ops still close payroll on the 20th?</span>
+                            </div>
+                            <div class="flex items-start gap-2.5">
+                              <span class="font-mono font-bold text-secondary mt-0.5">?</span>
+                              <span
+                                >Is
+                                <code class="font-mono font-semibold text-secondary"
+                                  >@m.okonkwo</code
+                                >
+                                still the active maintainer for onboarding?</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Group 2: Portable questions (any knowledge base) -->
+                        <div>
+                          <p
+                            class="font-mono text-[10px] font-bold uppercase tracking-wider text-secondary/80 mb-2"
+                          >
+                            Portable truth verification (your documentation)
+                          </p>
+                          <div
+                            class="space-y-2 rounded-lg border border-secondary/20 bg-base-100/60 p-3"
+                          >
+                            <div class="flex items-start gap-2.5">
+                              <span class="font-mono font-bold text-secondary mt-0.5">?</span>
+                              <span
+                                ><strong>Reality check:</strong> Is the policy described here still
+                                true in production?</span
+                              >
+                            </div>
+                            <div class="flex items-start gap-2.5">
+                              <span class="font-mono font-bold text-secondary mt-0.5">?</span>
+                              <span
+                                ><strong>Workflow alignment:</strong> Does this still reflect how
+                                people actually work day to day?</span
+                              >
+                            </div>
+                            <div class="flex items-start gap-2.5">
+                              <span class="font-mono font-bold text-secondary mt-0.5">?</span>
+                              <span
+                                ><strong>Authority:</strong> Is the person or team named still the
+                                right authority to verify it?</span
+                              >
+                            </div>
+                          </div>
                         </div>
                       </div>
+
                       <p
-                        class="mt-4 text-xs font-semibold text-primary border-t border-primary/20 pt-3"
+                        class="mt-5 text-xs font-semibold text-secondary border-t border-secondary/20 pt-3"
                       >
-                        This question stays open on screen. The machine checked the syntax; the AI
-                        drafted a clue; only a human can answer whether it is true.
+                        This judgment stays open on screen. The machine checked the syntax; AI
+                        drafted a recommendation; only a human establishes ground truth.
                       </p>
                     </div>
                   </div>
                 </div>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     This is the load-bearing beat of section 5: the human pass deliberately stays
                     unresolved on screen.
@@ -890,12 +1303,13 @@
               </div>
             </section>
 
-            <!-- ========== SECTION 6 — Google OKF 0.2 ========== -->
+            <!-- ========== SECTION 6 — OKF standardises the signal ========== -->
             <section
               id="s6-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="6"
-              data-section-title="Google OKF 0.2"
+              data-section-title="OKF standardises the signal"
+              data-slide-title="OKF standardises the signal"
               data-beat="S6.1"
               data-assertion="The same block in full, annotated with who supplies each field."
             >
@@ -912,7 +1326,7 @@
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  Introducing Google OKF 0.2
+                  OKF standardises the signal
                 </h2>
                 <p
                   class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
@@ -934,28 +1348,62 @@
                   class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 max-w-4xl pt-3 border-t border-base-200"
                 >
                   <a
-                    href="https://github.com/GoogleCloudPlatform/knowledge-catalog"
+                    href="https://github.com/GoogleCloudPlatform/open-knowledge-format"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center gap-1.5 text-xs font-mono text-primary hover:underline"
                   >
                     <span>Read the public OKF v0.2 specification ↗</span>
                   </a>
-                  <span class="text-xs text-base-content/50"
-                    >Click any field above to inspect its supplier</span
-                  >
                 </div>
+
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
 
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     Don't lecture on the schema. The power of this slide is the adjacent comparison:
                     <code>generated</code> and <code>verified</code> have identical shapes —
@@ -971,12 +1419,13 @@
               </div>
             </section>
 
-            <!-- ========== SECTION 7 — Operator Governance ========== -->
+            <!-- ========== SECTION 7 — The Instruction Comes From You ========== -->
             <section
               id="s7-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="7"
-              data-section-title="Operator governance"
+              data-section-title="The instruction comes from you"
+              data-slide-title="The instruction comes from you"
               data-beat="S7.1"
               data-assertion="The signal is in the file; the instruction has to come from you."
             >
@@ -984,7 +1433,7 @@
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
-                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
                   S7.1 · Operator Governance
@@ -1000,7 +1449,7 @@
                   data-reveal
                 >
                   The file stores the signal —
-                  <code class="font-mono text-primary font-medium">stale_after</code>. The machine
+                  <code class="font-mono text-secondary font-medium">stale_after</code>. The machine
                   does not invent policy; the operator writes the instruction.
                 </p>
 
@@ -1013,12 +1462,12 @@
                   ></div>
 
                   <div class="lg:col-span-6 space-y-4">
-                    <div class="rounded-2xl border-2 border-primary/40 bg-base-100 p-6 shadow-md">
+                    <div class="rounded-2xl border-2 border-secondary/40 bg-base-100 p-6 shadow-md">
                       <div
                         class="flex items-center justify-between border-b border-base-200 pb-3 mb-4"
                       >
                         <span
-                          class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content"
+                          class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content"
                           >Operator rule</span
                         >
                         <span class="font-mono text-xs text-base-content/50"
@@ -1027,17 +1476,17 @@
                       </div>
 
                       <p
-                        class="font-mono text-xs uppercase tracking-widest text-primary font-bold mb-2"
+                        class="font-mono text-xs uppercase tracking-widest text-secondary font-bold mb-2"
                       >
                         Configured instruction:
                       </p>
 
                       <!-- The literal configured sentence (serious version) -->
                       <blockquote
-                        class="rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm md:text-base font-medium leading-relaxed text-base-content"
+                        class="rounded-xl border border-secondary/30 bg-secondary/5 p-4 text-sm md:text-base font-medium leading-relaxed text-base-content"
                       >
                         &ldquo;If the current date is past
-                        <code class="text-primary font-mono font-bold">stale_after</code>, notify
+                        <code class="text-secondary font-mono font-bold">stale_after</code>, notify
                         the user that this document is stale and propose opening a refresh ticket or
                         verifying with People Ops.&rdquo;
                       </blockquote>
@@ -1046,14 +1495,14 @@
                         class="mt-5 space-y-2 text-xs text-base-content/70 border-t border-base-200 pt-4"
                       >
                         <p class="flex items-center gap-2">
-                          <span class="text-primary font-bold">→</span>
+                          <span class="text-secondary font-bold">→</span>
                           <span
                             ><strong>The signal:</strong> parsed directly from the OKF metadata in
                             the file.</span
                           >
                         </p>
                         <p class="flex items-center gap-2">
-                          <span class="text-primary font-bold">→</span>
+                          <span class="text-secondary font-bold">→</span>
                           <span
                             ><strong>The instruction:</strong> authored by the team to match your
                             workflow.</span
@@ -1064,16 +1513,53 @@
                   </div>
                 </div>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     Set up the demo before touching the terminal. The signal is passive — it sits
                     inert in the file until someone asks a question.
@@ -1087,12 +1573,13 @@
               </div>
             </section>
 
-            <!-- ========== SECTION 8 — Live demo rescue ========== -->
+            <!-- ========== SECTION 8 — Same file, with and without the hook ========== -->
             <section
               id="s8-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="8"
-              data-section-title="Live demo rescue"
+              data-section-title="Same file, with and without the hook"
+              data-slide-title="Same file, with and without the hook"
               data-beat="S8.1"
               data-assertion="The same file and the same question, answered once without the hook and once with."
             >
@@ -1103,20 +1590,20 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S8.1 · Live Demo Rescue
+                  S8.1 · Side-by-Side Comparison
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  Live Demo: Governance in action on onboarding.md
+                  Same file, with and without the hook
                 </h2>
                 <p
                   class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  Normally scrolled past during the live run. It is here so that a failed demo does
-                  not cost the talk its load-bearing moment.
+                  The same file and the same question, answered once without the hook and once with
+                  markdown-harness intercepting.
                 </p>
 
                 <!-- Shared scenario anchor -->
@@ -1132,7 +1619,7 @@
                       >docs/handbook/onboarding.md</span
                     >
                     <span class="badge badge-warning badge-sm font-mono text-[0.65rem]"
-                      >stale_after: 2025-07-01</span
+                      >stale_after: 2026-07-01</span
                     >
                   </div>
                   <div class="flex items-center gap-2">
@@ -1211,7 +1698,7 @@
                             <p>• Day five: 30-min check-in with hiring manager</p>
                           </div>
                           <p class="text-xs text-base-content/60 italic">
-                            (Note: Metadata lists stale_after: 2025-07-01, but the recorded steps
+                            (Note: Metadata lists stale_after: 2026-07-01, but the recorded steps
                             are provided above.)
                           </p>
                         </div>
@@ -1282,7 +1769,7 @@
                             <span>markdown-harness intercept</span>
                           </div>
                           <p class="font-mono text-[0.7rem] text-base-content/70">
-                            docs/handbook/onboarding.md expired 2025-07-01 (maintainer: @m.okonkwo)
+                            docs/handbook/onboarding.md expired 2026-07-01 (maintainer: @m.okonkwo)
                           </p>
                           <p class="font-sans italic text-base-content/90">
                             ↳ Injected instruction: &ldquo;If current date is past stale_after, warn
@@ -1301,7 +1788,7 @@
                             ⚠️ Warning: docs/handbook/onboarding.md is stale.
                           </p>
                           <p class="text-xs text-base-content/80">
-                            This playbook expired on <span class="font-semibold">2025-07-01</span>.
+                            This playbook expired on <span class="font-semibold">2026-07-01</span>.
                             Before executing these onboarding steps, please verify with People Ops
                             (@m.okonkwo) or open a documentation refresh ticket:
                           </p>
@@ -1339,18 +1826,55 @@
                   </div>
                 </div>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
-                    <strong>Rescue slide:</strong> In a standard run, do not dwell here — step
+                    <strong>Contingency slide:</strong> In a standard run, do not dwell here — step
                     directly into your live terminal session to show the contrast in real time.
                   </p>
                   <p class="mt-3">
@@ -1371,7 +1895,8 @@
               id="s9-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="9"
-              data-section-title="Conclusion"
+              data-section-title="The verifying half is yours"
+              data-slide-title="The verifying half is yours"
               data-beat="S9.1"
               data-assertion="Back to the Venn, with the human region lit and the rest dimmed. Nothing new to read."
             >
@@ -1379,7 +1904,7 @@
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
-                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
                   S9.1 · Conclusion
@@ -1388,30 +1913,67 @@
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  The verifying half is nobody else's job
+                  The verifying half is yours
                 </h2>
                 <p
                   class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
                   The talk ends on the image it argued from. Machines check structure; AI
-                  accelerates; the <span class="font-medium text-primary">human</span> region is
+                  accelerates; the <span class="font-medium text-secondary">human</span> region is
                   where the work moved.
                 </p>
 
                 <!-- Section 9 Venn mount: emphasis="human" -->
                 <figure data-venn data-venn-emphasis="human" class="mt-2"></figure>
 
+                <!-- Speaker notes cue & drawer -->
+                <button
+                  type="button"
+                  data-notes-cue
+                  class="group mt-6 inline-flex items-center gap-2 rounded-lg border border-base-300/80 bg-base-200/40 px-3 py-1.5 text-xs text-base-content/60 transition-all hover:border-secondary/60 hover:bg-secondary/10 hover:text-secondary"
+                  title="Read speaker notes for this slide (press N)"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Read speaker notes</span>
+                  <kbd
+                    class="kbd kbd-xs border-base-300 font-mono text-[10px] group-hover:border-secondary/40"
+                    >N</kbd
+                  >
+                </button>
+
                 <!-- Speaker notes -->
                 <aside
                   data-speaker-notes
-                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                  class="mt-6 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
                 >
-                  <p
-                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
-                  >
-                    Speaker notes
-                  </p>
+                  <div class="mb-2 flex items-center justify-between">
+                    <p
+                      class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                    >
+                      Speaker notes
+                    </p>
+                    <button
+                      type="button"
+                      data-close-notes
+                      class="btn btn-ghost btn-xs text-base-content/50 hover:text-base-content"
+                      title="Close notes"
+                    >
+                      Hide [N]
+                    </button>
+                  </div>
                   <p>
                     Land the conclusion cleanly. The human region is not an unfortunate residue we
                     haven't figured out how to automate yet. It is the real work of knowledge
@@ -1471,6 +2033,33 @@
             class="flex-1 overflow-y-auto p-3"
             aria-label="Table of contents"
           ></nav>
+          <div class="border-t border-base-300 p-3">
+            <button
+              type="button"
+              id="drawer-toggle-notes"
+              class="btn btn-outline btn-sm w-full justify-between gap-2 border-base-300 font-normal hover:border-secondary hover:bg-secondary/10 hover:text-secondary"
+              data-notes-cue
+              title="Toggle speaker notes overlay"
+            >
+              <span class="flex items-center gap-2">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Speaker notes</span>
+              </span>
+              <kbd class="kbd kbd-xs font-mono">N</kbd>
+            </button>
+          </div>
         </aside>
       </div>
     </div>

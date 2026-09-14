@@ -10,11 +10,9 @@ import "../src/style.css";
  * from those attributes at runtime — so adding or removing a beat is a one-block edit.
  *
  * Colour language, established in the hero and reused by every later section:
- *   primary                = human    (the load-bearing actor)
- *   neutral / base-content = machine  (deliberately desaturated)
- *   accent                 = AI       (the ambiguous middle)
- * `secondary` is not used for any of the three — per ADR FE-001 it renders
- * near-gray in the default corporate theme.
+ *   primary                = machine  (mechanical, deterministic checks)
+ *   secondary              = human    (the load-bearing actor, ground truth)
+ *   accent                 = AI       (the accelerator, recommendations)
  *
  * Per ADR FE-001, runtime-animated dimensions are set here via `element.style`
  * with their targets stored in `data-*` attributes; the HTML carries no inline
@@ -97,6 +95,7 @@ beatEls.forEach((el) => {
     id: el.id,
     section: el.dataset.section,
     code: el.dataset.beat,
+    title: el.dataset.slideTitle || el.dataset.assertion || "",
     assertion: el.dataset.assertion || "",
   };
   beatById[el.id] = beat;
@@ -113,53 +112,72 @@ beatEls.forEach((el) => {
 const sections = Array.from(sectionMap.values());
 
 /* ------------------------------------------------------------------ *
- * Table of contents — rendered identically into both mount points
+ * Table of contents — executive summary, claims as titles, collapsed
+ * hierarchy with only section 5 having children.
  * ------------------------------------------------------------------ */
 
 function renderSection(section) {
-  const beats = section.beats
-    .map(
-      (b) => `
+  // Only section 5 has genuine subsections
+  if (section.beats.length > 1) {
+    const beats = section.beats
+      .map(
+        (b) => `
+        <a
+          href="#${b.id}"
+          data-toc-jump="${b.id}"
+          class="toc-beat block rounded-lg px-3 py-1.5 transition-colors hover:bg-base-300/50"
+        >
+          <span class="toc-beat-title line-clamp-1 block text-xs leading-snug text-base-content/70"
+            >${escapeHtml(b.title || b.assertion)}</span
+          >
+        </a>`,
+      )
+      .join("");
+
+    return `
+      <div class="toc-section" data-toc-section="${section.num}">
+        <button
+          type="button"
+          data-section-toggle="${section.num}"
+          class="toc-section-header flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2 text-left transition-colors hover:bg-base-300/50"
+        >
+          <span class="flex min-w-0 items-center gap-2">
+            <span class="font-mono text-xs text-base-content/40">${pad2(section.num)}</span>
+            <span class="truncate font-display text-sm font-semibold">${escapeHtml(section.title)}</span>
+          </span>
+          <svg
+            data-caret
+            aria-hidden="true"
+            class="h-4 w-4 shrink-0 text-base-content/40 transition-transform duration-200 rotate-180"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div data-section-beats="${section.num}" class="toc-beats pl-6 space-y-0.5 mt-0.5">${beats}</div>
+      </div>`;
+  }
+
+  // Single-slide flat entry — no fake hierarchy, no SX.1 code
+  const b = section.beats[0];
+  return `
+    <div class="toc-section" data-toc-section="${section.num}">
       <a
         href="#${b.id}"
         data-toc-jump="${b.id}"
         class="toc-beat block rounded-lg px-3 py-2 transition-colors hover:bg-base-300/50"
       >
-        <span class="font-mono text-[0.6rem] uppercase tracking-widest text-base-content/40">${escapeHtml(
-          b.code,
-        )}</span>
-        <span class="toc-beat-title mt-0.5 line-clamp-2 block text-sm leading-snug text-base-content/70"
-          >${escapeHtml(b.assertion)}</span
-        >
-      </a>`,
-    )
-    .join("");
-
-  return `
-    <div class="toc-section" data-toc-section="${section.num}">
-      <button
-        type="button"
-        data-section-toggle="${section.num}"
-        class="toc-section-header flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2 text-left transition-colors hover:bg-base-300/50"
-      >
-        <span class="flex min-w-0 items-center gap-2">
+        <span class="flex items-center gap-2">
           <span class="font-mono text-xs text-base-content/40">${pad2(section.num)}</span>
-          <span class="truncate font-display text-sm font-semibold">${escapeHtml(section.title)}</span>
+          <span class="toc-beat-title line-clamp-2 font-display text-sm font-semibold text-base-content/80">${escapeHtml(
+            section.title,
+          )}</span>
         </span>
-        <svg
-          data-caret
-          aria-hidden="true"
-          class="h-4 w-4 shrink-0 text-base-content/40 transition-transform duration-200"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <div data-section-beats="${section.num}" class="toc-beats hidden pl-2">${beats}</div>
+      </a>
     </div>`;
 }
 
@@ -168,6 +186,18 @@ function buildTOC() {
   ["toc-desktop", "toc-mobile"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = html;
+  });
+
+  // Section 5 accordion toggle click
+  document.querySelectorAll("[data-section-toggle]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const num = btn.getAttribute("data-section-toggle");
+      const beatsEl = document.querySelector(`[data-section-beats="${num}"]`);
+      if (beatsEl) {
+        const isHidden = beatsEl.classList.contains("hidden");
+        setSectionExpanded(num, isHidden);
+      }
+    });
   });
 }
 
@@ -183,11 +213,11 @@ const progressEls = ["progress-desktop", "progress-mobile"]
 
 function markBeatAnchor(anchor, active) {
   const title = anchor.querySelector(".toc-beat-title");
-  anchor.classList.toggle("bg-primary/10", active);
+  anchor.classList.toggle("bg-secondary/10", active);
   if (title) {
     title.classList.toggle("text-base-content/70", !active);
-    title.classList.toggle("text-primary", active);
-    title.classList.toggle("font-medium", active);
+    title.classList.toggle("text-secondary", active);
+    title.classList.toggle("font-bold", active);
   }
 }
 
@@ -209,7 +239,11 @@ function setActive(id) {
     .querySelectorAll(".toc-beat")
     .forEach((a) => markBeatAnchor(a, a.getAttribute("data-toc-jump") === id));
 
-  sections.forEach((s) => setSectionExpanded(s.num, s.num === activeSection));
+  sections.forEach((s) => {
+    if (s.beats.length > 1) {
+      setSectionExpanded(s.num, s.num === activeSection);
+    }
+  });
 
   const idx = beatOrder.indexOf(id);
   const pct = total > 1 ? (idx / (total - 1)) * 100 : 100;
@@ -548,6 +582,23 @@ function updatePresenterControlsUI() {
 
   const notesCheck = document.getElementById("speaker-notes-check");
   if (notesCheck) notesCheck.textContent = isNotes ? "✓" : "";
+
+  const directNotesBtn = document.getElementById("direct-notes-btn");
+  if (directNotesBtn) {
+    directNotesBtn.classList.toggle("btn-active", isNotes);
+    directNotesBtn.classList.toggle("border-secondary", isNotes);
+    directNotesBtn.classList.toggle("bg-secondary/15", isNotes);
+    directNotesBtn.classList.toggle("text-secondary", isNotes);
+    directNotesBtn.setAttribute("aria-pressed", isNotes ? "true" : "false");
+  }
+
+  const railNotesBtn = document.getElementById("rail-toggle-notes");
+  if (railNotesBtn) {
+    railNotesBtn.classList.toggle("btn-active", isNotes);
+    railNotesBtn.classList.toggle("border-secondary", isNotes);
+    railNotesBtn.classList.toggle("bg-secondary/15", isNotes);
+    railNotesBtn.classList.toggle("text-secondary", isNotes);
+  }
 }
 
 function setPresentationMode(enabled) {
@@ -590,37 +641,53 @@ function buildPresenterControls() {
   if (!host) return;
 
   host.innerHTML = `
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-sm gap-1.5" aria-label="Presenter controls">
-        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 6h16M4 12h10M4 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span class="hidden sm:inline">Presenter</span>
-      </div>
-      <ul
-        tabindex="0"
-        class="menu dropdown-content z-50 mt-2 w-56 rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
+    <div class="flex items-center gap-1.5">
+      <!-- Direct Speaker Notes Button for high discoverability -->
+      <button
+        type="button"
+        id="direct-notes-btn"
+        class="btn btn-ghost btn-sm gap-1.5 border border-base-300 transition-colors"
+        aria-label="Toggle speaker notes"
+        title="Toggle speaker notes (N)"
       >
-        <li class="menu-title text-[0.65rem] uppercase tracking-[0.2em]">Presenter controls</li>
-        <li>
-          <button type="button" id="toggle-presentation-btn" class="justify-between py-2">
-            <span class="flex items-center gap-2">
-              <span>Presentation mode</span>
-              <kbd class="kbd kbd-xs">P</kbd>
-            </span>
-            <span id="presentation-mode-check" class="text-primary font-bold"></span>
-          </button>
-        </li>
-        <li>
-          <button type="button" id="toggle-notes-btn" class="justify-between py-2">
-            <span class="flex items-center gap-2">
-              <span>Speaker notes</span>
-              <kbd class="kbd kbd-xs">N</kbd>
-            </span>
-            <span id="speaker-notes-check" class="text-primary font-bold"></span>
-          </button>
-        </li>
-      </ul>
+        <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="hidden sm:inline text-xs font-medium">Notes</span>
+        <kbd class="kbd kbd-xs font-mono">N</kbd>
+        <span id="speaker-notes-check" class="text-secondary font-bold text-xs"></span>
+      </button>
+
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-square border border-base-300" aria-label="Presenter controls" title="Presenter controls">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6h16M4 12h10M4 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <ul
+          tabindex="0"
+          class="menu dropdown-content z-50 mt-2 w-56 rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
+        >
+          <li class="menu-title text-[0.65rem] uppercase tracking-[0.2em]">Presenter controls</li>
+          <li>
+            <button type="button" id="toggle-presentation-btn" class="justify-between py-2">
+              <span class="flex items-center gap-2">
+                <span>Presentation mode</span>
+                <kbd class="kbd kbd-xs">P</kbd>
+              </span>
+              <span id="presentation-mode-check" class="text-secondary font-bold"></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" id="toggle-notes-btn" class="justify-between py-2">
+              <span class="flex items-center gap-2">
+                <span>Speaker notes</span>
+                <kbd class="kbd kbd-xs">N</kbd>
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>`;
 
   const presBtn = document.getElementById("toggle-presentation-btn");
@@ -630,9 +697,23 @@ function buildPresenterControls() {
     });
   }
 
+  const directBtn = document.getElementById("direct-notes-btn");
+  if (directBtn) {
+    directBtn.addEventListener("click", () => {
+      toggleSpeakerNotes();
+    });
+  }
+
   const notesBtn = document.getElementById("toggle-notes-btn");
   if (notesBtn) {
     notesBtn.addEventListener("click", () => {
+      toggleSpeakerNotes();
+    });
+  }
+
+  const railBtn = document.getElementById("rail-toggle-notes");
+  if (railBtn) {
+    railBtn.addEventListener("click", () => {
       toggleSpeakerNotes();
     });
   }
@@ -646,6 +727,17 @@ function buildPresenterControls() {
 
   updatePresenterControlsUI();
 }
+
+// Global delegated clicks for slide-level notes triggers and rail
+document.addEventListener("click", (e) => {
+  if (
+    e.target.closest("[data-notes-cue]") ||
+    e.target.closest("[data-close-notes]") ||
+    e.target.closest("#rail-toggle-notes")
+  ) {
+    toggleSpeakerNotes();
+  }
+});
 
 /* ------------------------------------------------------------------ *
  * Beat animations — each beat registers its own, before Init so it exists
@@ -823,7 +915,7 @@ function hubSpokeMarkup() {
             />
             <text x="382" y="153" class="fill-base-content/40 font-mono text-[9px]">---</text>
             <text x="382" y="166" class="fill-base-content/75 font-mono text-[9.5px]">type: Playbook</text>
-            <text x="382" y="179" class="fill-base-content/75 font-mono text-[9.5px]">stale_after: 2025-07-01</text>
+            <text x="382" y="179" class="fill-base-content/75 font-mono text-[9.5px]">stale_after: 2026-07-01</text>
             <text x="382" y="192" class="fill-base-content/40 font-mono text-[9px]">---</text>
 
             <!-- Document body lines -->
@@ -1473,7 +1565,7 @@ function divergingCurvesMarkup() {
       <g clip-path="url(#curves-wipe)">
         <path
           d="M 120 316 C 190 312, 235 298, 270 274 C 310 246, 355 216, 400 200 C 470 174, 570 132, 650 104 C 700 88, 722 82, 740 78 L 740 350 L 120 350 Z"
-          class="fill-primary/10"
+          class="fill-secondary/10"
         />
       </g>
 
@@ -1499,14 +1591,14 @@ function divergingCurvesMarkup() {
         stroke="currentColor"
         stroke-width="3"
         stroke-linecap="round"
-        class="text-primary"
+        class="text-secondary"
       />
 
       <!-- Direct labels at the curve ends, each with a short line-key. The key
            carries the series colour; the label text stays in base-content, which
            keeps it legible in every theme. -->
       <g data-rise data-chart-key>
-        <line x1="748" y1="78" x2="764" y2="78" class="stroke-primary" stroke-width="3" stroke-linecap="round" />
+        <line x1="748" y1="78" x2="764" y2="78" class="stroke-secondary" stroke-width="3" stroke-linecap="round" />
         <text x="772" y="75" class="fill-base-content text-[12px] font-semibold">Verification</text>
         <text x="772" y="90" class="fill-base-content/60 text-[11.5px]">effort climbs</text>
 
@@ -1519,11 +1611,11 @@ function divergingCurvesMarkup() {
            on a surface-coloured ring so it stays legible exactly where the two
            curves overlap, and a Settle ring marks its arrival. -->
       <g data-rise data-crossover>
-        <line x1="408" y1="200" x2="478" y2="200" class="stroke-primary/40" stroke-width="1" stroke-dasharray="2 3" />
-        <circle data-settle-ring cx="400" cy="200" r="7" fill="none" class="stroke-primary" stroke-width="2" />
-        <circle cx="400" cy="200" r="5.5" class="fill-primary stroke-base-100" stroke-width="2" />
-        <rect x="478" y="185" width="176" height="30" rx="8" class="fill-base-100 stroke-primary/40" stroke-width="1" />
-        <text x="566" y="204" text-anchor="middle" class="fill-primary font-mono text-[11px] font-semibold tracking-wide">
+        <line x1="408" y1="200" x2="478" y2="200" class="stroke-secondary/40" stroke-width="1" stroke-dasharray="2 3" />
+        <circle data-settle-ring cx="400" cy="200" r="7" fill="none" class="stroke-secondary" stroke-width="2" />
+        <circle cx="400" cy="200" r="5.5" class="fill-secondary stroke-base-100" stroke-width="2" />
+        <rect x="478" y="185" width="176" height="30" rx="8" class="fill-base-100 stroke-secondary/40" stroke-width="1" />
+        <text x="566" y="204" text-anchor="middle" class="fill-secondary font-mono text-[11px] font-semibold tracking-wide">
           where the work moved
         </text>
       </g>
@@ -1614,31 +1706,31 @@ function effortVennMarkup(uid) {
         </pattern>
       </defs>
       <g data-venn-camera>
-      <g data-venn-actor="machine" class="text-base-content">
+      <g data-venn-actor="machine" class="text-primary">
         <circle
           data-venn-step="0"
           cx="290" cy="280" r="160"
           stroke-width="1.5"
-          class="venn-circle fill-base-content/10 stroke-base-content/30"
+          class="venn-circle fill-primary/15 stroke-primary/40"
         ></circle>
         <g data-venn-step="1">
           <text x="225" y="185" text-anchor="middle"
-            class="fill-base-content/50 font-mono text-[11px] uppercase tracking-[0.3em]">machine</text>
-          <text x="215" y="255" text-anchor="middle" class="fill-base-content/55 text-[13px]">reference resolves</text>
-          <text x="215" y="285" text-anchor="middle" class="fill-base-content/55 text-[13px]">file exists</text>
-          <text x="215" y="315" text-anchor="middle" class="fill-base-content/55 text-[13px]">template structure holds</text>
+            class="fill-primary font-mono text-[11px] uppercase tracking-[0.3em]">machine</text>
+          <text x="215" y="255" text-anchor="middle" class="fill-base-content/70 text-[13px]">reference resolves</text>
+          <text x="215" y="285" text-anchor="middle" class="fill-base-content/70 text-[13px]">file exists</text>
+          <text x="215" y="315" text-anchor="middle" class="fill-base-content/70 text-[13px]">template structure holds</text>
         </g>
       </g>
-      <g data-venn-actor="human" class="text-primary">
+      <g data-venn-actor="human" class="text-secondary">
         <circle
           data-venn-step="2"
           cx="535" cy="280" r="235"
           stroke-width="1.5"
-          class="venn-circle mix-blend-multiply fill-primary/20 stroke-primary/50 text-primary"
+          class="venn-circle mix-blend-multiply fill-secondary/20 stroke-secondary/50 text-secondary"
         ></circle>
         <g data-venn-step="3">
           <text x="610" y="150" text-anchor="middle"
-            class="fill-primary font-mono text-[11px] uppercase tracking-[0.3em]">human</text>
+            class="fill-secondary font-mono text-[11px] uppercase tracking-[0.3em]">human</text>
           <text x="605" y="242" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">is it still true</text>
           <text x="605" y="280" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">is it stale</text>
           <text x="605" y="318" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">does the reference point</text>
@@ -1761,7 +1853,7 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
               <tr><td class="pr-3 text-right text-base-content/30 select-none">5</td><td class="pl-2">  - <span class="text-accent font-medium">id</span>: <span class="text-base-content/70">people-ops-handbook</span></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">6</td><td class="pl-2">    <span class="text-accent font-medium">resource</span>: <span class="text-primary/90 underline">https://intranet.example.com/people-ops/handbook#onboarding</span></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">7</td><td class="pl-2">    <span class="text-accent font-medium">title</span>: <span class="text-base-content/70">People Ops handbook, section 4</span></td></tr>
-              <tr class="${activeField === "stale_after" ? "bg-warning/10 ring-1 ring-warning" : ""}"><td class="pr-3 text-right text-base-content/30 select-none">8</td><td><span class="text-primary font-medium">stale_after</span>: <span class="text-warning font-bold">2025-07-01T00:00:00Z</span></td></tr>
+              <tr class="${activeField === "stale_after" ? "bg-warning/10 ring-1 ring-warning" : ""}"><td class="pr-3 text-right text-base-content/30 select-none">8</td><td><span class="text-primary font-medium">stale_after</span>: <span class="text-warning font-bold">2026-07-01T00:00:00Z</span></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">9</td><td class="text-primary/70 font-bold">---</td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">10</td><td></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">11</td><td class="font-bold text-base-content text-xs sm:text-sm"># Onboarding a new employee</td></tr>
@@ -1777,111 +1869,144 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
       </div>`;
   }
 
-  // Section 6 & 7: OKF 0.2 full card.
-  //
-  // Section 6 annotates every field with who supplies it. Those annotations are
-  // always rendered — hover only emphasises, it never carries information,
-  // because nobody in a screen-shared audience hovers. Unlike the Venn these are
-  // real HTML elements rather than children of a role="img", so here the
-  // enrichment is keyboard-reachable and each field takes a tabindex.
-  const annotate = mode === "section-6";
-  const fieldAttrs = annotate ? ' tabindex="0"' : "";
-  const fieldClass = `fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors${annotate ? " deck-lift" : ""}`;
-  const annotation = (text) =>
-    annotate
-      ? `<span data-rise="right" class="fm-annotation text-[11px] font-sans text-base-content/60 italic">${text}</span>`
-      : "";
+  // Section 6: Show supplier annotations all at once, indented to the right of the frontmatter block.
+  // Each annotation states who supplies the field, not what the field is.
+  if (mode === "section-6") {
+    const fields = [
+      {
+        id: "type",
+        code: `<div><span class="text-base-content/50 uppercase tracking-wider text-[10px]">type:</span> <span class="font-semibold text-base-content ml-1">Playbook</span></div>`,
+        supplierBadge: `<span class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content">Machine</span>`,
+        statement: "A machine can parse this, not judge it.",
+        detail: "The author selects the taxonomy; the harness verifies syntax schema.",
+      },
+      {
+        id: "sources",
+        code: `<div>
+          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">sources:</span>
+          <div class="ml-2 pl-2 border-l border-base-300 space-y-0.5 mt-0.5 text-[11px]">
+            <div><span class="text-base-content/50">resource:</span> <span class="text-primary font-medium break-all">https://intranet.example.com/people-ops/handbook#onboarding</span></div>
+            <div><span class="text-base-content/50">id:</span> <span class="text-base-content/80">people-ops-handbook</span></div>
+          </div>
+        </div>`,
+        supplierBadge: `<span class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content">Human</span>`,
+        statement: "A human establishes the authority.",
+        detail:
+          "A machine checks the URI is well-formed; only a human verifies the handbook is authentic and binding.",
+      },
+      {
+        id: "stale_after",
+        code: `<div><span class="text-base-content/50 uppercase tracking-wider text-[10px]">stale_after:</span> <span class="font-bold text-secondary ml-1">2026-07-01T00:00:00Z</span></div>`,
+        supplierBadge: `<span class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content">Human</span>`,
+        statement: "A human sets the review budget.",
+        detail:
+          "A machine can compare timestamps; only a human owner can determine when ground truth expires.",
+      },
+      {
+        id: "generated",
+        code: `<div>
+          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">generated:</span>
+          <div class="ml-2 pl-2 border-l border-base-300 space-y-0.5 mt-0.5 text-[11px] text-base-content/80">
+            <div><span class="text-base-content/50">by:</span> <span class="text-accent font-medium">ai:claude-opus-5</span></div>
+            <div><span class="text-base-content/50">at:</span> <span>2026-01-20T09:00:00Z</span></div>
+          </div>
+        </div>`,
+        supplierBadge: `<span class="badge badge-accent badge-sm font-mono uppercase tracking-wider text-accent-content">AI / Machine</span>`,
+        statement: "A machine stamps model & timestamp.",
+        detail: "Automated generation logs the model identifier and ISO execution time.",
+      },
+      {
+        id: "verified",
+        code: `<div>
+          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">verified:</span>
+          <div class="ml-2 pl-2 border-l border-base-300 space-y-0.5 mt-0.5 text-[11px] text-base-content/80">
+            <div><span class="text-base-content/50">by:</span> <span class="text-secondary font-bold">human:m.okonkwo</span></div>
+            <div><span class="text-base-content/50">at:</span> <span>2026-01-22T11:30:00Z</span></div>
+          </div>
+        </div>`,
+        supplierBadge: `<span class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content">Human</span>`,
+        statement: "A human signs this with their identity.",
+        detail:
+          "Twin structure to generated: but signed by an accountable person who attested the facts.",
+      },
+    ];
 
+    const rendered = fields
+      .map(
+        (f) => `
+      <div
+        data-fm-field="${f.id}"
+        tabindex="0"
+        role="button"
+        class="fm-field rounded-xl border border-base-300/80 bg-base-100 p-4 transition-all duration-200 hover:border-secondary/60 hover:shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-3 items-center focus:outline-none focus:ring-2 focus:ring-secondary/50 cursor-pointer"
+      >
+        <!-- Field frontmatter block -->
+        <div class="lg:col-span-6 font-mono text-xs leading-relaxed">
+          ${f.code}
+        </div>
+        <!-- Indented Supplier annotation -->
+        <div class="lg:col-span-6 lg:border-l-2 lg:border-base-200 lg:pl-5 flex flex-col justify-center">
+          <div class="fm-annotation flex items-center gap-2 mb-1" data-rise="right">
+            ${f.supplierBadge}
+            <span class="text-xs sm:text-sm font-sans font-bold text-base-content">${f.statement}</span>
+          </div>
+          <p class="text-[11px] sm:text-xs font-sans text-base-content/70 leading-normal">${f.detail}</p>
+        </div>
+      </div>`,
+      )
+      .join("");
+
+    return `
+      <div class="frontmatter-card rounded-2xl border border-base-300 bg-base-200/50 p-4 sm:p-6 shadow-sm">
+        <div class="mb-4 flex items-center justify-between border-b border-base-300/70 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="inline-block h-2.5 w-2.5 rounded-full bg-secondary/80"></span>
+            <span class="font-mono text-xs font-semibold text-base-content/80">onboarding.md</span>
+            <span class="font-mono text-[10px] text-base-content/40">frontmatter fields &amp; suppliers</span>
+          </div>
+          <span class="badge badge-ghost badge-xs font-mono text-[10px] tracking-wider text-base-content/60">OKF v0.2</span>
+        </div>
+        <div class="space-y-3 deck-lift-group">
+          ${rendered}
+        </div>
+      </div>`;
+  }
+
+  // Section 7: Operator Governance
   return `
-    <div class="frontmatter-card rounded-2xl border border-base-300 bg-base-200/50 p-5 md:p-6 shadow-sm">
+    <div class="frontmatter-card rounded-2xl border border-base-300 bg-base-200/50 p-5 md:p-6 shadow-sm font-mono text-xs md:text-sm">
       <div class="mb-4 flex items-center justify-between border-b border-base-300/70 pb-3">
         <div class="flex items-center gap-2">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-primary/70"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-secondary/80"></span>
           <span class="font-mono text-xs font-semibold text-base-content/80">onboarding.md</span>
           <span class="font-mono text-[10px] text-base-content/40">frontmatter</span>
         </div>
         <span class="badge badge-ghost badge-xs font-mono text-[10px] tracking-wider text-base-content/60">OKF v0.2</span>
       </div>
-
-      <div class="space-y-3 font-mono text-xs md:text-sm${annotate ? " deck-lift-group" : ""}">
-        <!-- type -->
-        <div data-fm-field="type" class="${fieldClass}"${fieldAttrs}>
-          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-            <div>
-              <span class="text-base-content/50 uppercase tracking-wider text-[10px]">type:</span>
-              <span class="font-semibold text-base-content ml-2">Playbook</span>
-            </div>
-            ${annotation("Who supplies: author chooses category")}
+      <div class="space-y-2.5">
+        <div class="rounded-lg border border-base-300/60 bg-base-100/70 p-2.5">
+          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">type:</span> <span class="font-semibold text-base-content ml-2">Playbook</span>
+        </div>
+        <div class="rounded-lg border border-base-300/60 bg-base-100/70 p-2.5">
+          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">sources:</span>
+          <div class="ml-3 pl-3 border-l-2 border-base-300/80 mt-1 text-xs">
+            <span class="text-base-content/50">resource:</span> <span class="text-primary break-all">https://intranet.example.com/people-ops/handbook#onboarding</span>
           </div>
         </div>
-
-        <!-- sources -->
-        <div data-fm-field="sources" class="${fieldClass}"${fieldAttrs}>
-          <div class="flex flex-col gap-2">
-            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-              <span class="text-base-content/50 uppercase tracking-wider text-[10px]">sources:</span>
-              ${annotation("Who supplies: human defines authority")}
-            </div>
-            <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-1">
-              <div>
-                <span class="text-base-content/50 text-[11px]">resource:</span>
-                <span class="font-medium text-primary ml-1 break-all">https://intranet.example.com/people-ops/handbook#onboarding</span>
-              </div>
-              <div>
-                <span class="text-base-content/50 text-[11px]">id:</span>
-                <span class="text-base-content/80 ml-1">people-ops-handbook</span>
-              </div>
-              <div>
-                <span class="text-base-content/50 text-[11px]">title:</span>
-                <span class="text-base-content/80 ml-1">People Ops handbook, section 4</span>
-              </div>
-            </div>
+        <div class="rounded-lg border-2 border-secondary bg-secondary/10 p-3.5 shadow-sm ring-1 ring-secondary/30">
+          <div class="flex items-center justify-between">
+            <span class="text-secondary uppercase tracking-wider text-[10px] font-bold">stale_after:</span>
+            <span class="badge badge-secondary badge-xs font-mono text-secondary-content">The Signal</span>
+          </div>
+          <div class="mt-1.5 font-bold text-secondary text-sm md:text-base">
+            2026-07-01T00:00:00Z
           </div>
         </div>
-
-        <!-- stale_after -->
-        <div data-fm-field="stale_after" class="${fieldClass} ${activeField === "stale_after" ? "ring-2 ring-primary bg-primary/5" : ""}"${fieldAttrs}>
-          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-            <div>
-              <span class="text-base-content/50 uppercase tracking-wider text-[10px]">stale_after:</span>
-              <span class="font-bold text-primary ml-2">2025-07-01T00:00:00Z</span>
-            </div>
-            ${annotation("Who supplies: human sets review budget")}
-          </div>
+        <div class="rounded-lg border border-base-300/60 bg-base-100/70 p-2.5">
+          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">generated:</span> <span class="text-base-content/70 ml-2">ai:claude-opus-5</span>
         </div>
-
-        <!-- generated (machine-signed) -->
-        <div data-fm-field="generated" class="${fieldClass}"${fieldAttrs}>
-          <div class="flex flex-col gap-1.5">
-            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-              <div>
-                <span class="text-base-content/50 uppercase tracking-wider text-[10px]">generated:</span>
-                <span class="badge badge-xs badge-neutral ml-2 font-mono text-[9px]">machine-signed</span>
-              </div>
-              ${annotation("Who supplies: machine stamps model & time")}
-            </div>
-            <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
-              <div><span class="text-base-content/50">by:</span> <span class="text-accent font-medium">ai:claude-opus-5</span></div>
-              <div><span class="text-base-content/50">at:</span> <span>2025-01-20T09:00:00Z</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- verified (human-signed twin) -->
-        <div data-fm-field="verified" class="${fieldClass}"${fieldAttrs}>
-          <div class="flex flex-col gap-1.5">
-            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-              <div>
-                <span class="text-base-content/50 uppercase tracking-wider text-[10px]">verified:</span>
-                <span class="badge badge-xs badge-primary ml-2 font-mono text-[9px] text-primary-content">human-signed</span>
-              </div>
-              ${annotation("Who supplies: human verifies & signs")}
-            </div>
-            <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
-              <div><span class="text-base-content/50">by:</span> <span class="text-primary font-bold">human:m.okonkwo</span></div>
-              <div><span class="text-base-content/50">at:</span> <span>2025-01-22T11:30:00Z</span></div>
-            </div>
-          </div>
+        <div class="rounded-lg border border-base-300/60 bg-base-100/70 p-2.5">
+          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">verified:</span> <span class="text-secondary font-bold ml-2">human:m.okonkwo</span>
         </div>
       </div>
     </div>`;
@@ -1909,13 +2034,13 @@ document.addEventListener("click", (e) => {
     if (parent) {
       parent.querySelectorAll(".fm-field").forEach((f) => {
         if (f !== fmField) {
-          f.classList.remove("ring-2", "ring-primary", "bg-primary/5");
+          f.classList.remove("ring-2", "ring-secondary", "bg-secondary/5");
         }
       });
     }
     fmField.classList.toggle("ring-2");
-    fmField.classList.toggle("ring-primary");
-    fmField.classList.toggle("bg-primary/5");
+    fmField.classList.toggle("ring-secondary");
+    fmField.classList.toggle("bg-secondary/5");
   }
 });
 

@@ -596,6 +596,11 @@ body:not(.notes-visible) [data-speaker-notes] {
   display: none !important;
 }
 
+html.notes-visible [data-notes-cue],
+body.notes-visible [data-notes-cue] {
+  display: none !important;
+}
+
 /* =============================================================================
    REDUCED MOTION
    -----------------------------------------------------------------------------
