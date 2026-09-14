@@ -24,15 +24,15 @@ Always run these commands from the repository root:
 
 ## Directory Structure
 
-| Directory                                   | Purpose                                              | Must-read                                             |
-| ------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------- |
-| `src/`                                      | Core shared frontend code (style.css, main.js)       | `src/style.css`                                       |
-| `ai-token-economy-101/`                     | Interactive deck/presentation (token economy)        | `ai-token-economy-101/index.html`                     |
-| `maintain-markdown-for-ai-knowledge-bases/` | Interactive deck/presentation (markdown maintenance) | `maintain-markdown-for-ai-knowledge-bases/index.html` |
-| `.archgate/adrs/`                           | Architecture Decision Records & Rules                | `FE-001-design`                                       |
-| `governance/rules/`                         | Repository conventions and rules                     | `governance/rules/RULE-001-git-commits.md`            |
-| `scripts/`                                  | Project utility and validation scripts               | `scripts/validate-commit-hook.mjs`                    |
-| `.husky/`                                   | Git hooks configuration                              | `.husky/pre-commit`                                   |
+| Directory                      | Purpose                                              | Must-read                                  |
+| ------------------------------ | ---------------------------------------------------- | ------------------------------------------ |
+| `src/`                         | Core shared frontend code (style.css, main.js)       | `src/style.css`                            |
+| `ai-token-economy-101/`        | Interactive deck/presentation (token economy)        | `ai-token-economy-101/index.html`          |
+| `maintaining-markdown-for-ai/` | Interactive deck/presentation (markdown maintenance) | `maintaining-markdown-for-ai/index.html`   |
+| `.archgate/adrs/`              | Architecture Decision Records & Rules                | `FE-001-design`                            |
+| `governance/rules/`            | Repository conventions and rules                     | `governance/rules/RULE-001-git-commits.md` |
+| `scripts/`                     | Project utility and validation scripts               | `scripts/validate-commit-hook.mjs`         |
+| `.husky/`                      | Git hooks configuration                              | `.husky/pre-commit`                        |
 
 ## Design Theme & Libraries
 
