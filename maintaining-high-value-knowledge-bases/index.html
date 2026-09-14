@@ -230,11 +230,19 @@
                         Where the Budget Stops
                       </h2>
                     </div>
-                    <span
-                      class="badge badge-sm badge-outline font-mono text-[0.65rem] text-base-content/60"
-                    >
-                      Lifecycle vs Investment
-                    </span>
+                    <div class="text-right">
+                      <p
+                        class="font-mono text-[0.6rem] uppercase tracking-wider text-base-content/50"
+                      >
+                        avg doc rot lifetime
+                      </p>
+                      <p
+                        id="hero-rot-counter"
+                        class="font-mono text-lg font-bold text-error md:text-xl tabular-nums"
+                      >
+                        4.7 yrs
+                      </p>
+                    </div>
                   </div>
 
                   <!-- 3 Stages Timeline Cards -->
@@ -364,23 +372,6 @@
                 </div>
               </div>
 
-              <!-- Ambient Rot Clock in Hero -->
-              <div
-                class="pointer-events-none absolute bottom-24 right-6 select-none text-right md:right-16 lg:right-24"
-              >
-                <p
-                  class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/40"
-                >
-                  avg doc rot lifetime · unstaffed
-                </p>
-                <p
-                  id="hero-rot-counter"
-                  class="mt-1 font-mono text-2xl leading-none tabular-nums text-error/70 md:text-4xl font-bold"
-                >
-                  4.7 years
-                </p>
-              </div>
-
               <!-- Scroll cue -->
               <a
                 href="#s1-2"
@@ -404,152 +395,20 @@
               </a>
             </section>
 
-            <!-- S1.2 · The Pre-AI Situation -->
+            <!-- S1.2 · Why It Was Always Hard: Four Failure Modes -->
             <section
               id="s1-2"
               class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="1"
               data-section-title="The Pre-AI Baseline"
               data-beat="S1.2"
-              data-assertion="Everyone in this room has abandoned a wiki, and none of us thought that was our fault."
-            >
-              <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
-              >
-                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
-                  S1.2 · The Shared Failure
-                </p>
-
-                <h2
-                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl lg:text-6xl text-base-content"
-                >
-                  The Confluence Graveyard
-                </h2>
-
-                <p class="mt-6 text-lg font-light leading-relaxed text-base-content/80 md:text-xl">
-                  Everyone in this room has abandoned a wiki, and none of us thought that was our
-                  fault. The shared failure gives us permission to be blunt: when documentation
-                  maintenance is volunteer work, entropy wins 100% of the time.
-                </p>
-
-                <!-- Graveyard Cards -->
-                <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
-                  <div
-                    class="kb-card rounded-box border border-dashed border-base-300 bg-base-200/40 p-5 opacity-90 hover:opacity-100"
-                  >
-                    <div class="flex items-center justify-between">
-                      <span class="badge badge-sm badge-error font-mono text-[0.6rem]"
-                        >Abandoned</span
-                      >
-                      <span class="font-mono text-xs text-base-content/40">1,642d ago</span>
-                    </div>
-                    <h3 class="mt-3 font-display text-base font-bold">
-                      Architecture Overview v1.4
-                    </h3>
-                    <p class="mt-2 text-xs leading-relaxed text-base-content/60">
-                      Author left the company in 2022. References deprecated microservices and dead
-                      Auth endpoints.
-                    </p>
-                    <div
-                      class="mt-4 rounded bg-base-300/40 p-2 font-mono text-[0.65rem] text-error"
-                    >
-                      Status: Rotting quietly
-                    </div>
-                  </div>
-
-                  <div
-                    class="kb-card rounded-box border border-dashed border-base-300 bg-base-200/40 p-5 opacity-90 hover:opacity-100"
-                  >
-                    <div class="flex items-center justify-between">
-                      <span class="badge badge-sm badge-warning font-mono text-[0.6rem]"
-                        >Slack DM Lore</span
-                      >
-                      <span class="font-mono text-xs text-base-content/40">890d ago</span>
-                    </div>
-                    <h3 class="mt-3 font-display text-base font-bold">
-                      Local Developer Onboarding
-                    </h3>
-                    <p class="mt-2 text-xs leading-relaxed text-base-content/60">
-                      Fails at Step 3 on Apple Silicon. Fix is shared privately in DMs each time a
-                      junior starts.
-                    </p>
-                    <div
-                      class="mt-4 rounded bg-base-300/40 p-2 font-mono text-[0.65rem] text-warning"
-                    >
-                      Status: Disregarded
-                    </div>
-                  </div>
-
-                  <div
-                    class="kb-card rounded-box border border-dashed border-base-300 bg-base-200/40 p-5 opacity-90 hover:opacity-100"
-                  >
-                    <div class="flex items-center justify-between">
-                      <span class="badge badge-sm badge-neutral font-mono text-[0.6rem]"
-                        >Tribal USP</span
-                      >
-                      <span class="font-mono text-xs text-base-content/40">Live</span>
-                    </div>
-                    <h3 class="mt-3 font-display text-base font-bold">
-                      Production Deploy Checklist
-                    </h3>
-                    <p class="mt-2 text-xs leading-relaxed text-base-content/60">
-                      Never written down. Stored solely in the head of two staff engineers who must
-                      attend every release.
-                    </p>
-                    <div class="mt-4 rounded bg-base-300/40 p-2 font-mono text-[0.65rem] text-info">
-                      Status: Unwritten moat
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Interactive Hand-Raise Action -->
-                <div
-                  class="mt-8 flex flex-col items-center justify-between gap-4 rounded-box border border-base-300 bg-base-200/60 p-5 sm:flex-row"
-                >
-                  <div>
-                    <span class="font-display font-semibold text-base-content"
-                      >Have you written documentation that rotted within 6 months?</span
-                    >
-                    <p id="wiki-hands-label" class="mt-0.5 text-xs text-base-content/60">
-                      Click to raise your hand with the room
-                    </p>
-                  </div>
-                  <div class="flex items-center gap-4">
-                    <span id="wiki-hands-stat" class="font-mono text-2xl font-bold text-primary"
-                      >0%</span
-                    >
-                    <button id="wiki-raise-hand-btn" class="btn btn-primary btn-sm gap-2">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                      >
-                        <path d="M7 11v 6a5 5 0 0 0 10 0v-6M12 2v10" />
-                      </svg>
-                      Raise Hand
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <!-- S1.3 · Why It Was Always Hard: Four Failure Modes -->
-            <section
-              id="s1-3"
-              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
-              data-section="1"
-              data-section-title="The Pre-AI Baseline"
-              data-beat="S1.3"
               data-assertion="Documentation rot is not folklore about bad teams: 82.3% of the top thousand open-source projects have carried outdated documentation."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
                 <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
-                  S1.3 · The Rubric
+                  S1.2 · The Rubric
                 </p>
 
                 <h2
@@ -574,7 +433,7 @@
                     <div
                       class="mt-4 font-mono text-6xl font-extrabold text-error tabular-nums md:text-7xl"
                     >
-                      <span id="s1-3-stat">0</span>%
+                      <span id="s1-2-stat">0</span>%
                     </div>
                     <p class="mt-4 text-sm font-medium text-base-content/80">
                       carried at least one outdated code-element reference in their history

@@ -446,28 +446,9 @@ registerActivate("s1-1", (reduced) => {
   }
 });
 
-// S1.2: Wiki Graveyard Hand-Raise Interactive Poll
-const pollBtn = document.getElementById("wiki-raise-hand-btn");
-if (pollBtn) {
-  pollBtn.addEventListener("click", () => {
-    const countEl = document.getElementById("wiki-hands-stat");
-    const labelEl = document.getElementById("wiki-hands-label");
-    if (countEl) {
-      countUp(countEl, 94, {
-        duration: 900,
-        onDone: () => {
-          if (labelEl) labelEl.textContent = "94% of engineers have abandoned a wiki";
-        },
-      });
-    }
-    pollBtn.classList.add("btn-disabled");
-    pollBtn.innerHTML = `✓ Hand Raised`;
-  });
-}
-
-// S1.3: Documentation Rot 82.3% Stat
-registerActivate("s1-3", (_reduced) => {
-  const statEl = document.getElementById("s1-3-stat");
+// S1.2: Documentation Rot 82.3% Stat
+registerActivate("s1-2", (_reduced) => {
+  const statEl = document.getElementById("s1-2-stat");
   if (statEl) {
     countUp(statEl, 82.3, { duration: 1600, decimals: 1 });
   }
