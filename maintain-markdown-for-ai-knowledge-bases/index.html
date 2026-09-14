@@ -2031,15 +2031,15 @@
               </div>
             </section>
 
-            <!-- ========== SECTION 5 — OKF standardises the signal ========== -->
+            <!-- ========== SECTION 5 — Google OKF ========== -->
             <section
               id="s5-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="5"
-              data-section-title="OKF standardises the signal"
-              data-slide-title="OKF standardises the signal"
+              data-section-title="Google OKF"
+              data-slide-title="Google OKF"
               data-beat="S5.1"
-              data-assertion="The same block in full, annotated with who supplies each field."
+              data-assertion="Full OKF v0.2 frontmatter schema governing provenance, trust, and lifecycle."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
@@ -2054,34 +2054,64 @@
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  OKF standardises the signal
+                  Google OKF
                 </h2>
                 <p
                   class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  A set of frontmatter fields to govern markdown files. The machine-signed field and
-                  the human-signed field sit adjacent with identical structure.
+                  A standardized frontmatter schema to govern AI knowledge bases. Provenance, trust
+                  tiers, and lifecycle fields sit directly in markdown alongside the content.
                 </p>
 
-                <!-- Full block with annotations -->
+                <!-- Full OKF Markdown File Card (Full Width) -->
                 <div
-                  class="mt-8 max-w-4xl"
+                  class="mt-8 w-full"
                   data-frontmatter-mount="s5-1"
-                  data-frontmatter-mode="section-6"
+                  data-frontmatter-mode="okf"
                 ></div>
 
-                <!-- Link to public OKF specification -->
+                <!-- Prominent Spec Link Caption Banner -->
                 <div
-                  class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 max-w-4xl pt-3 border-t border-base-200"
+                  class="mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4 shadow-xs"
                 >
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-content font-mono text-xs font-bold"
+                    >
+                      OKF
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-base-content">
+                        Official Open Knowledge Format Specification (v0.2)
+                      </p>
+                      <p class="text-xs text-base-content/65">
+                        Open specification by Google Cloud Platform for agent-maintained knowledge
+                        repositories: provenance, trust, and lifecycle.
+                      </p>
+                    </div>
+                  </div>
                   <a
-                    href="https://github.com/GoogleCloudPlatform/open-knowledge-format"
+                    href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-1.5 text-xs font-mono text-primary hover:underline"
+                    class="btn btn-primary btn-sm gap-1.5 font-mono text-xs shrink-0 self-end sm:self-auto hover:scale-105 transition-transform"
                   >
-                    <span>Read the public OKF v0.2 specification ↗</span>
+                    <span>Read SPEC.md on GitHub</span>
+                    <svg
+                      class="size-3.5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
                   </a>
                 </div>
 
@@ -2106,9 +2136,7 @@
                       class="text-secondary"
                       aria-hidden="true"
                     >
-                      <path
-                        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                      ></path>
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h6"></path>
                     </svg>
                   </span>
                   <span>Speaker note</span>
@@ -2143,15 +2171,17 @@
                     </button>
                   </div>
                   <p>
-                    Don't lecture on the schema. The power of this slide is the adjacent comparison:
-                    <code>generated</code> and <code>verified</code> have identical shapes —
-                    <code>{ by, at }</code>. One is signed by Opus 5, the other is signed by a
-                    human.
+                    Google's Open Knowledge Format (OKF v0.2) codifies metadata directly in
+                    frontmatter. It standardizes basic concept identity alongside three first-class
+                    families:
+                    <strong>provenance</strong> (<code>sources</code>, <code>usage_window</code>),
+                    <strong>trust</strong> (<code>generated</code>, <code>verified</code>), and
+                    <strong>lifecycle</strong> (<code>status</code>, <code>stale_after</code>).
                   </p>
                   <p class="mt-3">
-                    Who supplies each field does the argument's work on its own. The human sets the
-                    authority and review deadline; the machine executes and logs its timestamp; the
-                    human verifies.
+                    Notice that <code>type</code> is the only required root field. Everything else
+                    is optional, but carries structural semantics. The machine verifies syntax and
+                    timestamps; the human sets authority, trust tiers, and review budgets.
                   </p>
                 </aside>
               </div>

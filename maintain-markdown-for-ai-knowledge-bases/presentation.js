@@ -2195,12 +2195,11 @@ registerActivate("s4-1", (reduced) => {
 });
 
 /* ------------------------------------------------------------------ *
- * Frontmatter Block Component (Sections 5, 6, 7)
+ * Frontmatter Block Component (Sections 4, 5, 6)
  *
- * In Section 5: Renders onboarding.md in an IDE editor treatment
- * with raw markdown syntax, --- frontmatter delimiters, and the body.
- * In Section 6: Full OKF 0.2 field set with who-supplies annotations.
- * In Section 7: Highlights stale_after and the configured operator sentence.
+ * In Section 4 (s4-2..s4-4): Worked example passes in IDE editor.
+ * In Section 5 (s5-1): Google OKF full specification frontmatter.
+ * In Section 6 (s6-1): Operator governance with stale_after highlight.
  * ------------------------------------------------------------------ */
 
 function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {}) {
@@ -2262,105 +2261,203 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
       </div>`;
   }
 
-  // Section 6: Show supplier annotations all at once, indented to the right of the frontmatter block.
-  // Each annotation states who supplies the field, not what the field is.
-  if (mode === "section-6") {
-    const fields = [
-      {
-        id: "type",
-        code: `<div><span class="text-base-content/50 uppercase tracking-wider text-[10px]">type:</span> <span class="font-semibold text-base-content ml-1">Playbook</span></div>`,
-        supplierBadge: `<span class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content">Machine</span>`,
-        statement: "A machine can parse this, not judge it.",
-        detail: "The author selects the taxonomy; the harness verifies syntax schema.",
-      },
-      {
-        id: "sources",
-        code: `<div>
-          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">sources:</span>
-          <div class="ml-2 pl-2 border-l border-base-300 space-y-0.5 mt-0.5 text-[11px]">
-            <div><span class="text-base-content/50">resource:</span> <span class="text-primary font-medium break-all">https://intranet.example.com/people-ops/handbook#onboarding</span></div>
-            <div><span class="text-base-content/50">id:</span> <span class="text-base-content/80">people-ops-handbook</span></div>
-          </div>
-        </div>`,
-        supplierBadge: `<span class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content">Human</span>`,
-        statement: "A human establishes the authority.",
-        detail:
-          "A machine checks the URI is well-formed; only a human verifies the handbook is authentic and binding.",
-      },
-      {
-        id: "stale_after",
-        code: `<div><span class="text-base-content/50 uppercase tracking-wider text-[10px]">stale_after:</span> <span class="font-bold text-secondary ml-1">2026-07-01T00:00:00Z</span></div>`,
-        supplierBadge: `<span class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content">Human</span>`,
-        statement: "A human sets the review budget.",
-        detail:
-          "A machine can compare timestamps; only a human owner can determine when ground truth expires.",
-      },
-      {
-        id: "generated",
-        code: `<div>
-          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">generated:</span>
-          <div class="ml-2 pl-2 border-l border-base-300 space-y-0.5 mt-0.5 text-[11px] text-base-content/80">
-            <div><span class="text-base-content/50">by:</span> <span class="text-accent font-medium">ai:claude-opus-5</span></div>
-            <div><span class="text-base-content/50">at:</span> <span>2026-01-20T09:00:00Z</span></div>
-          </div>
-        </div>`,
-        supplierBadge: `<span class="badge badge-accent badge-sm font-mono uppercase tracking-wider text-accent-content">AI / Machine</span>`,
-        statement: "A machine stamps model & timestamp.",
-        detail: "Automated generation logs the model identifier and ISO execution time.",
-      },
-      {
-        id: "verified",
-        code: `<div>
-          <span class="text-base-content/50 uppercase tracking-wider text-[10px]">verified:</span>
-          <div class="ml-2 pl-2 border-l border-base-300 space-y-0.5 mt-0.5 text-[11px] text-base-content/80">
-            <div><span class="text-base-content/50">by:</span> <span class="text-secondary font-bold">human:m.okonkwo</span></div>
-            <div><span class="text-base-content/50">at:</span> <span>2026-01-22T11:30:00Z</span></div>
-          </div>
-        </div>`,
-        supplierBadge: `<span class="badge badge-secondary badge-sm font-mono uppercase tracking-wider text-secondary-content">Human</span>`,
-        statement: "A human signs this with their identity.",
-        detail:
-          "Twin structure to generated: but signed by an accountable person who attested the facts.",
-      },
-    ];
-
-    const rendered = fields
-      .map(
-        (f) => `
-      <div
-        data-fm-field="${f.id}"
-        tabindex="0"
-        role="button"
-        class="fm-field rounded-xl border border-base-300/80 bg-base-100 p-4 transition-all duration-200 hover:border-secondary/60 hover:shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-3 items-center focus:outline-none focus:ring-2 focus:ring-secondary/50 cursor-pointer"
-      >
-        <!-- Field frontmatter block -->
-        <div class="lg:col-span-6 font-mono text-xs leading-relaxed">
-          ${f.code}
-        </div>
-        <!-- Indented Supplier annotation -->
-        <div class="lg:col-span-6 lg:border-l-2 lg:border-base-200 lg:pl-5 flex flex-col justify-center">
-          <div class="fm-annotation flex items-center gap-2 mb-1" data-rise="right">
-            ${f.supplierBadge}
-            <span class="text-xs sm:text-sm font-sans font-bold text-base-content">${f.statement}</span>
-          </div>
-          <p class="text-[11px] sm:text-xs font-sans text-base-content/70 leading-normal">${f.detail}</p>
-        </div>
-      </div>`,
-      )
-      .join("");
-
+  // Section 5: Google OKF full specification frontmatter in IDE editor treatment
+  if (mode === "section-6" || mode === "okf") {
     return `
-      <div class="frontmatter-card rounded-2xl border border-base-300 bg-base-200/50 p-4 sm:p-6 shadow-sm">
-        <div class="mb-4 flex items-center justify-between border-b border-base-300/70 pb-3">
+      <div class="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-md font-mono w-full">
+        <!-- IDE Editor Tab Bar -->
+        <div class="flex items-center justify-between border-b border-base-300 bg-base-200/80 px-4 py-2.5 text-xs">
           <div class="flex items-center gap-2">
-            <span class="inline-block h-2.5 w-2.5 rounded-full bg-secondary/80"></span>
-            <span class="font-mono text-xs font-semibold text-base-content/80">onboarding.md</span>
-            <span class="font-mono text-[10px] text-base-content/40">frontmatter fields &amp; suppliers</span>
+            <div class="flex items-center gap-1.5 mr-2" aria-hidden="true">
+              <span class="h-2.5 w-2.5 rounded-full bg-error/60"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-warning/60"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-success/60"></span>
+            </div>
+            <div class="flex items-center gap-1.5 rounded-t-md border-t-2 border-primary bg-base-100 px-3 py-1 font-medium text-base-content">
+              <span class="text-primary font-bold text-xs">M↓</span>
+              <span class="font-semibold">markdown.md</span>
+            </div>
           </div>
-          <span class="badge badge-ghost badge-xs font-mono text-[10px] tracking-wider text-base-content/60">OKF v0.2</span>
+          <div class="flex items-center gap-2">
+            <a
+              href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 rounded-md border border-base-300 bg-base-200/90 px-2.5 py-1 text-xs font-mono font-medium text-base-content hover:bg-base-300 transition-all shadow-xs"
+              title="Open Google OKF SPEC.md on GitHub"
+            >
+              <span>OKF SPEC.md ↗</span>
+            </a>
+          </div>
         </div>
-        <div class="space-y-3 deck-lift-group">
-          ${rendered}
+
+        <!-- Raw Markdown Content imitating IDE editor with line numbers -->
+        <div class="p-4 text-[11px] sm:text-xs leading-relaxed overflow-x-auto bg-base-100">
+          <table class="w-full border-collapse font-mono">
+            <tbody>
+              <tr>
+                <td rowspan="30" class="w-6 select-none align-middle text-center border-r border-base-300 pr-1 py-1">
+                  <span class="inline-block [writing-mode:vertical-lr] rotate-180 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-base-content/25 select-none">frontmatter</span>
+                </td>
+                <td class="pr-3 text-right text-base-content/30 select-none w-6">1</td>
+                <td colspan="2" class="text-base-content/70 font-bold">---</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">2</td>
+                <td colspan="2"><span class="text-base-content/40 font-normal"># --- </span><span class="font-bold text-base-content">Basic metadata</span><span class="text-base-content/40 font-normal"> (</span><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#41-frontmatter" target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-primary underline font-normal transition-colors" title="Read §4.1 Frontmatter in OKF SPEC.md">§4.1</a><span class="text-base-content/40 font-normal">) ---</span></td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">3</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">type</span>: <span class="text-base-content/85">&lt;Type name&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"><span class="text-error font-normal"># REQUIRED</span> — concept taxonomy (e.g. Playbook, Reference, Metric)</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">4</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">title</span>: <span class="text-base-content/85">&lt;Display name&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Recommended — human-readable display title</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">5</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">description</span>: <span class="text-base-content/85">&lt;One-line summary&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Recommended — search snippet &amp; index preview</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">6</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">resource</span>: <span class="text-base-content/85">&lt;Canonical URI&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Optional — canonical URI for underlying asset</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">7</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">tags</span>: <span class="text-base-content/85">[&lt;tag&gt;, &lt;tag&gt;, ...]</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Optional — taxonomy categories</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">8</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">9</td>
+                <td colspan="2"><span class="text-base-content/40 font-normal"># --- </span><span class="font-bold text-base-content">Provenance</span><span class="text-base-content/40 font-normal"> (</span><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#51-provenance-sources" target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-primary underline font-normal transition-colors" title="Read §5.1 Provenance in OKF SPEC.md">§5.1</a><span class="text-base-content/40 font-normal">) ---</span></td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">10</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">sources</span>:</td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Optional — materials this concept derives from</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">11</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;- <span class="font-normal text-base-content">id</span>: <span class="text-base-content/85">&lt;citation-key&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Stable key for body claim attribution ([^key])</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">12</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-normal text-base-content">resource</span>: <span class="text-base-content/85">&lt;Source URI&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"><span class="text-error font-normal"># REQUIRED within entry</span> — URI or bundle path</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">13</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-normal text-base-content">title</span>: <span class="text-base-content/85">&lt;Source label&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Optional — human-readable label</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">14</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-normal text-base-content">author</span>: <span class="text-base-content/85">&lt;Actor&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Authority signal: team or producer</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">15</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-normal text-base-content">usage_count</span>: <span class="text-base-content/85">&lt;Integer&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Adoption &amp; liveness signal: exercise count</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">16</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-normal text-base-content">last_modified</span>: <span class="text-base-content/85">&lt;ISO 8601&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Recency signal: source last updated</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">17</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">usage_window</span>: <span class="text-base-content/85">{ from: &lt;ISO 8601&gt;, to: &lt;ISO 8601&gt; }</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Timeframe for usage_count</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">18</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">19</td>
+                <td colspan="2"><span class="text-base-content/40 font-normal"># --- </span><span class="font-bold text-base-content">Trust</span><span class="text-base-content/40 font-normal"> (</span><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#52-trust-generated-and-verified" target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-primary underline font-normal transition-colors" title="Read §5.2 Trust in OKF SPEC.md">§5.2</a><span class="text-base-content/40 font-normal">, </span><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#53-trust-tiers" target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-primary underline font-normal transition-colors" title="Read §5.3 Trust tiers in OKF SPEC.md">§5.3</a><span class="text-base-content/40 font-normal">) ---</span></td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">20</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">generated</span>:</td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Content production record</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">21</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;<span class="font-normal text-base-content">by</span>: <span class="text-base-content/85">&lt;Actor&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"><span class="text-error font-normal"># REQUIRED within generated</span> — agent or human</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">22</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;<span class="font-normal text-base-content">at</span>: <span class="text-base-content/85">&lt;ISO 8601&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Datetime of last meaningful generation</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">23</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">verified</span>:</td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Content verification events</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">24</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;- <span class="font-normal text-base-content">by</span>: <span class="font-normal text-base-content">&lt;Actor&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"><span class="text-error font-normal"># REQUIRED within entry</span> — reviewer (human sets trust tier)</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">25</td>
+                <td class="whitespace-pre pr-8">&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-normal text-base-content">at</span>: <span class="text-base-content/85">&lt;ISO 8601&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Datetime of verification</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">26</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">27</td>
+                <td colspan="2"><span class="text-base-content/40 font-normal"># --- </span><span class="font-bold text-base-content">Lifecycle</span><span class="text-base-content/40 font-normal"> (</span><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#54-lifecycle-status" target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-primary underline font-normal transition-colors" title="Read §5.4 Lifecycle in OKF SPEC.md">§5.4</a><span class="text-base-content/40 font-normal">, </span><a href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md#55-lifecycle-stale_after" target="_blank" rel="noopener noreferrer" class="text-base-content/60 hover:text-primary underline font-normal transition-colors" title="Read §5.5 Stale after in OKF SPEC.md">§5.5</a><span class="text-base-content/40 font-normal">) ---</span></td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">28</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">status</span>: <span class="text-base-content/85">stable</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># draft | stable | deprecated (default: stable)</td>
+              </tr>
+              <tr class="hover:bg-base-200/40">
+                <td class="pr-3 text-right text-base-content/30 select-none">29</td>
+                <td class="whitespace-pre pr-8"><span class="font-bold text-primary">stale_after</span>: <span class="text-base-content/85">&lt;ISO 8601&gt;</span></td>
+                <td class="whitespace-nowrap font-normal text-base-content/50 text-[11px] sm:text-xs"># Absolute review budget deadline</td>
+              </tr>
+              <tr>
+                <td class="pr-3 text-right text-base-content/30 select-none">30</td>
+                <td colspan="2" class="text-base-content/70 font-bold">---</td>
+              </tr>
+              <tr>
+                <td class="w-6 select-none"></td>
+                <td class="pr-3 text-right text-base-content/30 select-none">31</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td rowspan="3" class="w-6 select-none align-middle text-center border-r border-base-300 pr-1 py-1">
+                  <span class="inline-block [writing-mode:vertical-lr] rotate-180 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-base-content/25 select-none">body</span>
+                </td>
+                <td class="pr-3 text-right text-base-content/30 select-none">32</td>
+                <td colspan="2" class="font-bold text-base-content text-xs sm:text-sm"># Markdown</td>
+              </tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">33</td><td colspan="2"></td></tr>
+              <tr>
+                <td class="pr-3 text-right text-base-content/30 select-none">34</td>
+                <td colspan="2" class="text-base-content/80">Document body content in standard markdown format.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>`;
   }
@@ -2409,7 +2506,7 @@ function mountFrontmatterBlocks() {
   document.querySelectorAll("[data-frontmatter-mount]").forEach((host) => {
     const beatId = host.dataset.frontmatterMount;
     const isWorkedExample = beatId.startsWith("s4") && beatId !== "s4-1";
-    const mode = host.dataset.frontmatterMode || (isWorkedExample ? "section-5" : "section-6");
+    const mode = host.dataset.frontmatterMode || (isWorkedExample ? "section-5" : "okf");
     host.innerHTML = renderFrontmatterBlock({
       mode,
       // The "section-7" branch is unreferenced: the beat that mounted the block
@@ -2422,24 +2519,6 @@ function mountFrontmatterBlocks() {
 }
 
 mountFrontmatterBlocks();
-
-// Section 5 field-highlight interaction
-document.addEventListener("click", (e) => {
-  const fmField = e.target.closest("#s5-1 .fm-field");
-  if (fmField) {
-    const parent = fmField.closest(".frontmatter-card");
-    if (parent) {
-      parent.querySelectorAll(".fm-field").forEach((f) => {
-        if (f !== fmField) {
-          f.classList.remove("ring-2", "ring-secondary", "bg-secondary/5");
-        }
-      });
-    }
-    fmField.classList.toggle("ring-2");
-    fmField.classList.toggle("ring-secondary");
-    fmField.classList.toggle("bg-secondary/5");
-  }
-});
 
 /* ------------------------------------------------------------------ *
  * Section 4 — three passes, and only two of them land
@@ -2483,17 +2562,11 @@ registerActivate("s4-4", (reduced) => {
   playPasses(beat, reduced, ["machine", "ai"]);
 });
 
-// S5.1 — OKF: each field Settles as its annotation Rises in from the right, at
-// the same instant. Paired, 300ms apart, five fields: ≈2.1s.
+// S5.1 — Google OKF
 registerActivate("s5-1", (reduced) => {
   const beat = document.getElementById("s5-1");
   if (!beat) return;
   revealSequence(beat, reduced);
-  beat.querySelectorAll(".fm-field").forEach((field, i) => {
-    const at = 350 + i * 300;
-    settle(field, at, reduced);
-    rise(field.querySelector(".fm-annotation"), at, reduced);
-  });
 });
 
 // S6.1 — the third Venn mount. Unlike §7, this one assembles: the audience has
