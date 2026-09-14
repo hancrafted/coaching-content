@@ -583,6 +583,200 @@ registerActivate("s1-1", (reduced) => {
   revealSequence(hero, reduced, { delay: 200, step: 220 });
 });
 
+/* ------------------------------------------------------------------ *
+ * S2.1 — Hub and spoke diagram (What a markdown file is)
+ *
+ * One markdown file at the centre with an unlabelled, planted frontmatter
+ * block at its top, and three spokes radiating out to:
+ *   - Context     (AGENTS.md, CLAUDE.md)
+ *   - Knowledge   (wiki, LLM-wiki)
+ *   - Instruction (skills, prompts, commands)
+ *
+ * All strokes and fills inherit theme colours (currentColor / semantic
+ * daisyUI utilities) so the diagram re-skins across themes.
+ * ------------------------------------------------------------------ */
+
+function hubSpokeMarkup() {
+  return `
+    <svg
+      viewBox="0 0 900 460"
+      role="img"
+      aria-label="Hub-and-spoke diagram: one markdown file at the centre with spokes radiating out to Context, Knowledge, and Instruction."
+      class="hub-spoke mx-auto block h-auto max-h-[50vh] w-full max-w-4xl"
+    >
+      <defs>
+        <marker
+          id="spoke-arrow"
+          viewBox="0 0 10 10"
+          refX="6"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse"
+        >
+          <path d="M 1 2 L 7 5 L 1 8 z" fill="currentColor" class="text-base-content/40" />
+        </marker>
+      </defs>
+
+      <!-- Spokes (lines with arrows) -->
+      <g data-spoke-step="1" class="text-base-content/35">
+        <!-- Spoke to Context (top-left) -->
+        <path
+          d="M 360 170 C 310 160, 290 120, 260 110"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-dasharray="4 4"
+          marker-end="url(#spoke-arrow)"
+        />
+        <!-- Spoke to Knowledge (right) -->
+        <path
+          d="M 540 225 L 630 225"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-dasharray="4 4"
+          marker-end="url(#spoke-arrow)"
+        />
+        <!-- Spoke to Instruction (bottom-left) -->
+        <path
+          d="M 360 280 C 310 290, 290 320, 260 330"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-dasharray="4 4"
+          marker-end="url(#spoke-arrow)"
+        />
+      </g>
+
+      <!-- Central Hub: the markdown file -->
+      <g data-spoke-step="0">
+        <!-- File card shadow & body -->
+        <rect
+          x="360"
+          y="105"
+          width="180"
+          height="240"
+          rx="10"
+          class="fill-base-100 stroke-base-300"
+          stroke-width="1.5"
+        />
+        <!-- Header bar with filename -->
+        <path d="M 360 138 L 540 138" class="stroke-base-200" stroke-width="1" />
+        <circle cx="376" cy="122" r="3.5" class="fill-primary/60" />
+        <circle cx="388" cy="122" r="3.5" class="fill-accent/60" />
+        <text x="402" y="126" class="fill-base-content/60 font-mono text-[11px] font-medium">document.md</text>
+
+        <!-- Planted frontmatter block (deliberately unexplained) -->
+        <rect
+          x="372"
+          y="148"
+          width="156"
+          height="66"
+          rx="6"
+          class="fill-base-200/70 stroke-base-content/15"
+          stroke-width="1"
+        />
+        <text x="382" y="163" class="fill-base-content/40 font-mono text-[9px]">---</text>
+        <text x="382" y="176" class="fill-base-content/75 font-mono text-[9.5px]">type: guide</text>
+        <text x="382" y="189" class="fill-base-content/75 font-mono text-[9.5px]">stale_after: 2026-12-01</text>
+        <text x="382" y="202" class="fill-base-content/40 font-mono text-[9px]">---</text>
+
+        <!-- Document body lines -->
+        <rect x="372" y="226" width="75" height="7" rx="3.5" class="fill-primary/40" />
+        <rect x="372" y="242" width="132" height="5" rx="2.5" class="fill-base-content/20" />
+        <rect x="372" y="254" width="144" height="5" rx="2.5" class="fill-base-content/20" />
+        <rect x="372" y="266" width="115" height="5" rx="2.5" class="fill-base-content/20" />
+        <rect x="372" y="278" width="136" height="5" rx="2.5" class="fill-base-content/15" />
+
+        <text
+          x="450"
+          y="322"
+          text-anchor="middle"
+          class="fill-base-content/40 font-mono text-[9.5px] uppercase tracking-widest"
+        >
+          Plain text on disk
+        </text>
+      </g>
+
+      <!-- Three Spokes (Context, Knowledge, Instruction) -->
+      <g data-spoke-step="2">
+        <!-- 1. Context (top-left) -->
+        <g class="text-base-content">
+          <rect
+            x="30"
+            y="55"
+            width="225"
+            height="112"
+            rx="10"
+            class="fill-base-200/50 stroke-base-300"
+            stroke-width="1.5"
+          />
+          <text x="50" y="86" class="font-display text-[15px] font-bold fill-base-content">Context</text>
+          <text x="50" y="106" class="fill-base-content/60 text-[12px]">Ambient session rules</text>
+          <text x="50" y="130" class="font-mono text-[11.5px] font-semibold fill-primary">AGENTS.md · CLAUDE.md</text>
+          <text x="50" y="148" class="fill-base-content/45 text-[11px]">Loaded into prompts at start</text>
+        </g>
+
+        <!-- 2. Knowledge (right) -->
+        <g class="text-base-content">
+          <rect
+            x="640"
+            y="170"
+            width="230"
+            height="112"
+            rx="10"
+            class="fill-base-200/50 stroke-base-300"
+            stroke-width="1.5"
+          />
+          <text x="660" y="201" class="font-display text-[15px] font-bold fill-base-content">Knowledge</text>
+          <text x="660" y="221" class="fill-base-content/60 text-[12px]">Institutional memory</text>
+          <text x="660" y="245" class="font-mono text-[11.5px] font-semibold fill-accent">wiki · LLM-wiki · docs</text>
+          <text x="660" y="263" class="fill-base-content/45 text-[11px]">Indexed, retrieved on demand</text>
+        </g>
+
+        <!-- 3. Instruction (bottom-left) -->
+        <g class="text-base-content">
+          <rect
+            x="30"
+            y="275"
+            width="225"
+            height="112"
+            rx="10"
+            class="fill-base-200/50 stroke-base-300"
+            stroke-width="1.5"
+          />
+          <text x="50" y="306" class="font-display text-[15px] font-bold fill-base-content">Instruction</text>
+          <text x="50" y="326" class="fill-base-content/60 text-[12px]">Operational guidance</text>
+          <text x="50" y="350" class="font-mono text-[11.5px] font-semibold fill-base-content/90">skills · prompts · commands</text>
+          <text x="50" y="368" class="fill-base-content/45 text-[11px]">Procedures executed step by step</text>
+        </g>
+      </g>
+    </svg>`;
+}
+
+document.querySelectorAll("[data-hub-spoke]").forEach((host) => {
+  host.innerHTML = hubSpokeMarkup();
+});
+
+function playHubSpoke(svg, reduced, { delay = 300, step = 250 } = {}) {
+  if (!reduced) {
+    svg.querySelectorAll("[data-spoke-step]").forEach((el) => {
+      el.style.transitionDelay = `${delay + Number(el.dataset.spokeStep) * step}ms`;
+    });
+  }
+  svg.classList.add("spoke-on");
+}
+
+// S2.1 — heading lines fade up, then the hub and spoke assembles.
+registerActivate("s2-1", (reduced) => {
+  const beat = document.getElementById("s2-1");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+  const svg = beat.querySelector(".hub-spoke");
+  if (svg) playHubSpoke(svg, reduced);
+});
+
 /*
  * S4.1 — the effort Venn. One drawing used twice: section 4 mounts it with
  * emphasis "establish" to set the colour language, and section 9 (ticket 08)
