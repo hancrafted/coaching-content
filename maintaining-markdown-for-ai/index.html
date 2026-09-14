@@ -26,7 +26,7 @@
       }
     </script>
 
-    <title>Maintain markdown for AI knowledge bases</title>
+    <title>Maintaining markdown for AI</title>
     <meta
       name="description"
       content="AI collapsed the cost of writing documentation and raised the cost of verifying it. A 20-minute look at what a machine can check, what AI can help with, and what only a human can check."
@@ -34,14 +34,14 @@
 
     <!-- Open Graph / social embed (image placeholder — see the hero slot note below) -->
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Maintain markdown for AI knowledge bases" />
+    <meta property="og:title" content="Maintaining markdown for AI" />
     <meta
       property="og:description"
       content="The work moved from writing to verifying. What a machine can check, what AI can help with, and what only a human can check."
     />
     <meta property="og:image" content="./assets/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Maintain markdown for AI knowledge bases" />
+    <meta name="twitter:title" content="Maintaining markdown for AI" />
     <meta
       name="twitter:description"
       content="The work moved from writing to verifying. What a machine can check, what AI can help with, and what only a human can check."
@@ -133,7 +133,7 @@
           </div>
           <div class="navbar-center hidden sm:flex">
             <span class="font-display text-sm font-semibold tracking-wide md:text-base"
-              >Maintain markdown for AI knowledge bases</span
+              >Maintaining markdown for AI</span
             >
           </div>
           <div class="navbar-end gap-2">
@@ -271,8 +271,8 @@
                   class="translate-y-3 font-display text-4xl font-extrabold leading-[1.02] tracking-tight opacity-0 transition-all duration-500 ease-out md:text-6xl lg:text-7xl"
                   data-reveal
                 >
-                  <span class="block text-base-content">Maintain markdown</span>
-                  <span class="block text-base-content">for AI knowledge bases</span>
+                  <span class="block text-base-content">Maintaining markdown</span>
+                  <span class="block text-base-content">for AI</span>
                 </h1>
                 <!--
                   The thesis, and the first application of the colour language:
@@ -352,16 +352,26 @@
                     </button>
                   </div>
                   <p>
-                    Markdown files now sit at the centre of every AI workflow. When those workflows
-                    quietly degrade — wrong answers, drifting behaviour, confident nonsense — people
-                    blame the model or the prompt. Usually the culprit is a markdown file nobody has
-                    maintained. AI is not a solution; it consumes these files and treats them as
-                    plain truth.
+                    This talk opens with an onboarding analogy rather than with markdown because
+                    most enterprise audiences still imagine AI as a conversational chatbot, not an
+                    autonomous agent reading local files unprompted. Anchoring on handing documents
+                    to a new starter borrows intuition the room already possesses, bypassing claims
+                    about AI workflows they cannot yet verify.
                   </p>
                   <p class="mt-3">
-                    This is for anyone whose work touches an AI workflow, not just engineers. If you
-                    write documentation, own a process, or maintain a handbook, these files are
-                    already reading over your shoulder.
+                    That setup exposes the core asymmetry: while a human reader eventually notices
+                    discrepancies in a stale document and self-corrects, an AI reads every file
+                    fresh. It has no mechanism to sense obsolescence and will act on outdated
+                    guidance identically the hundredth time and the thousandth time.
+                  </p>
+                  <p class="mt-3">
+                    This creates the cost inversion underlying the entire presentation. Authoring
+                    documentation used to be the expensive half; AI made drafting nearly free, while
+                    verification became far more demanding as volume exploded. Because verifying
+                    truth requires domain judgment, it cannot be automated away — leaving the
+                    verifying half as the responsibility of whoever owns the documents. Section 01
+                    establishes these stakes before Section 02 broadens the scope across every
+                    context type an AI consumes.
                   </p>
                 </aside>
               </div>
@@ -516,9 +526,6 @@
                       <path
                         id="s2-arrow-flow-memory"
                         class="s2-flow-dash stroke-primary"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-dasharray="4 8"
                         fill="none"
                       />
                     </g>
@@ -544,9 +551,6 @@
                       <path
                         id="s2-arrow-flow-knowledge"
                         class="s2-flow-dash stroke-accent"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-dasharray="4 8"
                         fill="none"
                       />
                     </g>
@@ -572,9 +576,6 @@
                       <path
                         id="s2-arrow-flow-instruction"
                         class="s2-flow-dash stroke-secondary"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-dasharray="4 8"
                         fill="none"
                       />
                     </g>
@@ -2739,7 +2740,7 @@
               data-section-title="Steering the AI"
               data-slide-title="Feature roadmap"
               data-beat="S6.4"
-              data-assertion="Two shipped, three planned"
+              data-assertion="Three shipped, three planned"
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
@@ -2764,7 +2765,6 @@
                     class="rounded-full border border-primary/40 bg-primary/10 px-2.5 py-0.5 font-mono text-xs font-bold text-primary"
                     >v0.0.4</span
                   >
-                  <span>Two checks exist. Three do not yet.</span>
                 </p>
 
                 <!--
@@ -2814,6 +2814,20 @@
                           <span class="text-base-content/70">
                             — <code class="font-mono">stale_after</code> against a stated
                             instant</span
+                          >
+                        </span>
+                      </li>
+                      <li class="flex gap-3">
+                        <span
+                          aria-hidden="true"
+                          class="mt-1 flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-content"
+                          >✓</span
+                        >
+                        <span class="text-sm text-base-content">
+                          <strong class="font-semibold">Markdown harness skill</strong>
+                          <span class="text-base-content/70">
+                            — a skill which helps install and set up the Markdown harness and author
+                            configs</span
                           >
                         </span>
                       </li>
@@ -2955,8 +2969,8 @@
                   </p>
                   <p>
                     Say the version number out loud. It is <code>v0.0.4</code>, and the left column
-                    is all that exists — two checks. Be explicit that the right column is not built
-                    yet.
+                    is all that exists — three checks. Be explicit that the right column is not
+                    built yet.
                   </p>
                   <p class="mt-3">
                     Do not soften this into "and we're also working on". If anyone leaves thinking
@@ -3077,7 +3091,7 @@
             <!-- Footer -->
             <footer class="border-t border-base-200 bg-base-200/40 px-6 py-16 md:px-16 lg:px-24">
               <div class="mx-auto flex max-w-4xl flex-col gap-2">
-                <p class="font-display font-semibold">Maintain markdown for AI knowledge bases</p>
+                <p class="font-display font-semibold">Maintaining markdown for AI</p>
                 <p class="text-sm text-base-content/60">A talk by Han Che</p>
                 <a href="../index.html" class="link-hover link w-fit text-sm text-primary"
                   >← Back to dashboard</a

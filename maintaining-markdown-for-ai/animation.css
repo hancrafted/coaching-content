@@ -1,5 +1,5 @@
 /* =============================================================================
-   Maintain markdown for AI knowledge bases — page-scoped animation stylesheet.
+   Maintaining markdown for AI — page-scoped animation stylesheet.
    -----------------------------------------------------------------------------
    ADR FE-001 permits custom CSS "for complex animations". Keyframes live here, in
    a dedicated linked stylesheet, never in a <style> block or an inline style=
@@ -879,39 +879,45 @@ body.notes-visible [data-notes-cue] {
   filter: drop-shadow(0 0 6px var(--color-secondary, currentColor));
 }
 
-.s2-arrow-group.is-active .s2-flow-dash {
-  opacity: 0.95;
-}
-
 .s2-arrow-group.is-inactive {
   opacity: 0.28;
   filter: none;
 }
 
-.s2-arrow-group.is-inactive .s2-flow-dash {
-  opacity: 0.15;
-}
+/* -----------------------------------------------------------------------------
+   Flow — dashes travelling from the markdown card into the active role card.
 
+   The dash train rides on top of the solid connector in the same hue, so it is
+   only visible because it is wider: what reads is a thicker pulse running along
+   a thin wire, not a second line. Same-width dashes over a same-coloured solid
+   line are invisible, which is what this used to be.
+
+   Only the active group animates. Three simultaneous trains turned the gap into
+   noise and gave the eye nothing to follow; one train is a direction.
+----------------------------------------------------------------------------- */
 .s2-flow-dash {
   opacity: 0;
+  stroke-width: 4;
+  stroke-dasharray: 9 23;
+  stroke-linecap: round;
   transition: opacity 600ms var(--deck-ease);
 }
 
-.s2-arrows-active .s2-flow-dash {
-  opacity: 0.85;
-}
-
+/* Decreasing offset walks the dashes along the path's own direction, which is
+   socket first, card last — so the motion always points at the target. One
+   cycle is the 32px dash period, so the loop has no seam. */
 @keyframes s2-flow-travel {
   from {
-    stroke-dashoffset: 24;
+    stroke-dashoffset: 32;
   }
   to {
     stroke-dashoffset: 0;
   }
 }
 
-.s2-flow-dash {
-  animation: s2-flow-travel 1.4s linear infinite;
+.s2-arrows-active .s2-arrow-group.is-active .s2-flow-dash {
+  opacity: 0.9;
+  animation: s2-flow-travel 1.15s linear infinite;
 }
 
 .s2-socket-active {

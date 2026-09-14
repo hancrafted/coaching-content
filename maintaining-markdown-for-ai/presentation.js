@@ -1,7 +1,7 @@
 import "../src/style.css";
 
 /**
- * Maintain markdown for AI knowledge bases — scroll-tower engine.
+ * Maintaining markdown for AI — scroll-tower engine.
  *
  * The single source of truth is the semantic HTML in `#tower`: every `.beat`
  * <section> carries data-section / data-section-title / data-beat / data-assertion.
@@ -1441,6 +1441,66 @@ function setSection2ActiveCard(key) {
   requestAnimationFrame(updateSection2Arrows);
 }
 
+/**
+ * Box of an element in the composition's own coordinate space.
+ *
+ * Deliberately offsetLeft/offsetTop rather than getBoundingClientRect: the role
+ * cards carry `deck-lift`, which translates them 2px on hover. Rects include
+ * that transform, so measuring while a card is mid-lift docks the arrowhead 2px
+ * off the card's centre line and leaves it there for as long as the cursor
+ * stays. Offsets report the laid-out position, which is what the arrow should
+ * point at. The walk stops at the container because the container is
+ * `position: relative`, so it is always in the offsetParent chain.
+ */
+function s2Box(el, root) {
+  let x = 0;
+  let y = 0;
+  let node = el;
+  while (node && node !== root) {
+    x += node.offsetLeft;
+    y += node.offsetTop;
+    node = node.offsetParent;
+  }
+  return { x, y, w: el.offsetWidth, h: el.offsetHeight, cy: y + el.offsetHeight / 2 };
+}
+
+/**
+ * Where an arrow leaves its region of the markdown card.
+ *
+ * Not the region's centre. The front matter block is several times taller than
+ * the role card it feeds, so centre-to-centre put the socket 150px below its
+ * target and turned a 48px gap into a near-vertical hairpin. Sliding the socket
+ * along the region's right edge towards the card keeps the arrow shallow while
+ * still reading as "this block feeds that card"; the inset stops it from
+ * sitting on the region's own rounded corner.
+ */
+function s2SocketY(region, targetY) {
+  const inset = Math.min(14, region.h / 2);
+  return Math.max(region.y + inset, Math.min(region.y + region.h - inset, targetY));
+}
+
+/**
+ * Connector from a socket to a card's left edge.
+ *
+ * The straight run-out and run-in are the whole point. A bare cubic ends with a
+ * horizontal tangent only in theory; in practice the last few pixels are still
+ * turning, so the arrowhead — which takes its angle from the path end — docks
+ * at a slant and reads as missing the card. A literal `L` into the endpoint
+ * makes the final direction exact, and the tip lands on the card's border
+ * rather than floating short of it.
+ *
+ * Handles grow with the vertical drop so a tall connection eases through the
+ * middle instead of kinking, and are capped just under the span so the curve
+ * never loops back on itself.
+ */
+function s2Connector(x0, y0, x1, y1) {
+  const ax = x0 + 12;
+  const bx = Math.max(x1 - 16, ax + 2);
+  const span = bx - ax;
+  const h = Math.min(span * 0.95, Math.max(span * 0.5, Math.abs(y1 - y0) * 0.45));
+  return `M ${x0} ${y0} L ${ax} ${y0} C ${ax + h} ${y0}, ${bx - h} ${y1}, ${bx} ${y1} L ${x1} ${y1}`;
+}
+
 function updateSection2Arrows() {
   const container = document.getElementById("s2-composition");
   const source = document.getElementById("s2-source-card");
@@ -1454,58 +1514,51 @@ function updateSection2Arrows() {
 
   if (!container || !source || !card1 || !card2 || !card3 || !svg) return;
 
-  const cRect = container.getBoundingClientRect();
-  const sRect = source.getBoundingClientRect();
-  const t1Rect = card1.getBoundingClientRect();
-  const t2Rect = card2.getBoundingClientRect();
-  const t3Rect = card3.getBoundingClientRect();
+  const sBox = s2Box(source, container);
+  const t1 = s2Box(card1, container);
+  const t2 = s2Box(card2, container);
+  const t3 = s2Box(card3, container);
 
   // If stacked on mobile or elements not laid out side-by-side, bail
-  if (t1Rect.left <= sRect.right - 10) return;
+  if (t1.x <= sBox.x + sBox.w - 10) return;
 
   // Origin X: right edge of the markdown card
-  const x0 = sRect.right - cRect.left;
+  const x0 = sBox.x + sBox.w;
 
-  // Origin Y values: align with the 3 semantic sections of the markdown file
-  const r1Rect = region1 ? region1.getBoundingClientRect() : null;
-  const r2Rect = region2 ? region2.getBoundingClientRect() : null;
-  const r3Rect = region3 ? region3.getBoundingClientRect() : null;
+  // Target points: left edge of each card, on its centre line
+  const x1 = t1.x;
+  const y1 = t1.cy;
 
-  const y0_1 = r1Rect
-    ? r1Rect.top + r1Rect.height / 2 - cRect.top
-    : t1Rect.top + t1Rect.height / 2 - cRect.top;
-  const y0_2 = r2Rect
-    ? r2Rect.top + r2Rect.height / 2 - cRect.top
-    : t2Rect.top + t2Rect.height / 2 - cRect.top;
-  const y0_3 = r3Rect
-    ? r3Rect.top + r3Rect.height / 2 - cRect.top
-    : t3Rect.top + t3Rect.height / 2 - cRect.top;
+  const x2 = t2.x;
+  const y2 = t2.cy;
 
-  // Target points: left edge of each card, slightly inset so arrowhead docks cleanly
-  const x1 = t1Rect.left - cRect.left - 2;
-  const y1 = t1Rect.top + t1Rect.height / 2 - cRect.top;
+  const x3 = t3.x;
+  const y3 = t3.cy;
 
-  const x2 = t2Rect.left - cRect.left - 2;
-  const y2 = t2Rect.top + t2Rect.height / 2 - cRect.top;
+  // Origin Y values: on the 3 semantic sections of the markdown file, nudged
+  // towards the card each one feeds
+  const y0_1 = region1 ? s2SocketY(s2Box(region1, container), y1) : y1;
+  const y0_2 = region2 ? s2SocketY(s2Box(region2, container), y2) : y2;
+  const y0_3 = region3 ? s2SocketY(s2Box(region3, container), y3) : y3;
 
-  const x3 = t3Rect.left - cRect.left - 2;
-  const y3 = t3Rect.top + t3Rect.height / 2 - cRect.top;
-
-  const dx1 = Math.max(x1 - x0, 10);
-  const dx2 = Math.max(x2 - x0, 10);
-  const dx3 = Math.max(x3 - x0, 10);
-
-  // Smooth S-curves (cubic bezier) with horizontal departure and horizontal arrival
-  const d1 = `M ${x0} ${y0_1} C ${x0 + dx1 * 0.45} ${y0_1}, ${x1 - dx1 * 0.45} ${y1}, ${x1} ${y1}`;
-  const d2 = `M ${x0} ${y0_2} C ${x0 + dx2 * 0.45} ${y0_2}, ${x2 - dx2 * 0.45} ${y2}, ${x2} ${y2}`;
-  const d3 = `M ${x0} ${y0_3} C ${x0 + dx3 * 0.45} ${y0_3}, ${x3 - dx3 * 0.45} ${y3}, ${x3} ${y3}`;
+  const d1 = s2Connector(x0, y0_1, x1, y1);
+  const d2 = s2Connector(x0, y0_2, x2, y2);
+  const d3 = s2Connector(x0, y0_3, x3, y3);
 
   // Connecting spine on the right edge of markdown card
   const dSpine = `M ${x0} ${y0_1} L ${x0} ${y0_3}`;
 
   const setD = (id, val) => {
     const el = document.getElementById(id);
-    if (el) el.setAttribute("d", val);
+    if (!el) return;
+    el.setAttribute("d", val);
+    // A path that has already drawn carries an inline dash pair measured from
+    // its old geometry. Re-routing invalidates that pair, and anything past the
+    // stale length silently stops being painted — so drop it on re-layout.
+    if (s2ArrowsDrawn && el.hasAttribute("data-draw")) {
+      el.style.strokeDasharray = "none";
+      el.style.strokeDashoffset = "0";
+    }
   };
 
   setD("s2-arrow-track-knowledge", d1);
