@@ -1243,9 +1243,9 @@ const S2_FILES = {
   knowledge: {
     key: "knowledge",
     filename: "docs/handbook/onboarding.md",
-    badge: "Dynamic context · Retrieved on demand",
+    badge: "Retrieved on demand",
     badgeClass: "badge-accent/20 text-accent",
-    frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed text-base-content/85"><code><span class="text-base-content/40">---</span>
+    frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap text-base-content/85"><code><span class="text-base-content/40">---</span>
 <span class="font-medium text-accent">type:</span> Handbook
 <span class="font-medium text-secondary">stale_after:</span> 2026-07-01
 <span class="font-medium text-base-content/70">owner:</span> "@people-ops"
@@ -1274,7 +1274,7 @@ const S2_FILES = {
   memory: {
     key: "memory",
     filename: "AGENTS.md",
-    badge: "Static context · Always loaded",
+    badge: "Always loaded",
     badgeClass: "badge-primary/20 text-primary",
     frontmatterHtml: `
       <div class="mt-3 rounded-lg border border-dashed border-base-300 bg-base-100/50 p-3 text-xs leading-relaxed text-base-content/60">
@@ -1307,10 +1307,10 @@ const S2_FILES = {
   },
   instruction: {
     key: "instruction",
-    filename: ".claude/skills/commit/SKILL.md",
-    badge: "Dynamic context · Loaded on task match",
+    filename: "SKILL.md",
+    badge: "User or model invoked",
     badgeClass: "badge-secondary/20 text-secondary",
-    frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed text-base-content/85"><code><span class="text-base-content/40">---</span>
+    frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed break-words whitespace-pre-wrap text-base-content/85"><code><span class="text-base-content/40">---</span>
 <span class="font-medium text-secondary">name:</span> commit
 <span class="font-medium text-secondary">description:</span> Author a commit message and commit it &mdash; Conventional
   Commits header, Keep a Changelog body, Source trailer. Use before every
@@ -1339,6 +1339,42 @@ const S2_FILES = {
   },
 };
 
+/*
+ * The three files are different lengths, so re-writing the preview's innerHTML
+ * on every hover resized the markdown card — which moved the role cards beside
+ * it and dragged the arrows along with them, so the whole composition twitched
+ * as the cursor crossed the stack. Every variant is mounted once instead,
+ * stacked in a single grid cell: the card is always as tall as its tallest
+ * variant, so switching roles reflows nothing. Inactive panes keep their box
+ * (visibility, not display) — holding the height open is their whole job.
+ */
+const S2_SWAP_SLOTS = [
+  ["s2-frontmatter-content", (f) => f.frontmatterHtml],
+  ["s2-body-title", (f) => escapeHtml(f.bodyTitle)],
+  [
+    "s2-body-desc",
+    (f) => `<p class="text-xs leading-relaxed text-base-content/70">${escapeHtml(f.bodyDesc)}</p>`,
+  ],
+  ["s2-body-details", (f) => `<div class="space-y-1.5">${f.bodyDetailsHtml}</div>`],
+  [
+    "s2-body-quote",
+    (f) =>
+      `<blockquote class="border-l-2 ${f.quoteBorderClass} pl-3 text-xs italic text-base-content/60">${escapeHtml(f.quote)}</blockquote>`,
+  ],
+];
+
+function mountSection2Swaps() {
+  const order = ["knowledge", "instruction", "memory"];
+  S2_SWAP_SLOTS.forEach(([hostId, render]) => {
+    const host = document.getElementById(hostId);
+    if (!host) return;
+    host.classList.add("s2-swap");
+    host.innerHTML = order
+      .map((k) => `<div class="s2-swap-item" data-swap="${k}">${render(S2_FILES[k])}</div>`)
+      .join("");
+  });
+}
+
 function setSection2ActiveCard(key) {
   const file = S2_FILES[key];
   if (!file) return;
@@ -1352,28 +1388,17 @@ function setSection2ActiveCard(key) {
     badgeEl.className = `badge badge-sm font-mono text-[10px] uppercase tracking-wider ${file.badgeClass}`;
   }
 
-  const frontmatterBox = document.getElementById("s2-frontmatter-content");
-  if (frontmatterBox) frontmatterBox.innerHTML = file.frontmatterHtml;
+  // Everything that can change height was mounted up front; switching roles
+  // only moves which pane is lit, so no measurement changes.
+  document.querySelectorAll("#s2-source-card .s2-swap-item").forEach((pane) => {
+    pane.classList.toggle("is-active", pane.dataset.swap === key);
+  });
 
+  // The prefix is always "#", so only its colour moves — no reflow to guard.
   const titlePrefix = document.getElementById("s2-body-prefix");
   if (titlePrefix) {
     titlePrefix.textContent = file.bodyTitlePrefix;
     titlePrefix.className = `font-mono text-sm ${file.bodyTitlePrefixClass}`;
-  }
-
-  const titleText = document.getElementById("s2-body-title");
-  if (titleText) titleText.textContent = file.bodyTitle;
-
-  const descEl = document.getElementById("s2-body-desc");
-  if (descEl) descEl.textContent = file.bodyDesc;
-
-  const detailsEl = document.getElementById("s2-body-details");
-  if (detailsEl) detailsEl.innerHTML = file.bodyDetailsHtml;
-
-  const quoteEl = document.getElementById("s2-body-quote");
-  if (quoteEl) {
-    quoteEl.textContent = file.quote;
-    quoteEl.className = `border-l-2 pl-3 italic text-xs text-base-content/60 mt-2 ${file.quoteBorderClass}`;
   }
 
   const cardKeys = ["knowledge", "instruction", "memory"];
@@ -1528,6 +1553,9 @@ function updateSection2Arrows() {
 }
 
 function mountSection2Arrows() {
+  // Panes first: the card must be at its final height before anything measures.
+  mountSection2Swaps();
+
   // Run on next frame so layout measurements are settled
   requestAnimationFrame(updateSection2Arrows);
 
@@ -1916,37 +1944,65 @@ registerActivate("s3-1", (reduced) => {
 /* ------------------------------------------------------------------ *
  * Section 4 — The Effort Venn (and section 9 close)
  *
+ * Section 4 is the opening slide for section 5. The Venn names the three
+ * regions and stops there; the three cards beneath it carry each region's
+ * summary and open its slide. Only the labels sit inside the circles —
+ * packing the checks in as a word cloud fought the geometry and read as
+ * clutter, and the cards hold that content better anyway.
+ *
  * Authored once with effortVennMarkup(emphasis):
- *   emphasis = "establish" (section 4): all three regions render at
- *     equal weight, with the ? in accent representing the ambiguous
- *     overlap where AI helps but verification remains human.
- *   emphasis = "human" (section 9): re-renders the same drawing with
- *     machine and AI dimmed. Every [data-venn] element gets the drawing; its
+ *   emphasis = "establish" (section 4): all three regions render at equal
+ *     weight, and each is a pointer shortcut to its section 5 slide.
+ *   emphasis = "human" (section 9): re-renders the same drawing with machine
+ *     and AI dimmed, and without the shortcuts — section 9 is a close, not a
+ *     menu. Every [data-venn] element gets the drawing; its
  *     data-venn-emphasis attribute picks the state.
  * ------------------------------------------------------------------ */
 
-const VENN_LENS = "M 352 132.5 A 235 235 0 0 0 352 427.5 A 160 160 0 0 0 352 132.5 Z";
+/*
+ * Machine (320, 250) r175 and human (570, 250) r215 cross on x = 413.8, at
+ * y = 102.3 and y = 397.7. The lens traces the human arc down and the machine
+ * arc back up, so it is exactly the overlap — true for as long as those five
+ * numbers are. animation.css pins the §9 camera origin to the human centre and
+ * has to move with it.
+ */
+const VENN_LENS = "M 413.8 102.3 A 215 215 0 0 0 413.8 397.7 A 175 175 0 0 0 413.8 102.3 Z";
+
+/** Each region is a shortcut to the slide that works it through. */
+const VENN_TARGETS = { machine: "s5-1", ai: "s5-2", human: "s5-3" };
 
 /**
- * One drawing, mounted twice. `uid` only disambiguates the hatch pattern id
- * between the two mounts.
+ * One drawing, mounted twice. `emphasis` disambiguates the hatch pattern id
+ * between the two mounts and decides whether the regions are clickable.
  *
- * Emphasis is deliberately NOT baked in here. Both mounts render identically and
- * neutrally, and the state lives as a class on the svg root that JS toggles —
- * so section 9 has a state to transition *from* rather than simply appearing in
- * its final one.
+ * Emphasis is deliberately NOT baked into the classes here. Both mounts render
+ * identically and neutrally, and the state lives as a class on the svg root
+ * that JS toggles — so section 9 has a state to transition *from* rather than
+ * simply appearing in its final one.
  */
-function effortVennMarkup(uid) {
+function effortVennMarkup(emphasis) {
+  // The shortcuts are pointer-only, and deliberately so: the svg is role="img"
+  // with a complete aria-label, and focusable children inside a role="img" are
+  // incoherent to assistive tech. The three cards below the drawing are real
+  // links to the same three slides, so no destination is mouse-only.
+  const region = (actor, tone) =>
+    emphasis === "establish"
+      ? `data-venn-actor="${actor}" class="${tone} cursor-pointer" data-toc-jump="${VENN_TARGETS[actor]}"`
+      : `data-venn-actor="${actor}" class="${tone}"`;
+
+  // §4 shares its slide with three cards; §9 gives the drawing the whole page.
+  const size = emphasis === "human" ? "max-h-[58vh] max-w-4xl" : "max-h-[42vh] max-w-3xl";
+
   return `
     <svg
-      viewBox="110 25 680 580"
+      viewBox="115 15 700 540"
       role="img"
-      aria-label="Three-region Venn. Machine verification: deterministic, cheap to re-run, checks that required fields are present and that formats, dates and links are well-formed. Human verification: semantic judgment and the verdict — is this still true, is the source still right, does it still say what we claimed, does it still reflect how we work, is the named owner still the owner. AI sits in the overlap and does the grunt work: summarise, research, orient, draft, flag candidates, surface contradictions. The human region is drawn largest. The AI region is a hypothesis and is still unsettled."
-      class="venn venn-emphasis-establish isolate mx-auto block h-auto max-h-[62vh] w-full max-w-4xl"
+      aria-label="Venn diagram of three overlapping regions. Machine, labelled deterministic. Human, drawn largest, labelled non-deterministic. AI sits where the two overlap and is labelled non-deterministic as well; it is marked as a hypothesis that is still unsettled. The three cards below open the slide for each region."
+      class="venn venn-emphasis-establish isolate mx-auto block h-auto w-full ${size}"
     >
       <defs>
         <pattern
-          id="venn-hatch-${uid}"
+          id="venn-hatch-${emphasis}"
           width="10"
           height="10"
           patternTransform="rotate(45 0 0)"
@@ -1964,74 +2020,57 @@ function effortVennMarkup(uid) {
         </pattern>
       </defs>
       <g data-venn-camera>
-      <g data-venn-actor="machine" class="text-primary">
+      <g ${region("machine", "text-primary")}>
         <circle
           data-venn-step="0"
-          cx="290" cy="280" r="160"
+          cx="320" cy="250" r="175"
           stroke-width="1.5"
           class="venn-circle fill-primary/15 stroke-primary/40"
         ></circle>
         <g data-venn-step="1">
-          <text x="243" y="178" text-anchor="middle"
-            class="fill-primary font-mono text-[24px] font-bold uppercase tracking-[0.12em]">machine</text>
-          <text x="224" y="222" text-anchor="middle" class="fill-primary/90 text-[18px] font-semibold">deterministic</text>
-          <text x="217" y="250" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">same input, same output</text>
-          <text x="215" y="277" text-anchor="middle" class="fill-base-content/85 text-[15px] font-medium">format valid</text>
-          <text x="216" y="303" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">required fields present</text>
-          <text x="222" y="329" text-anchor="middle" class="fill-base-content/75 text-[13.5px]">dates well-formed</text>
-          <text x="230" y="355" text-anchor="middle" class="fill-base-content/75 text-[13.5px]">links well-formed</text>
-          <text x="245" y="382" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">cheap to re-run</text>
+          <text x="248" y="240" text-anchor="middle"
+            class="fill-primary font-mono text-[28px] font-bold uppercase tracking-[0.12em]">machine</text>
+          <text x="248" y="274" text-anchor="middle"
+            class="fill-base-content/70 text-[16px]">deterministic</text>
         </g>
       </g>
-      <g data-venn-actor="human" class="text-secondary">
+      <g ${region("human", "text-secondary")}>
         <circle
           data-venn-step="2"
-          cx="535" cy="280" r="235"
+          cx="570" cy="250" r="215"
           stroke-width="1.5"
           class="venn-circle mix-blend-multiply fill-secondary/20 stroke-secondary/50 text-secondary"
         ></circle>
         <g data-venn-step="3">
-          <text x="600" y="140" text-anchor="middle"
-            class="fill-secondary font-mono text-[24px] font-bold uppercase tracking-[0.12em]">human</text>
-          <text x="600" y="196" text-anchor="middle" class="fill-base-content/90 text-[19px] font-semibold">is this still true?</text>
-          <text x="608" y="232" text-anchor="middle" class="fill-base-content/80 text-[15px]">is the source still right?</text>
-          <text x="610" y="268" text-anchor="middle" class="fill-base-content/80 text-[15px]">does it still say what we claimed?</text>
-          <text x="609" y="304" text-anchor="middle" class="fill-base-content/80 text-[15px]">does this still reflect how we work?</text>
-          <text x="602" y="340" text-anchor="middle" class="fill-base-content/75 text-[14px]">is the named owner still the owner?</text>
-          <text x="598" y="382" text-anchor="middle" class="fill-secondary/90 text-[17px] font-medium">semantic judgment</text>
-          <text x="580" y="424" text-anchor="middle" class="fill-secondary text-[21px] font-bold">the verdict</text>
+          <text x="635" y="240" text-anchor="middle"
+            class="fill-secondary font-mono text-[28px] font-bold uppercase tracking-[0.12em]">human</text>
+          <text x="635" y="274" text-anchor="middle"
+            class="fill-base-content/70 text-[16px]">non-deterministic</text>
         </g>
       </g>
-      <g data-venn-actor="ai" class="text-accent">
+      <g ${region("ai", "text-accent")}>
         <path
           data-venn-step="4"
           d="${VENN_LENS}"
           stroke-width="1.5"
           stroke-dasharray="5 7"
-          fill="url(#venn-hatch-${uid})"
+          fill="url(#venn-hatch-${emphasis})"
           class="stroke-accent/70"
         ></path>
-        <text data-venn-step="4" x="373" y="196" text-anchor="middle"
-          class="fill-accent font-mono text-[26px] font-extrabold uppercase tracking-[0.12em]">AI</text>
         <g data-venn-step="5">
-          <text x="373" y="228" text-anchor="middle" class="fill-base-content/85 text-[14px] font-medium">summarise</text>
-          <text x="373" y="250" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">research</text>
-          <text x="373" y="271" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">draft</text>
-          <text x="373" y="292" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">orient</text>
-          <text x="374" y="313" text-anchor="middle" class="fill-base-content/70 text-[11.5px]">flag candidates</text>
-          <text x="373" y="334" text-anchor="middle" class="fill-base-content/70 text-[11px]">surface contradictions</text>
-          <text x="371" y="360" text-anchor="middle" class="fill-accent text-[12px] font-semibold italic">the grunt work</text>
-        </g>
-        <g data-venn-step="5">
+          <text x="425" y="240" text-anchor="middle"
+            class="fill-accent font-mono text-[28px] font-extrabold uppercase tracking-[0.12em]">AI</text>
+          <text x="425" y="270" text-anchor="middle"
+            class="fill-base-content/70 text-[12px]">non-deterministic</text>
           <path
-            d="M 352 430 L 312 542"
+            d="M 414 402 L 414 492"
             fill="none"
             stroke-width="1.5"
             stroke-dasharray="4 6"
             class="stroke-accent/60"
           ></path>
-          <text x="306" y="568" text-anchor="start"
-            class="fill-accent font-mono text-[14px] font-semibold tracking-[0.02em]">my hypothesis — this region is still unsettled</text>
+          <text x="414" y="516" text-anchor="middle"
+            class="fill-accent font-mono text-[15px] font-semibold tracking-[0.02em]">the AI region is my hypothesis — still unsettled</text>
         </g>
       </g>
       </g>
