@@ -1,0 +1,1492 @@
+<!doctype html>
+<html lang="en" data-theme="corporate" class="h-full scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Apply the saved theme before first paint to avoid a flash of the default theme.
+      The storage key is shared with the sibling ai-token-economy-101 deck on purpose:
+      a theme picked on either deck carries across both.
+    -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem("token-economy-theme");
+        if (savedTheme) {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
+        if (localStorage.getItem("deck-presentation-mode") === "true") {
+          document.documentElement.classList.add("presentation-mode");
+        }
+        if (localStorage.getItem("deck-speaker-notes") === "true") {
+          document.documentElement.classList.add("notes-visible");
+        }
+      } catch (e) {
+        /* localStorage unavailable — fall back to defaults */
+      }
+    </script>
+
+    <title>Maintain markdown for AI knowledge bases</title>
+    <meta
+      name="description"
+      content="AI collapsed the cost of writing documentation and raised the cost of verifying it. A 20-minute look at what a machine can check, what AI can help with, and what only a human can check."
+    />
+
+    <!-- Open Graph / social embed (image placeholder — see the hero slot note below) -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Maintain markdown for AI knowledge bases" />
+    <meta
+      property="og:description"
+      content="The work moved from writing to verifying. What a machine can check, what AI can help with, and what only a human can check."
+    />
+    <meta property="og:image" content="./assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Maintain markdown for AI knowledge bases" />
+    <meta
+      name="twitter:description"
+      content="The work moved from writing to verifying. What a machine can check, what AI can help with, and what only a human can check."
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="./animation.css" />
+  </head>
+
+  <!--
+    =========================================================================
+    COLOUR LANGUAGE — established here, reused by every later section.
+    -------------------------------------------------------------------------
+      primary                 = HUMAN.    The actor the talk argues is the
+                                          load-bearing one. Used for the human
+                                          region of the Venn, human-signed
+                                          fields, the human pass, and the
+                                          progress/active-state chrome.
+      neutral / base-content  = MACHINE.  Deliberately desaturated — mechanical
+                                          checking is the settled, boring part
+                                          of the argument. Machine passes,
+                                          machine-signed fields, the "resolves
+                                          cleanly" result.
+      accent                  = AI.       The ambiguous middle. AI passes, the
+                                          "?" label on the Venn's AI region,
+                                          generated-by fields.
+
+      secondary is NOT used for any of the three actors. Per ADR FE-001 it
+      renders at markedly lower chroma than the other semantic hues in the
+      default corporate theme (~0.046 vs ~0.12–0.20), so it reads near-gray —
+      unacceptable for the region the talk argues matters most.
+
+      Semantic daisyUI tokens only. This file carries no inline style attributes
+      and no embedded stylesheet block: complex motion lives in ./animation.css,
+      and runtime-animated dimensions are set from presentation.js via
+      element.style with their targets stored in data-* attributes.
+    =========================================================================
+  -->
+  <body class="h-full overflow-hidden bg-base-100 font-sans text-base-content antialiased">
+    <div class="drawer h-full">
+      <input id="toc-drawer" type="checkbox" class="drawer-toggle" />
+
+      <!-- ============ MAIN COLUMN ============ -->
+      <div class="drawer-content flex h-full flex-col overflow-hidden">
+        <!-- Top navbar -->
+        <header
+          class="navbar z-30 min-h-14 shrink-0 border-b border-base-200 bg-base-100/90 px-2 backdrop-blur md:px-4"
+        >
+          <div class="navbar-start gap-1">
+            <label
+              for="toc-drawer"
+              class="btn btn-square btn-ghost btn-sm lg:hidden"
+              aria-label="Open contents"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </label>
+            <a href="../index.html" class="btn btn-ghost btn-sm gap-2 normal-case">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 12L6 8L10 4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Dashboard
+            </a>
+          </div>
+          <div class="navbar-center hidden sm:flex">
+            <span class="font-display text-sm font-semibold tracking-wide md:text-base"
+              >Maintain markdown for AI knowledge bases</span
+            >
+          </div>
+          <div class="navbar-end gap-2">
+            <!-- Presenter controls surface injected by presentation.js -->
+            <div id="presenter-controls"></div>
+            <!-- Theme picker injected by presentation.js -->
+            <div id="theme-picker"></div>
+          </div>
+        </header>
+
+        <!-- Mobile progress bar (and presentation mode progress bar) -->
+        <div id="progress-bar-top" class="h-1 shrink-0 bg-base-200 lg:hidden">
+          <div
+            id="progress-mobile"
+            class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+          ></div>
+        </div>
+
+        <!-- Rail + tower -->
+        <div
+          class="deck-layout flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[19rem_1fr] lg:grid-rows-[minmax(0,1fr)]"
+        >
+          <!-- Desktop sticky rail -->
+          <aside
+            id="toc-rail"
+            class="hidden min-h-0 overflow-y-auto border-r border-base-200 bg-base-200/40 lg:flex lg:flex-col"
+          >
+            <div class="border-b border-base-200 p-5">
+              <p class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50">
+                Contents
+              </p>
+              <div class="mt-3 h-1 overflow-hidden rounded-full bg-base-300">
+                <div
+                  id="progress-desktop"
+                  class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+                ></div>
+              </div>
+            </div>
+            <nav id="toc-desktop" class="flex-1 p-3" aria-label="Table of contents"></nav>
+          </aside>
+
+          <!--
+            The scroll tower. Every direct child .beat section is a beat; the TOC,
+            the accordion grouping, the progress bars, arrow-key stepping and the
+            deep-link hashes are all derived at runtime from the data-* attributes
+            below, so adding or removing a beat is a one-block edit.
+
+            No CSS scroll-snap is used anywhere on this page — free scrolling is
+            preserved for the reader who opens the shared link after the talk.
+          -->
+          <main id="tower" class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
+            <!-- ========== SECTION 1 — Opening ========== -->
+            <!-- S1.1 · HERO — the only finished section in this ticket -->
+            <section
+              id="s1-1"
+              class="beat relative z-0 flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="1"
+              data-section-title="Opening"
+              data-beat="S1.1"
+              data-assertion="AI collapsed the cost of writing documentation and raised the cost of verifying it. The work moved."
+            >
+              <!--
+                HERO BACKDROP — and the hero image slot.
+
+                No image is selected, generated or borrowed by the implementation:
+                the background is a slot the presenter fills. Until it is filled,
+                the backdrop below is built entirely from semantic theme tokens so
+                an unfilled slot reads as a designed surface rather than as broken.
+
+                To fill the slot, drop the asset at:
+                    ./assets/hero.webp
+                    16:9, at least 1920×1080, and legible after desaturation
+                and add it as the first child of this layer:
+                    <img src="./assets/hero.webp" alt=""
+                         class="absolute inset-0 h-full w-full object-cover object-center
+                                saturate-[0.45] contrast-125" />
+                The scrim below it already fades to base-100, so the gradient layers
+                keep working unchanged once the image is in place.
+
+                The section carries `relative z-0` deliberately: per ADR FE-001 a
+                `-z-10` child only stays inside this section's stacking context if
+                the section establishes one, and `relative` alone does not.
+              -->
+              <div
+                class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+                aria-hidden="true"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-br from-primary/15 via-base-100 to-accent/15"
+                ></div>
+                <div class="hero-glow absolute inset-0 text-primary"></div>
+                <div class="hero-glow hero-glow--accent absolute inset-0 text-accent"></div>
+                <div class="hero-grid absolute inset-0 text-base-content"></div>
+                <div
+                  class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-base-100 via-base-100/60 to-transparent"
+                ></div>
+              </div>
+
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S1.1 · The Shift
+                </p>
+                <h1
+                  class="translate-y-3 font-display text-4xl font-extrabold leading-[1.02] tracking-tight opacity-0 transition-all duration-500 ease-out md:text-6xl lg:text-7xl"
+                  data-reveal
+                >
+                  <span class="block text-base-content">Maintain markdown</span>
+                  <span class="block text-base-content">for AI knowledge bases</span>
+                </h1>
+                <!--
+                  The thesis, and the first application of the colour language:
+                  writing is the half AI took over (accent), verifying is the half
+                  that landed on a human (primary).
+                -->
+                <p
+                  class="mt-10 translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out md:text-xl"
+                  data-reveal
+                >
+                  AI collapsed the cost of <span class="font-medium text-accent">writing</span>
+                  documentation and raised the cost of
+                  <span class="font-medium text-primary">verifying</span> it. The work moved — and
+                  the verifying half is nobody else's job.
+                </p>
+                <p
+                  class="mt-10 translate-y-3 font-mono text-xs uppercase tracking-[0.25em] text-base-content/45 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Han Che
+                </p>
+              </div>
+
+              <!-- Scroll cue -->
+              <a
+                href="#s2-1"
+                data-toc-jump="s2-1"
+                class="absolute inset-x-0 bottom-8 mx-auto flex w-fit items-center gap-2 rounded-full border border-base-300 bg-base-100/70 px-4 py-2 text-xs text-base-content/60 backdrop-blur transition-colors hover:text-primary"
+              >
+                <span class="font-mono uppercase tracking-[0.2em]">Scroll</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 5v14M6 13l6 6 6-6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </a>
+            </section>
+
+            <!-- ========== SECTION 2 — Markdown in AI Workflows ========== -->
+            <section
+              id="s2-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="Markdown in AI workflows"
+              data-beat="S2.1"
+              data-assertion="A single format at the junction of Context, Knowledge, and Instructions."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S2.1 · Markdown in AI Workflows
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Markdown files in the era of AI
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  A plain text file with nothing mechanical underneath. What matters is how and when
+                  it is consumed: as <span class="font-medium text-primary">context</span>, as
+                  <span class="font-medium text-accent">knowledge</span>, as
+                  <span class="font-medium text-base-content">instruction</span>.
+                </p>
+
+                <!-- Hub and spoke mount -->
+                <figure data-hub-spoke class="mt-4"></figure>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Start by leveling the room: a markdown file is just a plain text file. There is
+                    no runtime engine, no compiler, no relational database, and nothing mechanical
+                    underneath. It is inert characters on disk.
+                  </p>
+                  <p class="mt-3">
+                    What gives it weight is purely how and when an AI agent consumes it: as ambient
+                    <strong>context</strong> (like AGENTS.md or CLAUDE.md that sets the ground
+                    rules), as institutional <strong>knowledge</strong> (a wiki or runbook fetched
+                    when needed), or as an operational <strong>instruction</strong> (a skill or
+                    prompt executed step by step). Notice that small frontmatter block at the top —
+                    we will come back to that.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 3 — The Maintenance Gap ========== -->
+            <section
+              id="s3-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="The maintenance gap"
+              data-beat="S3.1"
+              data-assertion="Creation effort collapses after AI; verification effort climbs with volume. The crossover is where the work moved."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S3.1 · The Maintenance Gap
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Maintenance effort is rarely scheduled — until documentation fails
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Effort over time, anchored at the day the document reached production.
+                  <span class="font-medium text-accent">Creation</span> collapses with AI.
+                  <span class="font-medium text-primary">Verification</span> climbs with volume.
+                </p>
+
+                <!-- Diverging curves mount -->
+                <figure data-curves class="mt-4"></figure>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Before day zero — when the document reaches production — authoring was the hard
+                    part. Writing by hand was slow and expensive, so verification was quiet because
+                    volume was strictly capped by human typing speed.
+                  </p>
+                  <p class="mt-3">
+                    AI completely inverted that curve: creation effort collapsed to near zero.
+                    Anyone and any script can generate fifty pages of documentation in seconds. But
+                    verification effort does not stay flat — it climbs with volume.
+                  </p>
+                  <p class="mt-3">
+                    This crossover is the core thesis of the talk:
+                    <strong>where the work moved</strong>. The bottleneck is no longer writing; it
+                    is proving what was written is still true.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 4 — Verification Boundaries ========== -->
+            <section
+              id="s4-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="4"
+              data-section-title="Where verification happens"
+              data-beat="S4.1"
+              data-assertion="What a machine can check, what AI can help with, and what only a human can check."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S4.1 · Verification Boundaries
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Where documentation verification actually happens
+                </h2>
+                <p
+                  class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Dividing verification into three boundaries: what a machine automates, what AI
+                  accelerates, and what only a human can decide. Drawn to proportion, because the
+                  proportions are the argument.
+                </p>
+                <!--
+                  The Venn mount. The drawing is generated by the shared effort-Venn
+                  component in presentation.js ("S4.1 — the effort Venn"): one
+                  component, mounted here with the establishing emphasis and
+                  re-rendered by section 9 with data-venn-emphasis="human".
+                -->
+                <figure data-venn data-venn-emphasis="establish" class="mt-2"></figure>
+                <!--
+                  SPEAKER NOTES — hidden until ticket 04 builds the presenter-controls
+                  toggle that flips the `hidden` class on every [data-speaker-notes].
+                  They carry the spoken-only material: the accelerator-not-a-solution
+                  argument and the freelancer-with-amnesia callback, neither of which
+                  appears on the slide.
+                -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    AI is an accelerator here, not a solution. It will run the fact-check, chase the
+                    hard numbers, flag the paragraph that smells wrong — and every answer it hands
+                    back is itself a claim that still needs checking. That is why its region is
+                    labelled with a question mark: whatever AI takes on lands back in one of the
+                    other two regions.
+                  </p>
+                  <p class="mt-3">
+                    Callback: the freelancer with amnesia. Brilliant, fast, and shows up every
+                    morning having forgotten everything — the knowledge base is the only memory it
+                    has, and it believes whatever the files say. A machine can prove the files still
+                    parse; only a human can know whether that memory is still true.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 5 — Where the effort goes: The three verification passes ========== -->
+            <section
+              id="s5-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Where the effort goes"
+              data-beat="S5.1"
+              data-assertion="The machine pass resolves cleanly."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S5.1 · Pass 1: Machine Verification
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Where the effort goes: Pass 1 — What the machine verifies
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Syntactic and structural checks that run deterministically in milliseconds without
+                  an LLM. Syntax parses, URLs resolve, and ISO dates validate.
+                </p>
+
+                <!-- 2-col layout: IDE view on left, passes on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div class="lg:col-span-6" data-frontmatter-mount="s5-1"></div>
+                  <div class="lg:col-span-6 space-y-4">
+                    <!-- Machine pass card -->
+                    <div
+                      class="pass-card rounded-xl border border-base-300 bg-base-100/90 p-5 text-success shadow-sm transition-all duration-500"
+                      data-pass="machine"
+                    >
+                      <div class="flex items-center justify-between border-b border-base-200 pb-3">
+                        <span
+                          class="badge badge-neutral badge-sm font-mono uppercase tracking-wider"
+                          >Machine pass</span
+                        >
+                        <span
+                          class="font-mono text-xs font-semibold text-success flex items-center gap-1.5"
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M5 13l4 4L19 7"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Resolves cleanly
+                        </span>
+                      </div>
+                      <ul class="mt-4 space-y-2 font-mono text-xs text-base-content/75">
+                        <li class="flex items-start gap-2">
+                          <span class="text-success font-bold">✓</span>
+                          <span
+                            ><strong>Syntax:</strong> valid YAML frontmatter delimiter (---) &amp;
+                            structure</span
+                          >
+                        </li>
+                        <li class="flex items-start gap-2">
+                          <span class="text-success font-bold">✓</span>
+                          <span
+                            ><strong>Resource:</strong>
+                            https://intranet.example.com/people-ops/handbook reachable (HTTP
+                            200)</span
+                          >
+                        </li>
+                        <li class="flex items-start gap-2">
+                          <span class="text-success font-bold">✓</span>
+                          <span
+                            ><strong>Staleness:</strong> 2025-07-01T00:00:00Z parses with valid ISO
+                            timestamp</span
+                          >
+                        </li>
+                      </ul>
+                      <p class="mt-4 text-xs text-base-content/60 border-t border-base-200 pt-3">
+                        Machine checking proves the file is mechanically intact. It cannot tell you
+                        whether the onboarding workflow is still true.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Point out that OKF only requires type. The staleness date is optional. The
+                    machine pass passes not because the format demanded it, but because our own lint
+                    rule checked for it.
+                  </p>
+                  <p class="mt-3">
+                    The machine checks syntax, parses dates, and verifies that the link resolves.
+                    Everything it was asked to check resolves cleanly. Mechanical checking is the
+                    settled, easy part of the talk.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <section
+              id="s5-2"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Where the effort goes"
+              data-beat="S5.2"
+              data-assertion="The AI pass returns an answer that itself needs checking."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S5.2 · Pass 2: AI Assistance
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Where the effort goes: Pass 2 — What AI can check
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Cross-referencing prose against source handbooks to flag discrepancies for human
+                  review. The answer comes back amber: rapid, insightful, and itself in need of
+                  checking.
+                </p>
+
+                <!-- 2-col layout: block on left, passes on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div class="lg:col-span-6" data-frontmatter-mount="s5-2"></div>
+                  <div class="lg:col-span-6 space-y-4">
+                    <!-- Machine pass (compact) -->
+                    <div
+                      class="pass-card rounded-xl border border-base-300/60 bg-base-100/50 p-3.5 text-xs text-base-content/60 flex items-center justify-between"
+                    >
+                      <span class="font-mono">1. Machine pass</span>
+                      <span class="text-success font-mono font-medium">✓ Resolved cleanly</span>
+                    </div>
+
+                    <!-- AI pass card (active) -->
+                    <div
+                      class="pass-card rounded-xl border border-accent/40 bg-accent/5 p-5 text-warning shadow-sm ring-1 ring-accent/20 transition-all duration-500"
+                      data-pass="ai"
+                    >
+                      <div class="flex items-center justify-between border-b border-accent/20 pb-3">
+                        <span
+                          class="badge badge-outline border-accent text-accent badge-sm font-mono uppercase tracking-wider"
+                          >AI pass</span
+                        >
+                        <span
+                          class="font-mono text-xs font-semibold text-warning flex items-center gap-1.5"
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Needs verification
+                        </span>
+                      </div>
+                      <div class="mt-4 space-y-2 text-xs text-base-content/85 leading-relaxed">
+                        <p>
+                          <strong
+                            class="text-accent font-mono uppercase text-[10px] tracking-wider block mb-1"
+                            >Observation</strong
+                          >
+                          Compared <code class="font-mono text-primary">onboarding.md</code> against
+                          linked People Ops handbook. Section 4 of the handbook updated equipment
+                          lead times from 5 working days to 7 working days.
+                        </p>
+                        <p class="mt-2 text-base-content/70">
+                          <strong
+                            class="text-accent font-mono uppercase text-[10px] tracking-wider block mb-1"
+                            >Proposal</strong
+                          >
+                          Recommend updating line 15 and proposing a verification review with People
+                          Ops.
+                        </p>
+                      </div>
+                      <p
+                        class="mt-4 text-xs font-medium text-accent border-t border-accent/20 pt-3 flex items-center gap-1.5"
+                      >
+                        <span class="font-bold">?</span>
+                        <span
+                          >Accelerator, not resolution: this finding is itself a claim requiring
+                          verification.</span
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Now an AI inspects the file. It ingested the linked handbook and caught a
+                    discrepancy: equipment lead time changed from 5 to 7 days. It proposes a
+                    documentation update and flagging for review.
+                  </p>
+                  <p class="mt-3">
+                    Notice what happened: AI gave us an answer, but that answer is not a resolution.
+                    It is a new claim. Has IT actually instituted the 7-day policy? Is the intranet
+                    page up to date? Whatever AI takes on lands right back in need of checking.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <section
+              id="s5-3"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Where the effort goes"
+              data-beat="S5.3"
+              data-assertion="The human pass stays open, and is the last thing on screen before the section ends."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S5.3 · Pass 3: Human Ground Truth
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Where the effort goes: Pass 3 — The human judgment that remains
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Is the policy still in force? Is the owner correct? Ground truth that no machine
+                  or model can know. This pass deliberately stays open on screen.
+                </p>
+
+                <!-- 2-col layout: block on left, passes on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div class="lg:col-span-6" data-frontmatter-mount="s5-3"></div>
+                  <div class="lg:col-span-6 space-y-4">
+                    <!-- Machine pass (compact) -->
+                    <div
+                      data-pass="machine"
+                      class="pass-card rounded-xl border border-base-300/60 bg-base-100/50 p-3 text-xs text-base-content/60 flex items-center justify-between"
+                    >
+                      <span class="font-mono">1. Machine pass</span>
+                      <span class="text-success font-mono font-medium">✓ Resolved cleanly</span>
+                    </div>
+
+                    <!-- AI pass (compact) -->
+                    <div
+                      data-pass="ai"
+                      class="pass-card rounded-xl border border-accent/30 bg-accent/5 p-3 text-xs text-base-content/70 flex items-center justify-between"
+                    >
+                      <span class="font-mono">2. AI pass</span>
+                      <span class="text-warning font-mono font-medium"
+                        >⚠ Claim returned (needs check)</span
+                      >
+                    </div>
+
+                    <!-- Human pass card (active and UNRESOLVED) -->
+                    <div
+                      class="pass-card rounded-xl border-2 border-primary bg-primary/5 p-5 shadow-md ring-2 ring-primary/20 transition-all duration-500"
+                      data-pass="human"
+                    >
+                      <div
+                        class="flex items-center justify-between border-b border-primary/20 pb-3"
+                      >
+                        <span
+                          class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content"
+                          >Human pass</span
+                        >
+                        <span
+                          class="font-mono text-xs font-bold text-primary flex items-center gap-2"
+                        >
+                          <span
+                            class="deck-unsettled inline-block h-3 w-3 rounded-full border border-dashed border-primary"
+                            aria-hidden="true"
+                          ></span>
+                          Open · Unresolved
+                        </span>
+                      </div>
+                      <div class="mt-4 space-y-3 text-xs text-base-content/90">
+                        <div class="flex items-start gap-2.5">
+                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
+                          <span>Does the buddy coffee on day one still match team practice?</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
+                          <span>Does People Ops still close payroll on the 20th?</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
+                          <span
+                            >Is
+                            <code class="font-mono text-primary font-medium">@m.okonkwo</code> still
+                            the active maintainer for onboarding?</span
+                          >
+                        </div>
+                      </div>
+                      <p
+                        class="mt-4 text-xs font-semibold text-primary border-t border-primary/20 pt-3"
+                      >
+                        This question stays open on screen. The machine checked the syntax; the AI
+                        drafted a clue; only a human can answer whether it is true.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    This is the load-bearing beat of section 5: the human pass deliberately stays
+                    unresolved on screen.
+                  </p>
+                  <p class="mt-3">
+                    No machine test and no AI summary can sign this document. Only the human
+                    operator with domain context can determine if the policy changed or if the
+                    staleness date should move. That is why this beat ends with open questions — the
+                    talk does not resolve them for you.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 6 — Google OKF 0.2 ========== -->
+            <section
+              id="s6-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="6"
+              data-section-title="Google OKF 0.2"
+              data-beat="S6.1"
+              data-assertion="The same block in full, annotated with who supplies each field."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S6.1 · Open Knowledge Format
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Introducing Google OKF 0.2
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  A set of frontmatter fields to govern markdown files. The machine-signed field and
+                  the human-signed field sit adjacent with identical structure.
+                </p>
+
+                <!-- Full block with annotations -->
+                <div
+                  class="mt-8 max-w-4xl"
+                  data-frontmatter-mount="s6-1"
+                  data-frontmatter-mode="section-6"
+                ></div>
+
+                <!-- Link to public OKF specification -->
+                <div
+                  class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 max-w-4xl pt-3 border-t border-base-200"
+                >
+                  <a
+                    href="https://github.com/GoogleCloudPlatform/knowledge-catalog"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 text-xs font-mono text-primary hover:underline"
+                  >
+                    <span>Read the public OKF v0.2 specification ↗</span>
+                  </a>
+                  <span class="text-xs text-base-content/50"
+                    >Click any field above to inspect its supplier</span
+                  >
+                </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Don't lecture on the schema. The power of this slide is the adjacent comparison:
+                    <code>generated</code> and <code>verified</code> have identical shapes —
+                    <code>{ by, at }</code>. One is signed by Opus 5, the other is signed by a
+                    human.
+                  </p>
+                  <p class="mt-3">
+                    Who supplies each field does the argument's work on its own. The human sets the
+                    authority and review deadline; the machine executes and logs its timestamp; the
+                    human verifies.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 7 — Operator Governance ========== -->
+            <section
+              id="s7-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="7"
+              data-section-title="Operator governance"
+              data-beat="S7.1"
+              data-assertion="The signal is in the file; the instruction has to come from you."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S7.1 · Operator Governance
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  The signal is in the file; the instruction comes from you
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  The file stores the signal —
+                  <code class="font-mono text-primary font-medium">stale_after</code>. The machine
+                  does not invent policy; the operator writes the instruction.
+                </p>
+
+                <!-- Comparison grid: Frontmatter block on left, Configured sentence on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div
+                    class="lg:col-span-6"
+                    data-frontmatter-mount="s7-1"
+                    data-frontmatter-mode="section-7"
+                  ></div>
+
+                  <div class="lg:col-span-6 space-y-4">
+                    <div class="rounded-2xl border-2 border-primary/40 bg-base-100 p-6 shadow-md">
+                      <div
+                        class="flex items-center justify-between border-b border-base-200 pb-3 mb-4"
+                      >
+                        <span
+                          class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content"
+                          >Operator rule</span
+                        >
+                        <span class="font-mono text-xs text-base-content/50"
+                          >markdown-harness config</span
+                        >
+                      </div>
+
+                      <p
+                        class="font-mono text-xs uppercase tracking-widest text-primary font-bold mb-2"
+                      >
+                        Configured instruction:
+                      </p>
+
+                      <!-- The literal configured sentence (serious version) -->
+                      <blockquote
+                        class="rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm md:text-base font-medium leading-relaxed text-base-content"
+                      >
+                        &ldquo;If the current date is past
+                        <code class="text-primary font-mono font-bold">stale_after</code>, notify
+                        the user that this document is stale and propose opening a refresh ticket or
+                        verifying with People Ops.&rdquo;
+                      </blockquote>
+
+                      <div
+                        class="mt-5 space-y-2 text-xs text-base-content/70 border-t border-base-200 pt-4"
+                      >
+                        <p class="flex items-center gap-2">
+                          <span class="text-primary font-bold">→</span>
+                          <span
+                            ><strong>The signal:</strong> parsed directly from the OKF metadata in
+                            the file.</span
+                          >
+                        </p>
+                        <p class="flex items-center gap-2">
+                          <span class="text-primary font-bold">→</span>
+                          <span
+                            ><strong>The instruction:</strong> authored by the team to match your
+                            workflow.</span
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Set up the demo before touching the terminal. The signal is passive — it sits
+                    inert in the file until someone asks a question.
+                  </p>
+                  <p class="mt-3">
+                    And when the tool fires, what does it say? It does not say what a vendor
+                    programmed it to say. It says whatever sentence the operator configured. In
+                    production, that means proposing a ticket or verifying with People Ops.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 8 — Live demo rescue ========== -->
+            <section
+              id="s8-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="8"
+              data-section-title="Live demo rescue"
+              data-beat="S8.1"
+              data-assertion="The same file and the same question, answered once without the hook and once with."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S8.1 · Live Demo Rescue
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  Live Demo: Governance in action on onboarding.md
+                </h2>
+                <p
+                  class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Normally scrolled past during the live run. It is here so that a failed demo does
+                  not cost the talk its load-bearing moment.
+                </p>
+
+                <!-- Shared scenario anchor -->
+                <div
+                  data-reveal
+                  class="mt-8 flex translate-y-3 flex-wrap items-center justify-between gap-3 rounded-xl border border-base-300 bg-base-200/50 px-4 py-3 font-mono text-xs opacity-0 transition-all duration-500 ease-out md:text-sm"
+                >
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="badge badge-neutral badge-sm font-mono text-[0.65rem] uppercase"
+                      >File</span
+                    >
+                    <span class="font-medium text-base-content/90"
+                      >docs/handbook/onboarding.md</span
+                    >
+                    <span class="badge badge-warning badge-sm font-mono text-[0.65rem]"
+                      >stale_after: 2025-07-01</span
+                    >
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="badge badge-neutral badge-sm font-mono text-[0.65rem] uppercase"
+                      >Prompt</span
+                    >
+                    <span data-type class="text-base-content/70"
+                      >&ldquo;What are the first-week onboarding steps for a new hire?&rdquo;</span
+                    >
+                  </div>
+                </div>
+
+                <!-- A/B mock terminals grid -->
+                <div
+                  data-reveal
+                  class="mt-6 grid translate-y-3 grid-cols-1 gap-6 opacity-0 transition-all duration-500 ease-out lg:grid-cols-2"
+                >
+                  <!-- Terminal A: Without hook -->
+                  <div
+                    class="flex flex-col overflow-hidden rounded-box border border-base-300 bg-base-300/30 shadow-md"
+                  >
+                    <div
+                      class="flex items-center justify-between border-b border-base-300 bg-base-200/80 px-4 py-2.5"
+                    >
+                      <div class="flex items-center gap-1.5" aria-hidden="true">
+                        <span class="h-2.5 w-2.5 rounded-full bg-base-content/20"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-base-content/20"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-base-content/20"></span>
+                      </div>
+                      <span class="font-mono text-xs font-medium text-base-content/60"
+                        >terminal — standard agent</span
+                      >
+                      <span
+                        class="badge badge-ghost badge-xs font-mono text-[0.65rem] text-error/80 border-error/30"
+                        >without hook</span
+                      >
+                    </div>
+                    <div
+                      class="flex flex-1 flex-col justify-between space-y-4 bg-base-100 p-5 font-mono text-xs leading-relaxed md:text-sm"
+                    >
+                      <div class="space-y-3">
+                        <div data-term-line="0" class="translate-y-3 opacity-0">
+                          <p class="select-none text-base-content/50">
+                            $ claude &ldquo;What are the first-week onboarding steps for a new
+                            hire?&rdquo;
+                          </p>
+                          <p class="mt-1 text-xs italic text-base-content/40">
+                            Reading docs/handbook/onboarding.md (1.8 KB)...
+                          </p>
+                        </div>
+                        <div
+                          data-term-line="1"
+                          class="translate-y-3 opacity-0 flex items-center gap-3 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-base-content/35 transition-all"
+                        >
+                          <span class="h-px flex-1 bg-base-300"></span>
+                          <span>nothing intercepts</span>
+                          <span class="h-px flex-1 bg-base-300"></span>
+                        </div>
+                        <div
+                          data-term-line="2"
+                          class="translate-y-3 opacity-0 space-y-2 rounded-lg border border-base-200 bg-base-200/30 p-3.5 text-base-content/80 transition-all"
+                        >
+                          <p
+                            class="text-xs font-bold uppercase tracking-wider text-base-content/50"
+                          >
+                            Claude
+                          </p>
+                          <p>
+                            Here are the first-week onboarding steps from the employee playbook:
+                          </p>
+                          <div
+                            class="rounded bg-base-300/50 p-3 text-xs text-base-content space-y-1 font-mono"
+                          >
+                            <p>• Day two: read team docs and pair with buddy on a real task</p>
+                            <p>• Day three: access review for missing permissions in IT channel</p>
+                            <p>• Day five: 30-min check-in with hiring manager</p>
+                          </div>
+                          <p class="text-xs text-base-content/60 italic">
+                            (Note: Metadata lists stale_after: 2025-07-01, but the recorded steps
+                            are provided above.)
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        data-term-line="3"
+                        class="translate-y-3 opacity-0 mt-auto rounded-lg border border-warning/30 bg-warning/5 p-3 text-xs text-warning-content transition-all"
+                      >
+                        <div class="flex items-center gap-2 font-semibold text-warning">
+                          <span>⚠</span>
+                          <span>Unsecured &amp; Non-Deterministic</span>
+                        </div>
+                        <p class="mt-1 font-sans text-base-content/70">
+                          Depending on the model and prompt, it may mention the date. But policy
+                          enforcement is not secured: it doesn't halt outdated workflows, require
+                          verification, or propose opening a ticket with People Ops.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Terminal B: With markdown-harness hook -->
+                  <div
+                    class="flex flex-col overflow-hidden rounded-box border border-primary/40 bg-primary/5 shadow-md"
+                  >
+                    <div
+                      class="flex items-center justify-between border-b border-primary/20 bg-primary/10 px-4 py-2.5"
+                    >
+                      <div class="flex items-center gap-1.5" aria-hidden="true">
+                        <span class="h-2.5 w-2.5 rounded-full bg-primary/40"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-primary/40"></span>
+                        <span class="h-2.5 w-2.5 rounded-full bg-primary/40"></span>
+                      </div>
+                      <span class="font-mono text-xs font-medium text-primary"
+                        >terminal — markdown-harness</span
+                      >
+                      <span class="badge badge-primary badge-xs font-mono text-[0.65rem]"
+                        >with hook</span
+                      >
+                    </div>
+                    <div
+                      class="flex flex-1 flex-col justify-between space-y-4 bg-base-100 p-5 font-mono text-xs leading-relaxed md:text-sm"
+                    >
+                      <div class="space-y-3">
+                        <div data-term-line="0" class="translate-y-3 opacity-0">
+                          <p class="select-none text-base-content/50">
+                            $ claude &ldquo;What are the first-week onboarding steps for a new
+                            hire?&rdquo;
+                          </p>
+                          <p class="mt-1 text-xs italic text-base-content/40">
+                            Reading docs/handbook/onboarding.md (1.8 KB)...
+                          </p>
+                        </div>
+                        <div
+                          data-term-line="1"
+                          class="translate-y-3 opacity-0 flex items-center gap-3 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-warning transition-all"
+                        >
+                          <span class="h-px flex-1 bg-warning/30"></span>
+                          <span>the hook intercepts</span>
+                          <span class="h-px flex-1 bg-warning/30"></span>
+                        </div>
+                        <div
+                          data-term-line="1"
+                          class="translate-y-3 opacity-0 space-y-1 rounded-lg border border-warning/30 bg-warning/10 p-3 text-xs text-warning-content transition-all"
+                        >
+                          <div class="flex items-center gap-2 font-semibold text-warning">
+                            <span class="badge badge-warning badge-xs font-mono">HOOK</span>
+                            <span>markdown-harness intercept</span>
+                          </div>
+                          <p class="font-mono text-[0.7rem] text-base-content/70">
+                            docs/handbook/onboarding.md expired 2025-07-01 (maintainer: @m.okonkwo)
+                          </p>
+                          <p class="font-sans italic text-base-content/90">
+                            ↳ Injected instruction: &ldquo;If current date is past stale_after, warn
+                            user that this handbook is stale and propose opening a ticket or
+                            verifying with People Ops.&rdquo;
+                          </p>
+                        </div>
+                        <div
+                          data-term-line="2"
+                          class="translate-y-3 opacity-0 space-y-2 rounded-lg border border-primary/20 bg-base-200/30 p-3.5 text-base-content/80 transition-all"
+                        >
+                          <p class="text-xs font-bold uppercase tracking-wider text-primary">
+                            Claude
+                          </p>
+                          <p class="font-semibold text-warning">
+                            ⚠️ Warning: docs/handbook/onboarding.md is stale.
+                          </p>
+                          <p class="text-xs text-base-content/80">
+                            This playbook expired on <span class="font-semibold">2025-07-01</span>.
+                            Before executing these onboarding steps, please verify with People Ops
+                            (@m.okonkwo) or open a documentation refresh ticket:
+                          </p>
+                          <div
+                            class="space-y-0.5 rounded bg-base-300/60 p-2 font-mono text-xs text-base-content"
+                          >
+                            <div class="text-base-content/60">
+                              Ticket: [Refresh] Verify employee onboarding playbook
+                            </div>
+                            <div class="text-base-content/60">
+                              Assignee: @m.okonkwo · Status: Review Needed
+                            </div>
+                          </div>
+                          <p class="text-xs text-base-content/60">
+                            (Documented steps pending sign-off: Day 2 pairing, Day 3 access review,
+                            Day 5 check-in.)
+                          </p>
+                        </div>
+                      </div>
+                      <div
+                        data-term-line="3"
+                        class="translate-y-3 opacity-0 mt-auto rounded-lg border border-success/20 bg-success/5 p-3 text-xs text-success transition-all"
+                      >
+                        <div class="flex items-center gap-2 font-semibold">
+                          <span>✓</span>
+                          <span>Guaranteed Operator Instruction</span>
+                        </div>
+                        <p class="mt-1 font-sans text-base-content/70">
+                          The team's instruction is deterministically injected every time. The model
+                          is forced to adopt a defensive posture before anyone follows an expired
+                          playbook.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    <strong>Rescue slide:</strong> In a standard run, do not dwell here — step
+                    directly into your live terminal session to show the contrast in real time.
+                  </p>
+                  <p class="mt-3">
+                    If the live demo fails (network drop, tool crash, LLM latency), stay on this
+                    slide. Point out the two legs: on the left, an unassisted agent might mention
+                    the date, but it doesn't enforce team policy. On the right, markdown-harness
+                    intercepts the file read, notes that
+                    <code class="font-mono font-bold">stale_after</code> has elapsed, and forces
+                    Claude to adopt the team's defensive posture: proposing a ticket or checking
+                    with People Ops before taking action.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 9 — Close ========== -->
+            <section
+              id="s9-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="9"
+              data-section-title="Conclusion"
+              data-beat="S9.1"
+              data-assertion="Back to the Venn, with the human region lit and the rest dimmed. Nothing new to read."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S9.1 · Conclusion
+                </p>
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  The verifying half is nobody else's job
+                </h2>
+                <p
+                  class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  The talk ends on the image it argued from. Machines check structure; AI
+                  accelerates; the <span class="font-medium text-primary">human</span> region is
+                  where the work moved.
+                </p>
+
+                <!-- Section 9 Venn mount: emphasis="human" -->
+                <figure data-venn data-venn-emphasis="human" class="mt-2"></figure>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Land the conclusion cleanly. The human region is not an unfortunate residue we
+                    haven't figured out how to automate yet. It is the real work of knowledge
+                    maintenance.
+                  </p>
+                  <p class="mt-3">
+                    Machines check structure. AI accelerates drafting and fact-checking. But only
+                    humans decide whether a document remains true, whether an owner is still
+                    accountable, and whether policy matches reality.
+                  </p>
+                </aside>
+              </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="border-t border-base-200 bg-base-200/40 px-6 py-16 md:px-16 lg:px-24">
+              <div class="mx-auto flex max-w-4xl flex-col gap-2">
+                <p class="font-display font-semibold">Maintain markdown for AI knowledge bases</p>
+                <p class="text-sm text-base-content/60">A talk by Han Che</p>
+                <a href="../index.html" class="link-hover link w-fit text-sm text-primary"
+                  >← Back to dashboard</a
+                >
+              </div>
+            </footer>
+          </main>
+        </div>
+      </div>
+
+      <!-- ============ MOBILE DRAWER (table of contents) ============ -->
+      <div class="drawer-side z-50">
+        <label for="toc-drawer" aria-label="Close contents" class="drawer-overlay"></label>
+        <aside class="flex min-h-full w-72 flex-col bg-base-200">
+          <div class="flex items-center justify-between border-b border-base-300 p-4">
+            <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+              >Contents</span
+            >
+            <label for="toc-drawer" class="btn btn-square btn-ghost btn-xs" aria-label="Close">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </label>
+          </div>
+          <nav
+            id="toc-mobile"
+            class="flex-1 overflow-y-auto p-3"
+            aria-label="Table of contents"
+          ></nav>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Exit presentation mode trigger (floating, visible only in presentation mode) -->
+    <button
+      id="exit-presentation"
+      type="button"
+      class="btn btn-ghost btn-xs fixed bottom-4 right-4 z-50 hidden gap-1.5 border border-base-300 bg-base-100/85 shadow-md backdrop-blur transition-opacity hover:opacity-100"
+      aria-label="Exit presentation mode"
+      title="Exit presentation mode (P)"
+    >
+      <span>Exit</span>
+      <kbd class="kbd kbd-xs">P</kbd>
+    </button>
+
+    <script type="module" src="./presentation.js"></script>
+  </body>
+</html>
