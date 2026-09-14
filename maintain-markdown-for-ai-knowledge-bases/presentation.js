@@ -139,6 +139,7 @@ function renderSection(section) {
         <button
           type="button"
           data-section-toggle="${section.num}"
+          aria-expanded="true"
           class="toc-section-header flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2 text-left transition-colors hover:bg-base-300/50"
         >
           <span class="flex min-w-0 items-center gap-2">
@@ -187,18 +188,6 @@ function buildTOC() {
     const el = document.getElementById(id);
     if (el) el.innerHTML = html;
   });
-
-  // Section 5 accordion toggle click
-  document.querySelectorAll("[data-section-toggle]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const num = btn.getAttribute("data-section-toggle");
-      const beatsEl = document.querySelector(`[data-section-beats="${num}"]`);
-      if (beatsEl) {
-        const isHidden = beatsEl.classList.contains("hidden");
-        setSectionExpanded(num, isHidden);
-      }
-    });
-  });
 }
 
 /* ------------------------------------------------------------------ *
@@ -225,6 +214,9 @@ function setSectionExpanded(num, expanded) {
   document
     .querySelectorAll(`[data-section-beats="${num}"]`)
     .forEach((el) => el.classList.toggle("hidden", !expanded));
+  document
+    .querySelectorAll(`[data-section-toggle="${num}"]`)
+    .forEach((btn) => btn.setAttribute("aria-expanded", String(expanded)));
   document
     .querySelectorAll(`[data-section-toggle="${num}"] [data-caret]`)
     .forEach((caret) => caret.classList.toggle("rotate-180", expanded));
@@ -799,7 +791,7 @@ function frontmatterMarkup() {
         <div class="mt-6 rounded-box border border-primary/30 bg-primary/5 p-4">
           <p class="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-primary">Standardising the signal</p>
           <p class="mt-2 text-sm leading-relaxed text-base-content/80">
-            Fields like <code class="font-mono text-xs text-primary font-semibold">type</code>, <code class="font-mono text-xs text-secondary font-semibold">stale_after</code>, and <code class="font-mono text-xs font-semibold">owner</code> make verification mechanical. Section 6 of this talk explores how the Open Knowledge Format (OKF) standardises these fields across repositories.
+            Fields like <code class="font-mono text-xs text-primary font-semibold">type</code>, <code class="font-mono text-xs text-secondary font-semibold">stale_after</code>, and <code class="font-mono text-xs font-semibold">owner</code> make verification mechanical. Section 5 of this talk explores how the Open Knowledge Format (OKF) standardises these fields across repositories.
           </p>
         </div>
       </div>
@@ -1969,7 +1961,7 @@ registerActivate("s3-1", (reduced) => {
 const VENN_LENS = "M 413.8 102.3 A 215 215 0 0 0 413.8 397.7 A 175 175 0 0 0 413.8 102.3 Z";
 
 /** Each region is a shortcut to the slide that works it through. */
-const VENN_TARGETS = { machine: "s5-1", ai: "s5-2", human: "s5-3" };
+const VENN_TARGETS = { machine: "s4-2", ai: "s4-3", human: "s4-4" };
 
 /**
  * One drawing, mounted twice. `emphasis` disambiguates the hatch pattern id
@@ -1977,7 +1969,7 @@ const VENN_TARGETS = { machine: "s5-1", ai: "s5-2", human: "s5-3" };
  *
  * Emphasis is deliberately NOT baked into the classes here. Both mounts render
  * identically and neutrally, and the state lives as a class on the svg root
- * that JS toggles — so section 9 has a state to transition *from* rather than
+ * that JS toggles — so section 8 has a state to transition *from* rather than
  * simply appearing in its final one.
  */
 function effortVennMarkup(emphasis) {
@@ -1990,14 +1982,14 @@ function effortVennMarkup(emphasis) {
       ? `data-venn-actor="${actor}" class="${tone} cursor-pointer" data-toc-jump="${VENN_TARGETS[actor]}"`
       : `data-venn-actor="${actor}" class="${tone}"`;
 
-  // §4 shares its slide with three cards; §9 gives the drawing the whole page.
+  // §4 shares its slide with three cards; §8 gives the drawing the whole page.
   const size = emphasis === "human" ? "max-h-[58vh] max-w-4xl" : "max-h-[42vh] max-w-3xl";
 
   return `
     <svg
       viewBox="115 15 700 540"
       role="img"
-      aria-label="Venn diagram of three overlapping regions. Machine, labelled deterministic. Human, drawn largest, labelled non-deterministic. AI sits where the two overlap and is labelled non-deterministic as well; it is marked as a hypothesis that is still unsettled. The three cards below open the slide for each region."
+      aria-label="Venn diagram of three overlapping regions. Machine, labelled deterministic, cheap, fast. Human, drawn largest, labelled non-deterministic, time consuming, trust. AI sits where the two overlap and is labelled non-deterministic, AI judging, token cost; it is marked as a hypothesis that is still unsettled. The three cards below open the slide for each region."
       class="venn venn-emphasis-establish isolate mx-auto block h-auto w-full ${size}"
     >
       <defs>
@@ -2028,10 +2020,14 @@ function effortVennMarkup(emphasis) {
           class="venn-circle fill-primary/15 stroke-primary/40"
         ></circle>
         <g data-venn-step="1">
-          <text x="248" y="240" text-anchor="middle"
-            class="fill-primary font-mono text-[28px] font-bold uppercase tracking-[0.12em]">machine</text>
-          <text x="248" y="274" text-anchor="middle"
-            class="fill-base-content/70 text-[16px]">deterministic</text>
+          <text x="248" y="215" text-anchor="middle"
+            class="fill-primary font-mono text-[26px] font-bold uppercase tracking-[0.12em]">machine</text>
+          <text x="248" y="246" text-anchor="middle"
+            class="fill-base-content/70 text-[15px]">deterministic</text>
+          <text x="248" y="272" text-anchor="middle"
+            class="fill-base-content/60 text-[14px]">cheap</text>
+          <text x="248" y="296" text-anchor="middle"
+            class="fill-base-content/60 text-[14px]">fast</text>
         </g>
       </g>
       <g ${region("human", "text-secondary")}>
@@ -2042,10 +2038,14 @@ function effortVennMarkup(emphasis) {
           class="venn-circle mix-blend-multiply fill-secondary/20 stroke-secondary/50 text-secondary"
         ></circle>
         <g data-venn-step="3">
-          <text x="635" y="240" text-anchor="middle"
-            class="fill-secondary font-mono text-[28px] font-bold uppercase tracking-[0.12em]">human</text>
-          <text x="635" y="274" text-anchor="middle"
-            class="fill-base-content/70 text-[16px]">non-deterministic</text>
+          <text x="635" y="215" text-anchor="middle"
+            class="fill-secondary font-mono text-[26px] font-bold uppercase tracking-[0.12em]">human</text>
+          <text x="635" y="246" text-anchor="middle"
+            class="fill-base-content/70 text-[15px]">non-deterministic</text>
+          <text x="635" y="272" text-anchor="middle"
+            class="fill-base-content/60 text-[14px]">time consuming</text>
+          <text x="635" y="296" text-anchor="middle"
+            class="fill-base-content/60 text-[14px]">trust</text>
         </g>
       </g>
       <g ${region("ai", "text-accent")}>
@@ -2055,13 +2055,18 @@ function effortVennMarkup(emphasis) {
           stroke-width="1.5"
           stroke-dasharray="5 7"
           fill="url(#venn-hatch-${emphasis})"
+          pointer-events="all"
           class="stroke-accent/70"
         ></path>
         <g data-venn-step="5">
-          <text x="425" y="240" text-anchor="middle"
-            class="fill-accent font-mono text-[28px] font-extrabold uppercase tracking-[0.12em]">AI</text>
-          <text x="425" y="270" text-anchor="middle"
+          <text x="425" y="215" text-anchor="middle"
+            class="fill-accent font-mono text-[26px] font-extrabold uppercase tracking-[0.12em]">AI</text>
+          <text x="425" y="244" text-anchor="middle"
             class="fill-base-content/70 text-[12px]">non-deterministic</text>
+          <text x="425" y="268" text-anchor="middle"
+            class="fill-base-content/60 text-[12px]">AI judging</text>
+          <text x="425" y="290" text-anchor="middle"
+            class="fill-base-content/60 text-[12px]">token cost</text>
           <path
             d="M 414 402 L 414 492"
             fill="none"
@@ -2077,6 +2082,33 @@ function effortVennMarkup(emphasis) {
     </svg>`;
 }
 
+function setupVennCardHover() {
+  const container = document.querySelector("[data-venn-container]");
+  if (!container) return;
+
+  const setActiveActor = (actor) => {
+    if (actor) {
+      container.setAttribute("data-active-actor", actor);
+    } else {
+      container.removeAttribute("data-active-actor");
+    }
+  };
+
+  container.querySelectorAll("[data-venn-actor]").forEach((el) => {
+    const actor = el.getAttribute("data-venn-actor");
+    el.addEventListener("mouseenter", () => setActiveActor(actor));
+    el.addEventListener("mouseleave", () => setActiveActor(null));
+  });
+
+  container.querySelectorAll("[data-venn-card]").forEach((card) => {
+    const actor = card.getAttribute("data-venn-card");
+    card.addEventListener("mouseenter", () => setActiveActor(actor));
+    card.addEventListener("mouseleave", () => setActiveActor(null));
+    card.addEventListener("focusin", () => setActiveActor(actor));
+    card.addEventListener("focusout", () => setActiveActor(null));
+  });
+}
+
 function mountVenns() {
   document.querySelectorAll("[data-venn]").forEach((host) => {
     const emphasis = host.dataset.vennEmphasis || "establish";
@@ -2084,7 +2116,7 @@ function mountVenns() {
     const svg = host.querySelector(".venn");
     if (!svg) return;
 
-    // Section 9 does not re-assemble the drawing — the audience has already
+    // Section 8 does not re-assemble the drawing — the audience has already
     // watched it build in section 4. It arrives whole so the camera push is the
     // only thing that moves. Under reduced motion it also arrives already
     // emphasised, since there is no transition to watch.
@@ -2093,6 +2125,8 @@ function mountVenns() {
       if (reduceMotion) setVennEmphasis(svg, "human");
     }
   });
+
+  setupVennCardHover();
 }
 
 mountVenns();
@@ -2340,8 +2374,8 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
 function mountFrontmatterBlocks() {
   document.querySelectorAll("[data-frontmatter-mount]").forEach((host) => {
     const beatId = host.dataset.frontmatterMount;
-    const isSection5 = beatId.startsWith("s5");
-    const mode = host.dataset.frontmatterMode || (isSection5 ? "section-5" : "section-6");
+    const isWorkedExample = beatId.startsWith("s4") && beatId !== "s4-1";
+    const mode = host.dataset.frontmatterMode || (isWorkedExample ? "section-5" : "section-6");
     host.innerHTML = renderFrontmatterBlock({
       mode,
       activeField: mode === "section-7" ? "stale_after" : null,
@@ -2351,9 +2385,9 @@ function mountFrontmatterBlocks() {
 
 mountFrontmatterBlocks();
 
-// Section 6 field-highlight interaction
+// Section 5 field-highlight interaction
 document.addEventListener("click", (e) => {
-  const fmField = e.target.closest("#s6-1 .fm-field");
+  const fmField = e.target.closest("#s5-1 .fm-field");
   if (fmField) {
     const parent = fmField.closest(".frontmatter-card");
     if (parent) {
@@ -2370,7 +2404,7 @@ document.addEventListener("click", (e) => {
 });
 
 /* ------------------------------------------------------------------ *
- * Section 5 — three passes, and only two of them land
+ * Section 4 — three passes, and only two of them land
  *
  * This is where the vocabulary earns itself. The machine pass and the AI pass
  * Settle: they arrive and they finish. The human pass does not get a Settle at
@@ -2386,35 +2420,35 @@ function playPasses(beat, reduced, order) {
   });
 }
 
-// S5.1 — the machine pass resolves cleanly.
-registerActivate("s5-1", (reduced) => {
-  const beat = document.getElementById("s5-1");
+// S4.2 — the machine pass resolves cleanly.
+registerActivate("s4-2", (reduced) => {
+  const beat = document.getElementById("s4-2");
   if (!beat) return;
   revealSequence(beat, reduced);
   playPasses(beat, reduced, ["machine"]);
 });
 
-// S5.2 — the AI pass lands too, but amber: a claim, not a resolution.
-registerActivate("s5-2", (reduced) => {
-  const beat = document.getElementById("s5-2");
+// S4.3 — the AI pass lands too, but amber: a claim, not a resolution.
+registerActivate("s4-3", (reduced) => {
+  const beat = document.getElementById("s4-3");
   if (!beat) return;
   revealSequence(beat, reduced);
   playPasses(beat, reduced, ["ai"]);
 });
 
-// S5.3 — both earlier passes settle again as recaps, and the human pass is left
+// S4.4 — both earlier passes settle again as recaps, and the human pass is left
 // visibly open beneath them.
-registerActivate("s5-3", (reduced) => {
-  const beat = document.getElementById("s5-3");
+registerActivate("s4-4", (reduced) => {
+  const beat = document.getElementById("s4-4");
   if (!beat) return;
   revealSequence(beat, reduced);
   playPasses(beat, reduced, ["machine", "ai"]);
 });
 
-// S6.1 — OKF: each field Settles as its annotation Rises in from the right, at
+// S5.1 — OKF: each field Settles as its annotation Rises in from the right, at
 // the same instant. Paired, 300ms apart, five fields: ≈2.1s.
-registerActivate("s6-1", (reduced) => {
-  const beat = document.getElementById("s6-1");
+registerActivate("s5-1", (reduced) => {
+  const beat = document.getElementById("s5-1");
   if (!beat) return;
   revealSequence(beat, reduced);
   beat.querySelectorAll(".fm-field").forEach((field, i) => {
@@ -2424,18 +2458,18 @@ registerActivate("s6-1", (reduced) => {
   });
 });
 
-// S7.1 — markdown-harness handoff. Deliberately quiet: one Rise for the
+// S6.1 — markdown-harness handoff. Deliberately quiet: one Rise for the
 // headline, one for the sentence, and nothing else moves. The stale_after ring
-// stays as artefact continuity but does not pulse. The contrast with §6's
+// stays as artefact continuity but does not pulse. The contrast with §5's
 // density is the point; the restraint is the design.
-registerActivate("s7-1", (reduced) => {
-  const beat = document.getElementById("s7-1");
+registerActivate("s6-1", (reduced) => {
+  const beat = document.getElementById("s6-1");
   if (!beat) return;
   revealSequence(beat, reduced, { delay: 200, step: 220 });
 });
 
 /* ------------------------------------------------------------------ *
- * S8.1 — the rescue terminal
+ * S7.1 — the rescue terminal
  *
  * The question types itself in, once, where it is asked — forty-odd characters
  * is short enough to feel live. The two answers then reveal line by line rather
@@ -2477,9 +2511,9 @@ function typeInto(el, reduced, { at = 0, total = 800 } = {}) {
   return at + chars.length * per;
 }
 
-// S8.1 — live demo rescue terminal. ≈2.2s.
-registerActivate("s8-1", (reduced) => {
-  const beat = document.getElementById("s8-1");
+// S7.1 — live demo rescue terminal. ≈2.2s.
+registerActivate("s7-1", (reduced) => {
+  const beat = document.getElementById("s7-1");
   if (!beat) return;
   revealSequence(beat, reduced);
 
@@ -2492,13 +2526,13 @@ registerActivate("s8-1", (reduced) => {
   });
 });
 
-// S9.1 — the close. The drawing is already on screen; the camera pushes in
+// S8.1 — the close. The drawing is already on screen; the camera pushes in
 // towards the human region and then holds still. ≈0.9s, and deliberately no
 // Unsettled here: the restlessness belongs to the middle of the argument, not
 // its ending, and keeping Unsettled to one appearance is what makes it mean
-// something back in §5.3.
-registerActivate("s9-1", (reduced) => {
-  const beat = document.getElementById("s9-1");
+// something back in §4.4.
+registerActivate("s8-1", (reduced) => {
+  const beat = document.getElementById("s8-1");
   if (!beat) return;
   revealSequence(beat, reduced);
   const svg = beat.querySelector(".venn");

@@ -500,20 +500,116 @@
   filter: drop-shadow(0 0 28px color-mix(in oklab, currentColor 45%, transparent));
 }
 
-/* Hover Lift on the regions, scoped to the establish mount only so it can never
-   fight §9's emphasis state. No keyboard focus on the regions, deliberately: the
-   svg is role="img" with a complete aria-label, and putting focusable children
-   inside a role="img" makes it incoherent to assistive tech. Every phrase is
-   already in the label, so this hover is purely decorative emphasis. */
-[data-venn-emphasis="establish"] .venn:hover [data-venn-actor] {
-  opacity: 0.45;
+/* Linked hover between Effort Venn and the three actor cards below.
+   Triggered via [data-active-actor] attribute set by pointer events in JS,
+   or via CSS :has() for instant browser-native response. */
+[data-venn-container] [data-venn-actor],
+[data-venn-container] [data-venn-card] {
+  transition-property: opacity, transform, border-color;
   transition-duration: var(--deck-hover);
+  transition-timing-function: var(--deck-ease);
 }
 
-[data-venn-emphasis="establish"] .venn [data-venn-actor]:hover {
+/* Dim non-active actors and non-active cards when Machine is active */
+:is(
+    [data-venn-container][data-active-actor="machine"],
+    [data-venn-container]:has([data-venn-actor="machine"]:hover),
+    [data-venn-container]:has([data-venn-card="machine"]:hover),
+    [data-venn-container]:has([data-venn-card="machine"]:focus-visible)
+  )
+  :is(
+    [data-venn-actor]:not([data-venn-actor="machine"]),
+    [data-venn-card]:not([data-venn-card="machine"])
+  ) {
+  opacity: 0.35;
+}
+
+/* Dim non-active actors and non-active cards when AI is active */
+:is(
+    [data-venn-container][data-active-actor="ai"],
+    [data-venn-container]:has([data-venn-actor="ai"]:hover),
+    [data-venn-container]:has([data-venn-card="ai"]:hover),
+    [data-venn-container]:has([data-venn-card="ai"]:focus-visible)
+  )
+  :is([data-venn-actor]:not([data-venn-actor="ai"]), [data-venn-card]:not([data-venn-card="ai"])) {
+  opacity: 0.35;
+}
+
+/* Dim non-active actors and non-active cards when Human is active */
+:is(
+    [data-venn-container][data-active-actor="human"],
+    [data-venn-container]:has([data-venn-actor="human"]:hover),
+    [data-venn-container]:has([data-venn-card="human"]:hover),
+    [data-venn-container]:has([data-venn-card="human"]:focus-visible)
+  )
+  :is(
+    [data-venn-actor]:not([data-venn-actor="human"]),
+    [data-venn-card]:not([data-venn-card="human"])
+  ) {
+  opacity: 0.35;
+}
+
+/* Keep active Venn actor at full opacity with lift */
+:is(
+    [data-venn-container][data-active-actor="machine"],
+    [data-venn-container]:has([data-venn-actor="machine"]:hover),
+    [data-venn-container]:has([data-venn-card="machine"]:hover),
+    [data-venn-container]:has([data-venn-card="machine"]:focus-visible)
+  )
+  [data-venn-actor="machine"],
+:is(
+    [data-venn-container][data-active-actor="ai"],
+    [data-venn-container]:has([data-venn-actor="ai"]:hover),
+    [data-venn-container]:has([data-venn-card="ai"]:hover),
+    [data-venn-container]:has([data-venn-card="ai"]:focus-visible)
+  )
+  [data-venn-actor="ai"],
+:is(
+    [data-venn-container][data-active-actor="human"],
+    [data-venn-container]:has([data-venn-actor="human"]:hover),
+    [data-venn-container]:has([data-venn-card="human"]:hover),
+    [data-venn-container]:has([data-venn-card="human"]:focus-visible)
+  )
+  [data-venn-actor="human"] {
   opacity: 1;
   transform: translateY(-2px);
-  transition-duration: var(--deck-hover);
+}
+
+/* Keep active card at full opacity with lift and tone-matched border */
+:is(
+    [data-venn-container][data-active-actor="machine"],
+    [data-venn-container]:has([data-venn-actor="machine"]:hover),
+    [data-venn-container]:has([data-venn-card="machine"]:hover),
+    [data-venn-container]:has([data-venn-card="machine"]:focus-visible)
+  )
+  [data-venn-card="machine"] {
+  opacity: 1;
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--color-primary) 70%, transparent);
+}
+
+:is(
+    [data-venn-container][data-active-actor="ai"],
+    [data-venn-container]:has([data-venn-actor="ai"]:hover),
+    [data-venn-container]:has([data-venn-card="ai"]:hover),
+    [data-venn-container]:has([data-venn-card="ai"]:focus-visible)
+  )
+  [data-venn-card="ai"] {
+  opacity: 1;
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--color-accent) 70%, transparent);
+}
+
+:is(
+    [data-venn-container][data-active-actor="human"],
+    [data-venn-container]:has([data-venn-actor="human"]:hover),
+    [data-venn-container]:has([data-venn-card="human"]:hover),
+    [data-venn-container]:has([data-venn-card="human"]:focus-visible)
+  )
+  [data-venn-card="human"] {
+  opacity: 1;
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--color-secondary) 70%, transparent);
 }
 
 /* In dark themes, mix-blend-multiply causes dark muddying against dark surfaces.
