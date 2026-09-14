@@ -1073,6 +1073,15 @@ registerActivate("s4-1", (reduced) => {
   if (svg) playVenn(svg, reduced);
 });
 
+// S9.1 — close: heading lines fade up, then the Venn assembles with human emphasis lit.
+registerActivate("s9-1", (reduced) => {
+  const beat = document.getElementById("s9-1");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+  const svg = beat.querySelector(".venn");
+  if (svg) playVenn(svg, reduced, { delay: 200, step: 200 });
+});
+
 /* ------------------------------------------------------------------ *
  * Init
  * ------------------------------------------------------------------ */
