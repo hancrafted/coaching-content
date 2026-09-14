@@ -1271,6 +1271,13 @@ registerActivate("s7-1", (reduced) => {
   revealSequence(beat, reduced);
 });
 
+// S8.1 — live demo rescue terminal
+registerActivate("s8-1", (reduced) => {
+  const beat = document.getElementById("s8-1");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+});
+
 // S9.1 — close: heading lines fade up, then the Venn assembles with human emphasis lit.
 registerActivate("s9-1", (reduced) => {
   const beat = document.getElementById("s9-1");
