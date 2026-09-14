@@ -202,8 +202,17 @@
   transition-timing-function: var(--deck-ease);
 }
 
-.deck-lift-group:hover .deck-lift,
-.deck-lift-group:focus-within .deck-lift {
+/* Keyed off :has() rather than the group's own :hover. An SVG <g> only reports
+   hover when real geometry is hit, but an HTML container reports it over its
+   padding and the gaps between its children too — so :hover would soften all
+   five §6 fields and lift none of them every time the cursor crossed a 12px gap.
+   :has() says what is actually meant: soften the others when one is chosen.
+
+   The :not() is load-bearing as well as accurate: :has() takes the specificity
+   of its argument, so without it the softening rule outweighs the lift rule
+   below and the chosen element softens along with everything else. */
+.deck-lift-group:has(.deck-lift:hover) .deck-lift:not(:hover),
+.deck-lift-group:has(.deck-lift:focus-visible) .deck-lift:not(:focus-visible) {
   opacity: 0.45;
 }
 
