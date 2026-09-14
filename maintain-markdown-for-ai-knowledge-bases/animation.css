@@ -403,22 +403,23 @@
 }
 
 /* -----------------------------------------------------------------------------
-   S3.1 · Diverging curves
+   S3.1 · Effort charts
    -----------------------------------------------------------------------------
-   The area under the verification curve is revealed by a clip rectangle scaling
-   out from the y-axis, synchronised with the curve Draw, so the wash grows as
-   the curve climbs. Scaling a rectangle horizontally is still a rectangle, so
-   this is a true wipe with no distortion.
+   The corpus chart's widening gap is revealed by a clip rectangle scaling out
+   from the y-axis, synchronised with the two lines' Draw, so the gap opens as
+   they pull apart. Scaling a rectangle horizontally is still a rectangle, so
+   this is a true wipe with no distortion. The document chart has no fill and so
+   needs no wipe.
 ----------------------------------------------------------------------------- */
 
-.curves-chart [data-curve-wipe] {
+.effort-chart [data-curve-wipe] {
   transform-box: view-box;
-  transform-origin: 120px 0;
+  transform-origin: 76px 0;
   transform: scaleX(0);
   transition: transform var(--deck-draw) var(--deck-ease);
 }
 
-.curves-chart.curves-on [data-curve-wipe] {
+.effort-chart.is-wiped [data-curve-wipe] {
   transform: scaleX(1);
 }
 
@@ -833,7 +834,7 @@ body.notes-visible [data-notes-cue] {
     transition: none !important;
   }
 
-  .curves-chart [data-curve-wipe] {
+  .effort-chart [data-curve-wipe] {
     transform: scaleX(1) !important;
     transition: none !important;
   }

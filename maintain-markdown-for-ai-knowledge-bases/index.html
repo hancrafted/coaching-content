@@ -265,7 +265,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S1.1 · Intro
+                  Intro
                 </p>
                 <h1
                   class="translate-y-3 font-display text-4xl font-extrabold leading-[1.02] tracking-tight opacity-0 transition-all duration-500 ease-out md:text-6xl lg:text-7xl"
@@ -409,7 +409,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S2.1 · Markdown in AI Workflows
+                  Markdown in AI Workflows
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -994,16 +994,16 @@
               data-section-title="Volume outruns review"
               data-slide-title="Volume outruns review"
               data-beat="S3.1"
-              data-assertion="Creation effort collapses after AI; verification effort climbs with volume. The crossover is where the work moved."
+              data-assertion="On one document, maintenance effort decays while drift climbs — that crossing is where the work moved. Across a corpus, the maintenance surface grows faster than the file count."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-6xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S3.1 · Volume Outruns Review
+                  Volume Outruns Review
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -1015,13 +1015,34 @@
                   class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  Effort over time, anchored at the day the document reached production.
-                  <span class="font-medium text-accent">Creation</span> collapses with AI.
-                  <span class="font-medium text-secondary">Verification</span> climbs with volume.
+                  Two different things get harder. On a single document,
+                  <span class="font-medium text-accent">maintenance effort</span> decays while
+                  <span class="font-medium text-secondary">drift</span> keeps climbing. Across a
+                  corpus, the <span class="font-medium text-secondary">maintenance surface</span>
+                  grows faster than the
+                  <span class="font-medium text-accent">file count</span>.
                 </p>
 
-                <!-- Diverging curves mount -->
-                <figure data-curves class="mt-4"></figure>
+                <!-- Two charts, two variables, no shared axis and no numbers on
+                     either. Mounted by presentation.js ("S3.1 — Two charts"). -->
+                <div class="mt-8 grid gap-10 lg:grid-cols-2">
+                  <figure class="min-w-0">
+                    <figcaption
+                      class="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-base-content/50"
+                    >
+                      One document decays
+                    </figcaption>
+                    <div data-effort-chart="decay"></div>
+                  </figure>
+                  <figure class="min-w-0">
+                    <figcaption
+                      class="mb-3 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-base-content/50"
+                    >
+                      The corpus compounds
+                    </figcaption>
+                    <div data-effort-chart="corpus"></div>
+                  </figure>
+                </div>
 
                 <!-- Speaker notes cue & drawer -->
                 <button
@@ -1081,19 +1102,26 @@
                     </button>
                   </div>
                   <p>
-                    Before day zero — when the document reaches production — authoring was the hard
-                    part. Writing by hand was slow and expensive, so verification was quiet because
-                    volume was strictly capped by human typing speed.
+                    The chart is not the point — <strong>the gap is</strong>. Creating a document
+                    was always the cheap half, even before AI. The hard half was always keeping it
+                    alive and keeping it trustworthy.
                   </p>
                   <p class="mt-3">
-                    AI completely inverted that curve: creation effort collapsed to near zero.
-                    Anyone and any script can generate fifty pages of documentation in seconds. But
-                    verification effort does not stay flat — it climbs with volume.
+                    AI did not invent that problem, it amplified it. An agent reading an unverified
+                    file assumes it is current and never tells you otherwise.
                   </p>
                   <p class="mt-3">
-                    This crossover is the core thesis of the talk:
-                    <strong>where the work moved</strong>. The bottleneck is no longer writing; it
-                    is proving what was written is still true.
+                    And nobody schedules maintenance. It gets treated the way technical debt gets
+                    treated — real, accumulating, never on anyone&rsquo;s plan — unless someone
+                    actually owns the files. That is true of a handful of AGENTS.md files, and it is
+                    true of a thousand-file repository where documents start contradicting each
+                    other.
+                  </p>
+                  <p class="mt-3 border-l-2 border-base-300 pl-3 text-base-content/70">
+                    If pushed outside the source: Karpathy&rsquo;s LLM-wiki gist argues the same
+                    shift independently — the wiki is written and read by an agent, and the
+                    human&rsquo;s job moves from authoring to curating and verifying. Already linked
+                    on the Knowledge card in section 2.
                   </p>
                 </aside>
               </div>
@@ -1116,7 +1144,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S4.1 · Verification Boundaries
+                  Verification Boundaries
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -1232,7 +1260,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S5.1 · Machine Verification
+                  5.1 · Machine Verification
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -1403,7 +1431,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-accent opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S5.2 · AI Acceleration
+                  5.2 · AI Acceleration
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -1614,7 +1642,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S5.3 · Human Judgment
+                  5.3 · Human Judgment
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -1874,7 +1902,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S6.1 · Open Knowledge Format
+                  Open Knowledge Format
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -2000,7 +2028,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S7.1 · Operator Governance
+                  Operator Governance
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -2164,7 +2192,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S8.1 · Side-by-Side Comparison
+                  Side-by-Side Comparison
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -2491,7 +2519,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  S9.1 · Conclusion
+                  Conclusion
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"

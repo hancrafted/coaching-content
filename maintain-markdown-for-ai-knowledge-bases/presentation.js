@@ -1600,39 +1600,50 @@ registerActivate("s2-1", (reduced) => {
 });
 
 /* ------------------------------------------------------------------ *
- * S3.1 — Diverging curves (Why this was always hard)
+ * S3.1 — Two charts: one document decays, the corpus compounds
  *
- * The marquee drawing. Creation effort (accent) collapses as AI generates
- * files; verification effort (primary) climbs as volume explodes; they cross,
- * and the crossover is the argument.
+ * This replaces a single diverging-curves chart that plotted two independent
+ * variables — elapsed time AND document volume — on one x-axis. That made it
+ * two charts fighting over one frame, and on the volume reading its central
+ * claim was simply false: creation effort does not collapse as a corpus grows,
+ * because you are still writing new documents at two hundred files. It also
+ * carried precise figures (10 docs at +30d, 200 at +180d) that nobody had
+ * measured. In a talk about confidently asserting things nobody verified, an
+ * invented dataset is the one artefact that undercuts the argument.
  *
- * Two decisions worth recording:
+ * So: two charts, different variables, no overlap, and no numbers anywhere.
+ * Each axis is NAMED so the chart reads standalone; no axis carries VALUES,
+ * because there is nothing measured to put on one.
  *
- * 1. Document volume rides the x-axis as a second tick row rather than a
- *    background column series. A background series would need its own implied
- *    vertical scale, making this a dual-axis chart — the most misleading chart
- *    form there is, because the alignment of the two scales is arbitrary and
- *    invents a correlation out of nothing. On the x-axis, volume is the
- *    *independent* variable driving both curves, which is the stronger version
- *    of the argument anyway: verification cost climbs *because* volume climbs.
- *    One vertical axis throughout.
+ *   Left  — the life of ONE document. Maintenance effort spikes around
+ *           creation and decays toward zero as attention moves elsewhere;
+ *           staleness drift rises from day zero and never flattens. They
+ *           cross, and the crossing is the whole argument.
+ *   Right — the corpus. Files grow roughly linearly; the maintenance surface
+ *           curves upward, because each additional file can reference or
+ *           contradict the others. Time does not appear on this chart at all.
  *
- * 2. The x-axis is ordinal — four evenly spaced checkpoints, not a linear time
- *    scale. The two tick rows are read together as one scale, which is why they
- *    are labelled in the left gutter rather than titled separately.
+ * A third line for trust was considered on the left chart and rejected: trust
+ * falling is drift rising mirrored, so it adds ink without adding a claim.
+ *
+ * Both charts share one plot box (x 76→400, y 62→300 in a 560×360 viewBox) so
+ * the pair reads as one figure. Every stroke and fill is a semantic daisyUI
+ * token — the page ships fourteen-plus themes, and a hardcoded hue breaks on
+ * the first switch.
  * ------------------------------------------------------------------ */
 
-function divergingCurvesMarkup() {
+/** Left: the life of one document. Maintenance fades, drift does not. */
+function documentDecayMarkup() {
   return `
     <svg
-      viewBox="0 0 950 430"
+      viewBox="0 0 560 360"
       role="img"
-      aria-label="A chart of effort against time and document volume. Before day zero, creation effort is high and verification effort is low. After the document ships, creation effort collapses as AI generates files while verification effort climbs with volume, from one document to two hundred. The two curves cross partway along: that crossover is where the work moved."
-      class="curves-chart mx-auto block h-auto max-h-[52vh] w-full max-w-5xl"
+      aria-label="The life of a single document, with effort on the vertical axis. Neither axis is numbered. Maintenance effort spikes around the day the document ships, then decays toward zero as attention moves elsewhere. Staleness drift starts at day zero and climbs steadily, never flattening. The two lines cross partway along, and that crossing is where the work moved."
+      class="effort-chart mx-auto block h-auto max-h-[40vh] w-full"
     >
       <defs>
         <marker
-          id="axis-arrow"
+          id="decay-axis-arrow"
           viewBox="0 0 10 10"
           refX="6"
           refY="5"
@@ -1642,93 +1653,47 @@ function divergingCurvesMarkup() {
         >
           <path d="M 1 2 L 7 5 L 1 8 z" fill="currentColor" class="text-base-content/40" />
         </marker>
-        <!-- The wash under the verification curve is revealed by this rectangle
-             scaling out from the y-axis, so the area grows as the curve climbs.
-             A horizontally scaled rectangle is still a rectangle, so this is a
-             true wipe and nothing in the drawing is distorted. -->
-        <clipPath id="curves-wipe">
-          <rect data-curve-wipe x="120" y="55" width="620" height="300" />
-        </clipPath>
       </defs>
 
-      <!-- The frame: everything that is true before any data is drawn. -->
+      <!-- The frame: everything true before any line is drawn. No gridlines —
+           with no values on either axis a grid is ink carrying no information. -->
       <g data-rise data-chart-frame>
-        <!-- Before day zero is its own territory, faintly shaded. -->
-        <rect x="120" y="60" width="150" height="290" class="fill-base-content/5" />
+        <!-- Before it ships is its own territory, faintly shaded. -->
+        <rect x="76" y="62" width="84" height="238" class="fill-base-content/5" />
 
-        <!-- Gridlines. Solid hairlines, one step off the surface: a dashed grid
-             reads as "projection" or "threshold" when it is only a grid. -->
-        <g class="text-base-content/10">
-          <line x1="120" y1="115" x2="740" y2="115" stroke="currentColor" stroke-width="1" />
-          <line x1="120" y1="190" x2="740" y2="190" stroke="currentColor" stroke-width="1" />
-          <line x1="120" y1="265" x2="740" y2="265" stroke="currentColor" stroke-width="1" />
-        </g>
-
-        <!-- Axes. Only the effort axis carries an arrow: it is the only one with
-             a direction that has to be read. -->
+        <!-- Axes. Only effort carries an arrow: it is the only one whose
+             direction has to be read. -->
         <g class="text-base-content/40">
-          <line x1="120" y1="350" x2="120" y2="46" stroke="currentColor" stroke-width="1.5" marker-end="url(#axis-arrow)" />
-          <line x1="112" y1="350" x2="748" y2="350" stroke="currentColor" stroke-width="1.5" />
+          <line x1="76" y1="300" x2="76" y2="52" stroke="currentColor" stroke-width="1.5" marker-end="url(#decay-axis-arrow)" />
+          <line x1="68" y1="300" x2="410" y2="300" stroke="currentColor" stroke-width="1.5" />
         </g>
-        <text x="120" y="30" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
+        <text x="76" y="38" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
           Effort
         </text>
 
         <!-- Day zero is a boundary, not a tick: a rule with a labelled cap, and
              a named territory on each side. -->
         <g>
-          <line x1="270" y1="54" x2="270" y2="350" class="stroke-base-content/25" stroke-width="1.5" />
-          <rect x="226" y="34" width="88" height="21" rx="10.5" class="fill-base-100 stroke-base-content/30" stroke-width="1" />
-          <text x="270" y="49" text-anchor="middle" class="fill-base-content font-mono text-[10.5px] font-bold uppercase tracking-wider">
+          <line x1="160" y1="66" x2="160" y2="306" class="stroke-base-content/25" stroke-width="1.5" />
+          <rect x="118" y="44" width="84" height="21" rx="10.5" class="fill-base-100 stroke-base-content/30" stroke-width="1" />
+          <text x="160" y="59" text-anchor="middle" class="fill-base-content font-mono text-[10.5px] font-bold uppercase tracking-wider">
             Day zero
           </text>
         </g>
-        <text x="130" y="78" class="fill-base-content/40 font-mono text-[9.5px] uppercase tracking-[0.18em]">
-          before it ships
-        </text>
-        <text x="282" y="78" class="fill-base-content/40 font-mono text-[9.5px] uppercase tracking-[0.18em]">
-          after it ships
-        </text>
 
-        <!-- Two tick rows on one scale: time above, the volume it produces below.
-             Volume is what drives both curves, so it belongs on the independent
-             axis rather than in a second vertical scale. -->
-        <g class="text-base-content/25">
-          <line x1="270" y1="350" x2="270" y2="356" stroke="currentColor" stroke-width="1.5" />
-          <line x1="427" y1="350" x2="427" y2="356" stroke="currentColor" stroke-width="1.5" />
-          <line x1="583" y1="350" x2="583" y2="356" stroke="currentColor" stroke-width="1.5" />
-          <line x1="740" y1="350" x2="740" y2="356" stroke="currentColor" stroke-width="1.5" />
-        </g>
-        <g class="font-mono text-[10.5px]">
-          <text x="108" y="373" text-anchor="end" class="fill-base-content/40 text-[9.5px] uppercase tracking-widest">time</text>
-          <text x="270" y="373" text-anchor="middle" class="fill-base-content/70">day 0</text>
-          <text x="427" y="373" text-anchor="middle" class="fill-base-content/70">+30d</text>
-          <text x="583" y="373" text-anchor="middle" class="fill-base-content/70">+90d</text>
-          <text x="740" y="373" text-anchor="middle" class="fill-base-content/70">+180d</text>
-
-          <text x="108" y="394" text-anchor="end" class="fill-base-content/40 text-[9.5px] uppercase tracking-widest">volume</text>
-          <text x="270" y="394" text-anchor="middle" class="fill-base-content/45">1 doc</text>
-          <text x="427" y="394" text-anchor="middle" class="fill-base-content/45">10 docs</text>
-          <text x="583" y="394" text-anchor="middle" class="fill-base-content/45">50 docs</text>
-          <text x="740" y="394" text-anchor="middle" class="fill-base-content/45">200 docs</text>
+        <!-- Axis names, no axis values. -->
+        <g class="font-mono uppercase">
+          <text x="154" y="320" text-anchor="end" class="fill-base-content/45 text-[9.5px] tracking-[0.18em]">before it ships</text>
+          <text x="166" y="320" class="fill-base-content/45 text-[9.5px] tracking-[0.18em]">after it ships</text>
+          <text x="238" y="344" text-anchor="middle" class="fill-base-content/60 text-[11px] tracking-widest">life of one document</text>
         </g>
       </g>
 
-      <!-- The wash under the verification curve. A tint, never a block: it gives
-           the climbing curve weight without claiming to be a second series. -->
-      <g clip-path="url(#curves-wipe)">
-        <path
-          d="M 120 316 C 190 312, 235 298, 270 274 C 310 246, 355 216, 400 200 C 470 174, 570 132, 650 104 C 700 88, 722 82, 740 78 L 740 350 L 120 350 Z"
-          class="fill-secondary/10"
-        />
-      </g>
-
-      <!-- Creation effort: high while a human writes the thing, collapsing once
-           a model will write the next two hundred. -->
+      <!-- Maintenance effort: a spike around creation, then decay toward zero as
+           attention moves elsewhere. It approaches the axis and never lands. -->
       <path
         data-draw
-        data-draw-step="0"
-        d="M 120 92 C 190 96, 235 112, 270 132 C 310 155, 355 185, 400 200 C 470 224, 570 262, 650 282 C 700 294, 722 298, 740 300"
+        d="M 76 262 C 104 252, 130 200, 158 108 C 168 76, 196 74, 212 116 C 234 174, 258 214, 296 244 C 334 274, 368 285, 400 290"
         fill="none"
         stroke="currentColor"
         stroke-width="3"
@@ -1736,11 +1701,10 @@ function divergingCurvesMarkup() {
         class="text-accent"
       />
 
-      <!-- Verification effort: the mirror image, and the one nobody budgets for. -->
+      <!-- Staleness drift: begins the day the document ships and never flattens. -->
       <path
         data-draw
-        data-draw-step="1"
-        d="M 120 316 C 190 312, 235 298, 270 274 C 310 246, 355 216, 400 200 C 470 174, 570 132, 650 104 C 700 88, 722 82, 740 78"
+        d="M 160 296 C 196 288, 228 264, 262 230 C 300 192, 342 146, 400 76"
         fill="none"
         stroke="currentColor"
         stroke-width="3"
@@ -1748,65 +1712,175 @@ function divergingCurvesMarkup() {
         class="text-secondary"
       />
 
-      <!-- Direct labels at the curve ends, each with a short line-key. The key
-           carries the series colour; the label text stays in base-content, which
+      <!-- Direct labels at the line ends, each with a short line-key. The key
+           carries the series colour; the label text stays base-content, which
            keeps it legible in every theme. -->
       <g data-rise data-chart-key>
-        <line x1="748" y1="78" x2="764" y2="78" class="stroke-secondary" stroke-width="3" stroke-linecap="round" />
-        <text x="772" y="75" class="fill-base-content text-[12px] font-semibold">Verification</text>
-        <text x="772" y="90" class="fill-base-content/60 text-[11.5px]">effort climbs</text>
+        <line x1="408" y1="76" x2="424" y2="76" class="stroke-secondary" stroke-width="3" stroke-linecap="round" />
+        <text x="432" y="73" class="fill-base-content text-[11px] font-semibold">Drift / staleness</text>
+        <text x="432" y="88" class="fill-base-content/60 text-[11px]">never flattens</text>
 
-        <line x1="748" y1="300" x2="764" y2="300" class="stroke-accent" stroke-width="3" stroke-linecap="round" />
-        <text x="772" y="297" class="fill-base-content text-[12px] font-semibold">Creation</text>
-        <text x="772" y="312" class="fill-base-content/60 text-[11.5px]">effort collapses</text>
+        <line x1="408" y1="290" x2="424" y2="290" class="stroke-accent" stroke-width="3" stroke-linecap="round" />
+        <text x="432" y="287" class="fill-base-content text-[11px] font-semibold">Maintenance effort</text>
+        <text x="432" y="302" class="fill-base-content/60 text-[11px]">decays to nothing</text>
       </g>
 
-      <!-- The crossover. Arrives last, because it is the conclusion: the dot sits
+      <!-- The crossing. Arrives last, because it is the conclusion: the dot sits
            on a surface-coloured ring so it stays legible exactly where the two
-           curves overlap, and a Settle ring marks its arrival. -->
+           lines overlap, and a Settle ring marks its arrival. -->
       <g data-rise data-crossover>
-        <line x1="408" y1="200" x2="478" y2="200" class="stroke-secondary/40" stroke-width="1" stroke-dasharray="2 3" />
-        <circle data-settle-ring cx="400" cy="200" r="7" fill="none" class="stroke-secondary" stroke-width="2" />
-        <circle cx="400" cy="200" r="5.5" class="fill-secondary stroke-base-100" stroke-width="2" />
-        <rect x="478" y="185" width="176" height="30" rx="8" class="fill-base-100 stroke-secondary/40" stroke-width="1" />
-        <text x="566" y="204" text-anchor="middle" class="fill-secondary font-mono text-[11px] font-semibold tracking-wide">
+        <line x1="272" y1="122" x2="271" y2="209" class="stroke-secondary/40" stroke-width="1" stroke-dasharray="2 3" />
+        <rect x="236" y="92" width="150" height="28" rx="9" class="fill-base-100 stroke-secondary/40" stroke-width="1" />
+        <text x="311" y="110" text-anchor="middle" class="fill-secondary font-mono text-[10px] font-semibold tracking-wide">
           where the work moved
         </text>
+        <circle data-settle-ring cx="271" cy="220" r="7" fill="none" class="stroke-secondary" stroke-width="2" />
+        <circle cx="271" cy="220" r="5.5" class="fill-secondary stroke-base-100" stroke-width="2" />
       </g>
     </svg>`;
 }
 
-/** Curves are armed the moment they exist, so they are parked undrawn on arrival. */
-function mountCurves() {
-  document.querySelectorAll("[data-curves]").forEach((host) => {
-    host.innerHTML = divergingCurvesMarkup();
+/** Right: the corpus. Maintenance surface outgrows the file count. No time axis. */
+function corpusCompoundsMarkup() {
+  return `
+    <svg
+      viewBox="0 0 560 360"
+      role="img"
+      aria-label="Maintenance surface plotted against corpus size. Neither axis is numbered and time does not appear. The file count grows roughly linearly. The maintenance surface curves upward and grows faster than the file count, because each additional file can reference or contradict the others. The gap between the two widens as the corpus grows."
+      class="effort-chart mx-auto block h-auto max-h-[40vh] w-full"
+    >
+      <defs>
+        <marker
+          id="corpus-axis-arrow"
+          viewBox="0 0 10 10"
+          refX="6"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse"
+        >
+          <path d="M 1 2 L 7 5 L 1 8 z" fill="currentColor" class="text-base-content/40" />
+        </marker>
+        <!-- The gap between the two lines is revealed by this rectangle scaling
+             out from the y-axis, so the gap opens as the lines pull apart. A
+             horizontally scaled rectangle is still a rectangle, so this is a
+             true wipe and nothing in the drawing is distorted. -->
+        <clipPath id="corpus-gap-wipe">
+          <rect data-curve-wipe x="76" y="44" width="330" height="256" />
+        </clipPath>
+      </defs>
+
+      <g data-rise data-chart-frame>
+        <g class="text-base-content/40">
+          <line x1="76" y1="300" x2="76" y2="52" stroke="currentColor" stroke-width="1.5" marker-end="url(#corpus-axis-arrow)" />
+          <line x1="68" y1="300" x2="410" y2="300" stroke="currentColor" stroke-width="1.5" />
+        </g>
+        <text x="76" y="38" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
+          Maintenance surface
+        </text>
+        <text x="238" y="344" text-anchor="middle" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
+          number of files
+        </text>
+      </g>
+
+      <!-- The widening gap is the argument, so it is the only thing here that
+           carries a fill. A tint, never a block: it is not a third series. -->
+      <g clip-path="url(#corpus-gap-wipe)">
+        <path
+          d="M 76 288 C 108 272, 170 238, 238 200 C 292 170, 346 110, 400 50 L 400 160 C 292 203, 184 245, 76 288 Z"
+          class="fill-secondary/10"
+        />
+      </g>
+
+      <!-- Files: roughly linear. You add them at about the rate you always did. -->
+      <path
+        data-draw
+        d="M 76 288 C 184 245, 292 203, 400 160"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        class="text-accent"
+      />
+
+      <!-- Maintenance surface: superlinear, because every file added can
+           reference or contradict every file already there. -->
+      <path
+        data-draw
+        d="M 76 288 C 108 272, 170 238, 238 200 C 292 170, 346 110, 400 50"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        class="text-secondary"
+      />
+
+      <g data-rise data-chart-key>
+        <line x1="408" y1="50" x2="424" y2="50" class="stroke-secondary" stroke-width="3" stroke-linecap="round" />
+        <text x="432" y="47" class="fill-base-content text-[11px] font-semibold">Maintenance surface</text>
+        <text x="432" y="62" class="fill-base-content/60 text-[11px]">compounds</text>
+
+        <line x1="408" y1="160" x2="424" y2="160" class="stroke-accent" stroke-width="3" stroke-linecap="round" />
+        <text x="432" y="157" class="fill-base-content text-[11px] font-semibold">Files</text>
+        <text x="432" y="172" class="fill-base-content/60 text-[11px]">roughly linear</text>
+      </g>
+    </svg>`;
+}
+
+const EFFORT_CHARTS = {
+  decay: documentDecayMarkup,
+  corpus: corpusCompoundsMarkup,
+};
+
+/** Both charts are armed the moment they exist, so they are parked undrawn. */
+function mountEffortCharts() {
+  document.querySelectorAll("[data-effort-chart]").forEach((host) => {
+    const build = EFFORT_CHARTS[host.dataset.effortChart];
+    if (!build) return;
+    host.innerHTML = build();
     if (!reduceMotion) host.querySelectorAll("[data-draw]").forEach(armDraw);
   });
 }
 
-mountCurves();
+mountEffortCharts();
 
-/* Sequence: the frame Rises, both curves Draw at their own true rate while the
-   wash wipes out beneath them, and the crossover arrives last. Total ≈ 1.6s. */
-function playCurves(svg, reduced) {
-  rise(svg.querySelector("[data-chart-frame]"), 0, reduced);
-
-  svg.querySelectorAll("[data-draw]").forEach((path) => releaseDraw(path, 150, reduced));
-  if (reduced) svg.classList.add("curves-on");
-  else setTimeout(() => svg.classList.add("curves-on"), 150);
-
-  rise(svg.querySelector("[data-chart-key]"), 700, reduced);
-  rise(svg.querySelector("[data-crossover]"), 1050, reduced);
-  settleRing(svg.querySelector("[data-settle-ring]"), 1100, reduced);
+/** The svg mounted under a given [data-effort-chart] key, if it is there. */
+function effortChart(root, key) {
+  return root.querySelector(`[data-effort-chart="${key}"] .effort-chart`);
 }
 
-// S3.1 — heading lines Rise, then the chart builds and the crossover lands last.
+/* Sequence: the left chart builds and lands its crossing label before the right
+   chart begins. The right chart is a second claim, not a restatement of the
+   first, so it must not arrive underneath the first one's conclusion.
+   Total ≈ 2.5s. */
+function playEffortCharts(root, reduced) {
+  const decay = effortChart(root, "decay");
+  const corpus = effortChart(root, "corpus");
+
+  if (decay) {
+    rise(decay.querySelector("[data-chart-frame]"), 0, reduced);
+    decay.querySelectorAll("[data-draw]").forEach((path) => releaseDraw(path, 150, reduced));
+    rise(decay.querySelector("[data-chart-key]"), 700, reduced);
+    rise(decay.querySelector("[data-crossover]"), 1050, reduced);
+    settleRing(decay.querySelector("[data-settle-ring]"), 1100, reduced);
+  }
+
+  if (corpus) {
+    rise(corpus.querySelector("[data-chart-frame]"), 1250, reduced);
+    corpus.querySelectorAll("[data-draw]").forEach((path) => releaseDraw(path, 1400, reduced));
+    if (reduced) corpus.classList.add("is-wiped");
+    else setTimeout(() => corpus.classList.add("is-wiped"), 1400);
+    rise(corpus.querySelector("[data-chart-key]"), 1950, reduced);
+  }
+}
+
+// S3.1 — heading lines Rise, then the document chart builds and lands its
+// crossing, and the corpus chart follows it.
 registerActivate("s3-1", (reduced) => {
   const beat = document.getElementById("s3-1");
   if (!beat) return;
   revealSequence(beat, reduced);
-  const svg = beat.querySelector(".curves-chart");
-  if (svg) playCurves(svg, reduced);
+  playEffortCharts(beat, reduced);
 });
 
 /* ------------------------------------------------------------------ *
