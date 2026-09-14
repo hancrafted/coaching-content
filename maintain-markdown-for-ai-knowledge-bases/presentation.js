@@ -2120,7 +2120,13 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
         <div class="p-4 text-[11px] sm:text-xs leading-relaxed overflow-x-auto bg-base-100">
           <table class="w-full border-collapse font-mono">
             <tbody>
-              <tr><td class="pr-3 text-right text-base-content/30 select-none w-6">1</td><td class="text-primary/70 font-bold">---</td></tr>
+              <tr>
+                <td rowspan="9" class="w-6 select-none align-middle text-center border-r border-base-300 pr-1 py-1">
+                  <span class="inline-block [writing-mode:vertical-lr] rotate-180 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-base-content/20 select-none">frontmatter</span>
+                </td>
+                <td class="pr-3 text-right text-base-content/30 select-none w-6">1</td>
+                <td class="text-primary/70 font-bold">---</td>
+              </tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">2</td><td><span class="text-primary font-medium">type</span>: <span class="text-base-content/80">Playbook</span></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">3</td><td><span class="text-primary font-medium">title</span>: <span class="text-base-content/80">Onboarding a new employee</span></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">4</td><td><span class="text-primary font-medium">sources</span>:</td></tr>
@@ -2129,8 +2135,14 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
               <tr><td class="pr-3 text-right text-base-content/30 select-none">7</td><td class="pl-2">    <span class="text-accent font-medium">title</span>: <span class="text-base-content/70">People Ops handbook, section 4</span></td></tr>
               <tr class="${activeField === "stale_after" ? "bg-warning/10 ring-1 ring-warning" : ""}"><td class="pr-3 text-right text-base-content/30 select-none">8</td><td><span class="text-primary font-medium">stale_after</span>: <span class="text-warning font-bold">2026-07-01T00:00:00Z</span></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">9</td><td class="text-primary/70 font-bold">---</td></tr>
-              <tr><td class="pr-3 text-right text-base-content/30 select-none">10</td><td></td></tr>
-              <tr><td class="pr-3 text-right text-base-content/30 select-none">11</td><td class="font-bold text-base-content text-xs sm:text-sm"># Onboarding a new employee</td></tr>
+              <tr><td class="w-6 select-none"></td><td class="pr-3 text-right text-base-content/30 select-none">10</td><td></td></tr>
+              <tr>
+                <td rowspan="7" class="w-6 select-none align-middle text-center border-r border-base-300 pr-1 py-1">
+                  <span class="inline-block [writing-mode:vertical-lr] rotate-180 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-base-content/20 select-none">body</span>
+                </td>
+                <td class="pr-3 text-right text-base-content/30 select-none">11</td>
+                <td class="font-bold text-base-content text-xs sm:text-sm"># Onboarding a new employee</td>
+              </tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">12</td><td></td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">13</td><td class="font-semibold text-base-content/85">## Before day one</td></tr>
               <tr><td class="pr-3 text-right text-base-content/30 select-none">14</td><td></td></tr>

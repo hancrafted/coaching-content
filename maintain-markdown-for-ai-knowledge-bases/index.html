@@ -1446,14 +1446,36 @@
                     </button>
                   </div>
                   <p>
-                    Point out that OKF only requires type. The staleness date is optional. The
-                    machine check passes not because the format demanded it, but because our own
-                    lint rule checked for it.
+                    This is the metadata block at the top of the file. Not the document — the
+                    description of the document. Type, title, the source it came from, and a date
+                    somebody chose, saying this goes out of date after the first of July.
                   </p>
                   <p class="mt-3">
-                    markdown-harness is hermetic: it runs offline without external HTTP requests.
-                    The resource check confirms the URI is present and well-formed. Mechanical
-                    checking is the settled, deterministic part of the workflow.
+                    A machine confirms the block parses, the fields exist, the date is a real date,
+                    the link is well-formed. Milliseconds, offline, no model involved. You can go
+                    further into the body if you want: every document starts with a heading,
+                    sections appear in the right order. All of it structural.
+                  </p>
+                  <p class="mt-3">
+                    Every one of those checks is about shape. None of them is about truth.
+                  </p>
+                  <p class="mt-3">
+                    The date parses — nobody checked whether it was ever right. The link is
+                    well-formed — and if that handbook page was rewritten, or the content moved
+                    somewhere else under a URL that still resolves, the check still passes. A link
+                    that still works is not a link that still says what you claimed.
+                  </p>
+                  <p class="mt-3">
+                    The machine proves the file is mechanically intact. It cannot tell you whether
+                    the onboarding workflow is still true.
+                  </p>
+                  <p class="mt-3 border-l-2 border-base-300 pl-3 text-base-content/70">
+                    <strong class="font-semibold text-base-content/85">Hold in reserve.</strong> OKF
+                    only requires <code class="font-mono text-xs">type</code>. The staleness date is
+                    optional — this check passes because our own rule asked for it, not because the
+                    format demanded it. And if an engineer raises cost: structural checks on the
+                    body can get expensive at ten thousand documents, depending on the matching.
+                    Neither belongs in the main narration.
                   </p>
                 </aside>
               </div>
