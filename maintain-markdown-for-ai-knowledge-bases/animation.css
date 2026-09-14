@@ -154,3 +154,46 @@
     transition: none;
   }
 }
+
+/* -----------------------------------------------------------------------------
+   Presenter controls — presentation mode & speaker notes
+   ----------------------------------------------------------------------------- */
+
+/* Presentation mode hides navbar, TOC rail, and adjusts layout to full width */
+html.presentation-mode header.navbar,
+body.presentation-mode header.navbar,
+html.presentation-mode #toc-rail,
+body.presentation-mode #toc-rail {
+  display: none !important;
+}
+
+html.presentation-mode .deck-layout,
+body.presentation-mode .deck-layout {
+  grid-template-columns: 1fr !important;
+}
+
+html.presentation-mode #progress-bar-top,
+body.presentation-mode #progress-bar-top {
+  display: block !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+html.presentation-mode #exit-presentation,
+body.presentation-mode #exit-presentation {
+  display: inline-flex !important;
+}
+
+/* Speaker notes toggle */
+html.notes-visible [data-speaker-notes],
+body.notes-visible [data-speaker-notes] {
+  display: block !important;
+}
+
+html:not(.notes-visible) [data-speaker-notes],
+body:not(.notes-visible) [data-speaker-notes] {
+  display: none !important;
+}

@@ -350,6 +350,17 @@ function isTypingTarget(el) {
 window.addEventListener("keydown", (e) => {
   if (isTypingTarget(document.activeElement)) return;
 
+  if (e.key === "p" || e.key === "P") {
+    e.preventDefault();
+    togglePresentationMode();
+    return;
+  }
+  if (e.key === "n" || e.key === "N") {
+    e.preventDefault();
+    toggleSpeakerNotes();
+    return;
+  }
+
   const idx = beatOrder.indexOf(activeBeatId);
   if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "PageDown") {
     e.preventDefault();
@@ -443,6 +454,121 @@ function buildThemePicker() {
   });
 
   updateThemeChecks();
+}
+
+/* ------------------------------------------------------------------ *
+ * Presenter controls — presentation mode & speaker notes
+ * ------------------------------------------------------------------ */
+
+const STORAGE_KEY_PRESENTATION = "deck-presentation-mode";
+const STORAGE_KEY_NOTES = "deck-speaker-notes";
+
+function updatePresenterControlsUI() {
+  const isPres = document.documentElement.classList.contains("presentation-mode");
+  const isNotes = document.documentElement.classList.contains("notes-visible");
+
+  const presCheck = document.getElementById("presentation-mode-check");
+  if (presCheck) presCheck.textContent = isPres ? "✓" : "";
+
+  const notesCheck = document.getElementById("speaker-notes-check");
+  if (notesCheck) notesCheck.textContent = isNotes ? "✓" : "";
+}
+
+function setPresentationMode(enabled) {
+  document.documentElement.classList.toggle("presentation-mode", enabled);
+  document.body.classList.toggle("presentation-mode", enabled);
+  try {
+    localStorage.setItem(STORAGE_KEY_PRESENTATION, enabled ? "true" : "false");
+  } catch {
+    /* persistence unavailable */
+  }
+  updatePresenterControlsUI();
+  if (enabled && document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
+}
+
+function togglePresentationMode() {
+  const current = document.documentElement.classList.contains("presentation-mode");
+  setPresentationMode(!current);
+}
+
+function setSpeakerNotes(enabled) {
+  document.documentElement.classList.toggle("notes-visible", enabled);
+  document.body.classList.toggle("notes-visible", enabled);
+  try {
+    localStorage.setItem(STORAGE_KEY_NOTES, enabled ? "true" : "false");
+  } catch {
+    /* persistence unavailable */
+  }
+  updatePresenterControlsUI();
+}
+
+function toggleSpeakerNotes() {
+  const current = document.documentElement.classList.contains("notes-visible");
+  setSpeakerNotes(!current);
+}
+
+function buildPresenterControls() {
+  const host = document.getElementById("presenter-controls");
+  if (!host) return;
+
+  host.innerHTML = `
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-sm gap-1.5" aria-label="Presenter controls">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 6h16M4 12h10M4 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="hidden sm:inline">Presenter</span>
+      </div>
+      <ul
+        tabindex="0"
+        class="menu dropdown-content z-50 mt-2 w-56 rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
+      >
+        <li class="menu-title text-[0.65rem] uppercase tracking-[0.2em]">Presenter controls</li>
+        <li>
+          <button type="button" id="toggle-presentation-btn" class="justify-between py-2">
+            <span class="flex items-center gap-2">
+              <span>Presentation mode</span>
+              <kbd class="kbd kbd-xs">P</kbd>
+            </span>
+            <span id="presentation-mode-check" class="text-primary font-bold"></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" id="toggle-notes-btn" class="justify-between py-2">
+            <span class="flex items-center gap-2">
+              <span>Speaker notes</span>
+              <kbd class="kbd kbd-xs">N</kbd>
+            </span>
+            <span id="speaker-notes-check" class="text-primary font-bold"></span>
+          </button>
+        </li>
+      </ul>
+    </div>`;
+
+  const presBtn = document.getElementById("toggle-presentation-btn");
+  if (presBtn) {
+    presBtn.addEventListener("click", () => {
+      togglePresentationMode();
+    });
+  }
+
+  const notesBtn = document.getElementById("toggle-notes-btn");
+  if (notesBtn) {
+    notesBtn.addEventListener("click", () => {
+      toggleSpeakerNotes();
+    });
+  }
+
+  const exitBtn = document.getElementById("exit-presentation");
+  if (exitBtn) {
+    exitBtn.addEventListener("click", () => {
+      setPresentationMode(false);
+    });
+  }
+
+  updatePresenterControlsUI();
 }
 
 /* ------------------------------------------------------------------ *
@@ -576,7 +702,19 @@ registerActivate("s4-1", (reduced) => {
  * ------------------------------------------------------------------ */
 
 buildThemePicker();
+buildPresenterControls();
 buildTOC();
+
+try {
+  if (localStorage.getItem(STORAGE_KEY_PRESENTATION) === "true") {
+    setPresentationMode(true);
+  }
+  if (localStorage.getItem(STORAGE_KEY_NOTES) === "true") {
+    setSpeakerNotes(true);
+  }
+} catch {
+  /* ignore */
+}
 
 if (reduceMotion) {
   document

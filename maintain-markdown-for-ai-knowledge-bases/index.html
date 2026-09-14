@@ -15,8 +15,14 @@
         if (savedTheme) {
           document.documentElement.setAttribute("data-theme", savedTheme);
         }
+        if (localStorage.getItem("deck-presentation-mode") === "true") {
+          document.documentElement.classList.add("presentation-mode");
+        }
+        if (localStorage.getItem("deck-speaker-notes") === "true") {
+          document.documentElement.classList.add("notes-visible");
+        }
       } catch (e) {
-        /* localStorage unavailable — fall back to the default theme */
+        /* localStorage unavailable — fall back to defaults */
       }
     </script>
 
@@ -137,13 +143,15 @@
             >
           </div>
           <div class="navbar-end gap-2">
+            <!-- Presenter controls surface injected by presentation.js -->
+            <div id="presenter-controls"></div>
             <!-- Theme picker injected by presentation.js -->
             <div id="theme-picker"></div>
           </div>
         </header>
 
-        <!-- Mobile progress bar (the desktop rail carries its own) -->
-        <div class="h-1 shrink-0 bg-base-200 lg:hidden">
+        <!-- Mobile progress bar (and presentation mode progress bar) -->
+        <div id="progress-bar-top" class="h-1 shrink-0 bg-base-200 lg:hidden">
           <div
             id="progress-mobile"
             class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
@@ -152,7 +160,7 @@
 
         <!-- Rail + tower -->
         <div
-          class="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[19rem_1fr] lg:grid-rows-[minmax(0,1fr)]"
+          class="deck-layout flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[19rem_1fr] lg:grid-rows-[minmax(0,1fr)]"
         >
           <!-- Desktop sticky rail -->
           <aside
@@ -708,6 +716,18 @@
         </aside>
       </div>
     </div>
+
+    <!-- Exit presentation mode trigger (floating, visible only in presentation mode) -->
+    <button
+      id="exit-presentation"
+      type="button"
+      class="btn btn-ghost btn-xs fixed bottom-4 right-4 z-50 hidden gap-1.5 border border-base-300 bg-base-100/85 shadow-md backdrop-blur transition-opacity hover:opacity-100"
+      aria-label="Exit presentation mode"
+      title="Exit presentation mode (P)"
+    >
+      <span>Exit</span>
+      <kbd class="kbd kbd-xs">P</kbd>
+    </button>
 
     <script type="module" src="./presentation.js"></script>
   </body>
