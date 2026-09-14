@@ -11,7 +11,8 @@ One commit = one scope. Never mix files across different scopes in a single comm
 - `root` (files directly at the repository root, e.g. `package.json`, `index.html`)
 - `src` (files under `src/`)
 - `ai-token-economy-101` (files under `ai-token-economy-101/`)
-- `maintaining-high-value-knowledge-bases` (files under `maintaining-high-value-knowledge-bases/`)
+- `maintain-markdown-for-ai-knowledge-bases` (files under `maintain-markdown-for-ai-knowledge-bases/`)
+- `docs` (files under `docs/`)
 - `governance` (files under `governance/`)
 - `scripts` (files under `scripts/`)
 - Each dot-directory has its own scope:
