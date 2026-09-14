@@ -243,13 +243,84 @@ function setActive(id) {
 const activateRegistry = {};
 const activated = new Set();
 
+/* ------------------------------------------------------------------ *
+ * The motion vocabulary
+ *
+ * Mirrors the custom properties at the top of animation.css. The stylesheet
+ * owns the transitions and the keyframes; these numbers exist so the JS-timed
+ * parts — staggers, and the hand-offs between one primitive and the next — stay
+ * in the same language. Change a duration in one file and change it in the
+ * other; they are one vocabulary in two syntaxes.
+ *
+ * Every beat's full sequence is budgeted to finish inside 2.5s, which is about
+ * how long the presenter takes to say the sentence that goes with it.
+ * ------------------------------------------------------------------ */
+
+const MOTION = {
+  rise: 560,
+  draw: 900,
+  settle: 520,
+  hover: 180,
+  stagger: 90,
+};
+
+/** Rise: bring a [data-rise] element in. Instant under reduced motion. */
+function rise(el, at, reduced) {
+  if (!el) return;
+  if (reduced) el.classList.add("is-risen");
+  else setTimeout(() => el.classList.add("is-risen"), at);
+}
+
+/**
+ * Draw, part one: measure a path and park it fully undrawn.
+ *
+ * The length comes from getTotalLength(), never from a hand-guessed constant —
+ * two paths of different true lengths sharing one number draw at visibly
+ * different rates.
+ */
+function armDraw(path) {
+  if (!path) return 0;
+  const len = path.getTotalLength();
+  path.style.strokeDasharray = `${len}`;
+  path.style.strokeDashoffset = `${len}`;
+  return len;
+}
+
+/** Draw, part two: release an armed path so it draws over --deck-draw. */
+function releaseDraw(path, at, reduced) {
+  if (!path) return;
+  const go = () => {
+    path.style.strokeDashoffset = "0";
+  };
+  if (reduced) {
+    path.style.strokeDasharray = "none";
+    go();
+  } else setTimeout(go, at);
+}
+
+/** Settle: a one-shot pop and ring on an HTML element. Silent under reduced motion. */
+function settle(el, at, reduced) {
+  if (!el || reduced) return;
+  setTimeout(() => {
+    el.classList.remove("deck-settle");
+    void el.offsetWidth; // restart the animation if the beat is re-entered
+    el.classList.add("deck-settle");
+  }, at);
+}
+
+/** Settle, SVG flavour: the authored ring circle expands once and fades. */
+function settleRing(el, at, reduced) {
+  if (!el || reduced) return;
+  setTimeout(() => el.classList.add("is-settling"), at);
+}
+
 /** A beat registers its on-activation animation here (keyed by beat id). */
 function registerActivate(id, fn) {
   activateRegistry[id] = fn;
 }
 
-/** Fade `[data-reveal]` children up in sequence — the default beat animation. */
-function revealSequence(root, reduced, { delay = 120, step = 140 } = {}) {
+/** Rise the `[data-reveal]` children in sequence — the default beat animation. */
+function revealSequence(root, reduced, { delay = 120, step = MOTION.stagger } = {}) {
   const items = root.querySelectorAll("[data-reveal]");
   items.forEach((el, i) => {
     const show = () => el.classList.remove("opacity-0", "translate-y-3");
@@ -577,11 +648,12 @@ function buildPresenterControls() {
  * when the first beat activates. Later tickets add theirs here.
  * ------------------------------------------------------------------ */
 
-// S1.1 — the hero lands line by line: eyebrow, title, thesis, name.
+// S1.1 — the hero lands line by line: eyebrow, title, thesis, name. Already does
+// its job; retimed only, to adopt Rise.
 registerActivate("s1-1", (reduced) => {
   const hero = document.getElementById("s1-1");
   if (!hero) return;
-  revealSequence(hero, reduced, { delay: 200, step: 220 });
+  revealSequence(hero, reduced, { delay: 200 });
 });
 
 /* ------------------------------------------------------------------ *
@@ -600,7 +672,7 @@ registerActivate("s1-1", (reduced) => {
 function hubSpokeMarkup() {
   return `
     <svg
-      viewBox="0 0 800 480"
+      viewBox="20 45 860 355"
       role="img"
       aria-label="A markdown document at the center radiating outward to Context, Knowledge, and Instruction systems."
       class="hub-spoke isolate mx-auto block h-auto max-h-[55vh] w-full max-w-4xl"
@@ -619,39 +691,50 @@ function hubSpokeMarkup() {
         </marker>
       </defs>
 
-      <!-- Spokes (lines with arrows) -->
-      <g data-spoke-step="1" class="text-base-content/35">
+      <!-- Spokes. Every path starts at the file and runs outward, so the Draw
+           reads as the centre reaching the bucket rather than three cards
+           arriving at once. Solid, not dashed: a dashed spoke reads as
+           "provisional", and these routes are not provisional. The arrowhead is
+           attached by JS when the line lands (and immediately under reduced
+           motion), so it never floats at the destination ahead of its line. -->
+      <g class="text-base-content/35">
         <!-- Spoke to Context (top-left) -->
         <path
-          d="M 360 170 C 310 160, 290 120, 260 110"
+          data-draw
+          data-draw-step="0"
+          data-marker="spoke-arrow"
+          d="M 360 170 C 310 160, 290 120, 262 110"
           fill="none"
           stroke="currentColor"
           stroke-width="1.5"
-          stroke-dasharray="4 4"
-          marker-end="url(#spoke-arrow)"
+          stroke-linecap="round"
         />
         <!-- Spoke to Knowledge (right) -->
         <path
-          d="M 540 225 L 630 225"
+          data-draw
+          data-draw-step="1"
+          data-marker="spoke-arrow"
+          d="M 540 225 L 628 225"
           fill="none"
           stroke="currentColor"
           stroke-width="1.5"
-          stroke-dasharray="4 4"
-          marker-end="url(#spoke-arrow)"
+          stroke-linecap="round"
         />
         <!-- Spoke to Instruction (bottom-left) -->
         <path
-          d="M 360 280 C 310 290, 290 320, 260 330"
+          data-draw
+          data-draw-step="2"
+          data-marker="spoke-arrow"
+          d="M 360 280 C 310 290, 290 320, 262 330"
           fill="none"
           stroke="currentColor"
           stroke-width="1.5"
-          stroke-dasharray="4 4"
-          marker-end="url(#spoke-arrow)"
+          stroke-linecap="round"
         />
       </g>
 
       <!-- Central Hub: the markdown file -->
-      <g data-spoke-step="0">
+      <g data-rise data-hub>
         <!-- File card shadow & body -->
         <rect
           x="360"
@@ -700,10 +783,14 @@ function hubSpokeMarkup() {
         </text>
       </g>
 
-      <!-- Three Spokes (Context, Knowledge, Instruction) -->
-      <g data-spoke-step="2">
+      <!-- The three buckets. The example filenames render by default and stay on
+           screen: the deck is presented remotely by arrow key, so a bucket that
+           only reveals its examples on hover is a bucket whose point never gets
+           made. Hover Lifts one and softens the other two — emphasis only, never
+           information. -->
+      <g class="deck-lift-group">
         <!-- 1. Context (top-left) -->
-        <g class="text-base-content">
+        <g data-rise data-bucket="0"><g class="deck-lift text-base-content">
           <rect
             x="30"
             y="55"
@@ -717,10 +804,10 @@ function hubSpokeMarkup() {
           <text x="50" y="106" class="fill-base-content/60 text-[12px]">Ambient session rules</text>
           <text x="50" y="130" class="font-mono text-[11.5px] font-semibold fill-primary">AGENTS.md · CLAUDE.md</text>
           <text x="50" y="148" class="fill-base-content/45 text-[11px]">Loaded into prompts at start</text>
-        </g>
+        </g></g>
 
         <!-- 2. Knowledge (right) -->
-        <g class="text-base-content">
+        <g data-rise data-bucket="1"><g class="deck-lift text-base-content">
           <rect
             x="640"
             y="170"
@@ -734,10 +821,10 @@ function hubSpokeMarkup() {
           <text x="660" y="221" class="fill-base-content/60 text-[12px]">Institutional memory</text>
           <text x="660" y="245" class="font-mono text-[11.5px] font-semibold fill-accent">wiki · LLM-wiki · docs</text>
           <text x="660" y="263" class="fill-base-content/45 text-[11px]">Indexed, retrieved on demand</text>
-        </g>
+        </g></g>
 
         <!-- 3. Instruction (bottom-left) -->
-        <g class="text-base-content">
+        <g data-rise data-bucket="2"><g class="deck-lift text-base-content">
           <rect
             x="30"
             y="275"
@@ -751,25 +838,48 @@ function hubSpokeMarkup() {
           <text x="50" y="326" class="fill-base-content/60 text-[12px]">Operational guidance</text>
           <text x="50" y="350" class="font-mono text-[11.5px] font-semibold fill-base-content/90">skills · prompts · commands</text>
           <text x="50" y="368" class="fill-base-content/45 text-[11px]">Procedures executed step by step</text>
-        </g>
+        </g></g>
       </g>
     </svg>`;
 }
 
-document.querySelectorAll("[data-hub-spoke]").forEach((host) => {
-  host.innerHTML = hubSpokeMarkup();
-});
-
-function playHubSpoke(svg, reduced, { delay = 300, step = 250 } = {}) {
-  if (!reduced) {
-    svg.querySelectorAll("[data-spoke-step]").forEach((el) => {
-      el.style.transitionDelay = `${delay + Number(el.dataset.spokeStep) * step}ms`;
-    });
-  }
-  svg.classList.add("spoke-on");
+/** Spokes are armed the moment they exist, so they are parked undrawn on arrival. */
+function mountHubSpokes() {
+  document.querySelectorAll("[data-hub-spoke]").forEach((host) => {
+    host.innerHTML = hubSpokeMarkup();
+    if (!reduceMotion) host.querySelectorAll("[data-draw]").forEach(armDraw);
+  });
 }
 
-// S2.1 — heading lines fade up, then the hub and spoke assembles.
+mountHubSpokes();
+
+/* Sequence: the file Rises, then each spoke Draws outward 140ms after the last,
+   and each bucket Rises as its own spoke lands. Total ≈ 1.94s. */
+const SPOKE_STAGGER = 140;
+
+function playHubSpoke(svg, reduced) {
+  rise(svg.querySelector("[data-hub]"), 200, reduced);
+
+  svg.querySelectorAll("[data-draw]").forEach((path) => {
+    const i = Number(path.dataset.drawStep);
+    const at = 400 + i * SPOKE_STAGGER;
+    releaseDraw(path, at, reduced);
+
+    // The arrowhead lands with the line, never ahead of it.
+    const marker = () => {
+      path.style.markerEnd = `url(#${path.dataset.marker})`;
+    };
+    if (reduced) marker();
+    else setTimeout(marker, at + MOTION.draw);
+  });
+
+  svg.querySelectorAll("[data-bucket]").forEach((bucket) => {
+    const i = Number(bucket.dataset.bucket);
+    rise(bucket, 400 + i * SPOKE_STAGGER + 700, reduced);
+  });
+}
+
+// S2.1 — heading lines Rise, then the hub and spoke assembles from the centre out.
 registerActivate("s2-1", (reduced) => {
   const beat = document.getElementById("s2-1");
   if (!beat) return;
@@ -781,18 +891,32 @@ registerActivate("s2-1", (reduced) => {
 /* ------------------------------------------------------------------ *
  * S3.1 — Diverging curves (Why this was always hard)
  *
- * Creation effort (accent) collapses as AI generates files.
- * Verification effort (primary) climbs as volume explodes.
- * X-axis marks "day zero" where the document reaches production.
- * Crossover point is marked and labelled "where the work moved".
+ * The marquee drawing. Creation effort (accent) collapses as AI generates
+ * files; verification effort (primary) climbs as volume explodes; they cross,
+ * and the crossover is the argument.
+ *
+ * Two decisions worth recording:
+ *
+ * 1. Document volume rides the x-axis as a second tick row rather than a
+ *    background column series. A background series would need its own implied
+ *    vertical scale, making this a dual-axis chart — the most misleading chart
+ *    form there is, because the alignment of the two scales is arbitrary and
+ *    invents a correlation out of nothing. On the x-axis, volume is the
+ *    *independent* variable driving both curves, which is the stronger version
+ *    of the argument anyway: verification cost climbs *because* volume climbs.
+ *    One vertical axis throughout.
+ *
+ * 2. The x-axis is ordinal — four evenly spaced checkpoints, not a linear time
+ *    scale. The two tick rows are read together as one scale, which is why they
+ *    are labelled in the left gutter rather than titled separately.
  * ------------------------------------------------------------------ */
 
 function divergingCurvesMarkup() {
   return `
     <svg
-      viewBox="40 20 860 410"
+      viewBox="0 0 950 430"
       role="img"
-      aria-label="Two diverging curves over time: creation effort collapses after day zero while verification effort climbs. Marked at the crossover: where the work moved."
+      aria-label="A chart of effort against time and document volume. Before day zero, creation effort is high and verification effort is low. After the document ships, creation effort collapses as AI generates files while verification effort climbs with volume, from one document to two hundred. The two curves cross partway along: that crossover is where the work moved."
       class="curves-chart mx-auto block h-auto max-h-[52vh] w-full max-w-5xl"
     >
       <defs>
@@ -807,163 +931,165 @@ function divergingCurvesMarkup() {
         >
           <path d="M 1 2 L 7 5 L 1 8 z" fill="currentColor" class="text-base-content/40" />
         </marker>
+        <!-- The wash under the verification curve is revealed by this rectangle
+             scaling out from the y-axis, so the area grows as the curve climbs.
+             A horizontally scaled rectangle is still a rectangle, so this is a
+             true wipe and nothing in the drawing is distorted. -->
+        <clipPath id="curves-wipe">
+          <rect data-curve-wipe x="120" y="55" width="620" height="300" />
+        </clipPath>
       </defs>
 
-      <!-- Grid lines (subtle) -->
-      <g class="text-base-content/10">
-        <line x1="120" y1="115" x2="840" y2="115" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" />
-        <line x1="120" y1="210" x2="840" y2="210" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" />
-        <line x1="120" y1="300" x2="840" y2="300" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" />
-      </g>
+      <!-- The frame: everything that is true before any data is drawn. -->
+      <g data-rise data-chart-frame>
+        <!-- Before day zero is its own territory, faintly shaded. -->
+        <rect x="120" y="60" width="150" height="290" class="fill-base-content/5" />
 
-      <!-- Axes -->
-      <g class="text-base-content/40">
-        <!-- Y Axis: Effort -->
-        <line x1="120" y1="370" x2="120" y2="55" stroke="currentColor" stroke-width="1.5" marker-end="url(#axis-arrow)" />
-        <text x="110" y="50" text-anchor="end" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
+        <!-- Gridlines. Solid hairlines, one step off the surface: a dashed grid
+             reads as "projection" or "threshold" when it is only a grid. -->
+        <g class="text-base-content/10">
+          <line x1="120" y1="115" x2="740" y2="115" stroke="currentColor" stroke-width="1" />
+          <line x1="120" y1="190" x2="740" y2="190" stroke="currentColor" stroke-width="1" />
+          <line x1="120" y1="265" x2="740" y2="265" stroke="currentColor" stroke-width="1" />
+        </g>
+
+        <!-- Axes. Only the effort axis carries an arrow: it is the only one with
+             a direction that has to be read. -->
+        <g class="text-base-content/40">
+          <line x1="120" y1="350" x2="120" y2="46" stroke="currentColor" stroke-width="1.5" marker-end="url(#axis-arrow)" />
+          <line x1="112" y1="350" x2="748" y2="350" stroke="currentColor" stroke-width="1.5" />
+        </g>
+        <text x="120" y="30" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
           Effort
         </text>
 
-        <!-- X Axis: Time -->
-        <line x1="115" y1="360" x2="850" y2="360" stroke="currentColor" stroke-width="1.5" marker-end="url(#axis-arrow)" />
-        <text x="850" y="385" text-anchor="end" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
-          Time →
+        <!-- Day zero is a boundary, not a tick: a rule with a labelled cap, and
+             a named territory on each side. -->
+        <g>
+          <line x1="270" y1="54" x2="270" y2="350" class="stroke-base-content/25" stroke-width="1.5" />
+          <rect x="226" y="34" width="88" height="21" rx="10.5" class="fill-base-100 stroke-base-content/30" stroke-width="1" />
+          <text x="270" y="49" text-anchor="middle" class="fill-base-content font-mono text-[10.5px] font-bold uppercase tracking-wider">
+            Day zero
+          </text>
+        </g>
+        <text x="130" y="78" class="fill-base-content/40 font-mono text-[9.5px] uppercase tracking-[0.18em]">
+          before it ships
         </text>
+        <text x="282" y="78" class="fill-base-content/40 font-mono text-[9.5px] uppercase tracking-[0.18em]">
+          after it ships
+        </text>
+
+        <!-- Two tick rows on one scale: time above, the volume it produces below.
+             Volume is what drives both curves, so it belongs on the independent
+             axis rather than in a second vertical scale. -->
+        <g class="text-base-content/25">
+          <line x1="270" y1="350" x2="270" y2="356" stroke="currentColor" stroke-width="1.5" />
+          <line x1="427" y1="350" x2="427" y2="356" stroke="currentColor" stroke-width="1.5" />
+          <line x1="583" y1="350" x2="583" y2="356" stroke="currentColor" stroke-width="1.5" />
+          <line x1="740" y1="350" x2="740" y2="356" stroke="currentColor" stroke-width="1.5" />
+        </g>
+        <g class="font-mono text-[10.5px]">
+          <text x="108" y="373" text-anchor="end" class="fill-base-content/40 text-[9.5px] uppercase tracking-widest">time</text>
+          <text x="270" y="373" text-anchor="middle" class="fill-base-content/70">day 0</text>
+          <text x="427" y="373" text-anchor="middle" class="fill-base-content/70">+30d</text>
+          <text x="583" y="373" text-anchor="middle" class="fill-base-content/70">+90d</text>
+          <text x="740" y="373" text-anchor="middle" class="fill-base-content/70">+180d</text>
+
+          <text x="108" y="394" text-anchor="end" class="fill-base-content/40 text-[9.5px] uppercase tracking-widest">volume</text>
+          <text x="270" y="394" text-anchor="middle" class="fill-base-content/45">1 doc</text>
+          <text x="427" y="394" text-anchor="middle" class="fill-base-content/45">10 docs</text>
+          <text x="583" y="394" text-anchor="middle" class="fill-base-content/45">50 docs</text>
+          <text x="740" y="394" text-anchor="middle" class="fill-base-content/45">200 docs</text>
+        </g>
       </g>
 
-      <!-- Day zero marker & label -->
-      <g class="text-base-content">
-        <line
-          x1="320"
-          y1="55"
-          x2="320"
-          y2="360"
-          class="stroke-base-content/25"
-          stroke-width="1.5"
-          stroke-dasharray="4 4"
-        />
-        <circle cx="320" cy="360" r="4" class="fill-base-content/60" />
-        <text x="320" y="390" text-anchor="middle" class="fill-base-content font-mono text-[12px] font-bold">
-          Day zero
-        </text>
-        <text x="320" y="408" text-anchor="middle" class="fill-base-content/60 text-[11.5px]">
-          Document reaches production
-        </text>
-      </g>
-
-      <!-- Curve 1: Creation effort (collapses with AI, accent) -->
-      <g class="text-accent">
+      <!-- The wash under the verification curve. A tint, never a block: it gives
+           the climbing curve weight without claiming to be a second series. -->
+      <g clip-path="url(#curves-wipe)">
         <path
-          data-curve="creation"
-          data-target-length="820"
-          d="M 120 115 C 220 115, 300 130, 350 145 C 390 160, 420 190, 440 210 C 470 240, 530 290, 620 315 C 710 335, 770 340, 820 342"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="3"
-          stroke-linecap="round"
-          class="text-accent"
+          d="M 120 316 C 190 312, 235 298, 270 274 C 310 246, 355 216, 400 200 C 470 174, 570 132, 650 104 C 700 88, 722 82, 740 78 L 740 350 L 120 350 Z"
+          class="fill-primary/10"
         />
-        <text x="825" y="346" class="fill-accent font-medium text-[12px]">
-          Creation effort (collapses)
-        </text>
       </g>
 
-      <!-- Curve 2: Verification effort (climbs with volume, primary) -->
-      <g class="text-primary">
-        <path
-          data-curve="verification"
-          data-target-length="820"
-          d="M 120 335 C 220 335, 300 320, 350 300 C 390 275, 420 235, 440 210 C 470 180, 530 130, 620 100 C 710 80, 770 75, 820 72"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="3"
-          stroke-linecap="round"
-          class="text-primary"
-        />
-        <text x="825" y="76" class="fill-primary font-medium text-[12px]">
-          Verification effort (climbs)
-        </text>
+      <!-- Creation effort: high while a human writes the thing, collapsing once
+           a model will write the next two hundred. -->
+      <path
+        data-draw
+        data-draw-step="0"
+        d="M 120 92 C 190 96, 235 112, 270 132 C 310 155, 355 185, 400 200 C 470 224, 570 262, 650 282 C 700 294, 722 298, 740 300"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        class="text-accent"
+      />
+
+      <!-- Verification effort: the mirror image, and the one nobody budgets for. -->
+      <path
+        data-draw
+        data-draw-step="1"
+        d="M 120 316 C 190 312, 235 298, 270 274 C 310 246, 355 216, 400 200 C 470 174, 570 132, 650 104 C 700 88, 722 82, 740 78"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        class="text-primary"
+      />
+
+      <!-- Direct labels at the curve ends, each with a short line-key. The key
+           carries the series colour; the label text stays in base-content, which
+           keeps it legible in every theme. -->
+      <g data-rise data-chart-key>
+        <line x1="748" y1="78" x2="764" y2="78" class="stroke-primary" stroke-width="3" stroke-linecap="round" />
+        <text x="772" y="75" class="fill-base-content text-[12px] font-semibold">Verification</text>
+        <text x="772" y="90" class="fill-base-content/60 text-[11.5px]">effort climbs</text>
+
+        <line x1="748" y1="300" x2="764" y2="300" class="stroke-accent" stroke-width="3" stroke-linecap="round" />
+        <text x="772" y="297" class="fill-base-content text-[12px] font-semibold">Creation</text>
+        <text x="772" y="312" class="fill-base-content/60 text-[11.5px]">effort collapses</text>
       </g>
 
-      <!-- Crossover marker & label (arrives last via JS) -->
-      <g
-        data-crossover
-        class="effort-crossover text-base-content opacity-0 transition-all duration-700 ease-out"
-      >
-        <circle cx="440" cy="210" r="6" class="fill-primary stroke-base-100" stroke-width="2" />
-        <rect
-          x="455"
-          y="188"
-          width="165"
-          height="32"
-          rx="6"
-          class="fill-base-200/90 stroke-base-300"
-          stroke-width="1"
-        />
-        <text
-          x="537"
-          y="208"
-          text-anchor="middle"
-          class="fill-primary font-mono text-[11px] font-bold tracking-wide"
-        >
+      <!-- The crossover. Arrives last, because it is the conclusion: the dot sits
+           on a surface-coloured ring so it stays legible exactly where the two
+           curves overlap, and a Settle ring marks its arrival. -->
+      <g data-rise data-crossover>
+        <line x1="408" y1="200" x2="478" y2="200" class="stroke-primary/40" stroke-width="1" stroke-dasharray="2 3" />
+        <circle data-settle-ring cx="400" cy="200" r="7" fill="none" class="stroke-primary" stroke-width="2" />
+        <circle cx="400" cy="200" r="5.5" class="fill-primary stroke-base-100" stroke-width="2" />
+        <rect x="478" y="185" width="176" height="30" rx="8" class="fill-base-100 stroke-primary/40" stroke-width="1" />
+        <text x="566" y="204" text-anchor="middle" class="fill-primary font-mono text-[11px] font-semibold tracking-wide">
           where the work moved
         </text>
       </g>
     </svg>`;
 }
 
+/** Curves are armed the moment they exist, so they are parked undrawn on arrival. */
 function mountCurves() {
   document.querySelectorAll("[data-curves]").forEach((host) => {
     host.innerHTML = divergingCurvesMarkup();
+    if (!reduceMotion) host.querySelectorAll("[data-draw]").forEach(armDraw);
   });
 }
 
 mountCurves();
 
+/* Sequence: the frame Rises, both curves Draw at their own true rate while the
+   wash wipes out beneath them, and the crossover arrives last. Total ≈ 1.6s. */
 function playCurves(svg, reduced) {
-  if (reduced) {
-    svg.querySelectorAll("[data-curve]").forEach((p) => {
-      p.style.strokeDashoffset = "0";
-    });
-    const cross = svg.querySelector("[data-crossover]");
-    if (cross) cross.classList.remove("opacity-0");
-    return;
-  }
+  rise(svg.querySelector("[data-chart-frame]"), 0, reduced);
 
-  const creation = svg.querySelector('[data-curve="creation"]');
-  const verification = svg.querySelector('[data-curve="verification"]');
-  const crossover = svg.querySelector("[data-crossover]");
+  svg.querySelectorAll("[data-draw]").forEach((path) => releaseDraw(path, 150, reduced));
+  if (reduced) svg.classList.add("curves-on");
+  else setTimeout(() => svg.classList.add("curves-on"), 150);
 
-  if (creation) {
-    const len = Number(creation.dataset.targetLength) || 820;
-    creation.style.strokeDasharray = `${len}`;
-    creation.style.strokeDashoffset = `${len}`;
-  }
-  if (verification) {
-    const len = Number(verification.dataset.targetLength) || 820;
-    verification.style.strokeDasharray = `${len}`;
-    verification.style.strokeDashoffset = `${len}`;
-  }
-
-  requestAnimationFrame(() => {
-    if (creation) {
-      creation.style.transition = "stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1)";
-      creation.style.strokeDashoffset = "0";
-    }
-    if (verification) {
-      verification.style.transition = "stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1)";
-      verification.style.strokeDashoffset = "0";
-    }
-  });
-
-  if (crossover) {
-    setTimeout(() => {
-      crossover.classList.remove("opacity-0");
-    }, 1200);
-  }
+  rise(svg.querySelector("[data-chart-key]"), 700, reduced);
+  rise(svg.querySelector("[data-crossover]"), 1050, reduced);
+  settleRing(svg.querySelector("[data-settle-ring]"), 1100, reduced);
 }
 
-// S3.1 — heading lines fade up, then curves draw and crossover label reveals last.
+// S3.1 — heading lines Rise, then the chart builds and the crossover lands last.
 registerActivate("s3-1", (reduced) => {
   const beat = document.getElementById("s3-1");
   if (!beat) return;
@@ -986,20 +1112,26 @@ registerActivate("s3-1", (reduced) => {
 
 const VENN_LENS = "M 352 132.5 A 235 235 0 0 0 352 427.5 A 160 160 0 0 0 352 132.5 Z";
 
-function effortVennMarkup(emphasis) {
-  const dimmed = emphasis === "human";
-  const dim = dimmed ? " opacity-25" : "";
-  const lit = dimmed ? " venn-lit" : "";
+/**
+ * One drawing, mounted twice. `uid` only disambiguates the hatch pattern id
+ * between the two mounts.
+ *
+ * Emphasis is deliberately NOT baked in here. Both mounts render identically and
+ * neutrally, and the state lives as a class on the svg root that JS toggles —
+ * so section 9 has a state to transition *from* rather than simply appearing in
+ * its final one.
+ */
+function effortVennMarkup(uid) {
   return `
     <svg
       viewBox="110 25 680 510"
       role="img"
       aria-label="Three-region Venn: what a machine can check, what AI can help with, and what only a human can check. The human region is drawn largest."
-      class="venn isolate mx-auto block h-auto max-h-[56vh] w-full max-w-4xl"
+      class="venn venn-emphasis-establish isolate mx-auto block h-auto max-h-[56vh] w-full max-w-4xl"
     >
       <defs>
         <pattern
-          id="venn-hatch-${emphasis}"
+          id="venn-hatch-${uid}"
           width="10"
           height="10"
           patternTransform="rotate(45 0 0)"
@@ -1016,7 +1148,8 @@ function effortVennMarkup(emphasis) {
           />
         </pattern>
       </defs>
-      <g data-venn-actor="machine" class="text-base-content transition-opacity duration-700${dim}">
+      <g data-venn-camera>
+      <g data-venn-actor="machine" class="text-base-content">
         <circle
           data-venn-step="0"
           cx="290" cy="280" r="160"
@@ -1031,12 +1164,12 @@ function effortVennMarkup(emphasis) {
           <text x="215" y="315" text-anchor="middle" class="fill-base-content/55 text-[13px]">template structure holds</text>
         </g>
       </g>
-      <g data-venn-actor="human" class="text-primary transition-opacity duration-700">
+      <g data-venn-actor="human" class="text-primary">
         <circle
           data-venn-step="2"
           cx="535" cy="280" r="235"
           stroke-width="1.5"
-          class="venn-circle mix-blend-multiply fill-primary/20 stroke-primary/50 text-primary${lit}"
+          class="venn-circle mix-blend-multiply fill-primary/20 stroke-primary/50 text-primary"
         ></circle>
         <g data-venn-step="3">
           <text x="610" y="150" text-anchor="middle"
@@ -1047,13 +1180,13 @@ function effortVennMarkup(emphasis) {
           <text x="605" y="340" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">at the right content</text>
         </g>
       </g>
-      <g data-venn-actor="ai" class="text-accent transition-opacity duration-700${dim}">
+      <g data-venn-actor="ai" class="text-accent">
         <path
           data-venn-step="4"
           d="${VENN_LENS}"
           stroke-width="1.5"
           stroke-dasharray="5 7"
-          fill="url(#venn-hatch-${emphasis})"
+          fill="url(#venn-hatch-${uid})"
           class="stroke-accent/70"
         ></path>
         <text data-venn-step="4" x="375" y="180" text-anchor="middle"
@@ -1070,24 +1203,42 @@ function effortVennMarkup(emphasis) {
           <text x="373" y="350" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">still needs checking</text>
         </g>
       </g>
+      </g>
     </svg>`;
 }
 
 function mountVenns() {
   document.querySelectorAll("[data-venn]").forEach((host) => {
-    host.innerHTML = effortVennMarkup(host.dataset.vennEmphasis || "establish");
+    const emphasis = host.dataset.vennEmphasis || "establish";
+    host.innerHTML = effortVennMarkup(emphasis);
+    const svg = host.querySelector(".venn");
+    if (!svg) return;
+
+    // Section 9 does not re-assemble the drawing — the audience has already
+    // watched it build in section 4. It arrives whole so the camera push is the
+    // only thing that moves. Under reduced motion it also arrives already
+    // emphasised, since there is no transition to watch.
+    if (emphasis === "human") {
+      svg.classList.add("venn-on");
+      if (reduceMotion) setVennEmphasis(svg, "human");
+    }
   });
 }
 
 mountVenns();
 
-function playVenn(svg, reduced, { delay = 100, step = 140 } = {}) {
+/** Emphasis is a class on the svg root, so there is always a state to move from. */
+function setVennEmphasis(svg, emphasis) {
+  svg.classList.remove("venn-emphasis-establish", "venn-emphasis-human");
+  svg.classList.add(`venn-emphasis-${emphasis}`);
+}
+
+function playVenn(svg, reduced, { delay = 100, step = MOTION.stagger } = {}) {
   if (reduced) {
     svg.classList.add("venn-on");
     return;
   }
-  const wasOn = svg.classList.contains("venn-on");
-  if (!wasOn) {
+  if (!svg.classList.contains("venn-on")) {
     svg.querySelectorAll("[data-venn-step]").forEach((el) => {
       el.style.transitionDelay = `${delay + Number(el.dataset.vennStep) * step}ms`;
     });
@@ -1095,7 +1246,8 @@ function playVenn(svg, reduced, { delay = 100, step = 140 } = {}) {
   svg.classList.add("venn-on");
 }
 
-// S4.1 — heading lines fade up, then the Venn assembles actor by actor.
+// S4.1 — heading lines Rise, then the Venn assembles actor by actor. The AI lens
+// is the last step, so the overlap — the whole point of the drawing — resolves last.
 registerActivate("s4-1", (reduced) => {
   const beat = document.getElementById("s4-1");
   if (!beat) return;
@@ -1160,7 +1312,21 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
       </div>`;
   }
 
-  // Section 6 & 7: OKF 0.2 full card
+  // Section 6 & 7: OKF 0.2 full card.
+  //
+  // Section 6 annotates every field with who supplies it. Those annotations are
+  // always rendered — hover only emphasises, it never carries information,
+  // because nobody in a screen-shared audience hovers. Unlike the Venn these are
+  // real HTML elements rather than children of a role="img", so here the
+  // enrichment is keyboard-reachable and each field takes a tabindex.
+  const annotate = mode === "section-6";
+  const fieldAttrs = annotate ? ' tabindex="0"' : "";
+  const fieldClass = `fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors${annotate ? " deck-lift" : ""}`;
+  const annotation = (text) =>
+    annotate
+      ? `<span data-rise="right" class="fm-annotation text-[11px] font-sans text-base-content/60 italic">${text}</span>`
+      : "";
+
   return `
     <div class="frontmatter-card rounded-2xl border border-base-300 bg-base-200/50 p-5 md:p-6 shadow-sm">
       <div class="mb-4 flex items-center justify-between border-b border-base-300/70 pb-3">
@@ -1172,24 +1338,24 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
         <span class="badge badge-ghost badge-xs font-mono text-[10px] tracking-wider text-base-content/60">OKF v0.2</span>
       </div>
 
-      <div class="space-y-3 font-mono text-xs md:text-sm">
+      <div class="space-y-3 font-mono text-xs md:text-sm${annotate ? " deck-lift-group" : ""}">
         <!-- type -->
-        <div data-fm-field="type" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+        <div data-fm-field="type" class="${fieldClass}"${fieldAttrs}>
           <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
             <div>
               <span class="text-base-content/50 uppercase tracking-wider text-[10px]">type:</span>
               <span class="font-semibold text-base-content ml-2">Playbook</span>
             </div>
-            ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: author chooses category</span>` : ""}
+            ${annotation("Who supplies: author chooses category")}
           </div>
         </div>
 
         <!-- sources -->
-        <div data-fm-field="sources" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+        <div data-fm-field="sources" class="${fieldClass}"${fieldAttrs}>
           <div class="flex flex-col gap-2">
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
               <span class="text-base-content/50 uppercase tracking-wider text-[10px]">sources:</span>
-              ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human defines authority</span>` : ""}
+              ${annotation("Who supplies: human defines authority")}
             </div>
             <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-1">
               <div>
@@ -1209,25 +1375,25 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
         </div>
 
         <!-- stale_after -->
-        <div data-fm-field="stale_after" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors ${activeField === "stale_after" ? "ring-2 ring-primary bg-primary/5" : ""}">
+        <div data-fm-field="stale_after" class="${fieldClass} ${activeField === "stale_after" ? "ring-2 ring-primary bg-primary/5" : ""}"${fieldAttrs}>
           <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
             <div>
               <span class="text-base-content/50 uppercase tracking-wider text-[10px]">stale_after:</span>
               <span class="font-bold text-primary ml-2">2025-07-01T00:00:00Z</span>
             </div>
-            ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human sets review budget</span>` : ""}
+            ${annotation("Who supplies: human sets review budget")}
           </div>
         </div>
 
         <!-- generated (machine-signed) -->
-        <div data-fm-field="generated" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+        <div data-fm-field="generated" class="${fieldClass}"${fieldAttrs}>
           <div class="flex flex-col gap-1.5">
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
               <div>
                 <span class="text-base-content/50 uppercase tracking-wider text-[10px]">generated:</span>
                 <span class="badge badge-xs badge-neutral ml-2 font-mono text-[9px]">machine-signed</span>
               </div>
-              ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: machine stamps model & time</span>` : ""}
+              ${annotation("Who supplies: machine stamps model & time")}
             </div>
             <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
               <div><span class="text-base-content/50">by:</span> <span class="text-accent font-medium">ai:claude-opus-5</span></div>
@@ -1237,14 +1403,14 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
         </div>
 
         <!-- verified (human-signed twin) -->
-        <div data-fm-field="verified" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+        <div data-fm-field="verified" class="${fieldClass}"${fieldAttrs}>
           <div class="flex flex-col gap-1.5">
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
               <div>
                 <span class="text-base-content/50 uppercase tracking-wider text-[10px]">verified:</span>
                 <span class="badge badge-xs badge-primary ml-2 font-mono text-[9px] text-primary-content">human-signed</span>
               </div>
-              ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human verifies & signs</span>` : ""}
+              ${annotation("Who supplies: human verifies & signs")}
             </div>
             <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
               <div><span class="text-base-content/50">by:</span> <span class="text-primary font-bold">human:m.okonkwo</span></div>
@@ -1288,67 +1454,141 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// S5.1 — machine pass resolves cleanly
+/* ------------------------------------------------------------------ *
+ * Section 5 — three passes, and only two of them land
+ *
+ * This is where the vocabulary earns itself. The machine pass and the AI pass
+ * Settle: they arrive and they finish. The human pass does not get a Settle at
+ * all — it carries the Unsettled ring authored in index.html, which breathes and
+ * never resolves. That contrast is the section's argument, so it is also carried
+ * in words and in stroke style, never in motion alone.
+ * ------------------------------------------------------------------ */
+
+/** Settle the resolved passes on a beat, in the order they happened. */
+function playPasses(beat, reduced, order) {
+  order.forEach((name, i) => {
+    settle(beat.querySelector(`[data-pass="${name}"]`), 500 + i * 200, reduced);
+  });
+}
+
+// S5.1 — the machine pass resolves cleanly.
 registerActivate("s5-1", (reduced) => {
   const beat = document.getElementById("s5-1");
   if (!beat) return;
   revealSequence(beat, reduced);
+  playPasses(beat, reduced, ["machine"]);
 });
 
-// S5.2 — AI pass returns a claim
+// S5.2 — the AI pass lands too, but amber: a claim, not a resolution.
 registerActivate("s5-2", (reduced) => {
   const beat = document.getElementById("s5-2");
   if (!beat) return;
   revealSequence(beat, reduced);
+  playPasses(beat, reduced, ["ai"]);
 });
 
-// S5.3 — human pass stays visibly unresolved
+// S5.3 — both earlier passes settle again as recaps, and the human pass is left
+// visibly open beneath them.
 registerActivate("s5-3", (reduced) => {
   const beat = document.getElementById("s5-3");
   if (!beat) return;
   revealSequence(beat, reduced);
+  playPasses(beat, reduced, ["machine", "ai"]);
 });
 
-// S6.1 — OKF: heading lines fade up, fields pulse in sequence
+// S6.1 — OKF: each field Settles as its annotation Rises in from the right, at
+// the same instant. Paired, 300ms apart, five fields: ≈2.1s.
 registerActivate("s6-1", (reduced) => {
   const beat = document.getElementById("s6-1");
   if (!beat) return;
   revealSequence(beat, reduced);
-  if (!reduced) {
-    const fields = beat.querySelectorAll(".fm-field");
-    fields.forEach((field, i) => {
-      setTimeout(
-        () => {
-          field.classList.add("ring-1", "ring-primary/40");
-          setTimeout(() => field.classList.remove("ring-1", "ring-primary/40"), 600);
-        },
-        350 + i * 200,
-      );
-    });
-  }
+  beat.querySelectorAll(".fm-field").forEach((field, i) => {
+    const at = 350 + i * 300;
+    settle(field, at, reduced);
+    rise(field.querySelector(".fm-annotation"), at, reduced);
+  });
 });
 
-// S7.1 — markdown-harness handoff
+// S7.1 — markdown-harness handoff. Deliberately quiet: one Rise for the
+// headline, one for the sentence, and nothing else moves. The stale_after ring
+// stays as artefact continuity but does not pulse. The contrast with §6's
+// density is the point; the restraint is the design.
 registerActivate("s7-1", (reduced) => {
   const beat = document.getElementById("s7-1");
   if (!beat) return;
-  revealSequence(beat, reduced);
+  revealSequence(beat, reduced, { delay: 200, step: 220 });
 });
 
-// S8.1 — live demo rescue terminal
+/* ------------------------------------------------------------------ *
+ * S8.1 — the rescue terminal
+ *
+ * The question types itself in, once, where it is asked — forty-odd characters
+ * is short enough to feel live. The two answers then reveal line by line rather
+ * than character by character: typing out two full answers would run past
+ * fifteen seconds and blow the timing budget outright, and the point of the
+ * beat is the divergence, which line reveal makes legible in about a second.
+ *
+ * Both legs open on the same command and the same file read. Then they part:
+ * one carries on in ignorance, the other is intercepted and turns. The point
+ * where they part is marked on both sides.
+ * ------------------------------------------------------------------ */
+
+/** Type a line out character by character, leaving a caret until it lands. */
+function typeInto(el, reduced, { at = 0, total = 800 } = {}) {
+  if (!el || reduced) return at;
+
+  const chars = Array.from(el.textContent);
+  const per = Math.max(12, Math.round(total / chars.length));
+  const node = document.createTextNode("");
+  const caret = document.createElement("span");
+  caret.className = "deck-caret text-primary";
+  caret.setAttribute("aria-hidden", "true");
+  caret.textContent = "▌";
+
+  el.textContent = "";
+  el.append(node, caret);
+
+  setTimeout(() => {
+    let i = 0;
+    const tick = setInterval(() => {
+      node.data += chars[i];
+      if (++i >= chars.length) {
+        clearInterval(tick);
+        caret.remove();
+      }
+    }, per);
+  }, at);
+
+  return at + chars.length * per;
+}
+
+// S8.1 — live demo rescue terminal. ≈2.2s.
 registerActivate("s8-1", (reduced) => {
   const beat = document.getElementById("s8-1");
   if (!beat) return;
   revealSequence(beat, reduced);
+
+  const asked = typeInto(beat.querySelector("[data-type]"), reduced, { at: 400, total: 800 });
+  beat.querySelectorAll("[data-term-line]").forEach((el) => {
+    const at = asked + 120 + Number(el.dataset.termLine) * 100;
+    const show = () => el.classList.remove("opacity-0", "translate-y-3");
+    if (reduced) show();
+    else setTimeout(show, at);
+  });
 });
 
-// S9.1 — close: heading lines fade up, then the Venn assembles with human emphasis lit.
+// S9.1 — the close. The drawing is already on screen; the camera pushes in
+// towards the human region and then holds still. ≈0.9s, and deliberately no
+// Unsettled here: the restlessness belongs to the middle of the argument, not
+// its ending, and keeping Unsettled to one appearance is what makes it mean
+// something back in §5.3.
 registerActivate("s9-1", (reduced) => {
   const beat = document.getElementById("s9-1");
   if (!beat) return;
   revealSequence(beat, reduced);
   const svg = beat.querySelector(".venn");
-  if (svg) playVenn(svg, reduced, { delay: 200, step: 200 });
+  if (!svg || reduced) return;
+  setTimeout(() => setVennEmphasis(svg, "human"), 120);
 });
 
 /* ------------------------------------------------------------------ *

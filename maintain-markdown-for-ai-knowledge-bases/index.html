@@ -241,7 +241,7 @@
               </div>
 
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -314,7 +314,7 @@
               data-assertion="A single format at the junction of Context, Knowledge, and Instructions."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -378,7 +378,7 @@
               data-assertion="Creation effort collapses after AI; verification effort climbs with volume. The crossover is where the work moved."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -443,7 +443,7 @@
               data-assertion="What a machine can check, what AI can help with, and what only a human can check."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -515,7 +515,7 @@
               data-assertion="The machine pass resolves cleanly."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -543,7 +543,7 @@
                   <div class="lg:col-span-6 space-y-4">
                     <!-- Machine pass card -->
                     <div
-                      class="pass-card rounded-xl border border-base-300 bg-base-100/90 p-5 shadow-sm transition-all duration-500"
+                      class="pass-card rounded-xl border border-base-300 bg-base-100/90 p-5 text-success shadow-sm transition-all duration-500"
                       data-pass="machine"
                     >
                       <div class="flex items-center justify-between border-b border-base-200 pb-3">
@@ -638,7 +638,7 @@
               data-assertion="The AI pass returns an answer that itself needs checking."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -675,7 +675,7 @@
 
                     <!-- AI pass card (active) -->
                     <div
-                      class="pass-card rounded-xl border border-accent/40 bg-accent/5 p-5 shadow-sm ring-1 ring-accent/20 transition-all duration-500"
+                      class="pass-card rounded-xl border border-accent/40 bg-accent/5 p-5 text-warning shadow-sm ring-1 ring-accent/20 transition-all duration-500"
                       data-pass="ai"
                     >
                       <div class="flex items-center justify-between border-b border-accent/20 pb-3">
@@ -770,7 +770,7 @@
               data-assertion="The human pass stays open, and is the last thing on screen before the section ends."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -798,6 +798,7 @@
                   <div class="lg:col-span-6 space-y-4">
                     <!-- Machine pass (compact) -->
                     <div
+                      data-pass="machine"
                       class="pass-card rounded-xl border border-base-300/60 bg-base-100/50 p-3 text-xs text-base-content/60 flex items-center justify-between"
                     >
                       <span class="font-mono">1. Machine pass</span>
@@ -806,6 +807,7 @@
 
                     <!-- AI pass (compact) -->
                     <div
+                      data-pass="ai"
                       class="pass-card rounded-xl border border-accent/30 bg-accent/5 p-3 text-xs text-base-content/70 flex items-center justify-between"
                     >
                       <span class="font-mono">2. AI pass</span>
@@ -829,14 +831,10 @@
                         <span
                           class="font-mono text-xs font-bold text-primary flex items-center gap-2"
                         >
-                          <span class="relative flex h-2 w-2">
-                            <span
-                              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
-                            ></span>
-                            <span
-                              class="relative inline-flex rounded-full h-2 w-2 bg-primary"
-                            ></span>
-                          </span>
+                          <span
+                            class="deck-unsettled inline-block h-3 w-3 rounded-full border border-dashed border-primary"
+                            aria-hidden="true"
+                          ></span>
                           Open · Unresolved
                         </span>
                       </div>
@@ -902,7 +900,7 @@
               data-assertion="The same block in full, annotated with who supplies each field."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -983,7 +981,7 @@
               data-assertion="The signal is in the file; the instruction has to come from you."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -1099,7 +1097,7 @@
               data-assertion="The same file and the same question, answered once without the hook and once with."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
@@ -1141,7 +1139,7 @@
                     <span class="badge badge-neutral badge-sm font-mono text-[0.65rem] uppercase"
                       >Prompt</span
                     >
-                    <span class="text-base-content/70"
+                    <span data-type class="text-base-content/70"
                       >&ldquo;What are the first-week onboarding steps for a new hire?&rdquo;</span
                     >
                   </div>
@@ -1176,7 +1174,7 @@
                       class="flex flex-1 flex-col justify-between space-y-4 bg-base-100 p-5 font-mono text-xs leading-relaxed md:text-sm"
                     >
                       <div class="space-y-3">
-                        <div>
+                        <div data-term-line="0" class="translate-y-3 opacity-0">
                           <p class="select-none text-base-content/50">
                             $ claude &ldquo;What are the first-week onboarding steps for a new
                             hire?&rdquo;
@@ -1186,7 +1184,16 @@
                           </p>
                         </div>
                         <div
-                          class="space-y-2 rounded-lg border border-base-200 bg-base-200/30 p-3.5 text-base-content/80"
+                          data-term-line="1"
+                          class="translate-y-3 opacity-0 flex items-center gap-3 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-base-content/35 transition-all"
+                        >
+                          <span class="h-px flex-1 bg-base-300"></span>
+                          <span>nothing intercepts</span>
+                          <span class="h-px flex-1 bg-base-300"></span>
+                        </div>
+                        <div
+                          data-term-line="2"
+                          class="translate-y-3 opacity-0 space-y-2 rounded-lg border border-base-200 bg-base-200/30 p-3.5 text-base-content/80 transition-all"
                         >
                           <p
                             class="text-xs font-bold uppercase tracking-wider text-base-content/50"
@@ -1210,7 +1217,8 @@
                         </div>
                       </div>
                       <div
-                        class="mt-auto rounded-lg border border-warning/30 bg-warning/5 p-3 text-xs text-warning-content"
+                        data-term-line="3"
+                        class="translate-y-3 opacity-0 mt-auto rounded-lg border border-warning/30 bg-warning/5 p-3 text-xs text-warning-content transition-all"
                       >
                         <div class="flex items-center gap-2 font-semibold text-warning">
                           <span>⚠</span>
@@ -1248,7 +1256,7 @@
                       class="flex flex-1 flex-col justify-between space-y-4 bg-base-100 p-5 font-mono text-xs leading-relaxed md:text-sm"
                     >
                       <div class="space-y-3">
-                        <div>
+                        <div data-term-line="0" class="translate-y-3 opacity-0">
                           <p class="select-none text-base-content/50">
                             $ claude &ldquo;What are the first-week onboarding steps for a new
                             hire?&rdquo;
@@ -1258,7 +1266,16 @@
                           </p>
                         </div>
                         <div
-                          class="space-y-1 rounded-lg border border-warning/30 bg-warning/10 p-3 text-xs text-warning-content"
+                          data-term-line="1"
+                          class="translate-y-3 opacity-0 flex items-center gap-3 font-sans text-[0.6rem] uppercase tracking-[0.2em] text-warning transition-all"
+                        >
+                          <span class="h-px flex-1 bg-warning/30"></span>
+                          <span>the hook intercepts</span>
+                          <span class="h-px flex-1 bg-warning/30"></span>
+                        </div>
+                        <div
+                          data-term-line="1"
+                          class="translate-y-3 opacity-0 space-y-1 rounded-lg border border-warning/30 bg-warning/10 p-3 text-xs text-warning-content transition-all"
                         >
                           <div class="flex items-center gap-2 font-semibold text-warning">
                             <span class="badge badge-warning badge-xs font-mono">HOOK</span>
@@ -1274,7 +1291,8 @@
                           </p>
                         </div>
                         <div
-                          class="space-y-2 rounded-lg border border-primary/20 bg-base-200/30 p-3.5 text-base-content/80"
+                          data-term-line="2"
+                          class="translate-y-3 opacity-0 space-y-2 rounded-lg border border-primary/20 bg-base-200/30 p-3.5 text-base-content/80 transition-all"
                         >
                           <p class="text-xs font-bold uppercase tracking-wider text-primary">
                             Claude
@@ -1304,7 +1322,8 @@
                         </div>
                       </div>
                       <div
-                        class="mt-auto rounded-lg border border-success/20 bg-success/5 p-3 text-xs text-success"
+                        data-term-line="3"
+                        class="translate-y-3 opacity-0 mt-auto rounded-lg border border-success/20 bg-success/5 p-3 text-xs text-success transition-all"
                       >
                         <div class="flex items-center gap-2 font-semibold">
                           <span>✓</span>
@@ -1357,7 +1376,7 @@
               data-assertion="Back to the Venn, with the human region lit and the rest dimmed. Nothing new to read."
             >
               <div
-                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
               >
                 <p
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"

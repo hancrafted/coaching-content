@@ -13,6 +13,211 @@
    the markup.
 ============================================================================= */
 
+/* =============================================================================
+   THE MOTION VOCABULARY
+   -----------------------------------------------------------------------------
+   Five named primitives. Nothing in this deck animates in a way that is not one
+   of them. Durations and easing live here as custom properties; presentation.js
+   mirrors the same numbers in its `MOTION` constant for the JS-timed sequences.
+   Change a number here and change it there — they are the same vocabulary.
+
+     Rise       opacity 0→1 + translateY(12px→0), staggered. The universal entry.
+     Draw       stroke-dashoffset len→0. A line being made.
+     Settle     one-shot scale pop + a ring that expands once and fades. A thing
+                arriving and landing.
+     Unsettled  a dashed ring breathing forever, never resolving. Used in exactly
+                one place — §5.3's human pass — because that is what makes it mean
+                "this does not land".
+     Lift       hover only: translateY(-2px) and siblings softening to 45%. Always
+                enrichment, never the only route to a point. The deck is presented
+                remotely by arrow key; nobody in the audience hovers.
+============================================================================= */
+
+:root {
+  --deck-ease: cubic-bezier(0.22, 1, 0.36, 1); /* expo-out: quick depart, soft arrive */
+  --deck-rise: 560ms;
+  --deck-draw: 900ms;
+  --deck-settle: 520ms;
+  --deck-hover: 180ms;
+  --deck-stagger: 90ms;
+}
+
+/* -----------------------------------------------------------------------------
+   Rise
+   -----------------------------------------------------------------------------
+   Two call sites, one primitive:
+
+     [data-reveal] / .beat-inner  the HTML implementation. The resting state is
+                                  authored in the markup as Tailwind utilities
+                                  (`opacity-0 translate-y-3`) and JS removes them;
+                                  this block only supplies the shared timing, so
+                                  the per-beat `duration-*` utilities stop mattering.
+     [data-rise]                  the implementation for JS-authored SVG, where
+                                  there are no Tailwind utilities to remove. JS
+                                  adds `.is-risen`.
+
+   Both travel 12px over --deck-rise on --deck-ease. `translate-y-3` is 0.75rem,
+   and in SVG 12 user units reads the same at the sizes these drawings render at.
+----------------------------------------------------------------------------- */
+
+.beat-inner,
+[data-reveal],
+[data-term-line] {
+  transition-property: opacity, transform;
+  transition-duration: var(--deck-rise);
+  transition-timing-function: var(--deck-ease);
+}
+
+[data-rise] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition-property: opacity, transform;
+  transition-duration: var(--deck-rise);
+  transition-timing-function: var(--deck-ease);
+}
+
+/* §6's annotations Rise in from the right rather than from below, so each one
+   reads as arriving beside its field rather than as another line of the list. */
+[data-rise="right"] {
+  transform: translateX(12px);
+}
+
+[data-rise].is-risen {
+  opacity: 1;
+  transform: none;
+}
+
+/* -----------------------------------------------------------------------------
+   Draw — a path that reads as a line being made.
+   JS measures the real path with getTotalLength() and sets the dash pair; this
+   rule only owns the timing.
+----------------------------------------------------------------------------- */
+
+[data-draw] {
+  transition: stroke-dashoffset var(--deck-draw) var(--deck-ease);
+}
+
+/* -----------------------------------------------------------------------------
+   Settle — one-shot: the element pops 3% and a ring expands once and fades.
+
+   Two implementations, because HTML and SVG cannot share one. The HTML flavour
+   draws the ring as an ::after inheriting the element's border-radius; the SVG
+   flavour is an authored <circle data-settle-ring> that JS flips to .is-settling.
+   Both take their hue from currentColor, so a card carrying `text-success` rings
+   green and one carrying `text-warning` rings amber, in every theme.
+----------------------------------------------------------------------------- */
+
+@keyframes deck-settle-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes deck-settle-ring {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.07);
+  }
+}
+
+.deck-settle {
+  position: relative;
+  animation: deck-settle-pop var(--deck-settle) var(--deck-ease) both;
+}
+
+.deck-settle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid color-mix(in oklab, currentColor 70%, transparent);
+  pointer-events: none;
+  animation: deck-settle-ring var(--deck-settle) var(--deck-ease) both;
+}
+
+@keyframes deck-settle-ring-svg {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+[data-settle-ring] {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+[data-settle-ring].is-settling {
+  animation: deck-settle-ring-svg var(--deck-settle) var(--deck-ease) both;
+}
+
+/* -----------------------------------------------------------------------------
+   Unsettled — the one primitive that never resolves.
+   Exactly one appearance in the deck: the "Open · Unresolved" marker on §5.3's
+   human pass. Under reduced motion it holds as a static dashed ring at full
+   opacity, so the row still reads as unresolved against the two settled rows
+   above it — the state is carried by the dashed stroke and the words, never by
+   the motion alone.
+----------------------------------------------------------------------------- */
+
+@keyframes deck-unsettled {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.deck-unsettled {
+  animation: deck-unsettled 2.4s ease-in-out infinite;
+}
+
+/* -----------------------------------------------------------------------------
+   Lift — the single hover convention. A group softens; the hovered member holds
+   full strength and rises 2px. Works on HTML elements and on SVG <g> alike.
+----------------------------------------------------------------------------- */
+
+.deck-lift-group .deck-lift {
+  transition-property: opacity, transform, color, background-color, border-color;
+  transition-duration: var(--deck-hover);
+  transition-timing-function: var(--deck-ease);
+}
+
+.deck-lift-group:hover .deck-lift,
+.deck-lift-group:focus-within .deck-lift {
+  opacity: 0.45;
+}
+
+.deck-lift-group .deck-lift:hover,
+.deck-lift-group .deck-lift:focus-visible {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.deck-lift-group .deck-lift:focus-visible {
+  outline: 2px solid color-mix(in oklab, currentColor 55%, transparent);
+  outline-offset: 2px;
+}
+
 /* -----------------------------------------------------------------------------
    S1.1 · Hero backdrop
    -----------------------------------------------------------------------------
@@ -87,34 +292,58 @@
 }
 
 /* -----------------------------------------------------------------------------
-   Reduced motion — the backdrop holds still. Nothing here carries content, so
-   the layers stay visible; only their movement stops.
+   S2.1 · Hub and spoke
+   -----------------------------------------------------------------------------
+   The spokes Draw outward from the file at the centre, so the centre reads as
+   the origin rather than three cards appearing at once. Each bucket Rises as its
+   spoke lands. The example filenames inside the buckets are always on screen;
+   hover only Lifts one bucket and softens the other two, because nobody in a
+   screen-shared audience hovers and a point that lives in a hover state is a
+   point that does not get made.
 ----------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  .hero-glow,
-  .hero-glow--accent {
-    animation: none;
-    transform: none;
-  }
+
+/* The resting dash pair is stamped by JS at mount time from the path's real
+   getTotalLength(), not guessed here — see `armDraw()` in presentation.js. */
+
+/* -----------------------------------------------------------------------------
+   S3.1 · Diverging curves
+   -----------------------------------------------------------------------------
+   The area under the verification curve is revealed by a clip rectangle scaling
+   out from the y-axis, synchronised with the curve Draw, so the wash grows as
+   the curve climbs. Scaling a rectangle horizontally is still a rectangle, so
+   this is a true wipe with no distortion.
+----------------------------------------------------------------------------- */
+
+.curves-chart [data-curve-wipe] {
+  transform-box: view-box;
+  transform-origin: 120px 0;
+  transform: scaleX(0);
+  transition: transform var(--deck-draw) var(--deck-ease);
+}
+
+.curves-chart.curves-on [data-curve-wipe] {
+  transform: scaleX(1);
 }
 
 /* -----------------------------------------------------------------------------
    S4.1 · The effort Venn (shared with section 9's close)
    -----------------------------------------------------------------------------
-   The drawing assembles actor by actor on beat activation: presentation.js
-   stamps a per-step transition-delay on every [data-venn-step] element (its
-   target is held in the data attribute, per ADR FE-001) and then flips .venn-on
-   on the svg. Circles grow from their own centre (transform-box: fill-box);
-   text groups drift up. Section 9's "human region lit" emphasis is the
-   .venn-lit glow, drawn from currentColor — the circle carries text-primary in
-   the markup — so it re-skins with the theme.
+   One component, mounted twice. The drawing assembles actor by actor on beat
+   activation: presentation.js stamps a per-step transition-delay on every
+   [data-venn-step] element (its target is held in the data attribute, per ADR
+   FE-001) and then flips .venn-on on the svg. Circles grow from their own centre
+   (transform-box: fill-box); text groups drift up.
+
+   Emphasis is a class on the svg root rather than classes baked in at render
+   time, so section 9 has a state to transition *from*: it mounts in
+   .venn-emphasis-establish and moves to .venn-emphasis-human.
 ----------------------------------------------------------------------------- */
 
 .venn [data-venn-step] {
   opacity: 0;
-  transition:
-    opacity 0.7s ease-out,
-    transform 0.7s ease-out;
+  transition-property: opacity, transform;
+  transition-duration: var(--deck-rise);
+  transition-timing-function: var(--deck-ease);
 }
 
 .venn circle[data-venn-step] {
@@ -126,7 +355,7 @@
 .venn g[data-venn-step],
 .venn text[data-venn-step],
 .venn path[data-venn-step] {
-  transform: translateY(8px);
+  transform: translateY(12px);
 }
 
 .venn.venn-on [data-venn-step] {
@@ -134,9 +363,57 @@
   transform: none;
 }
 
-/* Section 9 lights the human circle; the glow resolves from currentColor. */
-.venn-lit {
+/* §9's camera push. The transform is on a <g> wrapping the whole drawing, never
+   a scale on the human circle: scaling the circle would change the lens geometry
+   and break the overlap that the Venn means. Moving the camera preserves it.
+   The origin is the human centroid, so the camera dollies in towards it. */
+.venn [data-venn-camera] {
+  transform-box: view-box;
+  transform-origin: 535px 280px;
+  transition: transform var(--deck-draw) var(--deck-ease);
+}
+
+/* 1.06 is the ceiling, not a taste call: the human circle is 470 units across in
+   a 510-unit viewBox and sits dead centre vertically, so anything past ~1.085
+   crops its top and bottom into flat edges. The emphasis is carried by the dim
+   and the glow; the push is the smaller half of the gesture. */
+.venn.venn-emphasis-human [data-venn-camera] {
+  transform: scale(1.06);
+}
+
+.venn [data-venn-actor] {
+  transition: opacity var(--deck-draw) var(--deck-ease);
+}
+
+.venn.venn-emphasis-human [data-venn-actor="machine"],
+.venn.venn-emphasis-human [data-venn-actor="ai"] {
+  opacity: 0.25;
+}
+
+/* The lit human circle. The glow resolves from currentColor — the circle carries
+   text-primary in the markup — so it re-skins with the theme. */
+.venn [data-venn-actor="human"] .venn-circle {
+  transition: filter var(--deck-draw) var(--deck-ease);
+}
+
+.venn.venn-emphasis-human [data-venn-actor="human"] .venn-circle {
   filter: drop-shadow(0 0 28px color-mix(in oklab, currentColor 45%, transparent));
+}
+
+/* Hover Lift on the regions, scoped to the establish mount only so it can never
+   fight §9's emphasis state. No keyboard focus on the regions, deliberately: the
+   svg is role="img" with a complete aria-label, and putting focusable children
+   inside a role="img" makes it incoherent to assistive tech. Every phrase is
+   already in the label, so this hover is purely decorative emphasis. */
+[data-venn-emphasis="establish"] .venn:hover [data-venn-actor] {
+  opacity: 0.45;
+  transition-duration: var(--deck-hover);
+}
+
+[data-venn-emphasis="establish"] .venn [data-venn-actor]:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  transition-duration: var(--deck-hover);
 }
 
 /* In dark themes, mix-blend-multiply causes dark muddying against dark surfaces.
@@ -158,79 +435,25 @@
 }
 
 /* -----------------------------------------------------------------------------
-   Reduced motion — every Venn step holds its final, fully legible state; the
-   emphasis dim/lit states still apply, they just stop transitioning.
+   S8.1 · Terminal
+   -----------------------------------------------------------------------------
+   The question types in; the two answers reveal line by line. The caret only
+   exists while the question is typing — JS removes it when the line lands.
 ----------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  .venn [data-venn-step] {
+
+@keyframes deck-caret {
+  0%,
+  49% {
     opacity: 1;
-    transform: none;
-    transition: none;
   }
-
-  .venn [data-venn-actor] {
-    transition: none;
+  50%,
+  100% {
+    opacity: 0;
   }
 }
 
-/* -----------------------------------------------------------------------------
-   S2.1 · Hub and Spoke diagram
-   ----------------------------------------------------------------------------- */
-.hub-spoke [data-spoke-step] {
-  opacity: 0;
-  transition:
-    opacity 0.6s ease-out,
-    transform 0.6s ease-out;
-}
-
-.hub-spoke [data-spoke-step="0"] {
-  transform: scale(0.96);
-  transform-origin: 450px 225px;
-}
-
-.hub-spoke [data-spoke-step="1"] {
-  transform: none;
-}
-
-.hub-spoke [data-spoke-step="2"] {
-  transform: translateY(6px);
-}
-
-.hub-spoke.spoke-on [data-spoke-step] {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hub-spoke [data-spoke-step] {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-/* -----------------------------------------------------------------------------
-   S3.1 · Diverging curves
-   ----------------------------------------------------------------------------- */
-.curves-chart [data-crossover-label] {
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 0.6s ease-out,
-    transform 0.6s ease-out;
-}
-
-.curves-chart.curves-on [data-crossover-label] {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .curves-chart [data-crossover-label] {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
+.deck-caret {
+  animation: deck-caret 1s steps(1, end) infinite;
 }
 
 /* -----------------------------------------------------------------------------
@@ -276,19 +499,85 @@ body:not(.notes-visible) [data-speaker-notes] {
   display: none !important;
 }
 
-/* -----------------------------------------------------------------------------
-   Global reduced motion safety net
-   ----------------------------------------------------------------------------- */
+/* =============================================================================
+   REDUCED MOTION
+   -----------------------------------------------------------------------------
+   Rise, Draw and Settle snap to their finished state. Unsettled resolves to a
+   static dashed ring at full opacity — still visibly different from the two
+   settled rows above it, which is the whole point of §5.3. Lift keeps working;
+   it just stops transitioning. Nothing in the deck is reachable only through
+   animation, so every beat reads complete with motion off.
+============================================================================= */
+
 @media (prefers-reduced-motion: reduce) {
-  .beat-inner {
+  .beat-inner,
+  [data-reveal],
+  [data-term-line] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
 
-  [data-reveal] {
+  [data-rise] {
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
+  }
+
+  [data-draw] {
+    transition: none !important;
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .deck-settle {
+    animation: none !important;
+  }
+
+  .deck-settle::after {
+    display: none;
+  }
+
+  [data-settle-ring],
+  [data-settle-ring].is-settling {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .deck-unsettled {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .deck-lift-group .deck-lift {
+    transition: none !important;
+  }
+
+  .deck-caret {
+    animation: none !important;
+  }
+
+  .hero-glow,
+  .hero-glow--accent {
+    animation: none;
+    transform: none;
+  }
+
+  .venn [data-venn-step] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .venn [data-venn-actor],
+  .venn [data-venn-camera],
+  .venn [data-venn-actor="human"] .venn-circle {
+    transition: none !important;
+  }
+
+  .curves-chart [data-curve-wipe] {
+    transform: scaleX(1) !important;
     transition: none !important;
   }
 }
