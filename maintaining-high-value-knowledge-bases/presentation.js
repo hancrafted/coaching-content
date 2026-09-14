@@ -446,11 +446,15 @@ registerActivate("s1-1", (reduced) => {
   }
 });
 
-// S1.2: Documentation Rot 82.3% Stat
+// S1.2: Empirical Documentation Rot Stats (Tan et al. 2024)
 registerActivate("s1-2", (_reduced) => {
-  const statEl = document.getElementById("s1-2-stat");
-  if (statEl) {
-    countUp(statEl, 82.3, { duration: 1600, decimals: 1 });
+  const statActive = document.getElementById("s1-2-stat-active");
+  const statMonth = document.getElementById("s1-2-stat-month");
+  if (statActive) {
+    countUp(statActive, 28.9, { duration: 1500, decimals: 1 });
+  }
+  if (statMonth) {
+    countUp(statMonth, 55, { duration: 1600, decimals: 0 });
   }
 });
 

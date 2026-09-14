@@ -402,7 +402,7 @@
               data-section="1"
               data-section-title="The Pre-AI Baseline"
               data-beat="S1.2"
-              data-assertion="Documentation rot is not folklore about bad teams: 82.3% of the top thousand open-source projects have carried outdated documentation."
+              data-assertion="Documentation rot is not folklore about bad teams: peer-reviewed research shows 28.9% of top repositories actively carry broken docs, and 55% sit wrong for over a month."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
@@ -423,24 +423,80 @@
                 </p>
 
                 <div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
-                  <!-- Large Evidence Stat -->
+                  <!-- Peer-Reviewed Research Card: Option 1 & Option 2 (Tan et al. 2024) -->
                   <div
-                    class="rounded-box border border-base-300 bg-base-200/50 p-8 text-center lg:col-span-5"
+                    class="rounded-box border border-base-300 bg-base-200/50 p-6 lg:col-span-5 flex flex-col justify-between"
                   >
-                    <p class="font-mono text-xs uppercase tracking-widest text-base-content/50">
-                      GitHub Top-1,000 Projects
-                    </p>
-                    <div
-                      class="mt-4 font-mono text-6xl font-extrabold text-error tabular-nums md:text-7xl"
-                    >
-                      <span id="s1-2-stat">0</span>%
+                    <div>
+                      <div class="flex items-center justify-between border-b border-base-300 pb-3">
+                        <span
+                          class="badge badge-sm badge-outline font-mono text-[0.65rem] text-primary"
+                          >Peer-Reviewed Study</span
+                        >
+                        <span class="font-mono text-[0.65rem] text-base-content/50"
+                          >Springer · 2024</span
+                        >
+                      </div>
+                      <div class="mt-3">
+                        <p class="font-display text-sm font-semibold text-base-content">
+                          Tan, Wagner &amp; Treude
+                        </p>
+                        <p class="text-[0.72rem] text-base-content/70 italic leading-snug">
+                          &ldquo;Detecting outdated code element references in software repository
+                          documentation&rdquo;
+                        </p>
+                        <p class="mt-1 font-mono text-[0.6rem] text-base-content/40">
+                          Empirical Software Engineering 29:5 · 3,000+ Repos · 201k References
+                        </p>
+                      </div>
                     </div>
-                    <p class="mt-4 text-sm font-medium text-base-content/80">
-                      carried at least one outdated code-element reference in their history
-                    </p>
-                    <p class="mt-3 font-mono text-[0.65rem] text-base-content/40">
-                      Evidence: 658/800 evaluated repositories · doc-cost study
-                    </p>
+
+                    <!-- Dual Metrics -->
+                    <div class="mt-6 space-y-4">
+                      <!-- Metric 1: Option 1 (28.9% Active Rot) -->
+                      <div class="rounded-box border border-base-300 bg-base-100 p-4">
+                        <div class="flex items-baseline justify-between">
+                          <span
+                            class="font-mono text-xs font-semibold text-error uppercase tracking-wider"
+                            >Active Production Rot</span
+                          >
+                          <span class="font-mono text-3xl font-extrabold text-error tabular-nums">
+                            <span id="s1-2-stat-active">0</span>%
+                          </span>
+                        </div>
+                        <p class="mt-1 text-xs text-base-content/70 leading-relaxed">
+                          of top-1,000 GitHub repos actively contain broken documentation right now
+                          on
+                          <code class="font-mono text-[0.65rem] bg-base-200 px-1 rounded"
+                            >main</code
+                          >
+                          (affecting 19.2% of all markdown files).
+                        </p>
+                      </div>
+
+                      <!-- Metric 2: Option 2 (55% Silent Month) -->
+                      <div class="rounded-box border border-base-300 bg-base-100 p-4">
+                        <div class="flex items-baseline justify-between">
+                          <span
+                            class="font-mono text-xs font-semibold text-warning uppercase tracking-wider"
+                            >&ldquo;Silent Month&rdquo; Lag</span
+                          >
+                          <span class="font-mono text-3xl font-extrabold text-warning tabular-nums">
+                            ~<span id="s1-2-stat-month">0</span>%
+                          </span>
+                        </div>
+                        <p class="mt-1 text-xs text-base-content/70 leading-relaxed">
+                          chance an outdated reference is still wrong 30 days later — with zero
+                          compiler error or CI crash to flag it.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div
+                      class="mt-4 rounded bg-base-300/40 p-2.5 text-center font-mono text-[0.65rem] text-base-content/60"
+                    >
+                      Finding: Documentation decays silently without automated error signals
+                    </div>
                   </div>
 
                   <!-- The 4 Modes List -->
