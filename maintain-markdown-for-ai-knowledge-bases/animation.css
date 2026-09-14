@@ -16,7 +16,7 @@
 /* =============================================================================
    THE MOTION VOCABULARY
    -----------------------------------------------------------------------------
-   Five named primitives. Nothing in this deck animates in a way that is not one
+   Six named primitives. Nothing in this deck animates in a way that is not one
    of them. Durations and easing live here as custom properties; presentation.js
    mirrors the same numbers in its `MOTION` constant for the JS-timed sequences.
    Change a number here and change it there — they are the same vocabulary.
@@ -31,6 +31,10 @@
      Lift       hover only: translateY(-2px) and siblings softening to 45%. Always
                 enrichment, never the only route to a point. The deck is presented
                 remotely by arrow key; nobody in the audience hovers.
+     Swivel     click only: a card turns on its Y axis to show its back, arriving
+                from far enough down the Z axis that the turn reads as a zoom in
+                as well as a rotation. Used only for §2.1's four card backs —
+                the one place in the deck where a thing has a reverse side.
 ============================================================================= */
 
 :root {
@@ -38,6 +42,7 @@
   --deck-rise: 560ms;
   --deck-draw: 900ms;
   --deck-settle: 520ms;
+  --deck-swivel: 520ms;
   --deck-hover: 180ms;
   --deck-stagger: 90ms;
 }
@@ -228,6 +233,65 @@
 }
 
 /* -----------------------------------------------------------------------------
+   Swivel — a card turning to show its back.
+
+   The perspective lives inside the transform function rather than on an ancestor
+   because the ancestor here is daisyUI's `.modal`, whose own styles we would
+   rather not reach into. translateZ under that perspective is what supplies the
+   zoom: the panel starts 160px further away and nearly edge-on, and arrives flat
+   and full size in one motion, so there is no separate scale to keep in sync.
+
+   These rules are unlayered, and daisyUI's live inside `@layer utilities`, so
+   they win the cascade outright — which is what lets `scale` and `translate`
+   override the modal's own open transition. Overriding is necessary, not
+   cosmetic: leaving daisyUI's scale in place would compound with the Swivel and
+   the panel would arrive with a visible second pop.
+----------------------------------------------------------------------------- */
+
+@keyframes deck-swivel-in {
+  from {
+    opacity: 0;
+    transform: perspective(1600px) translateZ(-160px) rotateY(-88deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1600px) translateZ(0) rotateY(0deg);
+  }
+}
+
+/* Out is shorter and turns the other way — it reads as putting the card back
+   rather than as the opening played in reverse. */
+@keyframes deck-swivel-out {
+  from {
+    opacity: 1;
+    transform: perspective(1600px) translateZ(0) rotateY(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: perspective(1600px) translateZ(-120px) rotateY(62deg);
+  }
+}
+
+.deck-swivel {
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+}
+
+.deck-swivel.is-opening,
+.deck-swivel.is-closing {
+  scale: 1;
+  translate: 0;
+}
+
+.deck-swivel.is-opening {
+  animation: deck-swivel-in var(--deck-swivel) var(--deck-ease) both;
+}
+
+.deck-swivel.is-closing {
+  animation: deck-swivel-out calc(var(--deck-swivel) * 0.7) var(--deck-ease) both;
+}
+
+/* -----------------------------------------------------------------------------
    S1.1 · Hero backdrop
    -----------------------------------------------------------------------------
    The hero background is a slot the presenter fills (see the note in index.html).
@@ -306,13 +370,37 @@
    The spokes Draw outward from the file at the centre, so the centre reads as
    the origin rather than three cards appearing at once. Each bucket Rises as its
    spoke lands. The example filenames inside the buckets are always on screen;
-   hover only Lifts one bucket and softens the other two, because nobody in a
+   hover only Lifts one bucket and softens the other three, because nobody in a
    screen-shared audience hovers and a point that lives in a hover state is a
    point that does not get made.
+
+   The same reasoning governs the "Show details" cue that reveals each card's
+   back: it is an invitation to a reader sitting alone with the page, so it stays
+   out of the drawing until a cursor asks for it. Everything the spoken argument
+   needs is already on the front of the card.
 ----------------------------------------------------------------------------- */
 
 /* The resting dash pair is stamped by JS at mount time from the path's real
    getTotalLength(), not guessed here — see `armDraw()` in presentation.js. */
+
+.deck-flip-cue {
+  opacity: 0;
+  transition: opacity var(--deck-hover) var(--deck-ease);
+}
+
+.deck-lift:hover .deck-flip-cue,
+.deck-lift:focus-visible .deck-flip-cue {
+  opacity: 1;
+}
+
+/* On a touch screen there is no hover to reveal it with, and a card whose only
+   affordance is a state that device cannot enter is a card that looks inert.
+   Hold it on instead. */
+@media (hover: none) {
+  .deck-flip-cue {
+    opacity: 1;
+  }
+}
 
 /* -----------------------------------------------------------------------------
    S3.1 · Diverging curves
@@ -561,6 +649,17 @@ body:not(.notes-visible) [data-speaker-notes] {
 
   .deck-lift-group .deck-lift {
     transition: none !important;
+  }
+
+  /* The cue still appears on hover — that is a state change, not motion. Only
+     the fade goes. The card back opens and closes instantly. */
+  .deck-flip-cue {
+    transition: none !important;
+  }
+
+  .deck-swivel.is-opening,
+  .deck-swivel.is-closing {
+    animation: none !important;
   }
 
   .deck-caret {
