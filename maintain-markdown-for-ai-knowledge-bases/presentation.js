@@ -1196,13 +1196,33 @@ function mountFrontmatterBlocks() {
   document.querySelectorAll("[data-frontmatter-mount]").forEach((host) => {
     const beatId = host.dataset.frontmatterMount;
     const isSection5 = beatId.startsWith("s5");
+    const mode = host.dataset.frontmatterMode || (isSection5 ? "section-5" : "section-6");
     host.innerHTML = renderFrontmatterBlock({
-      mode: isSection5 ? "section-5" : host.dataset.frontmatterMode || "section-6",
+      mode,
+      activeField: mode === "section-7" ? "stale_after" : null,
     });
   });
 }
 
 mountFrontmatterBlocks();
+
+// Section 6 field-highlight interaction
+document.addEventListener("click", (e) => {
+  const fmField = e.target.closest("#s6-1 .fm-field");
+  if (fmField) {
+    const parent = fmField.closest(".frontmatter-card");
+    if (parent) {
+      parent.querySelectorAll(".fm-field").forEach((f) => {
+        if (f !== fmField) {
+          f.classList.remove("ring-2", "ring-primary", "bg-primary/5");
+        }
+      });
+    }
+    fmField.classList.toggle("ring-2");
+    fmField.classList.toggle("ring-primary");
+    fmField.classList.toggle("bg-primary/5");
+  }
+});
 
 // S5.1 — machine pass resolves cleanly
 registerActivate("s5-1", (reduced) => {
@@ -1221,6 +1241,32 @@ registerActivate("s5-2", (reduced) => {
 // S5.3 — human pass stays visibly unresolved
 registerActivate("s5-3", (reduced) => {
   const beat = document.getElementById("s5-3");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+});
+
+// S6.1 — OKF: heading lines fade up, fields pulse in sequence
+registerActivate("s6-1", (reduced) => {
+  const beat = document.getElementById("s6-1");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+  if (!reduced) {
+    const fields = beat.querySelectorAll(".fm-field");
+    fields.forEach((field, i) => {
+      setTimeout(
+        () => {
+          field.classList.add("ring-1", "ring-primary/40");
+          setTimeout(() => field.classList.remove("ring-1", "ring-primary/40"), 600);
+        },
+        350 + i * 200,
+      );
+    });
+  }
+});
+
+// S7.1 — markdown-harness handoff
+registerActivate("s7-1", (reduced) => {
+  const beat = document.getElementById("s7-1");
   if (!beat) return;
   revealSequence(beat, reduced);
 });

@@ -917,22 +917,72 @@
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
-                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                <p
+                  class="mb-6 translate-y-3 font-mono text-xs uppercase tracking-[0.3em] text-primary/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
                   S6.1 · OKF
                 </p>
-                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
                   Who supplies which field
                 </h2>
-                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
-                  The same block, grown to its full field set. The machine-signed field and the
-                  human-signed field sit adjacent with identical structure.
-                </p>
-                <div
-                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
                 >
-                  <span class="badge badge-ghost badge-sm font-mono">Ticket 10</span>
-                  <span>Full field set, per-field annotations, link to the OKF specification.</span>
+                  The same frontmatter block, grown to its full field set. The machine-signed field
+                  and the human-signed field sit adjacent with identical structure.
+                </p>
+
+                <!-- Full block with annotations -->
+                <div
+                  class="mt-8 max-w-4xl"
+                  data-frontmatter-mount="s6-1"
+                  data-frontmatter-mode="section-6"
+                ></div>
+
+                <!-- Link to public OKF specification -->
+                <div
+                  class="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 max-w-4xl pt-3 border-t border-base-200"
+                >
+                  <a
+                    href="https://github.com/GoogleCloudPlatform/knowledge-catalog"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 text-xs font-mono text-primary hover:underline"
+                  >
+                    <span>Read the public OKF v0.2 specification ↗</span>
+                  </a>
+                  <span class="text-xs text-base-content/50"
+                    >Click any field above to inspect its supplier</span
+                  >
                 </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Don't lecture on the schema. The power of this slide is the adjacent comparison:
+                    <code>generated</code> and <code>verified</code> have identical shapes —
+                    <code>{ by, at }</code>. One is signed by a model, the other is signed by a
+                    human.
+                  </p>
+                  <p class="mt-3">
+                    Who supplies each field does the argument's work on its own. The human sets the
+                    authority and review deadline; the machine executes and logs its timestamp; the
+                    human verifies.
+                  </p>
+                </aside>
               </div>
             </section>
 
@@ -948,22 +998,108 @@
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
-                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                <p
+                  class="mb-6 translate-y-3 font-mono text-xs uppercase tracking-[0.3em] text-primary/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
                   S7.1 · markdown-harness
                 </p>
-                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
                   The signal is in the file; the instruction has to come from you
                 </h2>
-                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
-                  The machine only checks what it was told to check — and the operator writes that
-                  sentence, not the vendor.
-                </p>
-                <div
-                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
                 >
-                  <span class="badge badge-ghost badge-sm font-mono">Ticket 10</span>
-                  <span>The headline against the literal operator-configured sentence.</span>
+                  The file stores the signal —
+                  <code class="font-mono text-primary font-medium">stale_after</code>. The machine
+                  does not invent policy; the operator writes the instruction.
+                </p>
+
+                <!-- Comparison grid: Frontmatter block on left, Configured sentence on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div
+                    class="lg:col-span-6"
+                    data-frontmatter-mount="s7-1"
+                    data-frontmatter-mode="section-7"
+                  ></div>
+
+                  <div class="lg:col-span-6 space-y-4">
+                    <div class="rounded-2xl border-2 border-primary/40 bg-base-100 p-6 shadow-md">
+                      <div
+                        class="flex items-center justify-between border-b border-base-200 pb-3 mb-4"
+                      >
+                        <span
+                          class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content"
+                          >Operator rule</span
+                        >
+                        <span class="font-mono text-xs text-base-content/50"
+                          >markdown-harness config</span
+                        >
+                      </div>
+
+                      <p
+                        class="font-mono text-xs uppercase tracking-widest text-primary font-bold mb-2"
+                      >
+                        Configured instruction:
+                      </p>
+
+                      <!-- The literal configured sentence (serious version) -->
+                      <blockquote
+                        class="rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm md:text-base font-medium leading-relaxed text-base-content"
+                      >
+                        “If the current date is past
+                        <code class="text-primary font-mono font-bold">stale_after</code>, notify
+                        the user that this document is stale and propose opening a refresh ticket
+                        with the maintainer.”
+                      </blockquote>
+
+                      <div
+                        class="mt-5 space-y-2 text-xs text-base-content/70 border-t border-base-200 pt-4"
+                      >
+                        <p class="flex items-center gap-2">
+                          <span class="text-primary font-bold">→</span>
+                          <span
+                            ><strong>The signal:</strong> parsed directly from the OKF metadata in
+                            the file.</span
+                          >
+                        </p>
+                        <p class="flex items-center gap-2">
+                          <span class="text-primary font-bold">→</span>
+                          <span
+                            ><strong>The instruction:</strong> authored by the team to match your
+                            workflow.</span
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Set up the demo before touching the terminal. The signal is passive — it sits
+                    inert in the file until someone asks a question.
+                  </p>
+                  <p class="mt-3">
+                    And when the tool fires, what does it say? It does not say what a vendor
+                    programmed it to say. It says whatever sentence the operator configured. In
+                    production, that means proposing a ticket. (In our live demo in a moment, you'll
+                    see a slightly more unmistakable signal.)
+                  </p>
+                </aside>
               </div>
             </section>
 
