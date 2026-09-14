@@ -205,10 +205,18 @@ const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 const nf = (n) => Math.round(n).toLocaleString("en-US");
 
 function countUp(el, to, opts = {}) {
-  const { duration = 1400, from = 0, decimals = 0, easing = easeOutCubic, onDone } = opts;
+  const {
+    duration = 1400,
+    from = 0,
+    decimals = 0,
+    suffix = "",
+    easing = easeOutCubic,
+    onDone,
+  } = opts;
   if (!el) return;
+  const format = (v) => (decimals > 0 ? v.toFixed(decimals) : nf(v)) + suffix;
   if (reduceMotion) {
-    el.textContent = decimals > 0 ? to.toFixed(decimals) : nf(to);
+    el.textContent = format(to);
     if (onDone) onDone();
     return;
   }
@@ -217,7 +225,7 @@ function countUp(el, to, opts = {}) {
     if (startTs === null) startTs = ts;
     const t = Math.min(1, (ts - startTs) / duration);
     const val = from + (to - from) * easing(t);
-    el.textContent = decimals > 0 ? val.toFixed(decimals) : nf(val);
+    el.textContent = format(val);
     if (t < 1) {
       window.requestAnimationFrame(step);
     } else if (onDone) {
@@ -437,25 +445,22 @@ function setupRotClock() {
  * Beat Activation Handlers (Level 2 & 3 Visualizations)
  * ------------------------------------------------------------------ */
 
-// S1.1: Four Jobs / Timeline of Knowledge Management
+// S1.1: Four Jobs / Timeline of Knowledge Management & Rot Clock
 registerActivate("s1-1", (reduced) => {
   const trustStage =
     document.getElementById("stage-trust") || document.getElementById("pillar-trust");
   if (trustStage && !reduced) {
     trustStage.classList.add("kb-pulse-glow");
   }
+  const heroRot = document.getElementById("hero-rot-counter");
+  if (heroRot) {
+    countUp(heroRot, 4.7, { duration: 1200, decimals: 1, suffix: " yrs" });
+  }
 });
 
-// S1.2: Empirical Documentation Rot Stats (Tan et al. 2024)
+// S1.2: Four Failure Modes Re-Score (Pre-AI vs With AI)
 registerActivate("s1-2", (_reduced) => {
-  const statActive = document.getElementById("s1-2-stat-active");
-  const statMonth = document.getElementById("s1-2-stat-month");
-  if (statActive) {
-    countUp(statActive, 28.9, { duration: 1500, decimals: 1 });
-  }
-  if (statMonth) {
-    countUp(statMonth, 55, { duration: 1600, decimals: 0 });
-  }
+  // Handled declaratively via CSS transitions and responsive cards
 });
 
 // S2.1: The Missing Arrow Simulation

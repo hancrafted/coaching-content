@@ -175,7 +175,7 @@
             <!-- S1.1 · The Four Jobs of Knowledge Management -->
             <section
               id="s1-1"
-              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-12 md:px-16 lg:px-24"
               data-section="1"
               data-section-title="The Pre-AI Baseline"
               data-beat="S1.1"
@@ -204,58 +204,65 @@
                 </p>
 
                 <h1
-                  class="mt-4 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl"
+                  class="mt-3 font-display text-3xl font-extrabold leading-[1.1] tracking-tight md:text-5xl lg:text-6xl"
                 >
                   <span class="block text-base-content">Maintaining Trust in</span>
                   <span class="block text-primary">Knowledge Bases</span>
                 </h1>
 
                 <p
-                  class="mt-8 max-w-3xl text-xl font-light leading-relaxed text-base-content/80 md:text-2xl"
+                  class="mt-4 max-w-3xl text-base font-light leading-relaxed text-base-content/80 md:text-xl"
                 >
                   To maintain trust in a knowledge base it needs to be kept alive — but ongoing
                   maintenance is the one job that is almost never budgeted.
                 </p>
 
                 <!-- Visualization: Timeline of the Knowledge Lifecycle -->
-                <div class="mt-12 rounded-box border border-base-300 bg-base-200/40 p-6 md:p-8">
-                  <div class="flex items-center justify-between border-b border-base-300/60 pb-4">
+                <div class="mt-6 rounded-box border border-base-300 bg-base-200/40 p-4 md:p-6">
+                  <div
+                    class="flex flex-wrap items-start justify-between gap-3 border-b border-base-300/60 pb-3"
+                  >
                     <div>
                       <span
                         class="font-mono text-[0.65rem] uppercase tracking-widest text-primary font-semibold"
                       >
                         The Knowledge Lifecycle
                       </span>
-                      <h2 class="font-display text-lg font-bold text-base-content md:text-xl">
+                      <h2 class="font-display text-base font-bold text-base-content md:text-lg">
                         Where the Budget Stops
                       </h2>
                     </div>
                     <div class="text-right">
-                      <p
-                        class="font-mono text-[0.6rem] uppercase tracking-wider text-base-content/50"
-                      >
-                        avg doc rot lifetime
-                      </p>
-                      <p
-                        id="hero-rot-counter"
-                        class="font-mono text-lg font-bold text-error md:text-xl tabular-nums"
-                      >
-                        4.7 yrs
+                      <div class="flex items-baseline justify-end gap-2">
+                        <span
+                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
+                        >
+                          avg doc rot lifetime:
+                        </span>
+                        <span
+                          id="hero-rot-counter"
+                          class="font-mono text-xl font-bold text-error md:text-2xl tabular-nums"
+                        >
+                          4.7 yrs
+                        </span>
+                      </div>
+                      <p class="font-mono text-[0.65rem] text-base-content/60">
+                        Tan et al. (2024) · Empirical Software Engineering (Springer)
                       </p>
                     </div>
                   </div>
 
                   <!-- 3 Stages Timeline Cards -->
-                  <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
+                  <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
                     <!-- Stage 1: Create -->
-                    <div class="kb-card rounded-box border border-base-300 bg-base-100 p-5">
+                    <div class="kb-card rounded-box border border-base-300 bg-base-100 p-4">
                       <div class="flex items-center justify-between">
                         <span class="badge badge-sm badge-success font-mono text-[0.65rem]"
                           >Phase 1 · Funded</span
                         >
                         <span class="font-mono text-xs text-base-content/40">Day 1</span>
                       </div>
-                      <h3 class="mt-3 font-display text-lg font-bold text-base-content">
+                      <h3 class="mt-2 font-display text-base font-bold text-base-content">
                         1. Create
                       </h3>
                       <p class="mt-1 text-xs text-base-content/60">
@@ -263,11 +270,11 @@
                         celebration.
                       </p>
                       <div
-                        class="mt-4 flex items-center gap-2 rounded bg-success/10 p-2 font-mono text-[0.7rem] text-success font-medium"
+                        class="mt-3 flex items-center gap-1.5 rounded bg-success/10 p-1.5 font-mono text-[0.68rem] text-success font-medium"
                       >
                         <svg
-                          width="14"
-                          height="14"
+                          width="12"
+                          height="12"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -280,14 +287,14 @@
                     </div>
 
                     <!-- Stage 2: Continuous Usage & Retrieval -->
-                    <div class="kb-card rounded-box border border-base-300 bg-base-100 p-5">
+                    <div class="kb-card rounded-box border border-base-300 bg-base-100 p-4">
                       <div class="flex items-center justify-between">
                         <span class="badge badge-sm badge-primary font-mono text-[0.65rem]"
                           >Phase 2 · Continuous</span
                         >
                         <span class="font-mono text-xs text-base-content/40">Day 2 → 1,000+</span>
                       </div>
-                      <h3 class="mt-3 font-display text-lg font-bold text-base-content">
+                      <h3 class="mt-2 font-display text-base font-bold text-base-content">
                         2. Use &amp; Retrieve
                       </h3>
                       <p class="mt-1 text-xs text-base-content/60">
@@ -295,11 +302,11 @@
                         agent ingestion.
                       </p>
                       <div
-                        class="mt-4 flex items-center gap-2 rounded bg-primary/10 p-2 font-mono text-[0.7rem] text-primary font-medium"
+                        class="mt-3 flex items-center gap-1.5 rounded bg-primary/10 p-1.5 font-mono text-[0.68rem] text-primary font-medium"
                       >
                         <svg
-                          width="14"
-                          height="14"
+                          width="12"
+                          height="12"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -314,7 +321,7 @@
                     <!-- Stage 3: Maintenance & Trust (The Cliff) -->
                     <div
                       id="stage-trust"
-                      class="kb-card kb-ghost-pillar rounded-box border-2 border-error/50 bg-error/5 p-5 text-error"
+                      class="kb-card kb-ghost-pillar rounded-box border-2 border-error/50 bg-error/5 p-4 text-error"
                     >
                       <div class="flex items-center justify-between">
                         <span
@@ -323,7 +330,7 @@
                         >
                         <span class="font-mono text-xs text-error/70 font-semibold">Day 180+</span>
                       </div>
-                      <h3 class="mt-3 font-display text-lg font-bold text-error">
+                      <h3 class="mt-2 font-display text-base font-bold text-error">
                         3. Maintain &amp; Trust
                       </h3>
                       <p class="mt-1 text-xs text-base-content/80">
@@ -331,11 +338,11 @@
                         certifying factual truth.
                       </p>
                       <div
-                        class="mt-4 flex items-center gap-2 rounded border border-error/30 bg-error/10 p-2 font-mono text-[0.7rem] font-bold text-error"
+                        class="mt-3 flex items-center gap-1.5 rounded border border-error/30 bg-error/10 p-1.5 font-mono text-[0.68rem] font-bold text-error"
                       >
                         <svg
-                          width="14"
-                          height="14"
+                          width="12"
+                          height="12"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -351,21 +358,48 @@
                   </div>
 
                   <!-- Timeline Flow Bar Underneath -->
-                  <div class="mt-6 hidden md:block">
+                  <div class="mt-4 hidden md:block">
                     <div class="flex items-center gap-2">
-                      <div class="h-2 flex-1 rounded-full bg-success/80"></div>
-                      <div class="h-2 flex-1 rounded-full bg-primary/80"></div>
+                      <div class="h-1.5 flex-1 rounded-full bg-success/80"></div>
+                      <div class="h-1.5 flex-1 rounded-full bg-primary/80"></div>
                       <div
-                        class="h-2 flex-1 rounded-full border border-dashed border-error/80 bg-error/20"
+                        class="h-1.5 flex-1 rounded-full border border-dashed border-error/80 bg-error/20"
                       ></div>
                     </div>
                     <div
-                      class="mt-2 flex justify-between font-mono text-[0.65rem] text-base-content/50"
+                      class="mt-1.5 flex justify-between font-mono text-[0.65rem] text-base-content/50"
                     >
                       <span class="text-success font-semibold">✓ Creation funded</span>
                       <span class="text-primary font-semibold">✓ Retrieval automated</span>
                       <span class="text-error font-bold"
                         >⚠ Trust unbudgeted (silent decay begins)</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Academic Citation & Findings Footer -->
+                  <div
+                    class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-base-300/60 pt-2.5 font-mono text-[0.65rem] text-base-content/60"
+                  >
+                    <div class="flex items-center gap-1.5">
+                      <span
+                        class="badge badge-xs badge-outline font-mono text-[0.58rem] text-primary"
+                        >Peer-Reviewed Evidence</span
+                      >
+                      <span
+                        >Tan, Wagner &amp; Treude · <em>Empirical Software Engineering</em> 29:5
+                        (3,000+ Repos)</span
+                      >
+                    </div>
+                    <div class="flex items-center gap-3 text-base-content/70">
+                      <span
+                        ><strong class="text-error font-semibold">28.9%</strong> repos active rot on
+                        <code class="bg-base-300/60 px-1 rounded text-[0.6rem]">main</code></span
+                      >
+                      <span>•</span>
+                      <span
+                        ><strong class="text-warning font-semibold">~55%</strong> linger &gt;30
+                        days</span
                       >
                     </div>
                   </div>
@@ -376,7 +410,7 @@
               <a
                 href="#s1-2"
                 data-toc-jump="s1-2"
-                class="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-base-content/40 transition-colors hover:text-primary"
+                class="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-base-content/40 transition-colors hover:text-primary"
                 aria-label="Scroll to next section"
               >
                 <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em]">scroll</span>
@@ -395,169 +429,261 @@
               </a>
             </section>
 
-            <!-- S1.2 · Why It Was Always Hard: Four Failure Modes -->
+            <!-- S1.2 · The Four Failure Modes: Pre-AI vs. With AI -->
             <section
               id="s1-2"
-              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-16 md:px-16 lg:px-24"
               data-section="1"
               data-section-title="The Pre-AI Baseline"
               data-beat="S1.2"
-              data-assertion="Documentation rot is not folklore about bad teams: peer-reviewed research shows 28.9% of top repositories actively carry broken docs, and 55% sit wrong for over a month."
+              data-assertion="The Four Failure Modes re-scored: AI solved one outright (Champion Tax), left one holding (Protectionism), split one (Discoverability vs Trust), and amplified the crisis (Maintenance Cost)."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
-                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
-                  S1.2 · The Rubric
-                </p>
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                    S1.2 · The Diagnostic Rubric
+                  </p>
+                  <!-- Author's Hypothesis Disclaimer Badge -->
+                  <div
+                    class="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-2.5 py-0.5 font-mono text-[0.65rem] text-warning"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    <span>Personal Diagnostic Hypothesis · Author's Working Model</span>
+                  </div>
+                </div>
 
                 <h2
                   class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
                 >
-                  The Four Failure Modes
+                  The Four Failure Modes: Pre-AI vs. With AI
                 </h2>
 
-                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
-                  Documentation rot is not folklore about bad engineering culture. It is an
-                  empirical constant. These four failure modes are our scoring rubric:
+                <p
+                  class="mt-3 text-base font-light leading-relaxed text-base-content/80 md:text-lg"
+                >
+                  A scoring rubric testing four pre-AI organizational failure modes against what
+                  generative AI actually altered: one solved outright, one holding strong, one split
+                  down the middle, and one amplified into a critical bottleneck.
                 </p>
 
-                <div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
-                  <!-- Peer-Reviewed Research Card: Option 1 & Option 2 (Tan et al. 2024) -->
+                <!-- Comparative Cards: Left (Pre-AI) vs Right (With AI) -->
+                <div class="mt-6 space-y-3.5">
+                  <!-- Mode 1: Individual Protectionism -->
                   <div
-                    class="rounded-box border border-base-300 bg-base-200/50 p-6 lg:col-span-5 flex flex-col justify-between"
+                    class="kb-card rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/30"
                   >
-                    <div>
-                      <div class="flex items-center justify-between border-b border-base-300 pb-3">
-                        <span
-                          class="badge badge-sm badge-outline font-mono text-[0.65rem] text-primary"
-                          >Peer-Reviewed Study</span
-                        >
-                        <span class="font-mono text-[0.65rem] text-base-content/50"
-                          >Springer · 2024</span
-                        >
-                      </div>
-                      <div class="mt-3">
-                        <p class="font-display text-sm font-semibold text-base-content">
-                          Tan, Wagner &amp; Treude
-                        </p>
-                        <p class="text-[0.72rem] text-base-content/70 italic leading-snug">
-                          &ldquo;Detecting outdated code element references in software repository
-                          documentation&rdquo;
-                        </p>
-                        <p class="mt-1 font-mono text-[0.6rem] text-base-content/40">
-                          Empirical Software Engineering 29:5 · 3,000+ Repos · 201k References
-                        </p>
-                      </div>
-                    </div>
-
-                    <!-- Dual Metrics -->
-                    <div class="mt-6 space-y-4">
-                      <!-- Metric 1: Option 1 (28.9% Active Rot) -->
-                      <div class="rounded-box border border-base-300 bg-base-100 p-4">
-                        <div class="flex items-baseline justify-between">
-                          <span
-                            class="font-mono text-xs font-semibold text-error uppercase tracking-wider"
-                            >Active Production Rot</span
-                          >
-                          <span class="font-mono text-3xl font-extrabold text-error tabular-nums">
-                            <span id="s1-2-stat-active">0</span>%
-                          </span>
-                        </div>
-                        <p class="mt-1 text-xs text-base-content/70 leading-relaxed">
-                          of top-1,000 GitHub repos actively contain broken documentation right now
-                          on
-                          <code class="font-mono text-[0.65rem] bg-base-200 px-1 rounded"
-                            >main</code
-                          >
-                          (affecting 19.2% of all markdown files).
-                        </p>
-                      </div>
-
-                      <!-- Metric 2: Option 2 (55% Silent Month) -->
-                      <div class="rounded-box border border-base-300 bg-base-100 p-4">
-                        <div class="flex items-baseline justify-between">
-                          <span
-                            class="font-mono text-xs font-semibold text-warning uppercase tracking-wider"
-                            >&ldquo;Silent Month&rdquo; Lag</span
-                          >
-                          <span class="font-mono text-3xl font-extrabold text-warning tabular-nums">
-                            ~<span id="s1-2-stat-month">0</span>%
-                          </span>
-                        </div>
-                        <p class="mt-1 text-xs text-base-content/70 leading-relaxed">
-                          chance an outdated reference is still wrong 30 days later — with zero
-                          compiler error or CI crash to flag it.
-                        </p>
-                      </div>
-                    </div>
-
                     <div
-                      class="mt-4 rounded bg-base-300/40 p-2.5 text-center font-mono text-[0.65rem] text-base-content/60"
+                      class="flex items-center justify-between border-b border-base-300/50 pb-2.5"
                     >
-                      Finding: Documentation decays silently without automated error signals
-                    </div>
-                  </div>
-
-                  <!-- The 4 Modes List -->
-                  <div class="space-y-3 lg:col-span-7">
-                    <div
-                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
-                    >
-                      <div class="flex items-center gap-3">
-                        <span class="badge badge-neutral font-mono text-xs">1</span>
-                        <h3 class="font-display font-bold text-base-content">
+                      <div class="flex items-center gap-2.5">
+                        <span class="badge badge-neutral font-mono text-xs">01</span>
+                        <h3 class="font-display font-bold text-base-content text-base md:text-lg">
                           Individual Protectionism
                         </h3>
                       </div>
-                      <p class="mt-1 text-xs text-base-content/70">
-                        Knowing the undocumented system was personal leverage and job security.
-                      </p>
+                      <span class="badge badge-warning font-mono text-xs font-semibold"
+                        >HOLDING</span
+                      >
                     </div>
-
-                    <div
-                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
-                    >
-                      <div class="flex items-center gap-3">
-                        <span class="badge badge-neutral font-mono text-xs">2</span>
-                        <h3 class="font-display font-bold text-base-content">Champion Tax</h3>
+                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+                      <div class="rounded-lg bg-base-200/50 p-3">
+                        <p
+                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
+                        >
+                          Pre-AI Baseline
+                        </p>
+                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
+                          Knowing the undocumented system was personal leverage and job security.
+                          <em class="block text-base-content/60 mt-0.5"
+                            >&ldquo;If I write it down, I become replaceable.&rdquo;</em
+                          >
+                        </p>
                       </div>
-                      <p class="mt-1 text-xs text-base-content/70">
-                        Writing docs was unrewarded volunteer work that nobody had time for.
-                      </p>
+                      <div class="rounded-lg border border-warning/30 bg-warning/5 p-3">
+                        <div
+                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-warning font-semibold"
+                        >
+                          <span>With Generative AI</span>
+                          <span>Verdict: Holding</span>
+                        </div>
+                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
+                          AI commoditizes generic snippet syntax, but repo-shaped architectural
+                          context remains in senior engineers' heads. Undocumented tribal context is
+                          still an intact moat.
+                        </p>
+                      </div>
                     </div>
+                  </div>
 
+                  <!-- Mode 2: Champion Tax -->
+                  <div
+                    class="kb-card rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/30"
+                  >
                     <div
-                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
+                      class="flex items-center justify-between border-b border-base-300/50 pb-2.5"
                     >
-                      <div class="flex items-center gap-3">
-                        <span class="badge badge-neutral font-mono text-xs">3</span>
-                        <h3 class="font-display font-bold text-base-content">
+                      <div class="flex items-center gap-2.5">
+                        <span class="badge badge-neutral font-mono text-xs">02</span>
+                        <h3 class="font-display font-bold text-base-content text-base md:text-lg">
+                          Champion Tax
+                        </h3>
+                      </div>
+                      <span class="badge badge-success font-mono text-xs font-semibold"
+                        >SOLVED</span
+                      >
+                    </div>
+                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+                      <div class="rounded-lg bg-base-200/50 p-3">
+                        <p
+                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
+                        >
+                          Pre-AI Baseline
+                        </p>
+                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
+                          Writing and structuring docs was unrewarded volunteer work. Helpful
+                          engineers paid the steepest tax, losing time from shipping code.
+                        </p>
+                      </div>
+                      <div class="rounded-lg border border-success/30 bg-success/5 p-3">
+                        <div
+                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-success font-semibold"
+                        >
+                          <span>With Generative AI</span>
+                          <span>Verdict: Solved</span>
+                        </div>
+                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
+                          Drafting is nearly free. Zero blank-page barrier: models generate initial
+                          schemas, turn PR diffs into draft ADRs, and summarize discussions
+                          effortlessly.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Mode 3: Discoverability + Trust -->
+                  <div
+                    class="kb-card rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/30"
+                  >
+                    <div
+                      class="flex items-center justify-between border-b border-base-300/50 pb-2.5"
+                    >
+                      <div class="flex items-center gap-2.5">
+                        <span class="badge badge-neutral font-mono text-xs">03</span>
+                        <h3 class="font-display font-bold text-base-content text-base md:text-lg">
                           Discoverability + Trust
                         </h3>
                       </div>
-                      <p class="mt-1 text-xs text-base-content/70">
-                        Couldn't find the page. And if you did, nothing signaled whether it was
-                        still true.
-                      </p>
+                      <span class="badge badge-info font-mono text-xs font-semibold">SPLIT</span>
                     </div>
+                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+                      <div class="rounded-lg bg-base-200/50 p-3">
+                        <p
+                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
+                        >
+                          Pre-AI Baseline
+                        </p>
+                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
+                          Finding the right page was needle-in-a-haystack. And when found, nothing
+                          signaled whether it was current truth or 3-year-old dead fiction.
+                        </p>
+                      </div>
+                      <div class="rounded-lg border border-info/30 bg-info/5 p-3">
+                        <div
+                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-info font-semibold"
+                        >
+                          <span>With Generative AI</span>
+                          <span>Verdict: Split</span>
+                        </div>
+                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
+                          <strong>Discoverability is solved</strong>: vector RAG &amp; hybrid search
+                          retrieve context in milliseconds. <strong>Trust is broken</strong>: agents
+                          swallow stale docs with 100% confidence.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
-                    <div
-                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
-                    >
-                      <div class="flex items-center gap-3">
-                        <span class="badge badge-neutral font-mono text-xs">4</span>
-                        <h3 class="font-display font-bold text-base-content">
+                  <!-- Mode 4: High Maintenance Cost -->
+                  <div
+                    class="kb-card rounded-box border-2 border-error/40 bg-error/5 p-4 transition-all"
+                  >
+                    <div class="flex items-center justify-between border-b border-error/20 pb-2.5">
+                      <div class="flex items-center gap-2.5">
+                        <span class="badge badge-error font-mono text-xs text-error-content"
+                          >04</span
+                        >
+                        <h3 class="font-display font-bold text-error text-base md:text-lg">
                           High Maintenance Cost
                         </h3>
                       </div>
-                      <p class="mt-1 text-xs text-base-content/70">
-                        Low initial drafting effort, exponential maintenance burden as code evolved.
-                      </p>
+                      <span class="badge badge-error font-mono text-xs font-bold animate-pulse"
+                        >AMPLIFIED</span
+                      >
+                    </div>
+                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
+                      <div class="rounded-lg bg-base-200/50 p-3">
+                        <p
+                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
+                        >
+                          Pre-AI Baseline
+                        </p>
+                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
+                          Low initial drafting effort, exponential maintenance burden as code
+                          evolved. Docs decayed silently with zero compiler error or CI signal.
+                        </p>
+                      </div>
+                      <div class="rounded-lg border border-error/30 bg-error/10 p-3">
+                        <div
+                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-error font-bold"
+                        >
+                          <span>With Generative AI</span>
+                          <span>Verdict: Amplified</span>
+                        </div>
+                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
+                          Generation outpaces verification. AI can generate 10,000 words in seconds,
+                          flooding repositories with unverified prose. The verification lag has
+                          become catastrophic.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <!-- Scroll cue -->
+              <a
+                href="#s2-1"
+                data-toc-jump="s2-1"
+                class="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-base-content/40 transition-colors hover:text-primary"
+                aria-label="Scroll to next section"
+              >
+                <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em]">scroll</span>
+                <svg
+                  class="animate-bounce motion-reduce:animate-none"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </a>
             </section>
 
             <!-- ============================================================
@@ -713,94 +839,54 @@
               </div>
             </section>
 
-            <!-- S2.2 · The Triage & Moat Inversion -->
+            <!-- S2.2 · The Moat Inversion -->
             <section
               id="s2-2"
-              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-20 md:px-16 lg:px-24"
               data-section="2"
               data-section-title="What Has Changed with AI"
               data-beat="S2.2"
-              data-assertion="Of the four, AI solved one outright, left one standing, split one down the middle, and made the last one worse."
+              data-assertion="The Moat Inversion: Training data density predicts snippet skill, not repository engineering. The languages with the largest corpuses (JS/TS) fail hardest on repo-shaped tasks."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
                 <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
-                  S2.2 · The Re-Score
+                  S2.2 · The Moat Inversion
                 </p>
 
                 <h2
                   class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
                 >
-                  The Triage &amp; The Moat Inversion
+                  The Moat Inversion
                 </h2>
 
-                <!-- The Scorecard Table -->
-                <div class="mt-6 overflow-x-auto rounded-box border border-base-300 bg-base-100">
-                  <table class="table table-sm md:table-md">
-                    <thead class="bg-base-200/60 font-mono text-xs text-base-content/60">
-                      <tr>
-                        <th>Failure Mode</th>
-                        <th>Before AI</th>
-                        <th>With AI</th>
-                        <th>Verdict</th>
-                      </tr>
-                    </thead>
-                    <tbody class="text-xs md:text-sm">
-                      <tr class="hover:bg-base-200/30">
-                        <td class="font-semibold">Protectionism</td>
-                        <td class="text-base-content/70">
-                          Undocumented system was personal leverage
-                        </td>
-                        <td>Data density predicts snippet skill, not engineering</td>
-                        <td>
-                          <span class="badge badge-warning font-mono font-semibold">HOLDING</span>
-                        </td>
-                      </tr>
-                      <tr class="hover:bg-base-200/30">
-                        <td class="font-semibold">Champion Tax</td>
-                        <td class="text-base-content/70">Unpaid work nobody had time for</td>
-                        <td>Drafting is nearly free; zero blank-page barrier</td>
-                        <td>
-                          <span class="badge badge-success font-mono font-semibold">SOLVED</span>
-                        </td>
-                      </tr>
-                      <tr class="hover:bg-base-200/30">
-                        <td class="font-semibold">Discoverability + Trust</td>
-                        <td class="text-base-content/70">Couldn't find the page</td>
-                        <td>Retrieval finds it; nothing says if it's true</td>
-                        <td><span class="badge badge-info font-mono font-semibold">SPLIT</span></td>
-                      </tr>
-                      <tr class="hover:bg-base-200/30">
-                        <td class="font-semibold">Maintenance Cost</td>
-                        <td class="text-base-content/70">Docs rotted, updating was manual</td>
-                        <td>Generation outpaces verification; flood of stale content</td>
-                        <td>
-                          <span class="badge badge-error font-mono font-semibold">AMPLIFIED</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <p
+                  class="mt-3 text-base font-light leading-relaxed text-base-content/80 md:text-lg"
+                >
+                  AI training data density predicts snippet syntax fluency, not multi-file
+                  repository engineering. Where knowledge is structured and repo-shaped, the moat
+                  holds.
+                </p>
 
-                <!-- The Moat Inversion Chart -->
-                <div class="mt-8 rounded-box border border-base-300 bg-base-200/50 p-6">
+                <!-- The Moat Inversion Chart Card -->
+                <div class="mt-8 rounded-box border border-base-300 bg-base-200/50 p-6 md:p-8">
                   <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
                     <div>
-                      <h3 class="font-display text-base font-bold text-base-content">
-                        The Moat Inversion: Training Corpus Size vs. SWE-Bench Resolve Rate
+                      <h3 class="font-display text-base md:text-lg font-bold text-base-content">
+                        Training Corpus Size vs. Multi-SWE-bench Issue Resolution Rate
                       </h3>
                       <p class="text-xs text-base-content/60">
                         Multi-SWE-bench: 1,632 human-validated real GitHub repository issues across
                         7 languages
                       </p>
                     </div>
-                    <span class="badge badge-outline font-mono text-[0.65rem]"
+                    <span class="badge badge-outline font-mono text-[0.65rem] shrink-0"
                       >Claude 3.7 Sonnet</span
                     >
                   </div>
 
-                  <div class="mt-6 space-y-3 font-mono text-xs">
+                  <div class="mt-6 space-y-3.5 font-mono text-xs">
                     <!-- Python -->
                     <div>
                       <div class="flex justify-between text-base-content/80">
@@ -872,13 +958,68 @@
                     </div>
                   </div>
 
-                  <p class="mt-4 text-xs italic text-base-content/60">
-                    &ldquo;TS and JS consistently yield the lowest resolved rates despite comprising
-                    617 GB of training data. Density predicts snippet skill, not repo-shaped work.
-                    Your moat is where work is repo-shaped.&rdquo;
-                  </p>
+                  <!-- 3 Key Findings Grid -->
+                  <div
+                    class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3 border-t border-base-300/60 pt-4"
+                  >
+                    <div class="rounded bg-base-100 p-3">
+                      <p
+                        class="font-mono text-[0.65rem] uppercase tracking-wider text-error font-semibold"
+                      >
+                        The Snippet Paradox
+                      </p>
+                      <p class="mt-1 text-xs text-base-content/70 leading-relaxed">
+                        617 GB of JS/TS web training data creates an illusion of mastery on single
+                        files, but performance collapses on multi-file repos.
+                      </p>
+                    </div>
+                    <div class="rounded bg-base-100 p-3">
+                      <p
+                        class="font-mono text-[0.65rem] uppercase tracking-wider text-warning font-semibold"
+                      >
+                        The Structural Moat
+                      </p>
+                      <p class="mt-1 text-xs text-base-content/70 leading-relaxed">
+                        COBOL has 0 GB in The Stack table yet beats JS/TS pass rates. Rigorous,
+                        structured repository discipline resists hallucination.
+                      </p>
+                    </div>
+                    <div class="rounded bg-base-100 p-3">
+                      <p
+                        class="font-mono text-[0.65rem] uppercase tracking-wider text-primary font-semibold"
+                      >
+                        The Core Takeaway
+                      </p>
+                      <p class="mt-1 text-xs text-base-content/70 leading-relaxed">
+                        High-value knowledge bases don&rsquo;t teach syntax — they supply
+                        architectural boundaries and invariants that AI cannot guess.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              <!-- Scroll cue -->
+              <a
+                href="#s2-3"
+                data-toc-jump="s2-3"
+                class="absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-base-content/40 transition-colors hover:text-primary"
+                aria-label="Scroll to next section"
+              >
+                <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em]">scroll</span>
+                <svg
+                  class="animate-bounce motion-reduce:animate-none"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </a>
             </section>
 
             <!-- S2.3 · State of the Art -->
