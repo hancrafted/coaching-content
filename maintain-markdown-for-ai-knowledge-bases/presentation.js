@@ -599,10 +599,10 @@ registerActivate("s1-1", (reduced) => {
 function hubSpokeMarkup() {
   return `
     <svg
-      viewBox="0 0 900 460"
+      viewBox="0 0 800 480"
       role="img"
-      aria-label="Hub-and-spoke diagram: one markdown file at the centre with spokes radiating out to Context, Knowledge, and Instruction."
-      class="hub-spoke mx-auto block h-auto max-h-[50vh] w-full max-w-4xl"
+      aria-label="A markdown document at the center radiating outward to Context, Knowledge, and Instruction systems."
+      class="hub-spoke isolate mx-auto block h-auto max-h-[55vh] w-full max-w-4xl"
     >
       <defs>
         <marker
@@ -665,7 +665,7 @@ function hubSpokeMarkup() {
         <path d="M 360 138 L 540 138" class="stroke-base-200" stroke-width="1" />
         <circle cx="376" cy="122" r="3.5" class="fill-primary/60" />
         <circle cx="388" cy="122" r="3.5" class="fill-accent/60" />
-        <text x="402" y="126" class="fill-base-content/60 font-mono text-[11px] font-medium">document.md</text>
+        <text x="402" y="126" class="fill-base-content/80 font-mono text-[11px] font-semibold">onboarding.md</text>
 
         <!-- Planted frontmatter block (deliberately unexplained) -->
         <rect
@@ -678,8 +678,8 @@ function hubSpokeMarkup() {
           stroke-width="1"
         />
         <text x="382" y="163" class="fill-base-content/40 font-mono text-[9px]">---</text>
-        <text x="382" y="176" class="fill-base-content/75 font-mono text-[9.5px]">type: guide</text>
-        <text x="382" y="189" class="fill-base-content/75 font-mono text-[9.5px]">stale_after: 2026-12-01</text>
+        <text x="382" y="176" class="fill-base-content/75 font-mono text-[9.5px]">type: Playbook</text>
+        <text x="382" y="189" class="fill-base-content/75 font-mono text-[9.5px]">stale_after: 2025-07-01</text>
         <text x="382" y="202" class="fill-base-content/40 font-mono text-[9px]">---</text>
 
         <!-- Document body lines -->
@@ -789,10 +789,10 @@ registerActivate("s2-1", (reduced) => {
 function divergingCurvesMarkup() {
   return `
     <svg
-      viewBox="0 0 900 450"
+      viewBox="40 20 860 410"
       role="img"
       aria-label="Two diverging curves over time: creation effort collapses after day zero while verification effort climbs. Marked at the crossover: where the work moved."
-      class="curves-chart mx-auto block h-auto max-h-[50vh] w-full max-w-4xl"
+      class="curves-chart mx-auto block h-auto max-h-[52vh] w-full max-w-5xl"
     >
       <defs>
         <marker
@@ -884,30 +884,26 @@ function divergingCurvesMarkup() {
         </text>
       </g>
 
-      <!-- Crossover point marker & label -->
-      <g data-crossover-label class="text-primary">
-        <!-- Pulse ring & point -->
-        <circle cx="440" cy="210" r="11" class="fill-primary/20 stroke-primary/50" stroke-width="1.5" />
-        <circle cx="440" cy="210" r="5" class="fill-base-100 stroke-primary" stroke-width="2.5" />
-
-        <!-- Leader dashed line -->
-        <line x1="440" y1="172" x2="440" y2="198" class="stroke-primary" stroke-width="1.5" stroke-dasharray="2 2" />
-
-        <!-- Badge pill -->
+      <!-- Crossover marker & label (arrives last via JS) -->
+      <g
+        data-crossover
+        class="effort-crossover text-base-content opacity-0 transition-all duration-700 ease-out"
+      >
+        <circle cx="440" cy="210" r="6" class="fill-primary stroke-base-100" stroke-width="2" />
         <rect
-          x="345"
-          y="138"
-          width="190"
-          height="34"
-          rx="17"
-          class="fill-base-100 stroke-primary shadow-lg"
-          stroke-width="2"
+          x="455"
+          y="188"
+          width="165"
+          height="32"
+          rx="6"
+          class="fill-base-200/90 stroke-base-300"
+          stroke-width="1"
         />
         <text
-          x="440"
-          y="160"
+          x="537"
+          y="208"
           text-anchor="middle"
-          class="fill-primary font-mono text-[11.5px] font-bold uppercase tracking-wider"
+          class="fill-primary font-mono text-[11px] font-bold tracking-wide"
         >
           where the work moved
         </text>
@@ -915,42 +911,58 @@ function divergingCurvesMarkup() {
     </svg>`;
 }
 
-document.querySelectorAll("[data-curves]").forEach((host) => {
-  host.innerHTML = divergingCurvesMarkup();
-});
-
-function playCurves(svg, reduced) {
-  const pathCreation = svg.querySelector("[data-curve='creation']");
-  const pathVerification = svg.querySelector("[data-curve='verification']");
-
-  if (reduced) {
-    if (pathCreation) pathCreation.style.strokeDashoffset = "0";
-    if (pathVerification) pathVerification.style.strokeDashoffset = "0";
-    svg.classList.add("curves-on");
-    return;
-  }
-
-  [pathCreation, pathVerification].forEach((path) => {
-    if (!path) return;
-    const len = Math.ceil(path.getTotalLength ? path.getTotalLength() : 820);
-    path.style.strokeDasharray = `${len}`;
-    path.style.strokeDashoffset = `${len}`;
-    path.style.transition = "stroke-dashoffset 1.3s cubic-bezier(0.4, 0, 0.2, 1)";
-  });
-
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      if (pathCreation) pathCreation.style.strokeDashoffset = "0";
-      if (pathVerification) pathVerification.style.strokeDashoffset = "0";
-    }, 150);
-
-    setTimeout(() => {
-      svg.classList.add("curves-on");
-    }, 1500);
+function mountCurves() {
+  document.querySelectorAll("[data-curves]").forEach((host) => {
+    host.innerHTML = divergingCurvesMarkup();
   });
 }
 
-// S3.1 — heading lines fade up, then the curves draw in and the crossover arrives.
+mountCurves();
+
+function playCurves(svg, reduced) {
+  if (reduced) {
+    svg.querySelectorAll("[data-curve]").forEach((p) => {
+      p.style.strokeDashoffset = "0";
+    });
+    const cross = svg.querySelector("[data-crossover]");
+    if (cross) cross.classList.remove("opacity-0");
+    return;
+  }
+
+  const creation = svg.querySelector('[data-curve="creation"]');
+  const verification = svg.querySelector('[data-curve="verification"]');
+  const crossover = svg.querySelector("[data-crossover]");
+
+  if (creation) {
+    const len = Number(creation.dataset.targetLength) || 820;
+    creation.style.strokeDasharray = `${len}`;
+    creation.style.strokeDashoffset = `${len}`;
+  }
+  if (verification) {
+    const len = Number(verification.dataset.targetLength) || 820;
+    verification.style.strokeDasharray = `${len}`;
+    verification.style.strokeDashoffset = `${len}`;
+  }
+
+  requestAnimationFrame(() => {
+    if (creation) {
+      creation.style.transition = "stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1)";
+      creation.style.strokeDashoffset = "0";
+    }
+    if (verification) {
+      verification.style.transition = "stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1)";
+      verification.style.strokeDashoffset = "0";
+    }
+  });
+
+  if (crossover) {
+    setTimeout(() => {
+      crossover.classList.remove("opacity-0");
+    }, 1200);
+  }
+}
+
+// S3.1 — heading lines fade up, then curves draw and crossover label reveals last.
 registerActivate("s3-1", (reduced) => {
   const beat = document.getElementById("s3-1");
   if (!beat) return;
@@ -959,28 +971,17 @@ registerActivate("s3-1", (reduced) => {
   if (svg) playCurves(svg, reduced);
 });
 
-/*
- * S4.1 — the effort Venn. One drawing used twice: section 4 mounts it with
- * emphasis "establish" to set the colour language, and section 9 (ticket 08)
- * re-renders the same component with emphasis "human" — human region lit,
- * machine and AI dimmed. Every [data-venn] element gets the drawing; its
- * data-venn-emphasis attribute picks the state.
+/* ------------------------------------------------------------------ *
+ * Section 4 — The Effort Venn (and section 9 close)
  *
- * The geometry carries the argument. The human circle is visibly the largest,
- * and AI is not a circle of its own: it is the lens where the two parent
- * circles overlap, produced by mix-blend-multiply inside the svg's isolated
- * stacking context rather than painted as a flat third fill — the ambiguity
- * emerges from the geometry, and both parents are semantic tokens so the
- * blend re-skins across themes. The lens's only label is a question mark
- * (accent); its boundary is a dashed accent outline — provisional territory,
- * and the same treatment the spec names as the fallback should the blend
- * ever muddy in a dark theme.
- *
- * Machine circle: c(290,280) r160. Human circle: c(535,280) r235. Their
- * intersection tips sit at (352, 132.5) and (352, 427.5) — the lens path
- * below traces the human circle's left arc down, then the machine circle's
- * right arc back up.
- */
+ * Authored once with effortVennMarkup(emphasis):
+ *   emphasis = "establish" (section 4): all three regions render at
+ *     equal weight, with the ? in accent representing the ambiguous
+ *     overlap where AI helps but verification remains human.
+ *   emphasis = "human" (section 9): re-renders the same drawing with
+ *     machine and AI dimmed. Every [data-venn] element gets the drawing; its
+ *     data-venn-emphasis attribute picks the state.
+ * ------------------------------------------------------------------ */
 
 const VENN_LENS = "M 352 132.5 A 235 235 0 0 0 352 427.5 A 160 160 0 0 0 352 132.5 Z";
 
@@ -993,7 +994,7 @@ function effortVennMarkup(emphasis) {
       viewBox="110 25 680 510"
       role="img"
       aria-label="Three-region Venn: what a machine can check, what AI can help with, and what only a human can check. The human region is drawn largest."
-      class="venn isolate mx-auto block h-auto max-h-[48vh] w-full max-w-3xl"
+      class="venn isolate mx-auto block h-auto max-h-[56vh] w-full max-w-4xl"
     >
       <defs>
         <pattern
@@ -1054,8 +1055,14 @@ function effortVennMarkup(emphasis) {
           fill="url(#venn-hatch-${emphasis})"
           class="stroke-accent/70"
         ></path>
-        <text data-venn-step="4" x="375" y="252" text-anchor="middle"
-          class="fill-accent font-display text-[72px] font-bold">?</text>
+        <text data-venn-step="4" x="375" y="180" text-anchor="middle"
+          class="fill-accent font-mono text-[13px] font-bold uppercase tracking-[0.25em]">AI</text>
+        <g data-venn-step="4">
+          <text x="350" y="248" text-anchor="end"
+            class="fill-accent font-mono text-[26px] font-extrabold tracking-wider">AI</text>
+          <text x="366" y="254" text-anchor="start"
+            class="fill-accent font-display text-[64px] font-bold leading-none">?</text>
+        </g>
         <g data-venn-step="5">
           <text x="373" y="298" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">fact-check</text>
           <text x="373" y="324" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">hard numbers</text>
@@ -1065,18 +1072,21 @@ function effortVennMarkup(emphasis) {
     </svg>`;
 }
 
-document.querySelectorAll("[data-venn]").forEach((host) => {
-  host.innerHTML = effortVennMarkup(host.dataset.vennEmphasis || "establish");
-});
+function mountVenns() {
+  document.querySelectorAll("[data-venn]").forEach((host) => {
+    host.innerHTML = effortVennMarkup(host.dataset.vennEmphasis || "establish");
+  });
+}
 
-/**
- * Stagger the Venn's arrival — machine first (the settled part), the human
- * circle second (the big arrival), the question mark last. Reduced motion
- * skips the stagger; the reduced-motion block in animation.css already holds
- * every step at its final, fully legible state.
- */
-function playVenn(svg, reduced, { delay = 350, step = 300 } = {}) {
-  if (!reduced) {
+mountVenns();
+
+function playVenn(svg, reduced, { delay = 100, step = 140 } = {}) {
+  if (reduced) {
+    svg.classList.add("venn-on");
+    return;
+  }
+  const wasOn = svg.classList.contains("venn-on");
+  if (!wasOn) {
     svg.querySelectorAll("[data-venn-step]").forEach((el) => {
       el.style.transitionDelay = `${delay + Number(el.dataset.vennStep) * step}ms`;
     });
@@ -1096,44 +1106,82 @@ registerActivate("s4-1", (reduced) => {
 /* ------------------------------------------------------------------ *
  * Frontmatter Block Component (Sections 5, 6, 7)
  *
- * Authored once with the complete OKF v0.2 field set.
- * Designed as a display element, not a code block.
- * Mode determines visibility and annotations:
- *   - "section-5": only sources and stale_after
- *   - "section-6": full field set with who-supplies annotations
- *   - "section-7": full field set with configured sentence highlighting
+ * In Section 5: Renders onboarding.md in an IDE editor treatment
+ * with raw markdown syntax, --- frontmatter delimiters, and the body.
+ * In Section 6: Full OKF 0.2 field set with who-supplies annotations.
+ * In Section 7: Highlights stale_after and the configured operator sentence.
  * ------------------------------------------------------------------ */
 
 function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {}) {
-  const isS5 = mode === "section-5";
+  if (mode === "section-5") {
+    return `
+      <div class="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-md font-mono">
+        <!-- IDE Editor Tab Bar -->
+        <div class="flex items-center justify-between border-b border-base-300 bg-base-200/80 px-4 py-2.5 text-xs">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 mr-2" aria-hidden="true">
+              <span class="h-2.5 w-2.5 rounded-full bg-error/60"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-warning/60"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-success/60"></span>
+            </div>
+            <div class="flex items-center gap-1.5 rounded-t-md border-t-2 border-primary bg-base-100 px-3 py-1 font-medium text-base-content">
+              <span class="text-primary font-bold text-xs">M↓</span>
+              <span class="font-semibold">onboarding.md</span>
+            </div>
+          </div>
+          <span class="badge badge-ghost badge-xs font-mono text-[10px] text-base-content/50">docs/handbook</span>
+        </div>
 
+        <!-- Raw Markdown Content imitating IDE editor with line numbers -->
+        <div class="p-4 text-[11px] sm:text-xs leading-relaxed overflow-x-auto bg-base-100">
+          <table class="w-full border-collapse font-mono">
+            <tbody>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none w-6">1</td><td class="text-primary/70 font-bold">---</td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">2</td><td><span class="text-primary font-medium">type</span>: <span class="text-base-content/80">Playbook</span></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">3</td><td><span class="text-primary font-medium">title</span>: <span class="text-base-content/80">Onboarding a new employee</span></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">4</td><td><span class="text-primary font-medium">sources</span>:</td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">5</td><td class="pl-2">  - <span class="text-accent font-medium">id</span>: <span class="text-base-content/70">people-ops-handbook</span></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">6</td><td class="pl-2">    <span class="text-accent font-medium">resource</span>: <span class="text-primary/90 underline">https://intranet.example.com/people-ops/handbook#onboarding</span></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">7</td><td class="pl-2">    <span class="text-accent font-medium">title</span>: <span class="text-base-content/70">People Ops handbook, section 4</span></td></tr>
+              <tr class="${activeField === "stale_after" ? "bg-warning/10 ring-1 ring-warning" : ""}"><td class="pr-3 text-right text-base-content/30 select-none">8</td><td><span class="text-primary font-medium">stale_after</span>: <span class="text-warning font-bold">2025-07-01T00:00:00Z</span></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">9</td><td class="text-primary/70 font-bold">---</td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">10</td><td></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">11</td><td class="font-bold text-base-content text-xs sm:text-sm"># Onboarding a new employee</td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">12</td><td></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">13</td><td class="font-semibold text-base-content/85">## Before day one</td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">14</td><td></td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">15</td><td class="text-base-content/70">1. Hiring manager files equipment request 5 days ahead: laptop, badge.</td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">16</td><td class="text-base-content/70">2. People Ops opens accounts: email, chat, payroll run closing on 20th.</td></tr>
+              <tr><td class="pr-3 text-right text-base-content/30 select-none">17</td><td class="text-base-content/70">3. Hiring manager names buddy, books 30-min coffee on day one.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  }
+
+  // Section 6 & 7: OKF 0.2 full card
   return `
     <div class="frontmatter-card rounded-2xl border border-base-300 bg-base-200/50 p-5 md:p-6 shadow-sm">
       <div class="mb-4 flex items-center justify-between border-b border-base-300/70 pb-3">
         <div class="flex items-center gap-2">
           <span class="inline-block h-2.5 w-2.5 rounded-full bg-primary/70"></span>
-          <span class="font-mono text-xs font-semibold text-base-content/80">document.md</span>
+          <span class="font-mono text-xs font-semibold text-base-content/80">onboarding.md</span>
           <span class="font-mono text-[10px] text-base-content/40">frontmatter</span>
         </div>
         <span class="badge badge-ghost badge-xs font-mono text-[10px] tracking-wider text-base-content/60">OKF v0.2</span>
       </div>
 
       <div class="space-y-3 font-mono text-xs md:text-sm">
-        ${
-          !isS5
-            ? `
         <!-- type -->
         <div data-fm-field="type" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
           <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
             <div>
               <span class="text-base-content/50 uppercase tracking-wider text-[10px]">type:</span>
-              <span class="font-semibold text-base-content ml-2">guide</span>
+              <span class="font-semibold text-base-content ml-2">Playbook</span>
             </div>
             ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: author chooses category</span>` : ""}
           </div>
-        </div>`
-            : ""
-        }
+        </div>
 
         <!-- sources -->
         <div data-fm-field="sources" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
@@ -1145,15 +1193,15 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
             <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-1">
               <div>
                 <span class="text-base-content/50 text-[11px]">resource:</span>
-                <span class="font-medium text-primary ml-1 break-all">https://internal.corp/spec/v2</span>
+                <span class="font-medium text-primary ml-1 break-all">https://intranet.example.com/people-ops/handbook#onboarding</span>
               </div>
               <div>
                 <span class="text-base-content/50 text-[11px]">id:</span>
-                <span class="text-base-content/80 ml-1">okf-spec-v2</span>
+                <span class="text-base-content/80 ml-1">people-ops-handbook</span>
               </div>
               <div>
                 <span class="text-base-content/50 text-[11px]">title:</span>
-                <span class="text-base-content/80 ml-1">Core Architecture Specification</span>
+                <span class="text-base-content/80 ml-1">People Ops handbook, section 4</span>
               </div>
             </div>
           </div>
@@ -1164,15 +1212,12 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
           <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
             <div>
               <span class="text-base-content/50 uppercase tracking-wider text-[10px]">stale_after:</span>
-              <span class="font-bold text-primary ml-2">2026-06-01T00:00:00+00:00</span>
+              <span class="font-bold text-primary ml-2">2025-07-01T00:00:00Z</span>
             </div>
             ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human sets review budget</span>` : ""}
           </div>
         </div>
 
-        ${
-          !isS5
-            ? `
         <!-- generated (machine-signed) -->
         <div data-fm-field="generated" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
           <div class="flex flex-col gap-1.5">
@@ -1184,8 +1229,8 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
               ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: machine stamps model & time</span>` : ""}
             </div>
             <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
-              <div><span class="text-base-content/50">by:</span> <span class="text-accent font-medium">claude-3-7-sonnet</span></div>
-              <div><span class="text-base-content/50">at:</span> <span>2026-01-15T09:30:00+00:00</span></div>
+              <div><span class="text-base-content/50">by:</span> <span class="text-accent font-medium">ai:claude-opus-5</span></div>
+              <div><span class="text-base-content/50">at:</span> <span>2025-01-20T09:00:00Z</span></div>
             </div>
           </div>
         </div>
@@ -1201,13 +1246,11 @@ function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {})
               ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human verifies & signs</span>` : ""}
             </div>
             <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
-              <div><span class="text-base-content/50">by:</span> <span class="text-primary font-bold">human:han</span></div>
-              <div><span class="text-base-content/50">at:</span> <span>2026-02-01T14:15:00+00:00</span></div>
+              <div><span class="text-base-content/50">by:</span> <span class="text-primary font-bold">human:m.okonkwo</span></div>
+              <div><span class="text-base-content/50">at:</span> <span>2025-01-22T11:30:00Z</span></div>
             </div>
           </div>
-        </div>`
-            : ""
-        }
+        </div>
       </div>
     </div>`;
 }
