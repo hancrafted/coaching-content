@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en" data-theme="corporate" class="h-full scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Apply the saved theme before first paint to avoid a flash of the default theme.
+      The storage key is shared with the sibling ai-token-economy-101 deck on purpose:
+      a theme picked on either deck carries across both.
+    -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem("token-economy-theme");
+        if (savedTheme) {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
+      } catch (e) {
+        /* localStorage unavailable — fall back to the default theme */
+      }
+    </script>
+
+    <title>Maintain markdown for AI knowledge bases</title>
+    <meta
+      name="description"
+      content="AI collapsed the cost of writing documentation and raised the cost of verifying it. A 20-minute look at what a machine can check, what AI can help with, and what only a human can check."
+    />
+
+    <!-- Open Graph / social embed (image placeholder — see the hero slot note below) -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Maintain markdown for AI knowledge bases" />
+    <meta
+      property="og:description"
+      content="The work moved from writing to verifying. What a machine can check, what AI can help with, and what only a human can check."
+    />
+    <meta property="og:image" content="./assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Maintain markdown for AI knowledge bases" />
+    <meta
+      name="twitter:description"
+      content="The work moved from writing to verifying. What a machine can check, what AI can help with, and what only a human can check."
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="./animation.css" />
+  </head>
+
+  <!--
+    =========================================================================
+    COLOUR LANGUAGE — established here, reused by every later section.
+    -------------------------------------------------------------------------
+      primary                 = HUMAN.    The actor the talk argues is the
+                                          load-bearing one. Used for the human
+                                          region of the Venn, human-signed
+                                          fields, the human pass, and the
+                                          progress/active-state chrome.
+      neutral / base-content  = MACHINE.  Deliberately desaturated — mechanical
+                                          checking is the settled, boring part
+                                          of the argument. Machine passes,
+                                          machine-signed fields, the "resolves
+                                          cleanly" result.
+      accent                  = AI.       The ambiguous middle. AI passes, the
+                                          "?" label on the Venn's AI region,
+                                          generated-by fields.
+
+      secondary is NOT used for any of the three actors. Per ADR FE-001 it
+      renders at markedly lower chroma than the other semantic hues in the
+      default corporate theme (~0.046 vs ~0.12–0.20), so it reads near-gray —
+      unacceptable for the region the talk argues matters most.
+
+      Semantic daisyUI tokens only. This file carries no inline style attributes
+      and no embedded stylesheet block: complex motion lives in ./animation.css,
+      and runtime-animated dimensions are set from presentation.js via
+      element.style with their targets stored in data-* attributes.
+    =========================================================================
+  -->
+  <body class="h-full overflow-hidden bg-base-100 font-sans text-base-content antialiased">
+    <div class="drawer h-full">
+      <input id="toc-drawer" type="checkbox" class="drawer-toggle" />
+
+      <!-- ============ MAIN COLUMN ============ -->
+      <div class="drawer-content flex h-full flex-col overflow-hidden">
+        <!-- Top navbar -->
+        <header
+          class="navbar z-30 min-h-14 shrink-0 border-b border-base-200 bg-base-100/90 px-2 backdrop-blur md:px-4"
+        >
+          <div class="navbar-start gap-1">
+            <label
+              for="toc-drawer"
+              class="btn btn-square btn-ghost btn-sm lg:hidden"
+              aria-label="Open contents"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </label>
+            <a href="../index.html" class="btn btn-ghost btn-sm gap-2 normal-case">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 12L6 8L10 4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Dashboard
+            </a>
+          </div>
+          <div class="navbar-center hidden sm:flex">
+            <span class="font-display text-sm font-semibold tracking-wide md:text-base"
+              >Maintain markdown for AI knowledge bases</span
+            >
+          </div>
+          <div class="navbar-end gap-2">
+            <!-- Theme picker injected by presentation.js -->
+            <div id="theme-picker"></div>
+          </div>
+        </header>
+
+        <!-- Mobile progress bar (the desktop rail carries its own) -->
+        <div class="h-1 shrink-0 bg-base-200 lg:hidden">
+          <div
+            id="progress-mobile"
+            class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+          ></div>
+        </div>
+
+        <!-- Rail + tower -->
+        <div
+          class="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[19rem_1fr] lg:grid-rows-[minmax(0,1fr)]"
+        >
+          <!-- Desktop sticky rail -->
+          <aside
+            id="toc-rail"
+            class="hidden min-h-0 overflow-y-auto border-r border-base-200 bg-base-200/40 lg:flex lg:flex-col"
+          >
+            <div class="border-b border-base-200 p-5">
+              <p class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50">
+                Contents
+              </p>
+              <div class="mt-3 h-1 overflow-hidden rounded-full bg-base-300">
+                <div
+                  id="progress-desktop"
+                  class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+                ></div>
+              </div>
+            </div>
+            <nav id="toc-desktop" class="flex-1 p-3" aria-label="Table of contents"></nav>
+          </aside>
+
+          <!--
+            The scroll tower. Every direct child .beat section is a beat; the TOC,
+            the accordion grouping, the progress bars, arrow-key stepping and the
+            deep-link hashes are all derived at runtime from the data-* attributes
+            below, so adding or removing a beat is a one-block edit.
+
+            No CSS scroll-snap is used anywhere on this page — free scrolling is
+            preserved for the reader who opens the shared link after the talk.
+          -->
+          <main id="tower" class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
+            <!-- ========== SECTION 1 — Opening ========== -->
+            <!-- S1.1 · HERO — the only finished section in this ticket -->
+            <section
+              id="s1-1"
+              class="beat relative z-0 flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="1"
+              data-section-title="Opening"
+              data-beat="S1.1"
+              data-assertion="AI collapsed the cost of writing documentation and raised the cost of verifying it. The work moved."
+            >
+              <!--
+                HERO BACKDROP — and the hero image slot.
+
+                No image is selected, generated or borrowed by the implementation:
+                the background is a slot the presenter fills. Until it is filled,
+                the backdrop below is built entirely from semantic theme tokens so
+                an unfilled slot reads as a designed surface rather than as broken.
+
+                To fill the slot, drop the asset at:
+                    ./assets/hero.webp
+                    16:9, at least 1920×1080, and legible after desaturation
+                and add it as the first child of this layer:
+                    <img src="./assets/hero.webp" alt=""
+                         class="absolute inset-0 h-full w-full object-cover object-center
+                                saturate-[0.45] contrast-125" />
+                The scrim below it already fades to base-100, so the gradient layers
+                keep working unchanged once the image is in place.
+
+                The section carries `relative z-0` deliberately: per ADR FE-001 a
+                `-z-10` child only stays inside this section's stacking context if
+                the section establishes one, and `relative` alone does not.
+              -->
+              <div
+                class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+                aria-hidden="true"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-br from-primary/15 via-base-100 to-accent/15"
+                ></div>
+                <div class="hero-glow absolute inset-0 text-primary"></div>
+                <div class="hero-glow hero-glow--accent absolute inset-0 text-accent"></div>
+                <div class="hero-grid absolute inset-0 text-base-content"></div>
+                <div
+                  class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-base-100 via-base-100/60 to-transparent"
+                ></div>
+              </div>
+
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p
+                  class="mb-6 translate-y-3 font-mono text-xs uppercase tracking-[0.3em] text-primary/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  S1.1 · Opening
+                </p>
+                <h1
+                  class="translate-y-3 font-display text-4xl font-extrabold leading-[1.02] tracking-tight opacity-0 transition-all duration-500 ease-out md:text-6xl lg:text-7xl"
+                  data-reveal
+                >
+                  <span class="block text-base-content">Maintain markdown</span>
+                  <span class="block text-base-content">for AI knowledge bases</span>
+                </h1>
+                <!--
+                  The thesis, and the first application of the colour language:
+                  writing is the half AI took over (accent), verifying is the half
+                  that landed on a human (primary).
+                -->
+                <p
+                  class="mt-10 translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out md:text-xl"
+                  data-reveal
+                >
+                  AI collapsed the cost of <span class="font-medium text-accent">writing</span>
+                  documentation and raised the cost of
+                  <span class="font-medium text-primary">verifying</span> it. The work moved — and
+                  the verifying half is nobody else's job.
+                </p>
+                <p
+                  class="mt-10 translate-y-3 font-mono text-xs uppercase tracking-[0.25em] text-base-content/45 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Han Che
+                </p>
+              </div>
+
+              <!-- Scroll cue -->
+              <a
+                href="#s2-1"
+                data-toc-jump="s2-1"
+                class="absolute inset-x-0 bottom-8 mx-auto flex w-fit items-center gap-2 rounded-full border border-base-300 bg-base-100/70 px-4 py-2 text-xs text-base-content/60 backdrop-blur transition-colors hover:text-primary"
+              >
+                <span class="font-mono uppercase tracking-[0.2em]">Scroll</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 5v14M6 13l6 6 6-6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </a>
+            </section>
+
+            <!--
+              ===================================================================
+              PLACEHOLDER BEATS — sections 2 through 9.
+
+              Each section below is a real, navigable beat with its final id,
+              section number, title and assertion already in place, so the TOC,
+              the progress bar, arrow stepping and hash deep-links all operate on
+              the finished eleven-beat model from this ticket onward.
+
+              The owning ticket replaces everything inside `.beat-inner` and
+              leaves the <section> element's attributes alone.
+              ===================================================================
+            -->
+
+            <!-- ========== SECTION 2 — What a markdown file is ========== -->
+            <section
+              id="s2-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="What a markdown file is"
+              data-beat="S2.1"
+              data-assertion="A text file with nothing mechanical underneath — used for context, knowledge and instruction."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S2.1 · What a markdown file is
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  One file at the centre, three things we ask of it
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  A text file with nothing mechanical underneath. What matters is how and when it is
+                  consumed: as <span class="font-medium">context</span>, as
+                  <span class="font-medium">knowledge</span>, as
+                  <span class="font-medium">instruction</span>.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 05</span>
+                  <span>Hub and spoke, with the unexplained frontmatter block planted here.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 3 — Why this was always hard ========== -->
+            <section
+              id="s3-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="Why this was always hard"
+              data-beat="S3.1"
+              data-assertion="Creation effort collapses after AI; verification effort climbs with volume. The crossover is where the work moved."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S3.1 · Why this was always hard
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  Two curves, and the point where they cross
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  Effort over time, anchored at the day the document reached production. Creation
+                  collapses. Verification climbs with volume.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 06</span>
+                  <span
+                    >Diverging curves, day zero marked, crossover labelled “where the work
+                    moved.”</span
+                  >
+                </div>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 4 — Where the effort goes ========== -->
+            <section
+              id="s4-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="4"
+              data-section-title="Where the effort goes"
+              data-beat="S4.1"
+              data-assertion="What a machine can check, what AI can help with, and what only a human can check."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S4.1 · Where the effort goes
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  Machine, AI, human — and the human region is the biggest
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  This is where the deck's colour language earns its keep:
+                  <span class="font-medium text-base-content/80">machine</span> is deliberately
+                  desaturated, <span class="font-medium text-accent">AI</span> is the ambiguous
+                  middle, and <span class="font-medium text-primary">human</span> is the region the
+                  rest of the talk argues from.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 07</span>
+                  <span>Three-region Venn, three phrases per region, no icons.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 5 — Three passes over one file (three beats) ========== -->
+            <section
+              id="s5-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Three passes over one file"
+              data-beat="S5.1"
+              data-assertion="The machine pass resolves cleanly."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S5.1 · Three passes over one file
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  The machine pass
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  One real frontmatter block, assessed mechanically. It resolves cleanly — and that
+                  is exactly what mechanical checking is good at.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 09</span>
+                  <span>The frontmatter block, first appearance, plus the machine pass.</span>
+                </div>
+              </div>
+            </section>
+
+            <section
+              id="s5-2"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Three passes over one file"
+              data-beat="S5.2"
+              data-assertion="The AI pass returns an answer that itself needs checking."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S5.2 · Three passes over one file
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  The AI pass
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  The same block, read by an AI. The answer comes back amber: useful, fast, and
+                  itself in need of checking.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 09</span>
+                  <span>The AI pass over the same block.</span>
+                </div>
+              </div>
+            </section>
+
+            <section
+              id="s5-3"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="5"
+              data-section-title="Three passes over one file"
+              data-beat="S5.3"
+              data-assertion="The human pass stays open, and is the last thing on screen before the section ends."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S5.3 · Three passes over one file
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  The human pass
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  Is it still true? This one deliberately does not resolve on screen.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 09</span>
+                  <span>The human pass, left visibly unresolved.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 6 — OKF ========== -->
+            <section
+              id="s6-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="6"
+              data-section-title="OKF"
+              data-beat="S6.1"
+              data-assertion="The same block in full, annotated with who supplies each field."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S6.1 · OKF
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  Who supplies which field
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  The same block, grown to its full field set. The machine-signed field and the
+                  human-signed field sit adjacent with identical structure.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 10</span>
+                  <span>Full field set, per-field annotations, link to the OKF specification.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 7 — markdown-harness ========== -->
+            <section
+              id="s7-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="7"
+              data-section-title="markdown-harness"
+              data-beat="S7.1"
+              data-assertion="The signal is in the file; the instruction has to come from you."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S7.1 · markdown-harness
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  The signal is in the file; the instruction has to come from you
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  The machine only checks what it was told to check — and the operator writes that
+                  sentence, not the vendor.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 10</span>
+                  <span>The headline against the literal operator-configured sentence.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 8 — Live demo ========== -->
+            <section
+              id="s8-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="8"
+              data-section-title="Live demo"
+              data-beat="S8.1"
+              data-assertion="The same file and the same question, answered once without the hook and once with."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S8.1 · Live demo
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  Same file, same question, two answers
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  Normally scrolled past during the live run. It is here so that a failed demo does
+                  not cost the talk its load-bearing moment.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 11</span>
+                  <span>Static A/B rescue terminal.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========== SECTION 9 — Close ========== -->
+            <section
+              id="s9-1"
+              class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="9"
+              data-section-title="Close"
+              data-beat="S9.1"
+              data-assertion="Back to the Venn, with the human region lit and the rest dimmed. Nothing new to read."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                  S9.1 · Close
+                </p>
+                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
+                  The same image, with one region lit
+                </h2>
+                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
+                  Section 4's Venn returns — the same drawing, not a second one — with the
+                  <span class="font-medium text-primary">human</span> region highlighted and the
+                  others dimmed.
+                </p>
+                <div
+                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                >
+                  <span class="badge badge-ghost badge-sm font-mono">Ticket 08</span>
+                  <span>The Venn re-rendered with the closing emphasis.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="border-t border-base-200 bg-base-200/40 px-6 py-16 md:px-16 lg:px-24">
+              <div class="mx-auto flex max-w-4xl flex-col gap-2">
+                <p class="font-display font-semibold">Maintain markdown for AI knowledge bases</p>
+                <p class="text-sm text-base-content/60">A talk by Han Che</p>
+                <a href="../index.html" class="link-hover link w-fit text-sm text-primary"
+                  >← Back to dashboard</a
+                >
+              </div>
+            </footer>
+          </main>
+        </div>
+      </div>
+
+      <!-- ============ MOBILE DRAWER (table of contents) ============ -->
+      <div class="drawer-side z-50">
+        <label for="toc-drawer" aria-label="Close contents" class="drawer-overlay"></label>
+        <aside class="flex min-h-full w-72 flex-col bg-base-200">
+          <div class="flex items-center justify-between border-b border-base-300 p-4">
+            <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+              >Contents</span
+            >
+            <label for="toc-drawer" class="btn btn-square btn-ghost btn-xs" aria-label="Close">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </label>
+          </div>
+          <nav
+            id="toc-mobile"
+            class="flex-1 overflow-y-auto p-3"
+            aria-label="Table of contents"
+          ></nav>
+        </aside>
+      </div>
+    </div>
+
+    <script type="module" src="./presentation.js"></script>
+  </body>
+</html>

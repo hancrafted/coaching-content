@@ -1,0 +1,99 @@
+/* =============================================================================
+   Maintain markdown for AI knowledge bases — page-scoped animation stylesheet.
+   -----------------------------------------------------------------------------
+   ADR FE-001 permits custom CSS "for complex animations". Keyframes live here, in
+   a dedicated linked stylesheet, never in a <style> block or an inline style=
+   attribute in index.html. Every colour resolves from `currentColor` — which each
+   element inherits from a semantic Tailwind `text-*` utility in the markup — mixed
+   with `color-mix(in oklab, …, transparent)` rather than hex or rgba(), so the
+   whole surface re-skins with the active daisyUI theme.
+
+   All motion is disabled under prefers-reduced-motion at the bottom of the file,
+   and every element styled here is decorative and carries aria-hidden="true" in
+   the markup.
+============================================================================= */
+
+/* -----------------------------------------------------------------------------
+   S1.1 · Hero backdrop
+   -----------------------------------------------------------------------------
+   The hero background is a slot the presenter fills (see the note in index.html).
+   Until an image is dropped in, these two layers ARE the backdrop: a pair of soft
+   drifting glows plus a fine ruled grid, all built from theme tokens. They also
+   survive the image landing on top of them, because the image sits above as the
+   first child of the same layer and the scrim fades both into base-100.
+
+   Colour comes from the markup:
+     .hero-glow             → text-primary  (human)
+     .hero-glow--accent     → text-accent   (AI)
+     .hero-grid             → text-base-content
+----------------------------------------------------------------------------- */
+
+.hero-glow {
+  background: radial-gradient(
+    55% 55% at 22% 18%,
+    color-mix(in oklab, currentColor 26%, transparent) 0%,
+    color-mix(in oklab, currentColor 8%, transparent) 45%,
+    transparent 72%
+  );
+  animation: hero-drift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.hero-glow--accent {
+  background: radial-gradient(
+    50% 50% at 82% 30%,
+    color-mix(in oklab, currentColor 22%, transparent) 0%,
+    color-mix(in oklab, currentColor 7%, transparent) 48%,
+    transparent 74%
+  );
+  animation: hero-drift-alt 34s ease-in-out infinite alternate;
+}
+
+/* Slow, shallow wander — the backdrop should read as light, never as motion. */
+@keyframes hero-drift {
+  from {
+    transform: translate3d(-2%, -1.5%, 0) scale(1.02);
+  }
+  to {
+    transform: translate3d(3%, 2%, 0) scale(1.08);
+  }
+}
+
+@keyframes hero-drift-alt {
+  from {
+    transform: translate3d(2.5%, 1.5%, 0) scale(1.06);
+  }
+  to {
+    transform: translate3d(-2%, -2%, 0) scale(1.01);
+  }
+}
+
+/* The ruled grid — the "it is only a text file" texture under the title. Faded
+   out towards the bottom so it never competes with the thesis line. */
+.hero-grid {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      color-mix(in oklab, currentColor 7%, transparent) 0 1px,
+      transparent 1px 5.5rem
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in oklab, currentColor 7%, transparent) 0 1px,
+      transparent 1px 5.5rem
+    );
+  mask-image: radial-gradient(120% 90% at 50% 0%, black 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, black 0%, transparent 78%);
+}
+
+/* -----------------------------------------------------------------------------
+   Reduced motion — the backdrop holds still. Nothing here carries content, so
+   the layers stay visible; only their movement stops.
+----------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow,
+  .hero-glow--accent {
+    animation: none;
+    transform: none;
+  }
+}
