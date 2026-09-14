@@ -97,3 +97,60 @@
     transform: none;
   }
 }
+
+/* -----------------------------------------------------------------------------
+   S4.1 · The effort Venn (shared with section 9's close)
+   -----------------------------------------------------------------------------
+   The drawing assembles actor by actor on beat activation: presentation.js
+   stamps a per-step transition-delay on every [data-venn-step] element (its
+   target is held in the data attribute, per ADR FE-001) and then flips .venn-on
+   on the svg. Circles grow from their own centre (transform-box: fill-box);
+   text groups drift up. Section 9's "human region lit" emphasis is the
+   .venn-lit glow, drawn from currentColor — the circle carries text-primary in
+   the markup — so it re-skins with the theme.
+----------------------------------------------------------------------------- */
+
+.venn [data-venn-step] {
+  opacity: 0;
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+
+.venn circle[data-venn-step] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.92);
+}
+
+.venn g[data-venn-step],
+.venn text[data-venn-step],
+.venn path[data-venn-step] {
+  transform: translateY(8px);
+}
+
+.venn.venn-on [data-venn-step] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Section 9 lights the human circle; the glow resolves from currentColor. */
+.venn-lit {
+  filter: drop-shadow(0 0 28px color-mix(in oklab, currentColor 45%, transparent));
+}
+
+/* -----------------------------------------------------------------------------
+   Reduced motion — every Venn step holds its final, fully legible state; the
+   emphasis dim/lit states still apply, they just stop transitioning.
+----------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .venn [data-venn-step] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .venn [data-venn-actor] {
+    transition: none;
+  }
+}

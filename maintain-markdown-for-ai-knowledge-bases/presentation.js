@@ -457,6 +457,120 @@ registerActivate("s1-1", (reduced) => {
   revealSequence(hero, reduced, { delay: 200, step: 220 });
 });
 
+/*
+ * S4.1 — the effort Venn. One drawing used twice: section 4 mounts it with
+ * emphasis "establish" to set the colour language, and section 9 (ticket 08)
+ * re-renders the same component with emphasis "human" — human region lit,
+ * machine and AI dimmed. Every [data-venn] element gets the drawing; its
+ * data-venn-emphasis attribute picks the state.
+ *
+ * The geometry carries the argument. The human circle is visibly the largest,
+ * and AI is not a circle of its own: it is the lens where the two parent
+ * circles overlap, produced by mix-blend-multiply inside the svg's isolated
+ * stacking context rather than painted as a flat third fill — the ambiguity
+ * emerges from the geometry, and both parents are semantic tokens so the
+ * blend re-skins across themes. The lens's only label is a question mark
+ * (accent); its boundary is a dashed accent outline — provisional territory,
+ * and the same treatment the spec names as the fallback should the blend
+ * ever muddy in a dark theme.
+ *
+ * Machine circle: c(290,280) r160. Human circle: c(535,280) r235. Their
+ * intersection tips sit at (352, 132.5) and (352, 427.5) — the lens path
+ * below traces the human circle's left arc down, then the machine circle's
+ * right arc back up.
+ */
+
+const VENN_LENS = "M 352 132.5 A 235 235 0 0 0 352 427.5 A 160 160 0 0 0 352 132.5 Z";
+
+function effortVennMarkup(emphasis) {
+  const dimmed = emphasis === "human";
+  const dim = dimmed ? " opacity-25" : "";
+  const lit = dimmed ? " venn-lit" : "";
+  return `
+    <svg
+      viewBox="110 25 680 510"
+      role="img"
+      aria-label="Three-region Venn: what a machine can check, what AI can help with, and what only a human can check. The human region is drawn largest."
+      class="venn isolate mx-auto block h-auto max-h-[48vh] w-full max-w-3xl"
+    >
+      <g data-venn-actor="machine" class="text-base-content transition-opacity duration-700${dim}">
+        <circle
+          data-venn-step="0"
+          cx="290" cy="280" r="160"
+          stroke-width="1.5"
+          class="venn-circle fill-base-content/10 stroke-base-content/30"
+        ></circle>
+        <g data-venn-step="1">
+          <text x="225" y="185" text-anchor="middle"
+            class="fill-base-content/50 font-mono text-[11px] uppercase tracking-[0.3em]">machine</text>
+          <text x="215" y="255" text-anchor="middle" class="fill-base-content/55 text-[13px]">reference resolves</text>
+          <text x="215" y="285" text-anchor="middle" class="fill-base-content/55 text-[13px]">file exists</text>
+          <text x="215" y="315" text-anchor="middle" class="fill-base-content/55 text-[13px]">template structure holds</text>
+        </g>
+      </g>
+      <g data-venn-actor="human" class="text-primary transition-opacity duration-700">
+        <circle
+          data-venn-step="2"
+          cx="535" cy="280" r="235"
+          stroke-width="1.5"
+          class="venn-circle mix-blend-multiply fill-primary/20 stroke-primary/50 text-primary${lit}"
+        ></circle>
+        <g data-venn-step="3">
+          <text x="610" y="150" text-anchor="middle"
+            class="fill-primary font-mono text-[11px] uppercase tracking-[0.3em]">human</text>
+          <text x="605" y="242" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">is it still true</text>
+          <text x="605" y="280" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">is it stale</text>
+          <text x="605" y="318" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">does the reference point</text>
+          <text x="605" y="340" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">at the right content</text>
+        </g>
+      </g>
+      <g data-venn-actor="ai" class="text-accent transition-opacity duration-700${dim}">
+        <path
+          data-venn-step="4"
+          d="${VENN_LENS}"
+          stroke-width="1.5"
+          stroke-dasharray="5 7"
+          class="fill-none stroke-accent/60"
+        ></path>
+        <text data-venn-step="4" x="375" y="252" text-anchor="middle"
+          class="fill-accent font-display text-[72px] font-bold">?</text>
+        <g data-venn-step="5">
+          <text x="373" y="298" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">fact-check</text>
+          <text x="373" y="324" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">hard numbers</text>
+          <text x="373" y="350" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">still needs checking</text>
+        </g>
+      </g>
+    </svg>`;
+}
+
+document.querySelectorAll("[data-venn]").forEach((host) => {
+  host.innerHTML = effortVennMarkup(host.dataset.vennEmphasis || "establish");
+});
+
+/**
+ * Stagger the Venn's arrival — machine first (the settled part), the human
+ * circle second (the big arrival), the question mark last. Reduced motion
+ * skips the stagger; the reduced-motion block in animation.css already holds
+ * every step at its final, fully legible state.
+ */
+function playVenn(svg, reduced, { delay = 350, step = 300 } = {}) {
+  if (!reduced) {
+    svg.querySelectorAll("[data-venn-step]").forEach((el) => {
+      el.style.transitionDelay = `${delay + Number(el.dataset.vennStep) * step}ms`;
+    });
+  }
+  svg.classList.add("venn-on");
+}
+
+// S4.1 — heading lines fade up, then the Venn assembles actor by actor.
+registerActivate("s4-1", (reduced) => {
+  const beat = document.getElementById("s4-1");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+  const svg = beat.querySelector(".venn");
+  if (svg) playVenn(svg, reduced);
+});
+
 /* ------------------------------------------------------------------ *
  * Init
  * ------------------------------------------------------------------ */
