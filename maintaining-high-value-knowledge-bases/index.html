@@ -1,0 +1,1581 @@
+<!doctype html>
+<html lang="en" data-theme="corporate" class="h-full scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Apply saved theme before first paint to avoid a flash of the default theme -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem("token-economy-theme");
+        if (savedTheme) {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+        }
+      } catch (e) {
+        /* localStorage unavailable — fall back to default */
+      }
+    </script>
+
+    <title>Maintaining High Value Knowledge Bases — The Trust Horizon in the AI Era</title>
+    <meta
+      name="description"
+      content="All-hands talk scoring four pre-AI knowledge-base failure modes against what AI actually changed: one solved, one holding, one split, and maintenance amplified."
+    />
+
+    <!-- Open Graph / Twitter Meta -->
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Maintaining High Value Knowledge Bases — The Trust Horizon in the AI Era"
+    />
+    <meta
+      property="og:description"
+      content="Of four documentation failure modes, AI solved one, left one holding, split one down the middle, and made the last one worse. A 20-minute field guide."
+    />
+    <meta property="og:image" content="./assets/hero.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Maintaining High Value Knowledge Bases — The Trust Horizon in the AI Era"
+    />
+    <meta
+      name="twitter:description"
+      content="You hired a brilliant freelancer whose first day is every day — and nobody budgeted for trust."
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="./animation.css" />
+  </head>
+
+  <body class="h-full overflow-hidden bg-base-100 text-base-content font-sans antialiased">
+    <div class="drawer h-full">
+      <input id="toc-drawer" type="checkbox" class="drawer-toggle" />
+
+      <!-- ============ MAIN COLUMN ============ -->
+      <div class="drawer-content flex h-full flex-col overflow-hidden">
+        <!-- Top navbar -->
+        <header
+          class="navbar z-30 min-h-14 shrink-0 border-b border-base-200 bg-base-100/90 px-2 backdrop-blur md:px-4"
+        >
+          <div class="navbar-start gap-1">
+            <label
+              for="toc-drawer"
+              class="btn btn-ghost btn-sm btn-square lg:hidden"
+              aria-label="Open contents"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </label>
+            <a href="../index.html" class="btn btn-ghost btn-sm gap-2 normal-case">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M10 12L6 8L10 4" />
+              </svg>
+              Dashboard
+            </a>
+          </div>
+
+          <div class="navbar-center hidden sm:flex">
+            <span class="font-display text-sm font-semibold tracking-wide md:text-base">
+              Maintaining High Value Knowledge Bases
+            </span>
+          </div>
+
+          <div class="navbar-end gap-2">
+            <!-- The ambient Rot Clock — follows through the talk -->
+            <div
+              id="nav-rot"
+              class="tooltip tooltip-bottom hidden items-center gap-2 rounded-full border border-base-300 bg-base-200/60 px-3 py-1 max-sm:hidden"
+              data-tip="Average time an outdated documentation reference remains wrong before being addressed"
+            >
+              <span
+                class="font-mono text-[0.55rem] uppercase tracking-[0.2em] text-base-content/40"
+              >
+                doc rot · lifetime
+              </span>
+              <span
+                id="nav-rot-value"
+                class="font-mono text-xs tabular-nums text-error font-semibold"
+              >
+                4.7 yrs
+              </span>
+            </div>
+            <!-- Theme picker injected by presentation.js -->
+            <div id="theme-picker"></div>
+          </div>
+        </header>
+
+        <!-- Mobile progress bar -->
+        <div class="h-1 shrink-0 bg-base-200 lg:hidden">
+          <div
+            id="progress-mobile"
+            class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+          ></div>
+        </div>
+
+        <!-- Rail + Tower -->
+        <div
+          class="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[19rem_1fr] lg:grid-rows-[minmax(0,1fr)]"
+        >
+          <!-- Desktop sticky rail -->
+          <aside
+            class="hidden min-h-0 overflow-y-auto border-r border-base-200 bg-base-200/40 lg:flex lg:flex-col"
+          >
+            <div class="border-b border-base-200 p-5">
+              <div class="flex items-center justify-between">
+                <p
+                  class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                >
+                  Contents
+                </p>
+                <span class="badge badge-sm badge-outline font-mono text-[0.6rem]"
+                  >20-min Talk</span
+                >
+              </div>
+              <div class="mt-3 h-1 overflow-hidden rounded-full bg-base-300">
+                <div
+                  id="progress-desktop"
+                  class="h-full w-0 bg-primary transition-[width] duration-300 ease-out"
+                ></div>
+              </div>
+            </div>
+            <nav id="toc-desktop" class="flex-1 p-3" aria-label="Table of contents"></nav>
+          </aside>
+
+          <!-- The scroll tower -->
+          <main id="tower" class="min-h-0 flex-1 overflow-y-auto scroll-smooth">
+            <!-- ============================================================
+                 SECTION 1 — What is a knowledge base: recap (~4 min)
+                 ============================================================ -->
+
+            <!-- S1.1 · The Four Jobs of Knowledge Management -->
+            <section
+              id="s1-1"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="1"
+              data-section-title="The Pre-AI Baseline"
+              data-beat="S1.1"
+              data-assertion="A knowledge base has four jobs — capture, curate, retrieve, trust — and only the first three ever get budgeted."
+            >
+              <!-- Ambient hero backdrop -->
+              <div
+                class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-3/5 overflow-hidden"
+                aria-hidden="true"
+              >
+                <img
+                  src="./assets/hero.webp"
+                  alt=""
+                  class="absolute inset-0 h-full w-full object-cover object-top opacity-30 saturate-[0.35] contrast-125"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-b from-base-100/50 via-base-100/80 to-base-100"
+                ></div>
+              </div>
+
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <div class="flex items-center gap-3">
+                  <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                    S1.1 · The Foundation
+                  </p>
+                  <span class="badge badge-sm badge-ghost font-mono text-[0.65rem]"
+                    >AI All-Hands</span
+                  >
+                </div>
+
+                <h1
+                  class="mt-4 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl"
+                >
+                  <span class="block text-base-content">Maintaining High Value</span>
+                  <span class="block text-primary">Knowledge Bases</span>
+                </h1>
+
+                <p class="mt-8 text-xl font-light leading-relaxed text-base-content/80 md:text-2xl">
+                  A knowledge base has four jobs:
+                  <strong class="font-semibold text-base-content">capture</strong>,
+                  <strong class="font-semibold text-base-content">curate</strong>,
+                  <strong class="font-semibold text-base-content">retrieve</strong>, and
+                  <strong class="font-semibold text-error">trust</strong>. Only the first three ever
+                  get budgeted.
+                </p>
+
+                <p class="mt-3 text-base text-base-content/60">
+                  Trust is the one job nobody staffs — and it is the single reason the first three
+                  exist.
+                </p>
+
+                <!-- Visualization: Four Architectural Columns -->
+                <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  <!-- Pillar 1 -->
+                  <div class="kb-card rounded-box border border-base-300 bg-base-200/50 p-5">
+                    <div class="kb-frame kb-frame--comet text-success" aria-hidden="true"></div>
+                    <div class="flex items-center justify-between">
+                      <span class="font-mono text-xs text-base-content/40">01</span>
+                      <span class="badge badge-success badge-sm font-mono text-[0.65rem]"
+                        >Budgeted</span
+                      >
+                    </div>
+                    <h2 class="mt-3 font-display text-lg font-bold">Capture</h2>
+                    <p class="mt-1 text-xs text-base-content/70">
+                      Authoring, templates, transcripts &amp; initial markdown drafting.
+                    </p>
+                    <div
+                      class="mt-4 border-t border-base-300 pt-3 text-[0.7rem] font-mono text-success"
+                    >
+                      ✓ Tooling funded
+                    </div>
+                  </div>
+
+                  <!-- Pillar 2 -->
+                  <div class="kb-card rounded-box border border-base-300 bg-base-200/50 p-5">
+                    <div class="kb-frame kb-frame--comet text-success" aria-hidden="true"></div>
+                    <div class="flex items-center justify-between">
+                      <span class="font-mono text-xs text-base-content/40">02</span>
+                      <span class="badge badge-success badge-sm font-mono text-[0.65rem]"
+                        >Budgeted</span
+                      >
+                    </div>
+                    <h2 class="mt-3 font-display text-lg font-bold">Curate</h2>
+                    <p class="mt-1 text-xs text-base-content/70">
+                      Taxonomies, hierarchies, tags, collections &amp; folder trees.
+                    </p>
+                    <div
+                      class="mt-4 border-t border-base-300 pt-3 text-[0.7rem] font-mono text-success"
+                    >
+                      ✓ Owners assigned
+                    </div>
+                  </div>
+
+                  <!-- Pillar 3 -->
+                  <div class="kb-card rounded-box border border-base-300 bg-base-200/50 p-5">
+                    <div class="kb-frame kb-frame--comet text-success" aria-hidden="true"></div>
+                    <div class="flex items-center justify-between">
+                      <span class="font-mono text-xs text-base-content/40">03</span>
+                      <span class="badge badge-success badge-sm font-mono text-[0.65rem]"
+                        >Budgeted</span
+                      >
+                    </div>
+                    <h2 class="mt-3 font-display text-lg font-bold">Retrieve</h2>
+                    <p class="mt-1 text-xs text-base-content/70">
+                      Full-text search, vector embeddings, RAG chunks &amp; indexers.
+                    </p>
+                    <div
+                      class="mt-4 border-t border-base-300 pt-3 text-[0.7rem] font-mono text-success"
+                    >
+                      ✓ Multi-million infra
+                    </div>
+                  </div>
+
+                  <!-- Pillar 4: The Ghost Pillar -->
+                  <div
+                    id="pillar-trust"
+                    class="kb-card kb-ghost-pillar rounded-box border-2 border-error/50 bg-error/5 p-5 text-error"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="font-mono text-xs text-error/60">04</span>
+                      <span
+                        class="badge badge-error badge-sm font-mono text-[0.65rem] animate-pulse"
+                      >
+                        0€ Budget
+                      </span>
+                    </div>
+                    <h2 class="mt-3 font-display text-lg font-bold text-error">Trust</h2>
+                    <p class="mt-1 text-xs text-base-content/80">
+                      Currency verification, stale detection &amp; authoritative certification.
+                    </p>
+                    <div
+                      class="mt-4 border-t border-error/20 pt-3 text-[0.7rem] font-mono font-bold text-error"
+                    >
+                      ⚠ Nobody staffed
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ambient Rot Clock in Hero -->
+              <div
+                class="pointer-events-none absolute bottom-24 right-6 select-none text-right md:right-16 lg:right-24"
+              >
+                <p
+                  class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/40"
+                >
+                  avg doc rot lifetime · unstaffed
+                </p>
+                <p
+                  id="hero-rot-counter"
+                  class="mt-1 font-mono text-2xl leading-none tabular-nums text-error/70 md:text-4xl font-bold"
+                >
+                  4.7 years
+                </p>
+              </div>
+
+              <!-- Scroll cue -->
+              <a
+                href="#s1-2"
+                data-toc-jump="s1-2"
+                class="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1 text-base-content/40 transition-colors hover:text-primary"
+                aria-label="Scroll to next section"
+              >
+                <span class="font-mono text-[0.65rem] uppercase tracking-[0.25em]">scroll</span>
+                <svg
+                  class="animate-bounce motion-reduce:animate-none"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </a>
+            </section>
+
+            <!-- S1.2 · The Pre-AI Situation -->
+            <section
+              id="s1-2"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="1"
+              data-section-title="The Pre-AI Baseline"
+              data-beat="S1.2"
+              data-assertion="Everyone in this room has abandoned a wiki, and none of us thought that was our fault."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S1.2 · The Shared Failure
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl lg:text-6xl text-base-content"
+                >
+                  The Confluence Graveyard
+                </h2>
+
+                <p class="mt-6 text-lg font-light leading-relaxed text-base-content/80 md:text-xl">
+                  Everyone in this room has abandoned a wiki, and none of us thought that was our
+                  fault. The shared failure gives us permission to be blunt: when documentation
+                  maintenance is volunteer work, entropy wins 100% of the time.
+                </p>
+
+                <!-- Graveyard Cards -->
+                <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+                  <div
+                    class="kb-card rounded-box border border-dashed border-base-300 bg-base-200/40 p-5 opacity-90 hover:opacity-100"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="badge badge-sm badge-error font-mono text-[0.6rem]"
+                        >Abandoned</span
+                      >
+                      <span class="font-mono text-xs text-base-content/40">1,642d ago</span>
+                    </div>
+                    <h3 class="mt-3 font-display text-base font-bold">
+                      Architecture Overview v1.4
+                    </h3>
+                    <p class="mt-2 text-xs leading-relaxed text-base-content/60">
+                      Author left the company in 2022. References deprecated microservices and dead
+                      Auth endpoints.
+                    </p>
+                    <div
+                      class="mt-4 rounded bg-base-300/40 p-2 font-mono text-[0.65rem] text-error"
+                    >
+                      Status: Rotting quietly
+                    </div>
+                  </div>
+
+                  <div
+                    class="kb-card rounded-box border border-dashed border-base-300 bg-base-200/40 p-5 opacity-90 hover:opacity-100"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="badge badge-sm badge-warning font-mono text-[0.6rem]"
+                        >Slack DM Lore</span
+                      >
+                      <span class="font-mono text-xs text-base-content/40">890d ago</span>
+                    </div>
+                    <h3 class="mt-3 font-display text-base font-bold">
+                      Local Developer Onboarding
+                    </h3>
+                    <p class="mt-2 text-xs leading-relaxed text-base-content/60">
+                      Fails at Step 3 on Apple Silicon. Fix is shared privately in DMs each time a
+                      junior starts.
+                    </p>
+                    <div
+                      class="mt-4 rounded bg-base-300/40 p-2 font-mono text-[0.65rem] text-warning"
+                    >
+                      Status: Disregarded
+                    </div>
+                  </div>
+
+                  <div
+                    class="kb-card rounded-box border border-dashed border-base-300 bg-base-200/40 p-5 opacity-90 hover:opacity-100"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="badge badge-sm badge-neutral font-mono text-[0.6rem]"
+                        >Tribal USP</span
+                      >
+                      <span class="font-mono text-xs text-base-content/40">Live</span>
+                    </div>
+                    <h3 class="mt-3 font-display text-base font-bold">
+                      Production Deploy Checklist
+                    </h3>
+                    <p class="mt-2 text-xs leading-relaxed text-base-content/60">
+                      Never written down. Stored solely in the head of two staff engineers who must
+                      attend every release.
+                    </p>
+                    <div class="mt-4 rounded bg-base-300/40 p-2 font-mono text-[0.65rem] text-info">
+                      Status: Unwritten moat
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Interactive Hand-Raise Action -->
+                <div
+                  class="mt-8 flex flex-col items-center justify-between gap-4 rounded-box border border-base-300 bg-base-200/60 p-5 sm:flex-row"
+                >
+                  <div>
+                    <span class="font-display font-semibold text-base-content"
+                      >Have you written documentation that rotted within 6 months?</span
+                    >
+                    <p id="wiki-hands-label" class="mt-0.5 text-xs text-base-content/60">
+                      Click to raise your hand with the room
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <span id="wiki-hands-stat" class="font-mono text-2xl font-bold text-primary"
+                      >0%</span
+                    >
+                    <button id="wiki-raise-hand-btn" class="btn btn-primary btn-sm gap-2">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path d="M7 11v 6a5 5 0 0 0 10 0v-6M12 2v10" />
+                      </svg>
+                      Raise Hand
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- S1.3 · Why It Was Always Hard: Four Failure Modes -->
+            <section
+              id="s1-3"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="1"
+              data-section-title="The Pre-AI Baseline"
+              data-beat="S1.3"
+              data-assertion="Documentation rot is not folklore about bad teams: 82.3% of the top thousand open-source projects have carried outdated documentation."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S1.3 · The Rubric
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  The Four Failure Modes
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  Documentation rot is not folklore about bad engineering culture. It is an
+                  empirical constant. These four failure modes are our scoring rubric:
+                </p>
+
+                <div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
+                  <!-- Large Evidence Stat -->
+                  <div
+                    class="rounded-box border border-base-300 bg-base-200/50 p-8 text-center lg:col-span-5"
+                  >
+                    <p class="font-mono text-xs uppercase tracking-widest text-base-content/50">
+                      GitHub Top-1,000 Projects
+                    </p>
+                    <div
+                      class="mt-4 font-mono text-6xl font-extrabold text-error tabular-nums md:text-7xl"
+                    >
+                      <span id="s1-3-stat">0</span>%
+                    </div>
+                    <p class="mt-4 text-sm font-medium text-base-content/80">
+                      carried at least one outdated code-element reference in their history
+                    </p>
+                    <p class="mt-3 font-mono text-[0.65rem] text-base-content/40">
+                      Evidence: 658/800 evaluated repositories · doc-cost study
+                    </p>
+                  </div>
+
+                  <!-- The 4 Modes List -->
+                  <div class="space-y-3 lg:col-span-7">
+                    <div
+                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-neutral font-mono text-xs">1</span>
+                        <h3 class="font-display font-bold text-base-content">
+                          Individual Protectionism
+                        </h3>
+                      </div>
+                      <p class="mt-1 text-xs text-base-content/70">
+                        Knowing the undocumented system was personal leverage and job security.
+                      </p>
+                    </div>
+
+                    <div
+                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-neutral font-mono text-xs">2</span>
+                        <h3 class="font-display font-bold text-base-content">Champion Tax</h3>
+                      </div>
+                      <p class="mt-1 text-xs text-base-content/70">
+                        Writing docs was unrewarded volunteer work that nobody had time for.
+                      </p>
+                    </div>
+
+                    <div
+                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-neutral font-mono text-xs">3</span>
+                        <h3 class="font-display font-bold text-base-content">
+                          Discoverability + Trust
+                        </h3>
+                      </div>
+                      <p class="mt-1 text-xs text-base-content/70">
+                        Couldn't find the page. And if you did, nothing signaled whether it was
+                        still true.
+                      </p>
+                    </div>
+
+                    <div
+                      class="rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/40"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-neutral font-mono text-xs">4</span>
+                        <h3 class="font-display font-bold text-base-content">
+                          High Maintenance Cost
+                        </h3>
+                      </div>
+                      <p class="mt-1 text-xs text-base-content/70">
+                        Low initial drafting effort, exponential maintenance burden as code evolved.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================================
+                 SECTION 2 — What has changed with AI (~11 min)
+                 ============================================================ -->
+
+            <!-- S2.1 · The Amnesiac Freelancer -->
+            <section
+              id="s2-1"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="What Has Changed with AI"
+              data-beat="S2.1"
+              data-assertion="You have hired a brilliant freelancer whose first day is every day — and they never say 'this page is wrong.'"
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S2.1 · The Metaphor
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  The Amnesiac Freelancer
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  Carried over from the token-economy talk: you hired a brilliant engineer whose
+                  first day is every day. When directed to the docs, look at the difference between
+                  a human and an agent:
+                </p>
+
+                <!-- Side-by-Side Comparison Panels: The Missing Arrow -->
+                <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <!-- Human Panel -->
+                  <div class="kb-card rounded-box border border-base-300 bg-base-200/50 p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="avatar">
+                        <div
+                          class="w-12 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100"
+                        >
+                          <img src="./assets/freelancer.webp" alt="Human Freelancer" />
+                        </div>
+                      </div>
+                      <div>
+                        <h3 class="font-display text-base font-bold">Human Senior Freelancer</h3>
+                        <p class="font-mono text-[0.65rem] text-base-content/50">
+                          Reads docs with skepticism
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="mt-6 space-y-3">
+                      <div class="rounded bg-base-100 p-3 text-xs font-mono text-base-content/70">
+                        ➔ Context in: <code>"Follow docs/auth.md (Use v1 API)"</code>
+                      </div>
+
+                      <!-- The Active Return Arrow -->
+                      <div
+                        id="s21-human-feedback"
+                        class="flex items-center gap-2 rounded bg-success/15 border border-success/30 p-3 text-xs font-mono text-success transition-all duration-500"
+                      >
+                        <svg
+                          class="kb-return-arrow-live shrink-0"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path d="M9 14L4 9l5-5" />
+                          <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v2.5" />
+                        </svg>
+                        <span
+                          >&laquo; RETURN ARROW: &ldquo;Wait, this page is wrong. v1 is
+                          dead!&rdquo;</span
+                        >
+                      </div>
+
+                      <div
+                        id="s21-human-output"
+                        class="text-xs font-mono text-base-content/50 italic"
+                      >
+                        Stops execution, files issue, protects codebase.
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- AI Agent Panel: The Missing Arrow -->
+                  <div class="kb-card rounded-box border-2 border-error/30 bg-error/5 p-6">
+                    <div class="flex items-center gap-4">
+                      <div class="avatar placeholder">
+                        <div
+                          class="w-12 rounded-full bg-error/20 text-error ring ring-error ring-offset-2 ring-offset-base-100 font-mono font-bold"
+                        >
+                          AI
+                        </div>
+                      </div>
+                      <div>
+                        <h3 class="font-display text-base font-bold text-error">
+                          AI Autonomous Agent
+                        </h3>
+                        <p class="font-mono text-[0.65rem] text-error/70">
+                          100% confidence, zero truth sensor
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="mt-6 space-y-3">
+                      <div class="rounded bg-base-100 p-3 text-xs font-mono text-base-content/70">
+                        ➔ Context in: <code>"Follow docs/auth.md (Use v1 API)"</code>
+                      </div>
+
+                      <!-- THE MISSING ARROW (Dashed Ghost Track) -->
+                      <div
+                        class="kb-missing-arrow-track flex items-center justify-center rounded border border-dashed border-error/40 p-3 text-xs font-mono text-error/60"
+                      >
+                        [ MISSING RETURN ARROW · NO SIGNAL ]
+                      </div>
+
+                      <div
+                        id="s21-ai-feedback"
+                        class="opacity-0 transition-opacity duration-500 text-xs font-mono text-error font-medium"
+                      >
+                        ⚠ Consumed stale doc as truth. Wrote 280 lines of hallucinated code.
+                      </div>
+
+                      <div id="s21-ai-output" class="text-xs font-mono text-base-content/50 italic">
+                        The eye goes looking for the return arrow and fails to find it.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                  <button id="s21-sim-btn" class="btn btn-outline btn-sm font-mono gap-2">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polygon points="5 3 19 12 5 21 5 3" />
+                    </svg>
+                    Simulate Stale Doc Query
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- S2.2 · The Triage & Moat Inversion -->
+            <section
+              id="s2-2"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="What Has Changed with AI"
+              data-beat="S2.2"
+              data-assertion="Of the four, AI solved one outright, left one standing, split one down the middle, and made the last one worse."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S2.2 · The Re-Score
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  The Triage &amp; The Moat Inversion
+                </h2>
+
+                <!-- The Scorecard Table -->
+                <div class="mt-6 overflow-x-auto rounded-box border border-base-300 bg-base-100">
+                  <table class="table table-sm md:table-md">
+                    <thead class="bg-base-200/60 font-mono text-xs text-base-content/60">
+                      <tr>
+                        <th>Failure Mode</th>
+                        <th>Before AI</th>
+                        <th>With AI</th>
+                        <th>Verdict</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-xs md:text-sm">
+                      <tr class="hover:bg-base-200/30">
+                        <td class="font-semibold">Protectionism</td>
+                        <td class="text-base-content/70">
+                          Undocumented system was personal leverage
+                        </td>
+                        <td>Data density predicts snippet skill, not engineering</td>
+                        <td>
+                          <span class="badge badge-warning font-mono font-semibold">HOLDING</span>
+                        </td>
+                      </tr>
+                      <tr class="hover:bg-base-200/30">
+                        <td class="font-semibold">Champion Tax</td>
+                        <td class="text-base-content/70">Unpaid work nobody had time for</td>
+                        <td>Drafting is nearly free; zero blank-page barrier</td>
+                        <td>
+                          <span class="badge badge-success font-mono font-semibold">SOLVED</span>
+                        </td>
+                      </tr>
+                      <tr class="hover:bg-base-200/30">
+                        <td class="font-semibold">Discoverability + Trust</td>
+                        <td class="text-base-content/70">Couldn't find the page</td>
+                        <td>Retrieval finds it; nothing says if it's true</td>
+                        <td><span class="badge badge-info font-mono font-semibold">SPLIT</span></td>
+                      </tr>
+                      <tr class="hover:bg-base-200/30">
+                        <td class="font-semibold">Maintenance Cost</td>
+                        <td class="text-base-content/70">Docs rotted, updating was manual</td>
+                        <td>Generation outpaces verification; flood of stale content</td>
+                        <td>
+                          <span class="badge badge-error font-mono font-semibold">AMPLIFIED</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- The Moat Inversion Chart -->
+                <div class="mt-8 rounded-box border border-base-300 bg-base-200/50 p-6">
+                  <div class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
+                    <div>
+                      <h3 class="font-display text-base font-bold text-base-content">
+                        The Moat Inversion: Training Corpus Size vs. SWE-Bench Resolve Rate
+                      </h3>
+                      <p class="text-xs text-base-content/60">
+                        Multi-SWE-bench: 1,632 human-validated real GitHub repository issues across
+                        7 languages
+                      </p>
+                    </div>
+                    <span class="badge badge-outline font-mono text-[0.65rem]"
+                      >Claude 3.7 Sonnet</span
+                    >
+                  </div>
+
+                  <div class="mt-6 space-y-3 font-mono text-xs">
+                    <!-- Python -->
+                    <div>
+                      <div class="flex justify-between text-base-content/80">
+                        <span>Python (191 GB corpus)</span>
+                        <span class="font-bold text-success">45.8% resolved</span>
+                      </div>
+                      <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                        <div
+                          id="bar-python"
+                          class="h-full rounded-full bg-success transition-all duration-700 w-0"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- Java -->
+                    <div>
+                      <div class="flex justify-between text-base-content/80">
+                        <span>Java (Stack data-rich)</span>
+                        <span class="font-bold text-primary">23.4% resolved</span>
+                      </div>
+                      <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                        <div
+                          id="bar-java"
+                          class="h-full rounded-full bg-primary transition-all duration-700 w-0"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- COBOL -->
+                    <div>
+                      <div class="flex justify-between text-base-content/80">
+                        <span>COBOL (0 GB in Stack table · Moat Holds)</span>
+                        <span class="font-bold text-warning">15.8% pass@1</span>
+                      </div>
+                      <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                        <div
+                          id="bar-cobol"
+                          class="h-full rounded-full bg-warning transition-all duration-700 w-0"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- TypeScript -->
+                    <div>
+                      <div class="flex justify-between text-base-content/80">
+                        <span>TypeScript (131 GB corpus)</span>
+                        <span class="font-bold text-warning">11.2% resolved</span>
+                      </div>
+                      <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                        <div
+                          id="bar-ts"
+                          class="h-full rounded-full bg-warning transition-all duration-700 w-0"
+                        ></div>
+                      </div>
+                    </div>
+
+                    <!-- JavaScript -->
+                    <div>
+                      <div class="flex justify-between text-base-content/80">
+                        <span>JavaScript (486 GB — largest corpus!)</span>
+                        <span class="font-bold text-error">4.8% resolved</span>
+                      </div>
+                      <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                        <div
+                          id="bar-js"
+                          class="h-full rounded-full bg-error transition-all duration-700 w-0"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="mt-4 text-xs italic text-base-content/60">
+                    &ldquo;TS and JS consistently yield the lowest resolved rates despite comprising
+                    617 GB of training data. Density predicts snippet skill, not repo-shaped work.
+                    Your moat is where work is repo-shaped.&rdquo;
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- S2.3 · State of the Art -->
+            <section
+              id="s2-3"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="2"
+              data-section-title="What Has Changed with AI"
+              data-beat="S2.3"
+              data-assertion="Retrieval got solved, structure is converging, and neither of them tells you whether what you just read is still true."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S2.3 · The False Confidence
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  The RAG Hot-Swap &amp; The 3 Drift Modes
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  Retrieval got solved, structure is converging, and neither tells you if what you
+                  just read is still true. The vector scoring step is an inner product between two
+                  embeddings — there is no third term for age or truth.
+                </p>
+
+                <!-- Interactive RAG Hot-Swap Experiment -->
+                <div class="mt-8 rounded-box border border-base-300 bg-base-200/50 p-6">
+                  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                    <div>
+                      <span
+                        class="font-mono text-[0.65rem] uppercase tracking-widest text-primary font-semibold"
+                      >
+                        Benchmark: Lewis et al. 2020 Hot-Swap Experiment
+                      </span>
+                      <h3 class="font-display text-lg font-bold">
+                        82 World Leaders whose posts changed
+                      </h3>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                      <span class="font-mono text-xs">Right-Era (2018)</span>
+                      <input id="rag-toggle-era" type="checkbox" class="toggle toggle-error" />
+                      <span class="font-mono text-xs text-error font-semibold"
+                        >Stale-Era (2016)</span
+                      >
+                    </div>
+                  </div>
+
+                  <div class="mt-6">
+                    <div class="flex items-baseline justify-between">
+                      <span id="rag-era-status" class="badge badge-success gap-1 font-mono text-xs">
+                        Right-Era Index (2018 Matched)
+                      </span>
+                      <span class="font-mono text-3xl font-extrabold tabular-nums">
+                        <span id="rag-pct-val">70</span>%
+                      </span>
+                    </div>
+
+                    <div class="mt-2 h-3 w-full rounded-full bg-base-300">
+                      <div
+                        id="rag-meter-fill"
+                        class="h-full rounded-full bg-success transition-all duration-700 ease-out w-[70%]"
+                      ></div>
+                    </div>
+
+                    <p id="rag-era-desc" class="mt-3 text-xs text-base-content/70">
+                      Lewis et al. benchmark: matched right-era index answers with 70% accuracy.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- The 3 Drift Modes -->
+                <div class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+                  <div class="rounded-box border border-base-300 bg-base-100 p-4">
+                    <span class="badge badge-outline font-mono text-xs">01</span>
+                    <h4 class="mt-2 font-display font-bold">Link Rot</h4>
+                    <p class="mt-1 text-xs text-base-content/60">
+                      The target reference is gone (HTTP 404 or missing file). Loud and easily
+                      caught.
+                    </p>
+                  </div>
+
+                  <div class="rounded-box border border-base-300 bg-base-100 p-4">
+                    <span class="badge badge-outline font-mono text-xs">02</span>
+                    <h4 class="mt-2 font-display font-bold">Content Drift</h4>
+                    <p class="mt-1 text-xs text-base-content/60">
+                      The target file exists, but its underlying reality quietly changed. Silent
+                      poison.
+                    </p>
+                  </div>
+
+                  <div class="rounded-box border border-base-300 bg-base-100 p-4">
+                    <span class="badge badge-outline font-mono text-xs text-primary"
+                      >03 · Key Term</span
+                    >
+                    <h4 class="mt-2 font-display font-bold text-primary">Structure Drift</h4>
+                    <p class="mt-1 text-xs text-base-content/60">
+                      A governed document's own frontmatter fields erode over time. The harness's
+                      job to catch.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================================
+                 SECTION 3 — How to address the failure modes (~7 min)
+                 ============================================================ -->
+
+            <!-- S3.1 · The Requirement, Derived -->
+            <section
+              id="s3-1"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="How to Address It"
+              data-beat="S3.1"
+              data-assertion="Structure is mechanically checkable and meaning is not, so you need both in one pass and nothing runs in CI today."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S3.1 · The Axiom
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  The Dual-Track Requirement
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  Structure is mechanically checkable and meaning is not. You cannot
+                  deterministic-regex your way into factual truth — but you can enforce that trust
+                  metadata exists and is pinned.
+                </p>
+
+                <!-- Dual Track Matrix -->
+                <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div class="rounded-box border border-primary/30 bg-primary/5 p-6">
+                    <div
+                      class="flex items-center gap-2 text-primary font-mono text-xs font-semibold"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <rect x="3" y="3" width="18" height="18" rx="2" />
+                        <path d="M9 9h6v6H9z" />
+                      </svg>
+                      Track A: Mechanical Governance
+                    </div>
+                    <h3 class="mt-3 font-display text-xl font-bold">Frontmatter Linter</h3>
+                    <ul class="mt-4 space-y-2 text-xs text-base-content/70 font-mono">
+                      <li>✓ Validates YAML shape per path glob</li>
+                      <li>
+                        ✓ Enforces <code>status</code>, <code>verified.by</code>,
+                        <code>stale_after</code>
+                      </li>
+                      <li>✓ Completely clock-free in CI (never fails builds)</li>
+                      <li>✓ Speaks human <code>intent</code> strings to agents</li>
+                    </ul>
+                  </div>
+
+                  <div class="rounded-box border border-success/30 bg-success/5 p-6">
+                    <div
+                      class="flex items-center gap-2 text-success font-mono text-xs font-semibold"
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4l3 3" />
+                      </svg>
+                      Track B: Semantic Verification
+                    </div>
+                    <h3 class="mt-3 font-display text-xl font-bold">Human Verification</h3>
+                    <ul class="mt-4 space-y-2 text-xs text-base-content/70 font-mono">
+                      <li>✓ Named domain champion (verified.by)</li>
+                      <li>✓ AI pre-triages, human certifies truth</li>
+                      <li>✓ Stale horizons explicitly earned and lengthened</li>
+                      <li>✓ Truth remains human responsibility</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- S3.2 · What the Harness Is -->
+            <section
+              id="s3-2"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="How to Address It"
+              data-beat="S3.2"
+              data-assertion="It is a config-based linter for frontmatter, and it does not know what OKF is."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S3.2 · The Engine
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  What the Harness Is
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  It is a config-based linter for frontmatter, and it does not know what OKF is. It
+                  enforces path globs, field constraints, and attaches human-authored
+                  <strong>intent strings</strong>.
+                </p>
+
+                <!-- Interactive Config Inspector -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
+                  <!-- Config Code Mockup -->
+                  <div
+                    class="mockup-code bg-base-300 text-base-content font-mono text-xs lg:col-span-7"
+                  >
+                    <pre data-prefix="1"><code>rules:</code></pre>
+                    <pre data-prefix="2"><code>  presentation:</code></pre>
+                    <pre
+                      data-prefix="3"
+                    ><code>    paths: ["docs/presentations/**/*.md"]</code></pre>
+                    <pre data-prefix="4"><code>    fields:</code></pre>
+                    <pre
+                      data-prefix="5"
+                      class="bg-base-200/50"
+                    ><code>      status: { enum: [draft, stable] }</code></pre>
+                    <pre
+                      data-prefix="6"
+                      class="bg-base-200/50"
+                    ><code>      stale_after: { format: date }</code></pre>
+                    <pre
+                      data-prefix="7"
+                      class="bg-base-200/50"
+                    ><code>      verified: { fields: [by, at] }</code></pre>
+                    <pre data-prefix="8"><code>    intent: &gt;</code></pre>
+                    <pre
+                      data-prefix="9"
+                      class="text-primary font-bold"
+                    ><code>      "Presentations must carry an expiration date</code></pre>
+                    <pre
+                      data-prefix="10"
+                      class="text-primary font-bold"
+                    ><code>       and a verified human author before being delivered."</code></pre>
+                  </div>
+
+                  <!-- Inspector Buttons & Details -->
+                  <div
+                    class="flex flex-col justify-between rounded-box border border-base-300 bg-base-200/50 p-6 lg:col-span-5"
+                  >
+                    <div>
+                      <p
+                        class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
+                      >
+                        Click a Field Constraint
+                      </p>
+                      <div class="mt-3 flex flex-wrap gap-2">
+                        <button
+                          data-config-field="stale_after"
+                          class="btn btn-sm btn-outline font-mono text-xs bg-primary/20 border-primary"
+                        >
+                          stale_after
+                        </button>
+                        <button
+                          data-config-field="verified"
+                          class="btn btn-sm btn-outline font-mono text-xs"
+                        >
+                          verified.by
+                        </button>
+                        <button
+                          data-config-field="sources"
+                          class="btn btn-sm btn-outline font-mono text-xs"
+                        >
+                          sources
+                        </button>
+                        <button
+                          data-config-field="status"
+                          class="btn btn-sm btn-outline font-mono text-xs"
+                        >
+                          status
+                        </button>
+                      </div>
+
+                      <div class="mt-6 border-t border-base-300 pt-4">
+                        <span
+                          id="config-field-title"
+                          class="font-mono text-sm font-bold text-primary"
+                        >
+                          stale_after: &lt;date&gt;
+                        </span>
+                        <p
+                          id="config-field-intent"
+                          class="mt-2 text-xs italic text-base-content/80"
+                        >
+                          &ldquo;Every architectural document carries an expiry date. When past due,
+                          agents flag rather than trust.&rdquo;
+                        </p>
+                      </div>
+                    </div>
+
+                    <p
+                      id="config-field-role"
+                      class="mt-4 font-mono text-[0.65rem] text-base-content/50"
+                    >
+                      Prevents silent decay. Clock-free in CI to avoid turning code trees red
+                      overnight.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- S3.3 · What It Does Not Do -->
+            <section
+              id="s3-3"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="How to Address It"
+              data-beat="S3.3"
+              data-assertion="It does not judge truth, and no deterministic check can, so it does not try."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S3.3 · The Guardrails
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  What It Does Not Do
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  Candor reads as expertise. State the four design limits plainly:
+                </p>
+
+                <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div class="rounded-box border border-base-300 bg-base-200/40 p-5">
+                    <div class="font-mono text-xs font-bold text-error">✕ No Semantic Graders</div>
+                    <h3 class="mt-2 font-display text-base font-bold">Does Not Judge Truth</h3>
+                    <p class="mt-1 text-xs text-base-content/70">
+                      No deterministic tool can evaluate English truth. It guarantees trust metadata
+                      is present and pinned.
+                    </p>
+                  </div>
+
+                  <div class="rounded-box border border-base-300 bg-base-200/40 p-5">
+                    <div class="font-mono text-xs font-bold text-error">✕ Not In Read Path</div>
+                    <h3 class="mt-2 font-display text-base font-bold">Static Markdown Files</h3>
+                    <p class="mt-1 text-xs text-base-content/70">
+                      An agent that reads a markdown file in December sees
+                      <code>stale_after</code> has passed without running any tool.
+                    </p>
+                  </div>
+
+                  <div class="rounded-box border border-base-300 bg-base-200/40 p-5">
+                    <div class="font-mono text-xs font-bold text-error">✕ Clock-Free In CI</div>
+                    <h3 class="mt-2 font-display text-base font-bold">Never Fails on Expiry</h3>
+                    <p class="mt-1 text-xs text-base-content/70">
+                      If expired files failed CI, teams would just bump dates blindly. Freshness is
+                      an assessment, not a build gate.
+                    </p>
+                  </div>
+
+                  <div class="rounded-box border border-base-300 bg-base-200/40 p-5">
+                    <div class="font-mono text-xs font-bold text-error">
+                      ✕ Verification Stays Human
+                    </div>
+                    <h3 class="mt-2 font-display text-base font-bold">Humans Own Currency</h3>
+                    <p class="mt-1 text-xs text-base-content/70">
+                      AI can pre-triage and accelerate drafting. Only a human domain champion can
+                      certify truth.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- S3.4 · The Demo -->
+            <section
+              id="s3-4"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="3"
+              data-section-title="How to Address It"
+              data-beat="S3.4"
+              data-assertion="The agent makes the argument for me: the missing arrow arrives as working software."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S3.4 · The Proof
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                >
+                  The Demo: Restoring the Missing Arrow
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  The agent makes the argument for me. The missing arrow from Section 2.1 arrives as
+                  working software:
+                </p>
+
+                <!-- Interactive Terminal Simulator -->
+                <div class="mt-8 rounded-box border border-base-300 bg-base-300/40 p-4">
+                  <!-- Command Action Buttons -->
+                  <div class="flex flex-wrap gap-2 border-b border-base-300 pb-3">
+                    <button
+                      data-term-cmd="ungoverned"
+                      class="btn btn-sm btn-outline font-mono text-xs"
+                    >
+                      1. Ungoverned Query
+                    </button>
+                    <button data-term-cmd="check" class="btn btn-sm btn-outline font-mono text-xs">
+                      2. --check (CI)
+                    </button>
+                    <button data-term-cmd="assess" class="btn btn-sm btn-primary font-mono text-xs">
+                      3. --assess (The Hook)
+                    </button>
+                    <button data-term-cmd="future" class="btn btn-sm btn-outline font-mono text-xs">
+                      4. --now 2026-12-01
+                    </button>
+                  </div>
+
+                  <!-- Terminal Window -->
+                  <div class="mockup-window border border-base-300 bg-base-100 mt-4 shadow-lg">
+                    <div
+                      class="border-b border-base-200 px-4 py-2 font-mono text-xs text-base-content/50"
+                    >
+                      <span id="term-cmd-label"
+                        >markdown-harness --assess docs/architecture/auth.md</span
+                      >
+                    </div>
+                    <div id="term-body" class="p-4 space-y-2 min-h-48">
+                      <p
+                        class="kb-term-line is-visible font-mono text-xs text-primary font-semibold"
+                      >
+                        $ markdown-harness --assess docs/architecture/auth.md
+                      </p>
+                      <p class="kb-term-line is-visible font-mono text-xs text-base-content/60">
+                        Inspecting metadata: status: stable · stale_after: 2026-09-14
+                      </p>
+                      <p class="kb-term-line is-visible font-mono text-xs text-warning">
+                        Clock check: Current time is past stale_after horizon!
+                      </p>
+                      <p class="kb-term-line is-visible font-mono text-xs text-warning font-bold">
+                        ASSESSMENT: REVIEW
+                      </p>
+                      <p class="kb-term-line is-visible font-mono text-xs text-success">
+                        RULE INTENT: &ldquo;This document is past its freshness horizon. A human
+                        domain owner must verify API currency.&rdquo;
+                      </p>
+                      <p
+                        class="kb-term-line is-visible font-mono text-xs text-success font-semibold"
+                      >
+                        FEEDBACK LOOP ACTIVATED: Agent surfaces missing arrow: &ldquo;Document
+                        expired. Halting until verified.&rdquo;
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Arrow Status Box -->
+                  <div
+                    id="demo-arrow-status"
+                    class="mt-4 rounded-box border border-success/40 bg-success/10 p-4 transition-all duration-300"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span class="badge badge-success font-mono text-xs">RESTORED</span>
+                      <span class="font-display text-sm font-semibold text-success">
+                        Missing Arrow Restored as Working Software
+                      </span>
+                    </div>
+                    <p class="mt-2 text-xs text-base-content/80">
+                      Agent reads the Rule's <code>intent</code> string via
+                      <code>--assess</code> and pushes actionable feedback upstream to the human.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================================
+                 SECTION 4 — Summary (~4 min)
+                 ============================================================ -->
+
+            <!-- S4.1 · Relocated, Not Eliminated -->
+            <section
+              id="s4-1"
+              class="beat relative z-0 flex min-h-screen snap-start flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
+              data-section="4"
+              data-section-title="Summary"
+              data-beat="S4.1"
+              data-assertion="The human work was relocated, not eliminated — out of drafting, into verification and curation."
+            >
+              <div
+                class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
+                  S4.1 · The Conclusion
+                </p>
+
+                <h2
+                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl lg:text-6xl text-base-content"
+                >
+                  Relocated, Not Eliminated
+                </h2>
+
+                <p class="mt-4 text-lg font-light leading-relaxed text-base-content/80">
+                  The human work was relocated, not eliminated — out of drafting, into verification
+                  and curation. The cost of doing nothing is measured in years:
+                </p>
+
+                <!-- Two Hero Statistics -->
+                <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div class="rounded-box border border-base-300 bg-base-200/50 p-6 text-center">
+                    <span class="font-mono text-xs uppercase tracking-widest text-base-content/50">
+                      When a Doc Reference Goes Stale
+                    </span>
+                    <div
+                      class="mt-4 font-mono text-6xl font-extrabold text-error tabular-nums md:text-7xl"
+                    >
+                      <span id="s4-years-stat">0</span>y
+                    </div>
+                    <p class="mt-3 text-sm font-medium text-base-content/80">
+                      Average lifetime a broken documentation reference remains wrong before
+                      resolution
+                    </p>
+                  </div>
+
+                  <div class="rounded-box border border-base-300 bg-base-200/50 p-6">
+                    <span class="font-mono text-xs uppercase tracking-widest text-base-content/50">
+                      How Stale References Resolve
+                    </span>
+                    <div class="mt-4 space-y-3 font-mono text-xs">
+                      <div>
+                        <div class="flex justify-between text-warning font-semibold">
+                          <span>Accidental Re-alignment (Code changed back!)</span>
+                          <span><span id="s4-accidental-stat">0</span>%</span>
+                        </div>
+                        <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                          <div
+                            id="bar-accidental"
+                            class="h-full rounded-full bg-warning transition-all duration-700 w-0"
+                          ></div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="flex justify-between text-success">
+                          <span>Intentional Doc Update</span>
+                          <span><span id="s4-docfix-stat">0</span>%</span>
+                        </div>
+                        <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                          <div
+                            id="bar-docfix"
+                            class="h-full rounded-full bg-success transition-all duration-700 w-0"
+                          ></div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="flex justify-between text-base-content/60">
+                          <span>Deleted Entirely</span>
+                          <span>13.3%</span>
+                        </div>
+                        <div class="mt-1 h-2 w-full rounded-full bg-base-300">
+                          <div
+                            id="bar-delete"
+                            class="h-full rounded-full bg-base-content/40 transition-all duration-700 w-0"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="mt-4 text-[0.7rem] text-base-content/60">
+                      Documentation does not get repaired: 47.6% of the time, the codebase simply
+                      drifted back into matching the old text by luck.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Call to Action / Final Card -->
+                <div
+                  class="mt-8 rounded-box border border-primary/40 bg-primary/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+                >
+                  <div>
+                    <h3 class="font-display text-lg font-bold text-primary">
+                      Adopt Frontmatter Governance on Your Repos
+                    </h3>
+                    <p class="text-xs text-base-content/80 mt-1">
+                      Start with a handwritten config. Pin <code>stale_after</code> and
+                      <code>verified.by</code>. Tell us what breaks.
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <a
+                      href="https://github.com/hancrafted/markdown-harness"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="btn btn-primary btn-sm gap-2"
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <path
+                          d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                        />
+                      </svg>
+                      markdown-harness
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+
+      <!-- ============ DRAWER SIDE (Mobile TOC) ============ -->
+      <div class="drawer-side z-40 lg:hidden">
+        <label for="toc-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+        <div class="min-h-full w-80 bg-base-200 p-4 text-base-content">
+          <div class="flex items-center justify-between border-b border-base-300 pb-3">
+            <span class="font-display font-bold">Contents</span>
+            <label for="toc-drawer" class="btn btn-ghost btn-xs btn-square">✕</label>
+          </div>
+          <nav id="toc-mobile" class="mt-4" aria-label="Mobile table of contents"></nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Presentation Engine -->
+    <script type="module" src="./presentation.js"></script>
+  </body>
+</html>
