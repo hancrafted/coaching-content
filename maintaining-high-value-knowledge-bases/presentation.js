@@ -437,11 +437,12 @@ function setupRotClock() {
  * Beat Activation Handlers (Level 2 & 3 Visualizations)
  * ------------------------------------------------------------------ */
 
-// S1.1: Four Jobs of Knowledge Management
+// S1.1: Four Jobs / Timeline of Knowledge Management
 registerActivate("s1-1", (reduced) => {
-  const trustPillar = document.getElementById("pillar-trust");
-  if (trustPillar && !reduced) {
-    trustPillar.classList.add("kb-pulse-glow");
+  const trustStage =
+    document.getElementById("stage-trust") || document.getElementById("pillar-trust");
+  if (trustStage && !reduced) {
+    trustStage.classList.add("kb-pulse-glow");
   }
 });
 
