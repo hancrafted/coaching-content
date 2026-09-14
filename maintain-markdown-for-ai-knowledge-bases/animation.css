@@ -467,14 +467,16 @@
    The origin is the human centroid, so the camera dollies in towards it. */
 .venn [data-venn-camera] {
   transform-box: view-box;
-  transform-origin: 535px 280px;
+  transform-origin: 570px 250px;
   transition: transform var(--deck-draw) var(--deck-ease);
 }
 
-/* 1.06 is the ceiling, not a taste call: the human circle is 470 units across in
-   a 510-unit viewBox and sits dead centre vertically, so anything past ~1.085
-   crops its top and bottom into flat edges. The emphasis is carried by the dim
-   and the glow; the push is the smaller half of the gesture. */
+/* 1.06 is a floor-to-ceiling check, not a taste call. Scaling about the human
+   centre (570, 250) in a 115 15 700 540 viewBox, the human circle lands at
+   y 22..478 and x 342..798, and the hypothesis footnote at y 532 — all inside
+   the box. Past ~1.17 the circle's top crops to a flat edge. The emphasis is
+   carried by the dim and the glow; the push is the smaller half of the
+   gesture. */
 .venn.venn-emphasis-human [data-venn-camera] {
   transform: scale(1.06);
 }
@@ -605,6 +607,33 @@ body.notes-visible [data-notes-cue] {
 /* =============================================================================
    Section 2 — Animated arrows from Markdown card to Knowledge, Instructions, Memory
 ============================================================================= */
+
+/* The markdown preview holds all three files at once, stacked in one grid cell,
+   so its height is the tallest variant's and switching roles reflows nothing.
+   Before this, each swap resized the card, which moved the role cards beside it
+   and dragged the arrows along — the composition twitched whenever the cursor
+   crossed the stack. Inactive panes stay in flow on visibility rather than
+   display: holding the height open is the entire point of keeping them. */
+.s2-swap {
+  display: grid;
+}
+
+.s2-swap > .s2-swap-item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--deck-hover) var(--deck-ease),
+    visibility 0s linear var(--deck-hover);
+}
+
+.s2-swap > .s2-swap-item.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--deck-hover) var(--deck-ease),
+    visibility 0s;
+}
 
 /* Card active breathing animations */
 #s2-card-memory.s2-card-active {
@@ -842,6 +871,10 @@ body.notes-visible [data-notes-cue] {
   .s2-flow-dash {
     animation: none !important;
     opacity: 0 !important;
+  }
+
+  .s2-swap > .s2-swap-item {
+    transition: none !important;
   }
 
   #s2-card-memory.s2-card-active,

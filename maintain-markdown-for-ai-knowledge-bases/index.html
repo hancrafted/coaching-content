@@ -441,38 +441,48 @@
                     aria-hidden="true"
                   >
                     <defs>
+                      <!--
+                        markerUnits="userSpaceOnUse" sizes the head in px rather
+                        than in multiples of stroke-width, and refY sits on the
+                        triangle's own centre (0.6 to 11.4) so the head straddles
+                        the line end instead of riding above it. refX stops 0.6
+                        short of the tip, which lands the point on the endpoint.
+                      -->
                       <marker
                         id="arrow-primary"
-                        viewBox="0 0 10 10"
-                        refX="7"
-                        refY="5"
-                        markerWidth="6"
-                        markerHeight="6"
+                        viewBox="0 0 12 12"
+                        refX="10"
+                        refY="6"
+                        markerWidth="14"
+                        markerHeight="14"
+                        markerUnits="userSpaceOnUse"
                         orient="auto-start-reverse"
                       >
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" class="fill-primary" />
+                        <path d="M 0 0.6 L 10.6 6 L 0 11.4 z" class="fill-primary" />
                       </marker>
                       <marker
                         id="arrow-accent"
-                        viewBox="0 0 10 10"
-                        refX="7"
-                        refY="5"
-                        markerWidth="6"
-                        markerHeight="6"
+                        viewBox="0 0 12 12"
+                        refX="10"
+                        refY="6"
+                        markerWidth="14"
+                        markerHeight="14"
+                        markerUnits="userSpaceOnUse"
                         orient="auto-start-reverse"
                       >
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" class="fill-accent" />
+                        <path d="M 0 0.6 L 10.6 6 L 0 11.4 z" class="fill-accent" />
                       </marker>
                       <marker
                         id="arrow-secondary"
-                        viewBox="0 0 10 10"
-                        refX="7"
-                        refY="5"
-                        markerWidth="6"
-                        markerHeight="6"
+                        viewBox="0 0 12 12"
+                        refX="10"
+                        refY="6"
+                        markerWidth="14"
+                        markerHeight="14"
+                        markerUnits="userSpaceOnUse"
                         orient="auto-start-reverse"
                       >
-                        <path d="M 0 1.5 L 8 5 L 0 8.5 z" class="fill-secondary" />
+                        <path d="M 0 0.6 L 10.6 6 L 0 11.4 z" class="fill-secondary" />
                       </marker>
                     </defs>
 
@@ -607,7 +617,7 @@
                         <span class="size-2.5 rounded-full bg-secondary/70"></span>
                         <span
                           id="s2-filename"
-                          class="ml-2 font-mono text-xs font-semibold text-base-content/80"
+                          class="ml-2 min-w-0 truncate font-mono text-xs font-semibold whitespace-nowrap text-base-content/80"
                           >docs/handbook/onboarding.md</span
                         >
                       </div>
@@ -615,7 +625,7 @@
                         id="s2-filebadge"
                         class="badge badge-sm badge-accent/20 text-accent font-mono text-[10px] uppercase tracking-wider"
                       >
-                        AI Memory · On demand
+                        Retrieved on demand
                       </span>
                     </div>
 
@@ -643,15 +653,12 @@
                             What is front matter?
                           </button>
                         </div>
-                        <div id="s2-frontmatter-content">
-                          <pre
-                            class="mt-3 font-mono text-xs leading-relaxed text-base-content/85"
-                          ><code><span class="text-base-content/40">---</span>
-<span class="font-medium text-accent">type:</span> Handbook
-<span class="font-medium text-secondary">stale_after:</span> 2026-07-01
-<span class="font-medium text-base-content/70">owner:</span> "@people-ops"
-<span class="text-base-content/40">---</span></code></pre>
-                        </div>
+                        <!--
+                          Hosts for the pre-mounted variants. mountSection2Swaps
+                          fills each with all three files at once and lights one,
+                          so the card never changes height as roles switch.
+                        -->
+                        <div id="s2-frontmatter-content"></div>
                       </div>
 
                       <!-- Region 2: Document Body block -->
@@ -682,50 +689,16 @@
                             class="flex items-center gap-2 font-display text-base font-bold text-base-content"
                           >
                             <span id="s2-body-prefix" class="text-accent font-mono text-sm">#</span>
-                            <span id="s2-body-title">Employee onboarding</span>
+                            <div id="s2-body-title"></div>
                           </div>
-                          <p id="s2-body-desc" class="text-xs text-base-content/70 leading-relaxed">
-                            Institutional handbook for first-week setup. AI retrieves on demand when
-                            answering onboarding questions.
-                          </p>
+                          <div id="s2-body-desc"></div>
                           <div
                             id="s2-region-instruction"
                             class="space-y-1.5 font-mono text-xs pt-1"
                           >
-                            <div id="s2-body-details" class="space-y-1.5">
-                              <div class="flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  checked
-                                  disabled
-                                  class="checkbox checkbox-xs rounded checkbox-accent"
-                                />
-                                <span>1. Collect laptop from IT on day one</span>
-                              </div>
-                              <div class="flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  disabled
-                                  class="checkbox checkbox-xs rounded checkbox-accent"
-                                />
-                                <span>2. Complete security training module</span>
-                              </div>
-                              <div class="flex items-center gap-2">
-                                <input
-                                  type="checkbox"
-                                  disabled
-                                  class="checkbox checkbox-xs rounded checkbox-accent"
-                                />
-                                <span>3. Meet your onboarding buddy</span>
-                              </div>
-                            </div>
+                            <div id="s2-body-details"></div>
                           </div>
-                          <blockquote
-                            id="s2-body-quote"
-                            class="border-l-2 border-accent/40 pl-3 italic text-xs text-base-content/60 mt-2"
-                          >
-                            Retrieved on demand. Stale pages answer just as fluently as fresh ones.
-                          </blockquote>
+                          <div id="s2-body-quote" class="mt-2"></div>
                         </div>
                       </div>
                     </div>
@@ -791,9 +764,7 @@
                               >Dynamic</span
                             >
                           </div>
-                          <p class="mt-0.5 text-xs text-base-content/60">
-                            Dynamic context · retrieved on demand
-                          </p>
+                          <p class="mt-0.5 text-xs text-base-content/60">Retrieved on demand</p>
                         </div>
                         <button
                           type="button"
@@ -841,9 +812,7 @@
                               >Dynamic</span
                             >
                           </div>
-                          <p class="mt-0.5 text-xs text-base-content/60">
-                            Dynamic context · loaded on task match
-                          </p>
+                          <p class="mt-0.5 text-xs text-base-content/60">User or model invoked</p>
                         </div>
                         <button
                           type="button"
@@ -891,9 +860,7 @@
                               >Static</span
                             >
                           </div>
-                          <p class="mt-0.5 text-xs text-base-content/60">
-                            Static context · always loaded
-                          </p>
+                          <p class="mt-0.5 text-xs text-base-content/60">Always loaded</p>
                         </div>
                         <button
                           type="button"
@@ -922,7 +889,15 @@
 
                     <p class="mt-1 text-[11px] leading-relaxed text-base-content/45">
                       Three of the six context types in Osmani, Saboo &amp; Kartakis,
-                      <cite class="not-italic font-medium">The New SDLC with Vibe Coding</cite>
+                      <a
+                        href="https://www.kaggle.com/whitepaper-the-new-SDLC-with-vibe-coding"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="underline decoration-dotted underline-offset-2 hover:text-base-content/70"
+                        ><cite class="not-italic font-medium"
+                          >The New SDLC with Vibe Coding</cite
+                        ></a
+                      >
                       (Google, May 2026), fig. 4 — static versus dynamic context.
                     </p>
                   </div>
@@ -1193,9 +1168,9 @@
                   class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  Dividing verification into three boundaries: what a machine automates, what AI
-                  accelerates, and what only a human can decide. Drawn to proportion, because the
-                  proportions are the argument.
+                  Three boundaries: what a machine automates, what AI accelerates, and what only a
+                  human can decide. Drawn to proportion, because the proportions are the argument.
+                  Each region — and each card under it — opens the slide that works it through.
                 </p>
                 <!--
                   The Venn mount. The drawing is generated by the shared effort-Venn
@@ -1204,6 +1179,90 @@
                   re-rendered by section 9 with data-venn-emphasis="human".
                 -->
                 <figure data-venn data-venn-emphasis="establish" class="mt-2"></figure>
+
+                <!--
+                  The same three regions as section 5's table of contents. These
+                  are real links, and they are the keyboard-reachable half of the
+                  Venn's pointer shortcuts: the drawing is role="img", so it
+                  cannot hold focusable children of its own without going
+                  incoherent to assistive tech. text-<tone> on the card is what
+                  the deck-lift focus outline resolves its colour from.
+                -->
+                <div class="deck-lift-group mt-6 grid grid-cols-1 gap-4 md:grid-cols-3" data-reveal>
+                  <a
+                    href="#s5-1"
+                    data-toc-jump="s5-1"
+                    class="deck-lift flex flex-col rounded-2xl border border-base-300 bg-base-100/90 p-5 text-primary shadow-sm transition-all hover:border-primary/60"
+                  >
+                    <span class="flex items-center gap-2">
+                      <span class="badge badge-primary badge-xs font-mono uppercase tracking-wider"
+                        >Machine</span
+                      >
+                      <span
+                        class="font-mono text-[11px] uppercase tracking-wider text-base-content/50"
+                        >Deterministic</span
+                      >
+                    </span>
+                    <h3 class="mt-3 font-display text-base font-bold text-base-content">
+                      What the machine verifies
+                    </h3>
+                    <p class="mt-2 grow text-xs leading-relaxed text-base-content/70">
+                      Syntax parses, the URI is well-formed, the ISO date validates. Milliseconds,
+                      no model involved, the same answer every run — it proves the file is
+                      mechanically intact, never that it is still true.
+                    </p>
+                    <span class="mt-4 font-mono text-[11px] font-semibold">Open the slide →</span>
+                  </a>
+                  <a
+                    href="#s5-2"
+                    data-toc-jump="s5-2"
+                    class="deck-lift flex flex-col rounded-2xl border border-base-300 bg-base-100/90 p-5 text-accent shadow-sm transition-all hover:border-accent/60"
+                  >
+                    <span class="flex items-center gap-2">
+                      <span class="badge badge-accent badge-xs font-mono uppercase tracking-wider"
+                        >AI</span
+                      >
+                      <span
+                        class="font-mono text-[11px] uppercase tracking-wider text-base-content/50"
+                        >Non-deterministic</span
+                      >
+                    </span>
+                    <h3 class="mt-3 font-display text-base font-bold text-base-content">
+                      What AI accelerates
+                    </h3>
+                    <p class="mt-2 grow text-xs leading-relaxed text-base-content/70">
+                      Reads the prose against the sources it links to and flags what disagrees.
+                      Fast, and genuinely useful — but what comes back is a new claim to check, not
+                      a resolution.
+                    </p>
+                    <span class="mt-4 font-mono text-[11px] font-semibold">Open the slide →</span>
+                  </a>
+                  <a
+                    href="#s5-3"
+                    data-toc-jump="s5-3"
+                    class="deck-lift flex flex-col rounded-2xl border border-base-300 bg-base-100/90 p-5 text-secondary shadow-sm transition-all hover:border-secondary/60"
+                  >
+                    <span class="flex items-center gap-2">
+                      <span
+                        class="badge badge-secondary badge-xs font-mono uppercase tracking-wider"
+                        >Human</span
+                      >
+                      <span
+                        class="font-mono text-[11px] uppercase tracking-wider text-base-content/50"
+                        >Non-deterministic</span
+                      >
+                    </span>
+                    <h3 class="mt-3 font-display text-base font-bold text-base-content">
+                      What remains human
+                    </h3>
+                    <p class="mt-2 grow text-xs leading-relaxed text-base-content/70">
+                      Is the policy still in force? Is the named owner still the right authority?
+                      Does this still match how people actually work? Ground truth that no machine
+                      and no model can reach.
+                    </p>
+                    <span class="mt-4 font-mono text-[11px] font-semibold">Open the slide →</span>
+                  </a>
+                </div>
 
                 <!-- Speaker notes cue & drawer -->
                 <button
