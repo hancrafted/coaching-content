@@ -653,7 +653,7 @@ function buildPresenterControls() {
         <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
-        <span class="hidden sm:inline text-xs font-medium">Notes</span>
+        <span class="text-xs font-medium">Notes</span>
         <kbd class="kbd kbd-xs font-mono">N</kbd>
         <span id="speaker-notes-check" class="text-secondary font-bold text-xs"></span>
       </button>
@@ -753,297 +753,18 @@ registerActivate("s1-1", (reduced) => {
 });
 
 /* ------------------------------------------------------------------ *
- * S2.1 — Hub and spoke diagram (What a markdown file is)
+ * S2.1 — The card backs & popovers
  *
- * One markdown file at the centre with an unlabelled, planted frontmatter
- * block at its top, and three spokes radiating out to:
- *   - Context     (AGENTS.md, CLAUDE.md)
- *   - Knowledge   (wiki, LLM-wiki)
- *   - Instruction (skills, prompts, commands)
- *
- * The hub is named markdown.md, not a domain file: this beat's job is to
- * establish what a markdown file IS for a non-technical room. The named
- * example files live in the three buckets, where they are examples rather
- * than the subject.
- *
- * All four cards have a back. Hovering or focusing one reveals a "Show
- * details" cue; activating it Swivels the card open into a modal that holds
- * what would not fit on the front — a markdown cheat sheet for the hub, and
- * the anatomy of each role for the three buckets. Everything the ARGUMENT
- * needs is still on the front of the cards: the backs are depth for someone
- * reading the deck alone, never a place the spoken point hides.
- *
- * All strokes and fills inherit theme colours (currentColor / semantic
- * daisyUI utilities) so the diagram re-skins across themes.
+ * Five modals mounted once into <body> and opened by matching
+ * [data-card-open] triggers:
+ *   - frontmatter: structured metadata block (anchored to top of centre card)
+ *   - syntax: 8-part core markdown syntax (anchored to body of centre card)
+ *   - context: ambient rules (AGENTS.md, CLAUDE.md)
+ *   - knowledge: institutional memory (LLM-wiki, runbooks)
+ *   - instruction: operational guidance (skills, prompts)
  * ------------------------------------------------------------------ */
 
-/**
- * The affordance that says a card has a back. Parked at opacity 0 and revealed
- * by hover or focus (see `.deck-flip-cue` in animation.css), except on touch
- * devices, where there is no hover to reveal it and it is always on.
- */
-function flipCue(x, y) {
-  return `
-        <g class="deck-flip-cue" aria-hidden="true">
-          <rect
-            x="${x}"
-            y="${y}"
-            width="116"
-            height="22"
-            rx="11"
-            class="fill-base-content/5 stroke-base-content/25"
-            stroke-width="1"
-          />
-          <text x="${x + 13}" y="${y + 15}" class="fill-base-content/70 font-mono text-[10px] font-semibold">Show details</text>
-          <path
-            d="M ${x + 95} ${y + 7} L ${x + 100} ${y + 11} L ${x + 95} ${y + 15}"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-base-content/55"
-          />
-        </g>`;
-}
-
-function hubSpokeMarkup() {
-  return `
-    <svg
-      viewBox="20 38 860 380"
-      role="group"
-      aria-label="What a markdown file is: one file at the centre, with three roles radiating out to Context, Knowledge, and Instruction. Each card opens a panel of detail."
-      class="hub-spoke isolate mx-auto block h-auto max-h-[55vh] w-full max-w-4xl"
-    >
-      <defs>
-        <marker
-          id="spoke-arrow"
-          viewBox="0 0 10 10"
-          refX="6"
-          refY="5"
-          markerWidth="6"
-          markerHeight="6"
-          orient="auto-start-reverse"
-        >
-          <path d="M 1 2 L 7 5 L 1 8 z" fill="currentColor" class="text-base-content/40" />
-        </marker>
-      </defs>
-
-      <!-- Spokes. Every path starts at the file and runs outward, so the Draw
-           reads as the centre reaching the bucket rather than three cards
-           arriving at once. Solid, not dashed: a dashed spoke reads as
-           "provisional", and these routes are not provisional. The arrowhead is
-           attached by JS when the line lands (and immediately under reduced
-           motion), so it never floats at the destination ahead of its line. -->
-      <g class="text-base-content/35">
-        <!-- Spoke to Context (top-left) -->
-        <path
-          data-draw
-          data-draw-step="0"
-          data-marker="spoke-arrow"
-          d="M 360 170 C 310 160, 290 128, 262 120"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-        <!-- Spoke to Knowledge (right) -->
-        <path
-          data-draw
-          data-draw-step="1"
-          data-marker="spoke-arrow"
-          d="M 540 226 L 628 226"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-        <!-- Spoke to Instruction (bottom-left) -->
-        <path
-          data-draw
-          data-draw-step="2"
-          data-marker="spoke-arrow"
-          d="M 360 280 C 310 290, 290 324, 262 332"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-      </g>
-
-      <!-- One Lift group for all four cards: choosing any one softens the other
-           three. The <g role="button"> children are why the <svg> root is
-           role="group" and not role="img" — interactive descendants of a
-           role="img" are invisible to assistive tech. -->
-      <g class="deck-lift-group">
-        <!-- Central Hub: the markdown file -->
-        <g data-rise data-hub>
-          <g
-            class="deck-lift cursor-pointer text-base-content"
-            role="button"
-            tabindex="0"
-            aria-haspopup="dialog"
-            data-card-open="markdown"
-            aria-label="markdown.md — a plain text file on disk. Open the markdown cheat sheet."
-          >
-            <!-- File card shadow & body -->
-            <rect
-              x="360"
-              y="95"
-              width="180"
-              height="270"
-              rx="10"
-              class="fill-base-100 stroke-base-300"
-              stroke-width="1.5"
-            />
-            <!-- Header bar with filename -->
-            <path d="M 360 128 L 540 128" class="stroke-base-200" stroke-width="1" />
-            <circle cx="376" cy="112" r="3.5" class="fill-primary/60" />
-            <circle cx="388" cy="112" r="3.5" class="fill-accent/60" />
-            <text x="402" y="116" class="fill-base-content/80 font-mono text-[11px] font-semibold">markdown.md</text>
-
-            <!-- Planted frontmatter block (deliberately unexplained — §6 pays it
-                 off, so nothing here and nothing on this card's back names it) -->
-            <rect
-              x="372"
-              y="138"
-              width="156"
-              height="66"
-              rx="6"
-              class="fill-base-200/70 stroke-base-content/15"
-              stroke-width="1"
-            />
-            <text x="382" y="153" class="fill-base-content/40 font-mono text-[9px]">---</text>
-            <text x="382" y="166" class="fill-base-content/75 font-mono text-[9.5px]">type: Playbook</text>
-            <text x="382" y="179" class="fill-base-content/75 font-mono text-[9.5px]">stale_after: 2026-07-01</text>
-            <text x="382" y="192" class="fill-base-content/40 font-mono text-[9px]">---</text>
-
-            <!-- Document body lines -->
-            <rect x="372" y="216" width="75" height="7" rx="3.5" class="fill-primary/40" />
-            <rect x="372" y="232" width="132" height="5" rx="2.5" class="fill-base-content/20" />
-            <rect x="372" y="244" width="144" height="5" rx="2.5" class="fill-base-content/20" />
-            <rect x="372" y="256" width="115" height="5" rx="2.5" class="fill-base-content/20" />
-            <rect x="372" y="268" width="136" height="5" rx="2.5" class="fill-base-content/15" />
-
-            <!-- The thesis of the beat, so it is read and not skimmed past:
-                 same weight as a card title, not a caption. -->
-            <text
-              x="450"
-              y="308"
-              text-anchor="middle"
-              class="fill-base-content/80 font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em]"
-            >
-              Plain text on disk
-            </text>
-            ${flipCue(392, 324)}
-          </g>
-        </g>
-
-        <!-- The three buckets. The example filenames render by default and stay on
-             screen: the deck is presented remotely by arrow key, so a bucket that
-             only reveals its examples on hover is a bucket whose point never gets
-             made. Hover Lifts one and softens the other three — emphasis only,
-             never information. -->
-
-        <!-- 1. Context (top-left) -->
-        <g data-rise data-bucket="0">
-          <g
-            class="deck-lift cursor-pointer text-base-content"
-            role="button"
-            tabindex="0"
-            aria-haspopup="dialog"
-            data-card-open="context"
-            aria-label="Context — ambient session rules, such as AGENTS.md and CLAUDE.md. Open details."
-          >
-            <rect
-              x="30"
-              y="50"
-              width="230"
-              height="140"
-              rx="10"
-              class="fill-base-200/50 stroke-base-300"
-              stroke-width="1.5"
-            />
-            <text x="50" y="81" class="font-display text-[15px] font-bold fill-base-content">Context</text>
-            <text x="50" y="100" class="fill-base-content/60 text-[12px]">Ambient session rules</text>
-            <text x="50" y="123" class="font-mono text-[11.5px] font-semibold fill-primary">AGENTS.md · CLAUDE.md</text>
-            <text x="50" y="140" class="fill-base-content/45 text-[11px]">Loaded into prompts at start</text>
-            ${flipCue(50, 152)}
-          </g>
-        </g>
-
-        <!-- 2. Knowledge (right) -->
-        <g data-rise data-bucket="1">
-          <g
-            class="deck-lift cursor-pointer text-base-content"
-            role="button"
-            tabindex="0"
-            aria-haspopup="dialog"
-            data-card-open="knowledge"
-            aria-label="Knowledge — institutional memory, such as a wiki or docs folder. Open details."
-          >
-            <rect
-              x="640"
-              y="156"
-              width="230"
-              height="140"
-              rx="10"
-              class="fill-base-200/50 stroke-base-300"
-              stroke-width="1.5"
-            />
-            <text x="660" y="187" class="font-display text-[15px] font-bold fill-base-content">Knowledge</text>
-            <text x="660" y="206" class="fill-base-content/60 text-[12px]">Institutional memory</text>
-            <text x="660" y="229" class="font-mono text-[11.5px] font-semibold fill-accent">wiki · LLM-wiki · docs</text>
-            <text x="660" y="246" class="fill-base-content/45 text-[11px]">Indexed, retrieved on demand</text>
-            ${flipCue(660, 258)}
-          </g>
-        </g>
-
-        <!-- 3. Instruction (bottom-left) -->
-        <g data-rise data-bucket="2">
-          <g
-            class="deck-lift cursor-pointer text-base-content"
-            role="button"
-            tabindex="0"
-            aria-haspopup="dialog"
-            data-card-open="instruction"
-            aria-label="Instruction — operational guidance, such as skills, prompts and commands. Open details."
-          >
-            <rect
-              x="30"
-              y="262"
-              width="230"
-              height="140"
-              rx="10"
-              class="fill-base-200/50 stroke-base-300"
-              stroke-width="1.5"
-            />
-            <text x="50" y="293" class="font-display text-[15px] font-bold fill-base-content">Instruction</text>
-            <text x="50" y="312" class="fill-base-content/60 text-[12px]">Operational guidance</text>
-            <text x="50" y="335" class="font-mono text-[11.5px] font-semibold fill-base-content/90">skills · prompts · commands</text>
-            <text x="50" y="352" class="fill-base-content/45 text-[11px]">Procedures executed step by step</text>
-            ${flipCue(50, 364)}
-          </g>
-        </g>
-      </g>
-    </svg>`;
-}
-
-/* ------------------------------------------------------------------ *
- * S2.1 — the card backs
- *
- * Four modals, one per card, mounted once into <body> and opened by the
- * matching [data-card-open] group in the drawing. They are daisyUI `modal`
- * dialogs, so Esc, focus trapping and focus restoration are the platform's
- * job and not ours; what we add is the Swivel and a click-anywhere-outside
- * close (the `.modal-backdrop` button).
- *
- * Content rule: a back may deepen the front, never replace it. Nothing that
- * the spoken argument depends on lives in here, because nobody in a
- * screen-shared audience is going to open one.
- * ------------------------------------------------------------------ */
-
-/** A source excerpt dressed as the file it came from — the two dots echo the hub card. */
+/** A source excerpt dressed as the file it came from. */
 function codePanel(filename, source) {
   return `
     <figure class="overflow-hidden rounded-box border border-base-300 bg-base-200/40">
@@ -1059,16 +780,91 @@ function codePanel(filename, source) {
 const backHeading = (text) =>
   `<h4 class="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-base-content/50">${text}</h4>`;
 
-/**
- * The three role cards share a shape, deliberately: the audience should be able
- * to compare Context against Knowledge against Instruction line for line.
- */
-function roleBackBody({ files, reads, costs, breaks, filename, source }) {
+function frontmatterMarkup() {
   return `
-    <!-- min-w-0 on both columns is load-bearing, not tidiness: a grid item
-         defaults to min-width:auto, so without it the code panel's intrinsic
-         line width sets the column width and the whole modal scrolls sideways
-         on a phone instead of the <pre> scrolling inside its own box. -->
+    <div class="grid gap-8 md:grid-cols-2">
+      <div class="min-w-0">
+        ${backHeading("What is front matter?")}
+        <p class="mt-2 text-sm leading-relaxed text-base-content/75">
+          A YAML header delimited by triple dashes (<code class="rounded bg-base-200 px-1 font-mono text-[0.8em]">---</code>) at the top of a markdown file. It supplies typed, machine-readable key-value pairs that agents and linters inspect before parsing the document body.
+        </p>
+
+        <div class="mt-6">
+          ${backHeading("Why it carries the workflow")}
+          <p class="mt-2 text-sm leading-relaxed text-base-content/75">
+            Without front matter, a markdown file is opaque text. Linters cannot tell whether a document is a playbook, a policy, or a draft, and cannot check if it has expired. Front matter adds a deterministic header without sacrificing human readability.
+          </p>
+        </div>
+
+        <div class="mt-6 rounded-box border border-primary/30 bg-primary/5 p-4">
+          <p class="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-primary">Standardising the signal</p>
+          <p class="mt-2 text-sm leading-relaxed text-base-content/80">
+            Fields like <code class="font-mono text-xs text-primary font-semibold">type</code>, <code class="font-mono text-xs text-secondary font-semibold">stale_after</code>, and <code class="font-mono text-xs font-semibold">owner</code> make verification mechanical. Section 6 of this talk explores how the Open Knowledge Format (OKF) standardises these fields across repositories.
+          </p>
+        </div>
+      </div>
+
+      <div class="min-w-0">
+        ${backHeading("Example front matter header")}
+        <div class="mt-2">
+          ${codePanel(
+            "markdown.md",
+            [
+              "---",
+              "type: Playbook",
+              "stale_after: 2026-07-01",
+              'owner: "@engineering/sre"',
+              'verified_by: "human:han"',
+              "---",
+              "",
+              "# Incident Response Runbook",
+              "",
+              "1. Triage telemetry payload.",
+            ].join("\n"),
+          )}
+        </div>
+      </div>
+    </div>`;
+}
+
+/**
+ * The three role cards share a shape, with credibility line and verified link.
+ */
+function roleBackBody({
+  files,
+  reads,
+  costs,
+  breaks,
+  credibility,
+  linkUrl,
+  linkText,
+  filename,
+  source,
+}) {
+  const credHtml = credibility
+    ? `
+        <div class="mt-5 rounded-box border border-base-300 bg-base-200/50 p-3.5">
+          <p class="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-base-content/60">Credibility &amp; Adoption</p>
+          <p class="mt-1.5 text-xs leading-relaxed text-base-content/85">${escapeHtml(credibility)}</p>
+          ${
+            linkUrl
+              ? `<div class="mt-2.5">
+                  <a
+                    href="${escapeHtml(linkUrl)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link link-primary font-mono text-xs inline-flex items-center gap-1"
+                  >
+                    <span>${escapeHtml(linkText || linkUrl)}</span>
+                    <span class="text-[11px]">↗</span>
+                  </a>
+                </div>`
+              : ""
+          }
+        </div>`
+    : "";
+
+  return `
     <div class="grid gap-8 md:grid-cols-2">
       <div class="min-w-0">
         ${backHeading("Typical files")}
@@ -1083,6 +879,8 @@ function roleBackBody({ files, reads, costs, breaks, filename, source }) {
           <p class="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-warning">Goes wrong when</p>
           <p class="mt-2 text-sm leading-relaxed text-base-content/80">${breaks}</p>
         </div>
+
+        ${credHtml}
       </div>
 
       <div class="min-w-0">
@@ -1093,9 +891,7 @@ function roleBackBody({ files, reads, costs, breaks, filename, source }) {
 }
 
 /**
- * The markdown cheat sheet — raw on the left, rendered on the right, one row
- * per construct. Frontmatter is deliberately absent: the block planted on the
- * hub card is §6's payoff, and explaining it here would spend it early.
+ * The markdown cheat sheet — raw on the left, rendered on the right.
  */
 const MD_ROWS = [
   {
@@ -1173,19 +969,33 @@ function markdownCheatSheetMarkup() {
       <p class="font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50">How it renders</p>
     </div>
     <div class="mt-2">${rows}</div>
-    <p class="mt-4 border-t border-base-200 pt-4 text-sm leading-relaxed text-base-content/60">
-      That is close to all of it. Also worth knowing:
-      <code class="rounded bg-base-200 px-1 font-mono text-[0.8em]">---</code> draws a horizontal rule,
-      <code class="rounded bg-base-200 px-1 font-mono text-[0.8em]">![alt](path.png)</code> embeds an image,
-      and raw HTML passes straight through untouched.
-    </p>`;
+    <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-base-200 pt-4 text-sm leading-relaxed text-base-content/65">
+      <p>
+        Standard markdown syntax supported by every parser and LLM context window.
+      </p>
+      <a
+        href="https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link link-primary font-mono text-xs inline-flex items-center gap-1 shrink-0"
+      >
+        <span>Adam Pritchard's Cheatsheet on GitHub ↗</span>
+      </a>
+    </div>`;
 }
 
-/** The four backs, in the order a reader meets them. */
+/** The five card backs/popovers. */
 const CARD_BACKS = [
   {
-    key: "markdown",
-    eyebrow: "markdown.md",
+    key: "frontmatter",
+    eyebrow: "markdown.md · Front matter",
+    title: "Structured metadata above unstructured text",
+    lede: "A YAML header between triple-dash fences (---). It provides typed, deterministic attributes so agents and linters inspect what a file is before parsing its prose.",
+    body: frontmatterMarkup(),
+  },
+  {
+    key: "syntax",
+    eyebrow: "markdown.md · Body syntax",
     title: "Eight bits of syntax, and that is the whole format",
     lede: "No runtime, no schema, no database. A handful of characters that a person can read unaided and a parser agrees on — which is exactly why both humans and machines can use the same file.",
     body: markdownCheatSheetMarkup(),
@@ -1203,6 +1013,10 @@ const CARD_BACKS = [
         "It occupies the context window for the entire session. Every line you add is a line paid for on every single turn, so length is a budget and not a virtue.",
       breaks:
         "A rule changes and the file does not. Because it is loaded unconditionally, a stale line here is applied with total confidence to work it no longer describes.",
+      credibility:
+        "AGENTS.md — used by 60k+ open-source projects; now stewarded by the Agentic AI Foundation under the Linux Foundation.",
+      linkUrl: "https://agents.md/",
+      linkText: "Visit agents.md",
       filename: "AGENTS.md",
       source: [
         "# AGENTS.md",
@@ -1233,8 +1047,18 @@ const CARD_BACKS = [
         "Almost nothing to store and very little to carry, because only the matched pages enter the window. The cost is not tokens; it is upkeep.",
       breaks:
         "It is retrieved without being re-verified. A playbook that expired two quarters ago answers just as fluently and just as confidently as a current one.",
+      credibility:
+        "LLM-wiki — Karpathy, April 2026, 5,000+ stars. The canonical reference for the term.",
+      linkUrl: "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
+      linkText: "Karpathy's LLM-wiki gist on GitHub",
       filename: "docs/handbook/onboarding.md",
       source: [
+        "---",
+        "type: Handbook",
+        "stale_after: 2026-07-01",
+        'owner: "@people-ops"',
+        "---",
+        "",
         "# Employee onboarding",
         "",
         "## First week",
@@ -1257,32 +1081,39 @@ const CARD_BACKS = [
     title: "A procedure, written to be executed rather than read",
     lede: "The repeatable jobs: how a review is run, how a release note is drafted, how a page gets checked. Prose describes; an instruction is followed, step by step.",
     body: roleBackBody({
-      files: [".claude/skills/*/SKILL.md", ".claude/commands/*.md", "prompts/"],
+      files: [".agents/skills/*/SKILL.md", ".claude/skills/*/SKILL.md", "prompts/"],
       reads:
         "When its trigger matches — you type the command, or its description fits the task well enough that the agent reaches for it unprompted.",
       costs:
         "Only loaded when invoked, so it is cheap to keep many. The real cost is that a vague trigger gets it loaded for the wrong task.",
       breaks:
         "The steps drift from reality. A wrong sentence in a wiki page misleads someone; a wrong step in an instruction gets run, on your repository, without being reread.",
-      filename: ".claude/skills/review-docs/SKILL.md",
+      credibility:
+        "Grilling skill — Matt Pocock (@mattpocockuk), based on the open Agent Skills standard.",
+      linkUrl: "https://agentskills.io/home",
+      linkText: "Visit agentskills.io",
+      filename: ".agents/skills/grilling/SKILL.md",
       source: [
         "---",
-        "name: review-docs",
-        "description: Check a handbook page against the code it describes.",
+        "name: grilling",
+        "description: Grill the user relentlessly about a plan, decision, or idea.",
         "---",
         "",
-        "1. Read the page and list every factual claim it makes.",
-        "2. Find the source of truth for each claim in the repo.",
-        "3. Report the mismatches. Do not edit the page.",
+        "Interview the user relentlessly until you reach a shared understanding.",
+        "Map this as a design tree: every decision branches into decisions that hang off it.",
+        "",
+        "Work the tree in rounds. The frontier is every decision whose prerequisites",
+        "are already settled. Ask the whole frontier in one round with your recommendation.",
+        "",
+        "Finding facts is your job, never the user's. The decisions are the user's.",
+        "The session is done when the frontier is empty: nothing left silently assumed.",
       ].join("\n"),
     }),
   },
 ];
 
 /**
- * The modal shell. Full-bleed on phones (there is no "outside the card" to tap
- * on a 390px screen, so the close control has to be a real 44px target); a
- * centred panel at roughly three-quarters of the viewport everywhere else.
+ * The modal shell. Full-bleed on phones; centred panel at ~86vw elsewhere.
  */
 function cardBackMarkup(back) {
   return `
@@ -1325,7 +1156,7 @@ function cardBackMarkup(back) {
     </dialog>`;
 }
 
-/** Mounted once, into <body>, so a dialog is never trapped inside a transformed ancestor. */
+/** Mounted once, into <body>. */
 function mountCardBacks() {
   if (document.querySelector("[data-card-backs]")) return;
   const host = document.createElement("div");
@@ -1334,7 +1165,6 @@ function mountCardBacks() {
   document.body.append(host);
 
   host.querySelectorAll("dialog").forEach((dlg) => {
-    // Esc would close instantly and skip the Swivel; take it over.
     dlg.addEventListener("cancel", (e) => {
       e.preventDefault();
       closeCardBack(dlg);
@@ -1343,19 +1173,19 @@ function mountCardBacks() {
 }
 
 /**
- * Swivel: the card turns to show its back, arriving from far enough away that
- * the turn reads as a zoom in as well as a rotation. Mirrors --deck-swivel.
+ * Swivel: the card turns to show its back. Mirrors --deck-swivel.
  */
 const SWIVEL = 520;
 
 function openCardBack(key) {
+  if (key === "markdown") key = "syntax";
   const dlg = document.getElementById(`card-back-${key}`);
   if (!dlg || dlg.open) return;
   const box = dlg.querySelector(".deck-swivel");
   box.classList.remove("is-opening", "is-closing");
   dlg.showModal();
   if (reduceMotion) return;
-  void box.offsetWidth; // restart the animation if the same card is reopened
+  void box.offsetWidth;
   box.classList.add("is-opening");
 }
 
@@ -1373,8 +1203,6 @@ function closeCardBack(dlg) {
     dlg.close();
   };
   box.addEventListener("animationend", done, { once: true });
-  // animationend does not fire if the tab is backgrounded mid-turn; the dialog
-  // must not be left open and half-turned.
   setTimeout(() => {
     if (box.classList.contains("is-closing")) done();
   }, SWIVEL + 120);
@@ -1390,7 +1218,6 @@ document.addEventListener("click", (e) => {
   if (opener) openCardBack(opener.dataset.cardOpen);
 });
 
-// <g role="button"> gets no keyboard activation for free.
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Enter" && e.key !== " ") return;
   const opener = e.target.closest?.("[data-card-open]");
@@ -1399,50 +1226,377 @@ document.addEventListener("keydown", (e) => {
   openCardBack(opener.dataset.cardOpen);
 });
 
-/** Spokes are armed the moment they exist, so they are parked undrawn on arrival. */
-function mountHubSpokes() {
-  document.querySelectorAll("[data-hub-spoke]").forEach((host) => {
-    host.innerHTML = hubSpokeMarkup();
-    if (!reduceMotion) host.querySelectorAll("[data-draw]").forEach(armDraw);
-  });
-}
-
-mountHubSpokes();
 mountCardBacks();
 
-/* Sequence: the file Rises, then each spoke Draws outward 140ms after the last,
-   and each bucket Rises as its own spoke lands. Total ≈ 1.94s. */
-const SPOKE_STAGGER = 140;
+/* ------------------------------------------------------------------ *
+ * S2.1 — Connecting arrows from Markdown card to Context, Knowledge, Instruction
+ * ------------------------------------------------------------------ */
 
-function playHubSpoke(svg, reduced) {
-  rise(svg.querySelector("[data-hub]"), 200, reduced);
+let s2ArrowsDrawn = false;
 
-  svg.querySelectorAll("[data-draw]").forEach((path) => {
-    const i = Number(path.dataset.drawStep);
-    const at = 400 + i * SPOKE_STAGGER;
-    releaseDraw(path, at, reduced);
+const S2_FILES = {
+  knowledge: {
+    key: "knowledge",
+    filename: "docs/handbook/onboarding.md",
+    badge: "AI Memory · On demand",
+    badgeClass: "badge-accent/20 text-accent",
+    frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed text-base-content/85"><code><span class="text-base-content/40">---</span>
+<span class="font-medium text-accent">type:</span> Handbook
+<span class="font-medium text-secondary">stale_after:</span> 2026-07-01
+<span class="font-medium text-base-content/70">owner:</span> "@people-ops"
+<span class="text-base-content/40">---</span></code></pre>`,
+    bodyTitlePrefix: "#",
+    bodyTitlePrefixClass: "text-accent",
+    bodyTitle: "Employee onboarding",
+    bodyDesc:
+      "Institutional handbook for first-week setup. AI retrieves on demand when answering onboarding questions.",
+    bodyDetailsHtml: `
+      <div class="flex items-center gap-2">
+        <input type="checkbox" checked disabled class="checkbox checkbox-xs rounded checkbox-accent" />
+        <span>1. Collect laptop from IT on day one</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="checkbox" disabled class="checkbox checkbox-xs rounded checkbox-accent" />
+        <span>2. Complete security training module</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="checkbox" disabled class="checkbox checkbox-xs rounded checkbox-accent" />
+        <span>3. Meet your onboarding buddy</span>
+      </div>`,
+    quote: "Retrieved on demand. Stale pages answer just as fluently as fresh ones.",
+    quoteBorderClass: "border-accent/40",
+  },
+  context: {
+    key: "context",
+    filename: "AGENTS.md",
+    badge: "Machine rule · Session context",
+    badgeClass: "badge-primary/20 text-primary",
+    frontmatterHtml: `
+      <div class="mt-3 rounded-lg border border-dashed border-base-300 bg-base-100/50 p-3 text-xs leading-relaxed text-base-content/60">
+        <div class="flex items-center gap-2 font-mono text-[11px] font-semibold text-primary/80 uppercase tracking-wider mb-1">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>No front matter header</span>
+        </div>
+        <p>Pure Markdown loaded unconditionally at session start. Context files typically omit front matter so entire contents stream straight into prompt window.</p>
+      </div>`,
+    bodyTitlePrefix: "#",
+    bodyTitlePrefixClass: "text-primary",
+    bodyTitle: "AGENTS.md",
+    bodyDesc:
+      "Project overview & ground rules for AI pair programmers. Loaded into every session context.",
+    bodyDetailsHtml: `
+      <div class="flex items-center gap-2 text-base-content/85">
+        <span class="text-primary font-bold">›</span>
+        <span>Commands: <code class="bg-base-200/80 px-1 py-0.5 rounded text-[11px] font-mono">npm run build</code> · <code class="bg-base-200/80 px-1 py-0.5 rounded text-[11px] font-mono">npm run verify</code></span>
+      </div>
+      <div class="flex items-center gap-2 text-base-content/85">
+        <span class="text-primary font-bold">›</span>
+        <span>Ground rule: Tailwind v4 + daisyUI v5 — no inline styles</span>
+      </div>
+      <div class="flex items-center gap-2 text-base-content/85">
+        <span class="text-primary font-bold">›</span>
+        <span>Ground rule: One commit addresses exactly one scope</span>
+      </div>`,
+    quote: "Loaded unconditionally at session start. Length is a budget, not a virtue.",
+    quoteBorderClass: "border-primary/40",
+  },
+  instruction: {
+    key: "instruction",
+    filename: ".agents/skills/grilling/SKILL.md",
+    badge: "Agent skill · Step-by-step",
+    badgeClass: "badge-secondary/20 text-secondary",
+    frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed text-base-content/85"><code><span class="text-base-content/40">---</span>
+<span class="font-medium text-secondary">name:</span> grilling
+<span class="font-medium text-secondary">description:</span> Grill user relentlessly about a plan or idea.
+<span class="text-base-content/40">---</span></code></pre>`,
+    bodyTitlePrefix: "#",
+    bodyTitlePrefixClass: "text-secondary",
+    bodyTitle: "Grilling skill (Matt Pocock)",
+    bodyDesc:
+      "Interview the user relentlessly until you reach a shared understanding. Map as a design tree.",
+    bodyDetailsHtml: `
+      <div class="flex items-center gap-2 text-base-content/85">
+        <span class="badge badge-secondary badge-xs font-mono">R1</span>
+        <span>Work the design tree in rounds of frontier questions</span>
+      </div>
+      <div class="flex items-center gap-2 text-base-content/85">
+        <span class="badge badge-secondary badge-xs font-mono">R2</span>
+        <span>Finding facts is agent's job; decisions belong to user</span>
+      </div>
+      <div class="flex items-center gap-2 text-base-content/85">
+        <span class="badge badge-secondary badge-xs font-mono">R3</span>
+        <span>Session complete only when frontier is empty</span>
+      </div>`,
+    quote: "Run step by step on your repo. A wrong instruction executes without being reread.",
+    quoteBorderClass: "border-secondary/40",
+  },
+};
 
-    // The arrowhead lands with the line, never ahead of it.
-    const marker = () => {
-      path.style.markerEnd = `url(#${path.dataset.marker})`;
-    };
-    if (reduced) marker();
-    else setTimeout(marker, at + MOTION.draw);
+function setSection2ActiveCard(key) {
+  const file = S2_FILES[key];
+  if (!file) return;
+
+  const filenameEl = document.getElementById("s2-filename");
+  if (filenameEl) filenameEl.textContent = file.filename;
+
+  const badgeEl = document.getElementById("s2-filebadge");
+  if (badgeEl) {
+    badgeEl.textContent = file.badge;
+    badgeEl.className = `badge badge-sm font-mono text-[10px] uppercase tracking-wider ${file.badgeClass}`;
+  }
+
+  const frontmatterBox = document.getElementById("s2-frontmatter-content");
+  if (frontmatterBox) frontmatterBox.innerHTML = file.frontmatterHtml;
+
+  const titlePrefix = document.getElementById("s2-body-prefix");
+  if (titlePrefix) {
+    titlePrefix.textContent = file.bodyTitlePrefix;
+    titlePrefix.className = `font-mono text-sm ${file.bodyTitlePrefixClass}`;
+  }
+
+  const titleText = document.getElementById("s2-body-title");
+  if (titleText) titleText.textContent = file.bodyTitle;
+
+  const descEl = document.getElementById("s2-body-desc");
+  if (descEl) descEl.textContent = file.bodyDesc;
+
+  const detailsEl = document.getElementById("s2-body-details");
+  if (detailsEl) detailsEl.innerHTML = file.bodyDetailsHtml;
+
+  const quoteEl = document.getElementById("s2-body-quote");
+  if (quoteEl) {
+    quoteEl.textContent = file.quote;
+    quoteEl.className = `border-l-2 pl-3 italic text-xs text-base-content/60 mt-2 ${file.quoteBorderClass}`;
+  }
+
+  const cardKeys = ["context", "knowledge", "instruction"];
+  cardKeys.forEach((k) => {
+    const cardEl = document.getElementById(`s2-card-${k}`);
+    if (cardEl) {
+      if (k === key) {
+        cardEl.classList.add("s2-card-active");
+      } else {
+        cardEl.classList.remove("s2-card-active");
+      }
+    }
   });
 
-  svg.querySelectorAll("[data-bucket]").forEach((bucket) => {
-    const i = Number(bucket.dataset.bucket);
-    rise(bucket, 400 + i * SPOKE_STAGGER + 700, reduced);
+  cardKeys.forEach((k) => {
+    const arrowGroup = document.getElementById(`s2-arrow-group-${k}`);
+    if (arrowGroup) {
+      if (k === key) {
+        arrowGroup.classList.add("is-active");
+        arrowGroup.classList.remove("is-inactive");
+      } else {
+        arrowGroup.classList.remove("is-active");
+        arrowGroup.classList.add("is-inactive");
+      }
+    }
   });
+
+  const socketMap = {
+    context: "s2-socket-1",
+    knowledge: "s2-socket-2",
+    instruction: "s2-socket-3",
+  };
+  Object.entries(socketMap).forEach(([k, socketId]) => {
+    const sEl = document.getElementById(socketId);
+    if (sEl) {
+      if (k === key) {
+        sEl.classList.add("s2-socket-active");
+        sEl.setAttribute("r", "5");
+      } else {
+        sEl.classList.remove("s2-socket-active");
+        sEl.setAttribute("r", "3.5");
+      }
+    }
+  });
+
+  requestAnimationFrame(updateSection2Arrows);
 }
 
-// S2.1 — heading lines Rise, then the hub and spoke assembles from the centre out.
+function updateSection2Arrows() {
+  const container = document.getElementById("s2-composition");
+  const source = document.getElementById("s2-source-card");
+  const region1 = document.getElementById("s2-region-frontmatter");
+  const region2 = document.getElementById("s2-region-knowledge");
+  const region3 = document.getElementById("s2-region-instruction");
+  const card1 = document.getElementById("s2-card-context");
+  const card2 = document.getElementById("s2-card-knowledge");
+  const card3 = document.getElementById("s2-card-instruction");
+  const svg = document.getElementById("s2-arrows-svg");
+
+  if (!container || !source || !card1 || !card2 || !card3 || !svg) return;
+
+  const cRect = container.getBoundingClientRect();
+  const sRect = source.getBoundingClientRect();
+  const t1Rect = card1.getBoundingClientRect();
+  const t2Rect = card2.getBoundingClientRect();
+  const t3Rect = card3.getBoundingClientRect();
+
+  // If stacked on mobile or elements not laid out side-by-side, bail
+  if (t1Rect.left <= sRect.right - 10) return;
+
+  // Origin X: right edge of the markdown card
+  const x0 = sRect.right - cRect.left;
+
+  // Origin Y values: align with the 3 semantic sections of the markdown file
+  const r1Rect = region1 ? region1.getBoundingClientRect() : null;
+  const r2Rect = region2 ? region2.getBoundingClientRect() : null;
+  const r3Rect = region3 ? region3.getBoundingClientRect() : null;
+
+  const y0_1 = r1Rect
+    ? r1Rect.top + r1Rect.height / 2 - cRect.top
+    : t1Rect.top + t1Rect.height / 2 - cRect.top;
+  const y0_2 = r2Rect
+    ? r2Rect.top + r2Rect.height / 2 - cRect.top
+    : t2Rect.top + t2Rect.height / 2 - cRect.top;
+  const y0_3 = r3Rect
+    ? r3Rect.top + r3Rect.height / 2 - cRect.top
+    : t3Rect.top + t3Rect.height / 2 - cRect.top;
+
+  // Target points: left edge of each card, slightly inset so arrowhead docks cleanly
+  const x1 = t1Rect.left - cRect.left - 2;
+  const y1 = t1Rect.top + t1Rect.height / 2 - cRect.top;
+
+  const x2 = t2Rect.left - cRect.left - 2;
+  const y2 = t2Rect.top + t2Rect.height / 2 - cRect.top;
+
+  const x3 = t3Rect.left - cRect.left - 2;
+  const y3 = t3Rect.top + t3Rect.height / 2 - cRect.top;
+
+  const dx1 = Math.max(x1 - x0, 10);
+  const dx2 = Math.max(x2 - x0, 10);
+  const dx3 = Math.max(x3 - x0, 10);
+
+  // Smooth S-curves (cubic bezier) with horizontal departure and horizontal arrival
+  const d1 = `M ${x0} ${y0_1} C ${x0 + dx1 * 0.45} ${y0_1}, ${x1 - dx1 * 0.45} ${y1}, ${x1} ${y1}`;
+  const d2 = `M ${x0} ${y0_2} C ${x0 + dx2 * 0.45} ${y0_2}, ${x2 - dx2 * 0.45} ${y2}, ${x2} ${y2}`;
+  const d3 = `M ${x0} ${y0_3} C ${x0 + dx3 * 0.45} ${y0_3}, ${x3 - dx3 * 0.45} ${y3}, ${x3} ${y3}`;
+
+  // Connecting spine on the right edge of markdown card
+  const dSpine = `M ${x0} ${y0_1} L ${x0} ${y0_3}`;
+
+  const setD = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute("d", val);
+  };
+
+  setD("s2-arrow-track-context", d1);
+  setD("s2-arrow-context", d1);
+  setD("s2-arrow-flow-context", d1);
+
+  setD("s2-arrow-track-knowledge", d2);
+  setD("s2-arrow-knowledge", d2);
+  setD("s2-arrow-flow-knowledge", d2);
+
+  setD("s2-arrow-track-instruction", d3);
+  setD("s2-arrow-instruction", d3);
+  setD("s2-arrow-flow-instruction", d3);
+
+  setD("s2-spine", dSpine);
+
+  // Socket dots on the markdown card
+  const setCircle = (id, cx, cy) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.setAttribute("cx", `${cx}`);
+      el.setAttribute("cy", `${cy}`);
+    }
+  };
+
+  setCircle("s2-socket-1", x0, y0_1);
+  setCircle("s2-socket-2", x0, y0_2);
+  setCircle("s2-socket-3", x0, y0_3);
+
+  // Arm paths if not drawn yet, so they are parked undrawn on arrival
+  if (!reduceMotion && !s2ArrowsDrawn) {
+    ["s2-arrow-context", "s2-arrow-knowledge", "s2-arrow-instruction"].forEach((id) => {
+      const p = document.getElementById(id);
+      if (p) armDraw(p);
+    });
+  }
+}
+
+function mountSection2Arrows() {
+  // Run on next frame so layout measurements are settled
+  requestAnimationFrame(updateSection2Arrows);
+
+  const container = document.getElementById("s2-composition");
+  if (container && typeof window.ResizeObserver !== "undefined") {
+    const ro = new window.ResizeObserver(() => {
+      updateSection2Arrows();
+    });
+    ro.observe(container);
+  }
+  window.addEventListener("resize", updateSection2Arrows);
+
+  const cardMap = [
+    { id: "s2-card-context", key: "context" },
+    { id: "s2-card-knowledge", key: "knowledge" },
+    { id: "s2-card-instruction", key: "instruction" },
+  ];
+
+  cardMap.forEach(({ id, key }) => {
+    const card = document.getElementById(id);
+    if (!card) return;
+    card.addEventListener("mouseenter", () => {
+      setSection2ActiveCard(key);
+    });
+    card.addEventListener("focus", () => {
+      setSection2ActiveCard(key);
+    });
+    card.addEventListener("click", () => {
+      setSection2ActiveCard(key);
+    });
+  });
+
+  setSection2ActiveCard("knowledge");
+}
+
+mountSection2Arrows();
+
+// S2.1 — heading lines and composition Rise in sequence, then arrows Draw to the 3 roles.
 registerActivate("s2-1", (reduced) => {
   const beat = document.getElementById("s2-1");
   if (!beat) return;
   revealSequence(beat, reduced);
-  const svg = beat.querySelector(".hub-spoke");
-  if (svg) playHubSpoke(svg, reduced);
+
+  updateSection2Arrows();
+
+  const arrows = [
+    { id: "s2-arrow-context", card: "s2-card-context", delay: 200 },
+    { id: "s2-arrow-knowledge", card: "s2-card-knowledge", delay: 320 },
+    { id: "s2-arrow-instruction", card: "s2-card-instruction", delay: 440 },
+  ];
+
+  arrows.forEach(({ id, card, delay }) => {
+    const p = document.getElementById(id);
+    if (p) {
+      if (!reduced) {
+        armDraw(p);
+        releaseDraw(p, delay, reduced);
+      } else {
+        releaseDraw(p, 0, true);
+      }
+    }
+    const c = document.getElementById(card);
+    if (c) {
+      settle(c, delay + 350, reduced);
+    }
+  });
+
+  s2ArrowsDrawn = true;
+
+  // Reveal flowing dashes after lines finish drawing
+  const svg = document.getElementById("s2-arrows-svg");
+  if (svg) {
+    if (reduced) {
+      svg.classList.add("s2-arrows-active");
+    } else {
+      setTimeout(() => svg.classList.add("s2-arrows-active"), 800);
+    }
+  }
 });
 
 /* ------------------------------------------------------------------ *

@@ -602,6 +602,150 @@ body.notes-visible [data-notes-cue] {
 }
 
 /* =============================================================================
+   Section 2 — Animated arrows from Markdown card to Context, Knowledge, Instruction
+============================================================================= */
+
+/* Card active breathing animations */
+#s2-card-context.s2-card-active {
+  animation: s2-breathe-primary 2.6s ease-in-out infinite;
+}
+
+#s2-card-knowledge.s2-card-active {
+  animation: s2-breathe-accent 2.6s ease-in-out infinite;
+}
+
+#s2-card-instruction.s2-card-active {
+  animation: s2-breathe-secondary 2.6s ease-in-out infinite;
+}
+
+@keyframes s2-breathe-primary {
+  0%,
+  100% {
+    border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-primary) 30%, transparent),
+      0 4px 18px -2px color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  50% {
+    border-color: var(--color-primary);
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-primary) 65%, transparent),
+      0 8px 24px -2px color-mix(in srgb, var(--color-primary) 35%, transparent);
+  }
+}
+
+@keyframes s2-breathe-accent {
+  0%,
+  100% {
+    border-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 30%, transparent),
+      0 4px 18px -2px color-mix(in srgb, var(--color-accent) 20%, transparent);
+  }
+  50% {
+    border-color: var(--color-accent);
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-accent) 65%, transparent),
+      0 8px 24px -2px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  }
+}
+
+@keyframes s2-breathe-secondary {
+  0%,
+  100% {
+    border-color: color-mix(in srgb, var(--color-secondary) 50%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-secondary) 30%, transparent),
+      0 4px 18px -2px color-mix(in srgb, var(--color-secondary) 20%, transparent);
+  }
+  50% {
+    border-color: var(--color-secondary);
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-secondary) 65%, transparent),
+      0 8px 24px -2px color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  }
+}
+
+/* Arrow groups: active, inactive, and hover styles */
+.s2-arrow-group {
+  transition:
+    filter var(--deck-hover) var(--deck-ease),
+    opacity var(--deck-rise) var(--deck-ease);
+}
+
+.s2-arrow-group.is-active {
+  opacity: 1;
+}
+
+#s2-arrow-group-context.is-active {
+  filter: drop-shadow(0 0 6px var(--color-primary, currentColor));
+}
+
+#s2-arrow-group-knowledge.is-active {
+  filter: drop-shadow(0 0 6px var(--color-accent, currentColor));
+}
+
+#s2-arrow-group-instruction.is-active {
+  filter: drop-shadow(0 0 6px var(--color-secondary, currentColor));
+}
+
+.s2-arrow-group.is-active .s2-flow-dash {
+  opacity: 0.95;
+}
+
+.s2-arrow-group.is-inactive {
+  opacity: 0.28;
+  filter: none;
+}
+
+.s2-arrow-group.is-inactive .s2-flow-dash {
+  opacity: 0.15;
+}
+
+.s2-flow-dash {
+  opacity: 0;
+  transition: opacity 600ms var(--deck-ease);
+}
+
+.s2-arrows-active .s2-flow-dash {
+  opacity: 0.85;
+}
+
+@keyframes s2-flow-travel {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.s2-flow-dash {
+  animation: s2-flow-travel 1.4s linear infinite;
+}
+
+.s2-socket-active {
+  filter: drop-shadow(0 0 4px currentColor);
+}
+
+/* Card hover also highlights corresponding arrow if active */
+#s2-composition:has(#s2-card-context:hover) #s2-arrow-group-context {
+  filter: drop-shadow(0 0 6px var(--color-primary, currentColor));
+}
+
+#s2-composition:has(#s2-card-knowledge:hover) #s2-arrow-group-knowledge {
+  filter: drop-shadow(0 0 6px var(--color-accent, currentColor));
+}
+
+#s2-composition:has(#s2-card-instruction:hover) #s2-arrow-group-instruction {
+  filter: drop-shadow(0 0 6px var(--color-secondary, currentColor));
+}
+
+#s2-composition:has(#s2-source-card:hover) .s2-arrow-group.is-active {
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+/* =============================================================================
    REDUCED MOTION
    -----------------------------------------------------------------------------
    Rise, Draw and Settle snap to their finished state. Unsettled resolves to a
@@ -692,5 +836,31 @@ body.notes-visible [data-notes-cue] {
   .curves-chart [data-curve-wipe] {
     transform: scaleX(1) !important;
     transition: none !important;
+  }
+
+  .s2-flow-dash {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  #s2-card-context.s2-card-active,
+  #s2-card-knowledge.s2-card-active,
+  #s2-card-instruction.s2-card-active {
+    animation: none !important;
+  }
+
+  #s2-card-context.s2-card-active {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 0 1px var(--color-primary) !important;
+  }
+
+  #s2-card-knowledge.s2-card-active {
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 0 1px var(--color-accent) !important;
+  }
+
+  #s2-card-instruction.s2-card-active {
+    border-color: var(--color-secondary) !important;
+    box-shadow: 0 0 0 1px var(--color-secondary) !important;
   }
 }
