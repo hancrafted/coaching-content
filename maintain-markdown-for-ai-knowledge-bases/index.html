@@ -400,7 +400,7 @@
               data-section-title="Markdown in AI workflows"
               data-slide-title="Markdown in AI workflows"
               data-beat="S2.1"
-              data-assertion="A single format at the junction of Context, Knowledge, and Instructions."
+              data-assertion="A single format carrying three of the six context types: Knowledge, Instructions, and Memory."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
@@ -422,9 +422,10 @@
                   data-reveal
                 >
                   A plain text file with nothing mechanical underneath. What matters is how and when
-                  it is consumed: as <span class="font-medium text-primary">context</span>, as
-                  <span class="font-medium text-accent">knowledge</span>, as
-                  <span class="font-medium text-secondary">instruction</span>.
+                  it is consumed: as <span class="font-medium text-accent">knowledge</span>, as
+                  <span class="font-medium text-secondary">instructions</span>, as
+                  <span class="font-medium text-primary">memory</span> — and whether the agent pays
+                  for it on every turn or only when it reaches for it.
                 </p>
 
                 <!-- Section 2: Markdown in AI Workflows composition (Left-aligned) -->
@@ -485,16 +486,16 @@
                     />
 
                     <!-- Arrow 1: to Context (Primary) -->
-                    <g id="s2-arrow-group-context" class="s2-arrow-group is-inactive">
+                    <g id="s2-arrow-group-memory" class="s2-arrow-group is-inactive">
                       <path
-                        id="s2-arrow-track-context"
+                        id="s2-arrow-track-memory"
                         class="stroke-primary/20"
                         stroke-width="3"
                         stroke-linecap="round"
                         fill="none"
                       />
                       <path
-                        id="s2-arrow-context"
+                        id="s2-arrow-memory"
                         data-draw
                         class="stroke-primary"
                         stroke-width="2"
@@ -503,7 +504,7 @@
                         marker-end="url(#arrow-primary)"
                       />
                       <path
-                        id="s2-arrow-flow-context"
+                        id="s2-arrow-flow-memory"
                         class="s2-flow-dash stroke-primary"
                         stroke-width="2"
                         stroke-linecap="round"
@@ -572,20 +573,20 @@
                     <g id="s2-sockets">
                       <circle
                         id="s2-socket-1"
-                        r="3.5"
-                        class="fill-base-100 stroke-primary transition-all duration-300"
-                        stroke-width="2"
-                      />
-                      <circle
-                        id="s2-socket-2"
                         r="5"
                         class="fill-base-100 stroke-accent s2-socket-active transition-all duration-300"
                         stroke-width="2"
                       />
                       <circle
-                        id="s2-socket-3"
+                        id="s2-socket-2"
                         r="3.5"
                         class="fill-base-100 stroke-secondary transition-all duration-300"
+                        stroke-width="2"
+                      />
+                      <circle
+                        id="s2-socket-3"
+                        r="3.5"
+                        class="fill-base-100 stroke-primary transition-all duration-300"
                         stroke-width="2"
                       />
                     </g>
@@ -594,7 +595,7 @@
                   <!-- Centre markdown card: wider and larger (7 columns on desktop) -->
                   <div
                     id="s2-source-card"
-                    class="deck-lift lg:col-span-7 flex flex-col rounded-2xl border border-base-300 bg-base-100/90 shadow-sm overflow-hidden"
+                    class="lg:col-span-7 flex flex-col rounded-2xl border border-base-300 bg-base-100/90 shadow-sm overflow-hidden"
                   >
                     <!-- macOS/IDE header bar -->
                     <div
@@ -756,65 +757,28 @@
                     </svg>
                   </div>
 
-                  <!-- Three bucket cards (5 columns on desktop) -->
-                  <div class="lg:col-span-5 flex flex-col justify-between gap-4">
-                    <!-- 1. Context card -->
-                    <div
-                      id="s2-card-context"
-                      class="deck-lift card rounded-2xl border border-base-300 bg-base-100/90 p-5 shadow-sm transition-all hover:border-primary/60 cursor-pointer"
-                      data-card-open="context"
-                      role="button"
-                      tabindex="0"
-                      aria-haspopup="dialog"
-                      aria-label="Context — ambient session rules, such as AGENTS.md and CLAUDE.md. Open details."
-                    >
-                      <div class="flex items-start justify-between gap-2">
-                        <div>
-                          <div class="flex items-center gap-2">
-                            <h3 class="font-display text-base font-bold text-base-content">
-                              Context
-                            </h3>
-                            <span
-                              class="badge badge-primary badge-xs font-mono uppercase tracking-wider"
-                              >Machine rule</span
-                            >
-                          </div>
-                          <p class="mt-0.5 text-xs text-base-content/60">Ambient session rules</p>
-                        </div>
-                        <button
-                          type="button"
-                          data-card-open="context"
-                          class="btn btn-xs btn-outline border-base-300/90 bg-base-100 text-base-content/80 hover:border-secondary hover:bg-secondary/15 hover:text-secondary shadow-2xs shrink-0 transition-all"
-                        >
-                          Show details
-                        </button>
-                      </div>
-                      <div
-                        class="mt-4 flex items-center justify-between gap-2 border-t border-base-200 pt-3"
-                      >
-                        <a
-                          href="https://agents.md/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="font-mono text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
-                          onclick="event.stopPropagation()"
-                        >
-                          <span>AGENTS.md · CLAUDE.md</span>
-                          <span class="text-[10px]">↗</span>
-                        </a>
-                        <span class="text-[11px] text-base-content/50">Loaded at start</span>
-                      </div>
-                    </div>
+                  <!--
+                    Three role cards (5 columns on desktop). The three types of
+                    markdown an agent actually consumes, named after the context
+                    types in Osmani, Saboo & Kartakis, "The New SDLC with Vibe
+                    Coding" (Google, May 2026), fig. 4. Knowledge leads because it
+                    is the one the audience already owns.
 
-                    <!-- 2. Knowledge card -->
+                    Hovering a card previews its file in the markdown card on the
+                    left; clicking pins it, which is the only affordance that works
+                    on touch. The root is the control — "Show details" is a nested
+                    button that opens the card back instead.
+                  -->
+                  <div class="lg:col-span-5 flex flex-col justify-between gap-4">
+                    <!-- 1. Knowledge card — dynamic context, retrieved on demand -->
                     <div
                       id="s2-card-knowledge"
                       class="deck-lift card s2-card-active rounded-2xl border border-base-300 bg-base-100/90 p-5 shadow-sm transition-all hover:border-accent/60 cursor-pointer"
-                      data-card-open="knowledge"
+                      data-role-card="knowledge"
                       role="button"
                       tabindex="0"
-                      aria-haspopup="dialog"
-                      aria-label="Knowledge — institutional memory, such as a wiki or docs folder. Open details."
+                      aria-pressed="true"
+                      aria-label="Knowledge — dynamic context, retrieved on demand, such as a wiki or docs folder. Preview onboarding.md."
                     >
                       <div class="flex items-start justify-between gap-2">
                         <div>
@@ -824,10 +788,12 @@
                             </h3>
                             <span
                               class="badge badge-accent badge-xs font-mono uppercase tracking-wider"
-                              >AI memory</span
+                              >Dynamic</span
                             >
                           </div>
-                          <p class="mt-0.5 text-xs text-base-content/60">Institutional memory</p>
+                          <p class="mt-0.5 text-xs text-base-content/60">
+                            Dynamic context · retrieved on demand
+                          </p>
                         </div>
                         <button
                           type="button"
@@ -850,32 +816,34 @@
                           <span>onboarding.md · wiki · docs</span>
                           <span class="text-[10px]">↗</span>
                         </a>
-                        <span class="text-[11px] text-base-content/50">Retrieved on demand</span>
+                        <span class="text-[11px] text-base-content/50">Pay only when fetched</span>
                       </div>
                     </div>
 
-                    <!-- 3. Instruction card -->
+                    <!-- 2. Instructions card — dynamic context, loaded on task match -->
                     <div
                       id="s2-card-instruction"
                       class="deck-lift card rounded-2xl border border-base-300 bg-base-100/90 p-5 shadow-sm transition-all hover:border-secondary/60 cursor-pointer"
-                      data-card-open="instruction"
+                      data-role-card="instruction"
                       role="button"
                       tabindex="0"
-                      aria-haspopup="dialog"
-                      aria-label="Instruction — operational guidance, such as skills, prompts and commands. Open details."
+                      aria-pressed="false"
+                      aria-label="Instructions — dynamic context, loaded when a task matches, such as an agent skill. Preview SKILL.md."
                     >
                       <div class="flex items-start justify-between gap-2">
                         <div>
                           <div class="flex items-center gap-2">
                             <h3 class="font-display text-base font-bold text-base-content">
-                              Instruction
+                              Instructions
                             </h3>
                             <span
                               class="badge badge-secondary badge-xs font-mono uppercase tracking-wider"
-                              >Human guidance</span
+                              >Dynamic</span
                             >
                           </div>
-                          <p class="mt-0.5 text-xs text-base-content/60">Operational guidance</p>
+                          <p class="mt-0.5 text-xs text-base-content/60">
+                            Dynamic context · loaded on task match
+                          </p>
                         </div>
                         <button
                           type="button"
@@ -889,18 +857,74 @@
                         class="mt-4 flex items-center justify-between gap-2 border-t border-base-200 pt-3"
                       >
                         <a
-                          href="https://agentskills.io/home"
+                          href="https://github.com/hancrafted/skills/blob/main/skills/commit/SKILL.md"
                           target="_blank"
                           rel="noopener noreferrer"
                           class="font-mono text-xs font-semibold text-secondary hover:underline inline-flex items-center gap-1"
                           onclick="event.stopPropagation()"
                         >
-                          <span>grilling · skills · commands</span>
+                          <span>commit · skills · commands</span>
                           <span class="text-[10px]">↗</span>
                         </a>
-                        <span class="text-[11px] text-base-content/50">Run step by step</span>
+                        <span class="text-[11px] text-base-content/50">Progressive disclosure</span>
                       </div>
                     </div>
+
+                    <!-- 3. Memory card — static context, always loaded -->
+                    <div
+                      id="s2-card-memory"
+                      class="deck-lift card rounded-2xl border border-base-300 bg-base-100/90 p-5 shadow-sm transition-all hover:border-primary/60 cursor-pointer"
+                      data-role-card="memory"
+                      role="button"
+                      tabindex="0"
+                      aria-pressed="false"
+                      aria-label="Memory — static context, always loaded, such as AGENTS.md and CLAUDE.md. Preview AGENTS.md."
+                    >
+                      <div class="flex items-start justify-between gap-2">
+                        <div>
+                          <div class="flex items-center gap-2">
+                            <h3 class="font-display text-base font-bold text-base-content">
+                              Memory
+                            </h3>
+                            <span
+                              class="badge badge-primary badge-xs font-mono uppercase tracking-wider"
+                              >Static</span
+                            >
+                          </div>
+                          <p class="mt-0.5 text-xs text-base-content/60">
+                            Static context · always loaded
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          data-card-open="memory"
+                          class="btn btn-xs btn-outline border-base-300/90 bg-base-100 text-base-content/80 hover:border-secondary hover:bg-secondary/15 hover:text-secondary shadow-2xs shrink-0 transition-all"
+                        >
+                          Show details
+                        </button>
+                      </div>
+                      <div
+                        class="mt-4 flex items-center justify-between gap-2 border-t border-base-200 pt-3"
+                      >
+                        <a
+                          href="https://agents.md/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="font-mono text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1"
+                          onclick="event.stopPropagation()"
+                        >
+                          <span>AGENTS.md · CLAUDE.md</span>
+                          <span class="text-[10px]">↗</span>
+                        </a>
+                        <span class="text-[11px] text-base-content/50">Paid on every turn</span>
+                      </div>
+                    </div>
+
+                    <p class="mt-1 text-[11px] leading-relaxed text-base-content/45">
+                      Three of the six context types in Osmani, Saboo &amp; Kartakis,
+                      <cite class="not-italic font-medium">The New SDLC with Vibe Coding</cite>
+                      (Google, May 2026), fig. 4 — static versus dynamic context.
+                    </p>
                   </div>
                 </div>
 
@@ -968,12 +992,20 @@
                   </p>
                   <p class="mt-3">
                     Three places you already meet it:
-                    <strong class="font-semibold text-primary">context</strong> — what an agent
-                    needs to work in your project, e.g. AGENTS.md or CLAUDE.md;
-                    <strong class="font-semibold text-secondary">instruction</strong> — a repeated
-                    workflow or prompt packaged as a skill;
                     <strong class="font-semibold text-accent">knowledge</strong> — the wiki,
-                    increasingly authored and maintained by an agent rather than a person.
+                    increasingly authored and maintained by an agent rather than a person;
+                    <strong class="font-semibold text-secondary">instructions</strong> — a repeated
+                    workflow packaged as a skill;
+                    <strong class="font-semibold text-primary">memory</strong> — what an agent needs
+                    to know about your project at all times, e.g. AGENTS.md or CLAUDE.md.
+                  </p>
+                  <p class="mt-3">
+                    The split that matters is <em>when</em> each one is paid for. Memory is static
+                    context: always loaded, every interaction, whether or not it is relevant — so
+                    length is a budget. Knowledge and instructions are dynamic: retrieved on demand,
+                    or loaded when a task matches the skill's description. That boundary is a
+                    first-class architectural decision, and the paper argues it should be reviewed
+                    and versioned like any other configuration.
                   </p>
                   <p class="mt-3">
                     At moderate scale — roughly a hundred sources, a few hundred pages — an index
@@ -1117,6 +1149,11 @@
                     true of a thousand-file repository where documents start contradicting each
                     other.
                   </p>
+                  <p class="mt-3">
+                    Information architecture was always the answer to this — organising a knowledge
+                    base so it does not grow organically and explode in maintenance cost. That
+                    problem predates AI entirely.
+                  </p>
                   <p class="mt-3 border-l-2 border-base-300 pl-3 text-base-content/70">
                     If pushed outside the source: Karpathy&rsquo;s LLM-wiki gist argues the same
                     shift independently — the wiki is written and read by an agent, and the
@@ -1226,17 +1263,25 @@
                     </button>
                   </div>
                   <p>
-                    AI is an accelerator here, not a solution. It will run the fact-check, chase the
-                    hard numbers, flag the paragraph that smells wrong — and every answer it hands
-                    back is itself a claim that still needs checking. That is why its region is
-                    labelled with a question mark: whatever AI takes on lands back in one of the
-                    other two regions.
+                    Machine verification is deterministic — same input, same output, always. It is
+                    cheap and fast, which means it should run constantly, and the AI should be
+                    running it too as a self-check loop.
                   </p>
                   <p class="mt-3">
-                    Callback: the freelancer with amnesia. Brilliant, fast, and shows up every
-                    morning having forgotten everything — the knowledge base is the only memory it
-                    has, and it believes whatever the files say. A machine can prove the files still
-                    parse; only a human can know whether that memory is still true.
+                    Human verification is semantic. Is this fact still true? Is the linked source
+                    still the right one? Does it still say what we claimed it says? No algorithm
+                    catches that.
+                  </p>
+                  <p class="mt-3">
+                    AI sits in the overlap, and it is genuinely new — the first tool that works with
+                    meaning rather than structure. That is why this region is unsettled: people are
+                    still working out what belongs in it. My hypothesis is that AI does the grunt
+                    work. Summarising, researching, orienting you, drafting the executive summary.
+                    What it does not do is deliver the verdict.
+                  </p>
+                  <p class="mt-3">
+                    Handing an AI the judgment that a document is still true and then walking away
+                    is the dangerous path — and it is the first thing most people reach for.
                   </p>
                 </aside>
               </div>
@@ -1260,7 +1305,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  5.1 · Machine Verification
+                  Machine Verification
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -1431,7 +1476,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-accent opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  5.2 · AI Acceleration
+                  AI Acceleration
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
@@ -1642,7 +1687,7 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-secondary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  5.3 · Human Judgment
+                  Human Judgment
                 </p>
                 <h2
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"

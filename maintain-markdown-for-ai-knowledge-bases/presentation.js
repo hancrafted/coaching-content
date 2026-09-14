@@ -759,9 +759,9 @@ registerActivate("s1-1", (reduced) => {
  * [data-card-open] triggers:
  *   - frontmatter: structured metadata block (anchored to top of centre card)
  *   - syntax: 8-part core markdown syntax (anchored to body of centre card)
- *   - context: ambient rules (AGENTS.md, CLAUDE.md)
- *   - knowledge: institutional memory (LLM-wiki, runbooks)
- *   - instruction: operational guidance (skills, prompts)
+ *   - memory: static context always loaded (AGENTS.md, CLAUDE.md)
+ *   - knowledge: dynamic context retrieved on demand (LLM-wiki, runbooks)
+ *   - instruction: dynamic context loaded on task match (agent skills)
  * ------------------------------------------------------------------ */
 
 /** A source excerpt dressed as the file it came from. */
@@ -1001,10 +1001,10 @@ const CARD_BACKS = [
     body: markdownCheatSheetMarkup(),
   },
   {
-    key: "context",
-    eyebrow: "Context",
-    title: "Standing rules, loaded before the question is asked",
-    lede: "The house style an agent carries into every task in a project: how you build, what you never do, who to ask. It is read whether or not the current task needs it.",
+    key: "memory",
+    eyebrow: "Memory",
+    title: "Static context — what the project is, carried into every turn",
+    lede: "Long-term persistent state: how you build, what you never do, who to ask. It is the agent's memory of the project, and it is read whether or not the current task needs it.",
     body: roleBackBody({
       files: ["AGENTS.md", "CLAUDE.md", "README.md", ".cursorrules"],
       reads:
@@ -1014,7 +1014,7 @@ const CARD_BACKS = [
       breaks:
         "A rule changes and the file does not. Because it is loaded unconditionally, a stale line here is applied with total confidence to work it no longer describes.",
       credibility:
-        "AGENTS.md — used by 60k+ open-source projects; now stewarded by the Agentic AI Foundation under the Linux Foundation.",
+        "AGENTS.md — used by 60k+ open-source projects; now stewarded by the Agentic AI Foundation under the Linux Foundation. Named as static context in Osmani, Saboo & Kartakis, The New SDLC with Vibe Coding (Google, May 2026), fig. 4.",
       linkUrl: "https://agents.md/",
       linkText: "Visit agents.md",
       filename: "AGENTS.md",
@@ -1037,7 +1037,7 @@ const CARD_BACKS = [
   {
     key: "knowledge",
     eyebrow: "Knowledge",
-    title: "Institutional memory, fetched only when a question reaches for it",
+    title: "Dynamic context, fetched only when a question reaches for it",
     lede: "What the organisation knows and would otherwise have to re-learn: playbooks, decisions, runbooks, post-mortems. Most of it is never opened in any given session.",
     body: roleBackBody({
       files: ["docs/handbook/*.md", "wiki/", "adr/*.md", "runbooks/"],
@@ -1077,36 +1077,41 @@ const CARD_BACKS = [
   },
   {
     key: "instruction",
-    eyebrow: "Instruction",
+    eyebrow: "Instructions",
     title: "A procedure, written to be executed rather than read",
     lede: "The repeatable jobs: how a review is run, how a release note is drafted, how a page gets checked. Prose describes; an instruction is followed, step by step.",
     body: roleBackBody({
       files: [".agents/skills/*/SKILL.md", ".claude/skills/*/SKILL.md", "prompts/"],
       reads:
-        "When its trigger matches — you type the command, or its description fits the task well enough that the agent reaches for it unprompted.",
+        "When its trigger matches — you type the command, or its description fits the task well enough that the agent reaches for it unprompted. At startup the agent sees only the front matter; the steps arrive on the match.",
       costs:
-        "Only loaded when invoked, so it is cheap to keep many. The real cost is that a vague trigger gets it loaded for the wrong task.",
+        "Only loaded when invoked, so it is cheap to keep dozens. That progressive disclosure is what makes skills the workhorse of dynamic context. The real cost is that a vague trigger gets it loaded for the wrong task.",
       breaks:
         "The steps drift from reality. A wrong sentence in a wiki page misleads someone; a wrong step in an instruction gets run, on your repository, without being reread.",
       credibility:
-        "Grilling skill — Matt Pocock (@mattpocockuk), based on the open Agent Skills standard.",
-      linkUrl: "https://agentskills.io/home",
-      linkText: "Visit agentskills.io",
-      filename: ".agents/skills/grilling/SKILL.md",
+        "The commit skill from this repository's own toolkit — built on the open Agent Skills standard, and named as the dynamic-context pattern in Osmani, Saboo & Kartakis, The New SDLC with Vibe Coding (Google, May 2026), fig. 4.",
+      linkUrl: "https://github.com/hancrafted/skills/blob/main/skills/commit/SKILL.md",
+      linkText: "Read the commit skill on GitHub",
+      filename: ".claude/skills/commit/SKILL.md",
       source: [
         "---",
-        "name: grilling",
-        "description: Grill the user relentlessly about a plan, decision, or idea.",
+        "name: commit",
+        "description: Author a commit message and commit it — Conventional Commits",
+        "  header, Keep a Changelog body, Source trailer. Use before every",
+        "  `git commit`, whether a human or an agent initiates it.",
         "---",
         "",
-        "Interview the user relentlessly until you reach a shared understanding.",
-        "Map this as a design tree: every decision branches into decisions that hang off it.",
+        "Author a commit by running the steps in order.",
         "",
-        "Work the tree in rounds. The frontier is every decision whose prerequisites",
-        "are already settled. Ask the whole frontier in one round with your recommendation.",
+        "**2. Read the change.** `git status`, `git diff --staged`, `git diff`.",
+        "A non-empty index is expressed intent: honour it.",
+        "_Done when_ the index holds exactly this commit's set.",
         "",
-        "Finding facts is your job, never the user's. The decisions are the user's.",
-        "The session is done when the frontier is empty: nothing left silently assumed.",
+        "**4. Author the message, and write it to the draft.**",
+        "_Done when_ the gate exits 0 against the draft.",
+        "",
+        "**7. Report, and stop.** The commit stays in the local clone:",
+        "**pushing is the human's act**.",
       ].join("\n"),
     }),
   },
@@ -1229,7 +1234,7 @@ document.addEventListener("keydown", (e) => {
 mountCardBacks();
 
 /* ------------------------------------------------------------------ *
- * S2.1 — Connecting arrows from Markdown card to Context, Knowledge, Instruction
+ * S2.1 — Connecting arrows from Markdown card to Knowledge, Instructions, Memory
  * ------------------------------------------------------------------ */
 
 let s2ArrowsDrawn = false;
@@ -1238,7 +1243,7 @@ const S2_FILES = {
   knowledge: {
     key: "knowledge",
     filename: "docs/handbook/onboarding.md",
-    badge: "AI Memory · On demand",
+    badge: "Dynamic context · Retrieved on demand",
     badgeClass: "badge-accent/20 text-accent",
     frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed text-base-content/85"><code><span class="text-base-content/40">---</span>
 <span class="font-medium text-accent">type:</span> Handbook
@@ -1249,7 +1254,7 @@ const S2_FILES = {
     bodyTitlePrefixClass: "text-accent",
     bodyTitle: "Employee onboarding",
     bodyDesc:
-      "Institutional handbook for first-week setup. AI retrieves on demand when answering onboarding questions.",
+      "Handbook for first-week setup. Dynamic context: the agent pays the token cost only when a question reaches for it.",
     bodyDetailsHtml: `
       <div class="flex items-center gap-2">
         <input type="checkbox" checked disabled class="checkbox checkbox-xs rounded checkbox-accent" />
@@ -1266,10 +1271,10 @@ const S2_FILES = {
     quote: "Retrieved on demand. Stale pages answer just as fluently as fresh ones.",
     quoteBorderClass: "border-accent/40",
   },
-  context: {
-    key: "context",
+  memory: {
+    key: "memory",
     filename: "AGENTS.md",
-    badge: "Machine rule · Session context",
+    badge: "Static context · Always loaded",
     badgeClass: "badge-primary/20 text-primary",
     frontmatterHtml: `
       <div class="mt-3 rounded-lg border border-dashed border-base-300 bg-base-100/50 p-3 text-xs leading-relaxed text-base-content/60">
@@ -1283,7 +1288,7 @@ const S2_FILES = {
     bodyTitlePrefixClass: "text-primary",
     bodyTitle: "AGENTS.md",
     bodyDesc:
-      "Project overview & ground rules for AI pair programmers. Loaded into every session context.",
+      "Project overview & ground rules for AI pair programmers. Static context: every token is present in every interaction, whether or not it is relevant.",
     bodyDetailsHtml: `
       <div class="flex items-center gap-2 text-base-content/85">
         <span class="text-primary font-bold">›</span>
@@ -1297,35 +1302,37 @@ const S2_FILES = {
         <span class="text-primary font-bold">›</span>
         <span>Ground rule: One commit addresses exactly one scope</span>
       </div>`,
-    quote: "Loaded unconditionally at session start. Length is a budget, not a virtue.",
+    quote: "Always loaded, every interaction. Length is a budget, not a virtue.",
     quoteBorderClass: "border-primary/40",
   },
   instruction: {
     key: "instruction",
-    filename: ".agents/skills/grilling/SKILL.md",
-    badge: "Agent skill · Step-by-step",
+    filename: ".claude/skills/commit/SKILL.md",
+    badge: "Dynamic context · Loaded on task match",
     badgeClass: "badge-secondary/20 text-secondary",
     frontmatterHtml: `<pre class="mt-3 font-mono text-xs leading-relaxed text-base-content/85"><code><span class="text-base-content/40">---</span>
-<span class="font-medium text-secondary">name:</span> grilling
-<span class="font-medium text-secondary">description:</span> Grill user relentlessly about a plan or idea.
+<span class="font-medium text-secondary">name:</span> commit
+<span class="font-medium text-secondary">description:</span> Author a commit message and commit it &mdash; Conventional
+  Commits header, Keep a Changelog body, Source trailer. Use before every
+  <span class="text-base-content/70">git commit</span>.
 <span class="text-base-content/40">---</span></code></pre>`,
     bodyTitlePrefix: "#",
     bodyTitlePrefixClass: "text-secondary",
-    bodyTitle: "Grilling skill (Matt Pocock)",
+    bodyTitle: "Commit skill",
     bodyDesc:
-      "Interview the user relentlessly until you reach a shared understanding. Map as a design tree.",
+      "Only the description above is loaded at startup. The steps below arrive when a task matches it \u2014 progressive disclosure.",
     bodyDetailsHtml: `
       <div class="flex items-center gap-2 text-base-content/85">
-        <span class="badge badge-secondary badge-xs font-mono">R1</span>
-        <span>Work the design tree in rounds of frontier questions</span>
+        <span class="badge badge-secondary badge-xs font-mono">2</span>
+        <span>Read the change &mdash; a non-empty index is expressed intent</span>
       </div>
       <div class="flex items-center gap-2 text-base-content/85">
-        <span class="badge badge-secondary badge-xs font-mono">R2</span>
-        <span>Finding facts is agent's job; decisions belong to user</span>
+        <span class="badge badge-secondary badge-xs font-mono">4</span>
+        <span>Author the message; done when the gate exits 0</span>
       </div>
       <div class="flex items-center gap-2 text-base-content/85">
-        <span class="badge badge-secondary badge-xs font-mono">R3</span>
-        <span>Session complete only when frontier is empty</span>
+        <span class="badge badge-secondary badge-xs font-mono">7</span>
+        <span>Report and stop &mdash; pushing is the human&rsquo;s act</span>
       </div>`,
     quote: "Run step by step on your repo. A wrong instruction executes without being reread.",
     quoteBorderClass: "border-secondary/40",
@@ -1369,7 +1376,7 @@ function setSection2ActiveCard(key) {
     quoteEl.className = `border-l-2 pl-3 italic text-xs text-base-content/60 mt-2 ${file.quoteBorderClass}`;
   }
 
-  const cardKeys = ["context", "knowledge", "instruction"];
+  const cardKeys = ["knowledge", "instruction", "memory"];
   cardKeys.forEach((k) => {
     const cardEl = document.getElementById(`s2-card-${k}`);
     if (cardEl) {
@@ -1394,10 +1401,12 @@ function setSection2ActiveCard(key) {
     }
   });
 
+  // Sockets run top-to-bottom in the same order as the role cards, so the three
+  // arrows fan out without crossing.
   const socketMap = {
-    context: "s2-socket-1",
-    knowledge: "s2-socket-2",
-    instruction: "s2-socket-3",
+    knowledge: "s2-socket-1",
+    instruction: "s2-socket-2",
+    memory: "s2-socket-3",
   };
   Object.entries(socketMap).forEach(([k, socketId]) => {
     const sEl = document.getElementById(socketId);
@@ -1421,9 +1430,9 @@ function updateSection2Arrows() {
   const region1 = document.getElementById("s2-region-frontmatter");
   const region2 = document.getElementById("s2-region-knowledge");
   const region3 = document.getElementById("s2-region-instruction");
-  const card1 = document.getElementById("s2-card-context");
-  const card2 = document.getElementById("s2-card-knowledge");
-  const card3 = document.getElementById("s2-card-instruction");
+  const card1 = document.getElementById("s2-card-knowledge");
+  const card2 = document.getElementById("s2-card-instruction");
+  const card3 = document.getElementById("s2-card-memory");
   const svg = document.getElementById("s2-arrows-svg");
 
   if (!container || !source || !card1 || !card2 || !card3 || !svg) return;
@@ -1482,17 +1491,17 @@ function updateSection2Arrows() {
     if (el) el.setAttribute("d", val);
   };
 
-  setD("s2-arrow-track-context", d1);
-  setD("s2-arrow-context", d1);
-  setD("s2-arrow-flow-context", d1);
+  setD("s2-arrow-track-knowledge", d1);
+  setD("s2-arrow-knowledge", d1);
+  setD("s2-arrow-flow-knowledge", d1);
 
-  setD("s2-arrow-track-knowledge", d2);
-  setD("s2-arrow-knowledge", d2);
-  setD("s2-arrow-flow-knowledge", d2);
+  setD("s2-arrow-track-instruction", d2);
+  setD("s2-arrow-instruction", d2);
+  setD("s2-arrow-flow-instruction", d2);
 
-  setD("s2-arrow-track-instruction", d3);
-  setD("s2-arrow-instruction", d3);
-  setD("s2-arrow-flow-instruction", d3);
+  setD("s2-arrow-track-memory", d3);
+  setD("s2-arrow-memory", d3);
+  setD("s2-arrow-flow-memory", d3);
 
   setD("s2-spine", dSpine);
 
@@ -1511,7 +1520,7 @@ function updateSection2Arrows() {
 
   // Arm paths if not drawn yet, so they are parked undrawn on arrival
   if (!reduceMotion && !s2ArrowsDrawn) {
-    ["s2-arrow-context", "s2-arrow-knowledge", "s2-arrow-instruction"].forEach((id) => {
+    ["s2-arrow-memory", "s2-arrow-knowledge", "s2-arrow-instruction"].forEach((id) => {
       const p = document.getElementById(id);
       if (p) armDraw(p);
     });
@@ -1532,26 +1541,47 @@ function mountSection2Arrows() {
   window.addEventListener("resize", updateSection2Arrows);
 
   const cardMap = [
-    { id: "s2-card-context", key: "context" },
     { id: "s2-card-knowledge", key: "knowledge" },
     { id: "s2-card-instruction", key: "instruction" },
+    { id: "s2-card-memory", key: "memory" },
   ];
+
+  // Hover previews a role; clicking pins it. Pinning is what makes the three
+  // cards usable on touch, where there is no hover at all — and it gives the
+  // speaker a way to park the deck on one file while they talk over it.
+  // Leaving the composition falls back to whatever is pinned, so the preview
+  // never strands on a card the cursor merely passed over.
+  let pinnedKey = "knowledge";
+
+  const pin = (key) => {
+    pinnedKey = key;
+    setSection2ActiveCard(key);
+    cardMap.forEach(({ id, key: k }) => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute("aria-pressed", k === key ? "true" : "false");
+    });
+  };
 
   cardMap.forEach(({ id, key }) => {
     const card = document.getElementById(id);
     if (!card) return;
-    card.addEventListener("mouseenter", () => {
-      setSection2ActiveCard(key);
-    });
-    card.addEventListener("focus", () => {
-      setSection2ActiveCard(key);
-    });
-    card.addEventListener("click", () => {
-      setSection2ActiveCard(key);
+    card.addEventListener("mouseenter", () => setSection2ActiveCard(key));
+    card.addEventListener("focus", () => setSection2ActiveCard(key));
+    card.addEventListener("click", () => pin(key));
+    card.addEventListener("keydown", (e) => {
+      // The card back has its own trigger inside; only the card itself pins.
+      if (e.target !== card) return;
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      pin(key);
     });
   });
 
-  setSection2ActiveCard("knowledge");
+  if (container) {
+    container.addEventListener("mouseleave", () => setSection2ActiveCard(pinnedKey));
+  }
+
+  pin(pinnedKey);
 }
 
 mountSection2Arrows();
@@ -1565,9 +1595,9 @@ registerActivate("s2-1", (reduced) => {
   updateSection2Arrows();
 
   const arrows = [
-    { id: "s2-arrow-context", card: "s2-card-context", delay: 200 },
-    { id: "s2-arrow-knowledge", card: "s2-card-knowledge", delay: 320 },
-    { id: "s2-arrow-instruction", card: "s2-card-instruction", delay: 440 },
+    { id: "s2-arrow-knowledge", card: "s2-card-knowledge", delay: 200 },
+    { id: "s2-arrow-instruction", card: "s2-card-instruction", delay: 320 },
+    { id: "s2-arrow-memory", card: "s2-card-memory", delay: 440 },
   ];
 
   arrows.forEach(({ id, card, delay }) => {
@@ -1909,10 +1939,10 @@ const VENN_LENS = "M 352 132.5 A 235 235 0 0 0 352 427.5 A 160 160 0 0 0 352 132
 function effortVennMarkup(uid) {
   return `
     <svg
-      viewBox="110 25 680 510"
+      viewBox="110 25 680 580"
       role="img"
-      aria-label="Three-region Venn: what a machine can check, what AI can help with, and what only a human can check. The human region is drawn largest."
-      class="venn venn-emphasis-establish isolate mx-auto block h-auto max-h-[56vh] w-full max-w-4xl"
+      aria-label="Three-region Venn. Machine verification: deterministic, cheap to re-run, checks that required fields are present and that formats, dates and links are well-formed. Human verification: semantic judgment and the verdict — is this still true, is the source still right, does it still say what we claimed, does it still reflect how we work, is the named owner still the owner. AI sits in the overlap and does the grunt work: summarise, research, orient, draft, flag candidates, surface contradictions. The human region is drawn largest. The AI region is a hypothesis and is still unsettled."
+      class="venn venn-emphasis-establish isolate mx-auto block h-auto max-h-[62vh] w-full max-w-4xl"
     >
       <defs>
         <pattern
@@ -1942,11 +1972,15 @@ function effortVennMarkup(uid) {
           class="venn-circle fill-primary/15 stroke-primary/40"
         ></circle>
         <g data-venn-step="1">
-          <text x="225" y="185" text-anchor="middle"
-            class="fill-primary font-mono text-[11px] uppercase tracking-[0.3em]">machine</text>
-          <text x="215" y="255" text-anchor="middle" class="fill-base-content/70 text-[13px]">reference resolves</text>
-          <text x="215" y="285" text-anchor="middle" class="fill-base-content/70 text-[13px]">file exists</text>
-          <text x="215" y="315" text-anchor="middle" class="fill-base-content/70 text-[13px]">template structure holds</text>
+          <text x="243" y="178" text-anchor="middle"
+            class="fill-primary font-mono text-[24px] font-bold uppercase tracking-[0.12em]">machine</text>
+          <text x="224" y="222" text-anchor="middle" class="fill-primary/90 text-[18px] font-semibold">deterministic</text>
+          <text x="217" y="250" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">same input, same output</text>
+          <text x="215" y="277" text-anchor="middle" class="fill-base-content/85 text-[15px] font-medium">format valid</text>
+          <text x="216" y="303" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">required fields present</text>
+          <text x="222" y="329" text-anchor="middle" class="fill-base-content/75 text-[13.5px]">dates well-formed</text>
+          <text x="230" y="355" text-anchor="middle" class="fill-base-content/75 text-[13.5px]">links well-formed</text>
+          <text x="245" y="382" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">cheap to re-run</text>
         </g>
       </g>
       <g data-venn-actor="human" class="text-secondary">
@@ -1957,12 +1991,15 @@ function effortVennMarkup(uid) {
           class="venn-circle mix-blend-multiply fill-secondary/20 stroke-secondary/50 text-secondary"
         ></circle>
         <g data-venn-step="3">
-          <text x="610" y="150" text-anchor="middle"
-            class="fill-secondary font-mono text-[11px] uppercase tracking-[0.3em]">human</text>
-          <text x="605" y="242" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">is it still true</text>
-          <text x="605" y="280" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">is it stale</text>
-          <text x="605" y="318" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">does the reference point</text>
-          <text x="605" y="340" text-anchor="middle" class="fill-base-content/90 text-[15px] font-medium">at the right content</text>
+          <text x="600" y="140" text-anchor="middle"
+            class="fill-secondary font-mono text-[24px] font-bold uppercase tracking-[0.12em]">human</text>
+          <text x="600" y="196" text-anchor="middle" class="fill-base-content/90 text-[19px] font-semibold">is this still true?</text>
+          <text x="608" y="232" text-anchor="middle" class="fill-base-content/80 text-[15px]">is the source still right?</text>
+          <text x="610" y="268" text-anchor="middle" class="fill-base-content/80 text-[15px]">does it still say what we claimed?</text>
+          <text x="609" y="304" text-anchor="middle" class="fill-base-content/80 text-[15px]">does this still reflect how we work?</text>
+          <text x="602" y="340" text-anchor="middle" class="fill-base-content/75 text-[14px]">is the named owner still the owner?</text>
+          <text x="598" y="382" text-anchor="middle" class="fill-secondary/90 text-[17px] font-medium">semantic judgment</text>
+          <text x="580" y="424" text-anchor="middle" class="fill-secondary text-[21px] font-bold">the verdict</text>
         </g>
       </g>
       <g data-venn-actor="ai" class="text-accent">
@@ -1974,18 +2011,27 @@ function effortVennMarkup(uid) {
           fill="url(#venn-hatch-${uid})"
           class="stroke-accent/70"
         ></path>
-        <text data-venn-step="4" x="375" y="180" text-anchor="middle"
-          class="fill-accent font-mono text-[13px] font-bold uppercase tracking-[0.25em]">AI</text>
-        <g data-venn-step="4">
-          <text x="350" y="248" text-anchor="end"
-            class="fill-accent font-mono text-[26px] font-extrabold tracking-wider">AI</text>
-          <text x="366" y="254" text-anchor="start"
-            class="fill-accent font-display text-[64px] font-bold leading-none">?</text>
+        <text data-venn-step="4" x="373" y="196" text-anchor="middle"
+          class="fill-accent font-mono text-[26px] font-extrabold uppercase tracking-[0.12em]">AI</text>
+        <g data-venn-step="5">
+          <text x="373" y="228" text-anchor="middle" class="fill-base-content/85 text-[14px] font-medium">summarise</text>
+          <text x="373" y="250" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">research</text>
+          <text x="373" y="271" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">draft</text>
+          <text x="373" y="292" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">orient</text>
+          <text x="374" y="313" text-anchor="middle" class="fill-base-content/70 text-[11.5px]">flag candidates</text>
+          <text x="373" y="334" text-anchor="middle" class="fill-base-content/70 text-[11px]">surface contradictions</text>
+          <text x="371" y="360" text-anchor="middle" class="fill-accent text-[12px] font-semibold italic">the grunt work</text>
         </g>
         <g data-venn-step="5">
-          <text x="373" y="298" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">fact-check</text>
-          <text x="373" y="324" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">hard numbers</text>
-          <text x="373" y="350" text-anchor="middle" class="fill-base-content/70 text-[12.5px]">still needs checking</text>
+          <path
+            d="M 352 430 L 312 542"
+            fill="none"
+            stroke-width="1.5"
+            stroke-dasharray="4 6"
+            class="stroke-accent/60"
+          ></path>
+          <text x="306" y="568" text-anchor="start"
+            class="fill-accent font-mono text-[14px] font-semibold tracking-[0.02em]">my hypothesis — this region is still unsettled</text>
         </g>
       </g>
       </g>

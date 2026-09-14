@@ -603,11 +603,11 @@ body.notes-visible [data-notes-cue] {
 }
 
 /* =============================================================================
-   Section 2 — Animated arrows from Markdown card to Context, Knowledge, Instruction
+   Section 2 — Animated arrows from Markdown card to Knowledge, Instructions, Memory
 ============================================================================= */
 
 /* Card active breathing animations */
-#s2-card-context.s2-card-active {
+#s2-card-memory.s2-card-active {
   animation: s2-breathe-primary 2.6s ease-in-out infinite;
 }
 
@@ -678,7 +678,7 @@ body.notes-visible [data-notes-cue] {
   opacity: 1;
 }
 
-#s2-arrow-group-context.is-active {
+#s2-arrow-group-memory.is-active {
   filter: drop-shadow(0 0 6px var(--color-primary, currentColor));
 }
 
@@ -730,7 +730,7 @@ body.notes-visible [data-notes-cue] {
 }
 
 /* Card hover also highlights corresponding arrow if active */
-#s2-composition:has(#s2-card-context:hover) #s2-arrow-group-context {
+#s2-composition:has(#s2-card-memory:hover) #s2-arrow-group-memory {
   filter: drop-shadow(0 0 6px var(--color-primary, currentColor));
 }
 
@@ -844,13 +844,13 @@ body.notes-visible [data-notes-cue] {
     opacity: 0 !important;
   }
 
-  #s2-card-context.s2-card-active,
+  #s2-card-memory.s2-card-active,
   #s2-card-knowledge.s2-card-active,
   #s2-card-instruction.s2-card-active {
     animation: none !important;
   }
 
-  #s2-card-context.s2-card-active {
+  #s2-card-memory.s2-card-active {
     border-color: var(--color-primary) !important;
     box-shadow: 0 0 0 1px var(--color-primary) !important;
   }
