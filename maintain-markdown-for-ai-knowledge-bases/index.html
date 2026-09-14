@@ -2199,8 +2199,8 @@
               id="s6-1"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="6"
-              data-section-title="Steering the machine half"
-              data-slide-title="Where markdown-harness acts"
+              data-section-title="Steering the AI"
+              data-slide-title="Intro to markdown-harness"
               data-beat="S6.1"
               data-assertion="markdown-harness steers the machine half"
             >
@@ -2211,21 +2211,46 @@
                   class="mb-4 translate-y-3 font-mono text-xs font-semibold uppercase tracking-[0.25em] text-primary opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  An answer
+                  One possible solution
                 </p>
-                <h2
-                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
-                  data-reveal
-                >
-                  markdown-harness
-                </h2>
+
+                <!--
+                  Repo link sits on the title line, not under the caption: this is
+                  the first slide that names a thing the audience can go and get,
+                  and a primary button is the only call to action in the deck.
+                -->
+                <div class="flex flex-wrap items-center gap-x-5 gap-y-3">
+                  <h2
+                    class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                    data-reveal
+                  >
+                    markdown-harness
+                  </h2>
+                  <a
+                    href="https://github.com/hancrafted/markdown-harness"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-primary btn-sm translate-y-3 gap-2 font-mono text-xs opacity-0 transition-all duration-500 ease-out hover:scale-105"
+                    data-reveal
+                  >
+                    <svg class="size-4" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                      <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+                      ></path>
+                    </svg>
+                    <span>hancrafted/markdown-harness</span>
+                  </a>
+                </div>
+
                 <p
                   class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  It works the machine region, where the checks are decidable, and reaches one arm
-                  into the AI region to steer what the model does with what it just read. It does
-                  not touch the human region — that half was never the tool's to take.
+                  <span class="font-medium text-base-content"
+                    >A document can tell you how much of itself to believe.</span
+                  >
+                  Not full trust — a floor that holds, and a reliable signal when a human needs to
+                  act.
                 </p>
 
                 <!--
@@ -2318,10 +2343,10 @@
               id="s6-2"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="6"
-              data-section-title="Steering the machine half"
-              data-slide-title="One check, two triggers"
+              data-section-title="Steering the AI"
+              data-slide-title="Deterministic core"
               data-beat="S6.2"
-              data-assertion="One check, two triggers"
+              data-assertion="One mechanism, three triggers, one deterministic core"
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-3 opacity-0 transition-all duration-700 ease-out"
@@ -2336,40 +2361,74 @@
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  One check, two triggers
+                  Runs on a 100% deterministic core
                 </h2>
                 <p
                   class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  Two things can start it and it does two different things with the answer. What
-                  happens in between is the same both times.
+                  Three things can start it and it does three different things with the answer. What
+                  happens in between is the same every time.
                 </p>
 
                 <!--
-                  Two four-node chains. Every cell is placed on an explicit grid
-                  line rather than flowing, so the two middle steps land in the
-                  same columns on both rows — that alignment is what makes the
-                  shared spine read as one mechanism instead of a coincidence.
+                  Hub and spoke. Three triggers on the left, three consequences
+                  on the right, and one hub in the middle that every lane passes
+                  through — the hub is placed once and spans all three rows, so
+                  the drawing cannot say anything other than "same core".
+
+                  The hub comes first in source order so that on narrow screens,
+                  where the explicit md: placement drops away and cells stack,
+                  the core is stated before the lanes that use it.
                 -->
                 <div
                   class="mt-8 rounded-box border border-base-300 bg-base-200/30 p-4 md:p-6"
                   data-reveal
                 >
                   <div
-                    class="relative isolate grid grid-cols-1 gap-3 md:grid-cols-[auto_1fr_auto_1fr_auto_1fr_auto_1fr] md:gap-x-0 md:gap-y-5"
+                    class="grid grid-cols-1 gap-3 md:grid-cols-[auto_minmax(0,1fr)_auto_minmax(0,1.1fr)_auto_minmax(0,1.15fr)] md:gap-x-0 md:gap-y-5"
                   >
-                    <!-- The spine, drawn behind the two shared steps on both rows -->
+                    <!-- The hub — two steps, shared by all three lanes -->
                     <div
-                      aria-hidden="true"
-                      class="pointer-events-none -z-10 hidden rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 md:col-span-3 md:col-start-4 md:row-span-2 md:row-start-1 md:-mx-2 md:-my-3 md:block"
-                    ></div>
-
-                    <!-- Row 1 — runtime -->
-                    <div
-                      class="font-mono text-xs font-bold uppercase tracking-[0.18em] text-base-content/50 md:col-start-1 md:row-start-1 md:self-center md:pr-4"
+                      class="rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 p-3.5 md:col-start-4 md:row-span-3 md:row-start-1 md:mx-2 md:self-center"
                     >
-                      Runtime
+                      <p
+                        class="text-center font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80"
+                      >
+                        the same core, every time
+                      </p>
+                      <div class="mt-3 space-y-1.5">
+                        <a
+                          href="https://github.com/hancrafted/markdown-harness/blob/main/fixtures/conformance/valid-test-config.yaml"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="group block rounded-lg border-2 border-primary/50 bg-primary/10 px-3 py-2.5 text-center text-xs font-semibold text-primary transition-colors hover:border-primary hover:bg-primary/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:text-[13px]"
+                        >
+                          <span>Retrieve configuration</span>
+                          <span
+                            class="mt-0.5 block font-mono text-[10px] font-normal text-primary/70 group-hover:text-primary"
+                            >config.yaml ↗</span
+                          >
+                        </a>
+                        <p
+                          aria-hidden="true"
+                          class="text-center text-xs leading-none text-base-content/35"
+                        >
+                          ↓
+                        </p>
+                        <p
+                          class="rounded-lg border-2 border-primary/50 bg-primary/10 px-3 py-2.5 text-center text-xs font-semibold text-primary md:text-[13px]"
+                        >
+                          Run deterministic logic
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Lane 1 — AI runtime -->
+                    <div
+                      class="mt-4 font-mono text-xs font-bold uppercase tracking-[0.18em] text-base-content/50 md:col-start-1 md:row-start-1 md:mt-0 md:self-center md:pr-4"
+                    >
+                      AI runtime
                     </div>
                     <div
                       class="self-center rounded-lg border border-dashed border-base-content/25 bg-base-100 px-3 py-2.5 text-center text-xs font-medium text-base-content/70 md:col-start-2 md:row-start-1 md:text-[13px]"
@@ -2381,33 +2440,18 @@
                       class="hidden text-base-content/35 md:col-start-3 md:row-start-1 md:block md:self-center md:justify-self-center md:px-2"
                       >→</span
                     >
-                    <div
-                      class="self-center rounded-lg border-2 border-primary/50 bg-primary/10 px-3 py-2.5 text-center text-xs font-semibold text-primary md:col-start-4 md:row-start-1 md:text-[13px]"
-                    >
-                      Retrieve configuration
-                    </div>
                     <span
                       aria-hidden="true"
                       class="hidden text-base-content/35 md:col-start-5 md:row-start-1 md:block md:self-center md:justify-self-center md:px-2"
                       >→</span
                     >
                     <div
-                      class="self-center rounded-lg border-2 border-primary/50 bg-primary/10 px-3 py-2.5 text-center text-xs font-semibold text-primary md:col-start-6 md:row-start-1 md:text-[13px]"
+                      class="self-center rounded-lg border border-base-content/30 bg-base-100 px-3 py-2.5 text-center text-xs font-semibold text-base-content md:col-start-6 md:row-start-1 md:text-[13px]"
                     >
-                      Run the deterministic check
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      class="hidden text-base-content/35 md:col-start-7 md:row-start-1 md:block md:self-center md:justify-self-center md:px-2"
-                      >→</span
-                    >
-                    <div
-                      class="self-center rounded-lg border border-base-content/30 bg-base-100 px-3 py-2.5 text-center text-xs font-semibold text-base-content md:col-start-8 md:row-start-1 md:text-[13px]"
-                    >
-                      Inject the result into the session
+                      Inject result and instruction into the context
                     </div>
 
-                    <!-- Row 2 — commit time -->
+                    <!-- Lane 2 — commit time -->
                     <div
                       class="mt-4 font-mono text-xs font-bold uppercase tracking-[0.18em] text-base-content/50 md:col-start-1 md:row-start-2 md:mt-0 md:self-center md:pr-4"
                     >
@@ -2423,38 +2467,46 @@
                       class="hidden text-base-content/35 md:col-start-3 md:row-start-2 md:block md:self-center md:justify-self-center md:px-2"
                       >→</span
                     >
-                    <div
-                      class="self-center rounded-lg border-2 border-primary/50 bg-primary/10 px-3 py-2.5 text-center text-xs font-semibold text-primary md:col-start-4 md:row-start-2 md:text-[13px]"
-                    >
-                      Retrieve configuration
-                    </div>
                     <span
                       aria-hidden="true"
                       class="hidden text-base-content/35 md:col-start-5 md:row-start-2 md:block md:self-center md:justify-self-center md:px-2"
                       >→</span
                     >
                     <div
-                      class="self-center rounded-lg border-2 border-primary/50 bg-primary/10 px-3 py-2.5 text-center text-xs font-semibold text-primary md:col-start-6 md:row-start-2 md:text-[13px]"
-                    >
-                      Run the deterministic check
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      class="hidden text-base-content/35 md:col-start-7 md:row-start-2 md:block md:self-center md:justify-self-center md:px-2"
-                      >→</span
-                    >
-                    <div
-                      class="self-center rounded-lg border border-base-content/30 bg-base-100 px-3 py-2.5 text-center text-xs font-semibold text-base-content md:col-start-8 md:row-start-2 md:text-[13px]"
+                      class="self-center rounded-lg border border-base-content/30 bg-base-100 px-3 py-2.5 text-center text-xs font-semibold text-base-content md:col-start-6 md:row-start-2 md:text-[13px]"
                     >
                       Pass or fail the commit
                     </div>
 
-                    <!-- The spine's label -->
-                    <p
-                      class="mt-2 text-center font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/80 md:col-span-3 md:col-start-4 md:row-start-3 md:mt-0"
+                    <!-- Lane 3 — async -->
+                    <div
+                      class="mt-4 font-mono text-xs font-bold uppercase tracking-[0.18em] text-base-content/50 md:col-start-1 md:row-start-3 md:mt-0 md:self-center md:pr-4"
                     >
-                      the same check, both times
-                    </p>
+                      Async
+                    </div>
+                    <div
+                      class="self-center rounded-lg border border-dashed border-base-content/25 bg-base-100 px-3 py-2.5 text-center text-xs font-medium text-base-content/70 md:col-start-2 md:row-start-3 md:text-[13px]"
+                    >
+                      Nightly schedule
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      class="hidden text-base-content/35 md:col-start-3 md:row-start-3 md:block md:self-center md:justify-self-center md:px-2"
+                      >→</span
+                    >
+                    <span
+                      aria-hidden="true"
+                      class="hidden text-base-content/35 md:col-start-5 md:row-start-3 md:block md:self-center md:justify-self-center md:px-2"
+                      >→</span
+                    >
+                    <div
+                      class="self-center rounded-lg border border-base-content/30 bg-base-100 px-3 py-2.5 text-center text-xs font-semibold text-base-content md:col-start-6 md:row-start-3 md:text-[13px]"
+                    >
+                      Deterministic file regeneration
+                      <span class="block font-mono text-[10px] font-normal text-base-content/55"
+                        >index.md, verification ticket</span
+                      >
+                    </div>
                   </div>
                 </div>
 
@@ -2521,14 +2573,18 @@
                     [PROVISIONAL]
                   </p>
                   <p>
-                    Trace the top row with a finger, then the bottom one, then stop on the boxed
-                    middle. One check, written once. The trigger changes and the consequence
-                    changes; the check does not.
+                    Trace each lane with a finger — left, through the middle, out to the right — and
+                    land on the middle every time. The trigger changes and the consequence changes;
+                    the core does not. It is configuration plus deterministic logic, nothing else.
                   </p>
                   <p class="mt-3">
-                    This is the answer to "do I have to run it twice". No — it is the same check
-                    reached from two places, which is also why the commit gate and the agent can
-                    never disagree with each other.
+                    This is the answer to "do I have to run it three times". No — it is the same
+                    core reached from three places, which is also why the commit gate, the agent and
+                    the nightly job can never disagree with each other.
+                  </p>
+                  <p class="mt-3">
+                    The config link is live if anyone wants to see the shape of it; do not open it
+                    on stage unless asked.
                   </p>
                 </aside>
               </div>
@@ -2539,7 +2595,7 @@
               id="s6-3"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="6"
-              data-section-title="Steering the machine half"
+              data-section-title="Steering the AI"
               data-slide-title="Live demo"
               data-beat="S6.3"
               data-assertion="The check, run live"
@@ -2680,8 +2736,8 @@
               id="s6-4"
               class="beat flex min-h-screen flex-col justify-center px-6 py-24 md:px-16 lg:px-24"
               data-section="6"
-              data-section-title="Steering the machine half"
-              data-slide-title="Today, and next"
+              data-section-title="Steering the AI"
+              data-slide-title="Feature roadmap"
               data-beat="S6.4"
               data-assertion="Two shipped, three planned"
             >
@@ -2698,7 +2754,7 @@
                   class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
                   data-reveal
                 >
-                  Today, and next
+                  Feature Roadmap
                 </h2>
                 <p
                   class="mt-4 flex max-w-3xl translate-y-3 flex-wrap items-center gap-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
@@ -2714,10 +2770,13 @@
                 <!--
                   The shipped/planned split has to resolve before any item is
                   read, so the two groups differ on four axes at once: border
-                  style, fill, marker, and text weight. A tick against five
+                  style, fill, marker, and text weight. A tick against
                   otherwise-identical rows would not survive being read from the
                   back of a room, and the credibility cost of blurring them is
                   the speaker's, not the page's.
+
+                  Planned rows link out to the issue that tracks them, so
+                  "planned" is a claim anyone in the room can check.
                 -->
                 <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2" data-reveal>
                   <!-- Shipped -->
@@ -2729,7 +2788,6 @@
                         class="font-mono text-sm font-bold uppercase tracking-[0.2em] text-primary"
                         >Shipped</span
                       >
-                      <span class="font-mono text-xs text-base-content/50">2 of 5</span>
                     </div>
                     <ul class="mt-4 space-y-3">
                       <li class="flex gap-3">
@@ -2771,7 +2829,6 @@
                         class="font-mono text-sm font-bold uppercase tracking-[0.2em] text-base-content/45"
                         >Planned</span
                       >
-                      <span class="font-mono text-xs text-base-content/40">3 of 5</span>
                     </div>
                     <ul class="mt-4 space-y-3">
                       <li class="flex gap-3">
@@ -2780,7 +2837,16 @@
                           class="mt-1 size-4 shrink-0 rounded-full border-2 border-dashed border-base-content/30"
                         ></span>
                         <span class="text-sm text-base-content/55">
-                          <strong class="font-medium">Index file generation</strong>
+                          <a
+                            href="https://github.com/hancrafted/markdown-harness/issues/86"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-medium underline decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-solid focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                            >Index file generation<span
+                              class="ml-1 font-mono text-[11px] text-base-content/45"
+                              >#86 ↗</span
+                            ></a
+                          >
                           <span> — descriptions, progressive disclosure</span>
                         </span>
                       </li>
@@ -2790,7 +2856,16 @@
                           class="mt-1 size-4 shrink-0 rounded-full border-2 border-dashed border-base-content/30"
                         ></span>
                         <span class="text-sm text-base-content/55">
-                          <strong class="font-medium">Filename convention linting</strong>
+                          <a
+                            href="https://github.com/hancrafted/markdown-harness/issues/63"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-medium underline decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-solid focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                            >Filename convention linting<span
+                              class="ml-1 font-mono text-[11px] text-base-content/45"
+                              >#63 ↗</span
+                            ></a
+                          >
                         </span>
                       </li>
                       <li class="flex gap-3">
@@ -2799,7 +2874,16 @@
                           class="mt-1 size-4 shrink-0 rounded-full border-2 border-dashed border-base-content/30"
                         ></span>
                         <span class="text-sm text-base-content/55">
-                          <strong class="font-medium">Drift detection</strong>
+                          <a
+                            href="https://github.com/hancrafted/markdown-harness/issues/96"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-medium underline decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-solid focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                            >Drift detection<span
+                              class="ml-1 font-mono text-[11px] text-base-content/45"
+                              >#96 ↗</span
+                            ></a
+                          >
                           <span> — hashing values and checking whether they changed</span>
                         </span>
                       </li>

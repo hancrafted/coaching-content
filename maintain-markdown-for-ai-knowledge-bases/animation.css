@@ -505,12 +505,55 @@
    has already watched assemble, whereas §6.1 assembles from scratch, and moving
    the camera during the build reads as a wobble rather than a gesture.
 
-   The steer arrow is deliberately outside [data-venn-actor], so it is not caught
-   by the recede rule below — the arrow stays lit while the region it points into
-   dims, which is the beat's whole claim. */
-.venn.venn-emphasis-machine [data-venn-actor="ai"],
+   The steer arrow and the running badge are deliberately outside
+   [data-venn-actor], so they are not caught by the recede rule below — both stay
+   lit while the region they point into recedes, which is the beat's whole claim.
+
+   Only human recedes here. AI keeps its full opacity on purpose: the beat says
+   the machine steers a model that is live, and a dimmed AI would say the
+   opposite. What changes instead is the lens's own two properties, below. */
 .venn.venn-emphasis-machine [data-venn-actor="human"] {
   opacity: 0.25;
+}
+
+/* The lens loses its colour and gains a pulse — the two halves of "steered, and
+   running". The fill is laid over the blue that the machine and human circles
+   put under it, near-opaque, so the region reads as unclaimed ground rather
+   than as part of the lit machine side. The border is the live signal, so it is
+   the only thing in the drawing that moves after the build has settled. */
+.venn [data-venn-actor="ai"] > path[data-venn-step] {
+  transition: fill var(--deck-draw) var(--deck-ease);
+}
+
+.venn.venn-emphasis-machine [data-venn-actor="ai"] > path[data-venn-step] {
+  fill: color-mix(in oklab, var(--color-base-100) 84%, var(--color-base-content) 14%);
+  animation: venn-ai-running 1.8s var(--deck-ease) infinite;
+}
+
+.venn.venn-emphasis-machine .venn-running-dot {
+  animation: venn-ai-running-dot 1.8s var(--deck-ease) infinite;
+}
+
+@keyframes venn-ai-running {
+  0%,
+  100% {
+    stroke-opacity: 0.3;
+    stroke-width: 1.5;
+  }
+  50% {
+    stroke-opacity: 1;
+    stroke-width: 3.5;
+  }
+}
+
+@keyframes venn-ai-running-dot {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .venn [data-venn-actor="machine"] .venn-circle {
@@ -985,6 +1028,24 @@ body.notes-visible [data-notes-cue] {
      a transition to watch. */
   .venn [data-venn-actor="machine"] .venn-circle {
     transition: none !important;
+  }
+
+  /* The grey fill is the state and stays; the pulse is the motion and goes. The
+     lens border settles at its lit end so "running" is still legible as a
+     state, just not as a blink. */
+  .venn [data-venn-actor="ai"] > path[data-venn-step] {
+    transition: none !important;
+  }
+
+  .venn.venn-emphasis-machine [data-venn-actor="ai"] > path[data-venn-step] {
+    animation: none !important;
+    stroke-opacity: 1;
+    stroke-width: 2.5;
+  }
+
+  .venn.venn-emphasis-machine .venn-running-dot {
+    animation: none !important;
+    opacity: 1;
   }
 
   .effort-chart [data-curve-wipe] {

@@ -1982,20 +1982,27 @@ function effortVennMarkup(emphasis) {
       ? `data-venn-actor="${actor}" class="${tone} cursor-pointer" data-toc-jump="${VENN_TARGETS[actor]}"`
       : `data-venn-actor="${actor}" class="${tone}"`;
 
-  // §4 shares its slide with three cards; §8 gives the drawing the whole page.
-  const size = emphasis === "human" ? "max-h-[58vh] max-w-4xl" : "max-h-[42vh] max-w-3xl";
+  // §4 shares its slide with three cards and has to stay small; §6.1 and §7 both
+  // give the drawing the page, so both get the larger size.
+  const size = emphasis === "establish" ? "max-h-[42vh] max-w-3xl" : "max-h-[58vh] max-w-4xl";
 
   // The steer arrow, on the machine mount only. The claim §7 makes is that the
   // tool *is* the machine side and *reaches into* AI. An arrow says that; a
   // circle does not — a third circle would read as a fourth actor and contradict
   // the three-region model §5 spends three beats building.
   //
-  // It is drawn below the region labels (machine's sit at y≈240–274) and above
-  // the hypothesis footnote (which starts at y=402), in the clear band around
-  // y≈330. At that height the machine circle runs to x=476 and the lens opens at
-  // x=370, so a tip at x=400 lands inside the overlap rather than short of it.
-  // The head is a filled triangle rather than a <marker> so that <defs> stays
-  // untouched and the establish and human mounts keep emitting identical bytes.
+  // It is drawn below the region labels (machine's sit at y≈240–274) and in the
+  // clear band around y≈330. At that height the machine circle runs to x=476 and
+  // the lens opens at x=370, so a tip at x=400 lands inside the overlap rather
+  // than short of it. The head is a filled triangle rather than a <marker> so
+  // that <defs> stays untouched and the establish and human mounts keep emitting
+  // identical bytes.
+  //
+  // The running badge is the other half of the same sentence: the arrow says the
+  // machine steers, the badge says what it steers *into* is live while it does.
+  // It sits at (414, ~80) — outside both circles, which is why the band above the
+  // lens tip at (413.8, 102.3) is empty — with a short leader down to that tip,
+  // so it annotates the border that animation.css pulses rather than floating.
   const steer =
     emphasis === "machine"
       ? `
@@ -2010,20 +2017,46 @@ function effortVennMarkup(emphasis) {
         <path d="M 400 331 L 385 334 L 387 323 Z" class="fill-primary"></path>
         <text x="318" y="308" text-anchor="middle"
           class="fill-primary font-mono text-[15px] font-semibold uppercase tracking-[0.12em]">steer</text>
+      </g>
+      <g data-venn-running data-venn-step="7">
+        <circle cx="372" cy="76" r="5" class="venn-running-dot fill-accent"></circle>
+        <text x="386" y="82"
+          class="fill-accent font-mono text-[15px] font-semibold uppercase tracking-[0.12em]">running</text>
+        <path d="M 414 90 L 414 101" fill="none" stroke-width="1.5"
+          stroke-dasharray="3 4" class="stroke-accent/60"></path>
       </g>`
       : "";
 
-  // Appended, never substituted, so the other two mounts read exactly as before.
-  const steerLabel =
+  // The hypothesis footnote is §4's caveat and §7 keeps it. §6.1 drops it: that
+  // beat is about where the tool acts, and re-raising an open question about the
+  // region it steers into only muddies the claim.
+  const hypothesis =
     emphasis === "machine"
-      ? " An arrow labelled steer runs from inside the machine region into the AI region."
-      : "";
+      ? ""
+      : `
+          <path
+            d="M 414 402 L 414 492"
+            fill="none"
+            stroke-width="1.5"
+            stroke-dasharray="4 6"
+            class="stroke-accent/60"
+          ></path>
+          <text x="414" y="516" text-anchor="middle"
+            class="fill-accent font-mono text-[15px] font-semibold tracking-[0.02em]">the AI region is my hypothesis — still unsettled</text>`;
+
+  // Swapped rather than appended: the machine mount genuinely describes a
+  // different picture, and a label that still said "still unsettled" would
+  // describe something no longer on screen.
+  const aiLabel =
+    emphasis === "machine"
+      ? "AI sits where the two overlap and is labelled non-deterministic, AI judging, token cost; its border is pulsing and badged running. An arrow labelled steer runs from inside the machine region into the AI region."
+      : "AI sits where the two overlap and is labelled non-deterministic, AI judging, token cost; it is marked as a hypothesis that is still unsettled. The three cards below open the slide for each region.";
 
   return `
     <svg
       viewBox="115 15 700 540"
       role="img"
-      aria-label="Venn diagram of three overlapping regions. Machine, labelled deterministic, cheap, fast. Human, drawn largest, labelled non-deterministic, time consuming, trust. AI sits where the two overlap and is labelled non-deterministic, AI judging, token cost; it is marked as a hypothesis that is still unsettled. The three cards below open the slide for each region.${steerLabel}"
+      aria-label="Venn diagram of three overlapping regions. Machine, labelled deterministic, cheap, fast. Human, drawn largest, labelled non-deterministic, time consuming, trust. ${aiLabel}"
       class="venn venn-emphasis-establish isolate mx-auto block h-auto w-full ${size}"
     >
       <defs>
@@ -2101,15 +2134,7 @@ function effortVennMarkup(emphasis) {
             class="fill-base-content/60 text-[12px]">AI judging</text>
           <text x="425" y="290" text-anchor="middle"
             class="fill-base-content/60 text-[12px]">token cost</text>
-          <path
-            d="M 414 402 L 414 492"
-            fill="none"
-            stroke-width="1.5"
-            stroke-dasharray="4 6"
-            class="stroke-accent/60"
-          ></path>
-          <text x="414" y="516" text-anchor="middle"
-            class="fill-accent font-mono text-[15px] font-semibold tracking-[0.02em]">the AI region is my hypothesis — still unsettled</text>
+${hypothesis}
         </g>
       </g>${steer}
       </g>
@@ -2584,8 +2609,8 @@ registerActivate("s6-1", (reduced) => {
   const svg = beat.querySelector(".venn");
   if (!svg) return;
   playVenn(svg, reduced);
-  // Seven steps at 90ms from a 100ms delay puts the arrow's own rise starting at
-  // 640ms; the dim waits until it has landed so the two gestures do not muddy.
+  // Eight steps at 90ms from a 100ms delay puts the running badge's rise starting
+  // at 730ms; the dim waits until it has landed so the two gestures do not muddy.
   if (reduced) setVennEmphasis(svg, "machine");
   else setTimeout(() => setVennEmphasis(svg, "machine"), 1150);
 });
