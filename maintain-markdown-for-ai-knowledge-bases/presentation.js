@@ -1073,6 +1073,158 @@ registerActivate("s4-1", (reduced) => {
   if (svg) playVenn(svg, reduced);
 });
 
+/* ------------------------------------------------------------------ *
+ * Frontmatter Block Component (Sections 5, 6, 7)
+ *
+ * Authored once with the complete OKF v0.2 field set.
+ * Designed as a display element, not a code block.
+ * Mode determines visibility and annotations:
+ *   - "section-5": only sources and stale_after
+ *   - "section-6": full field set with who-supplies annotations
+ *   - "section-7": full field set with configured sentence highlighting
+ * ------------------------------------------------------------------ */
+
+function renderFrontmatterBlock({ mode = "section-5", activeField = null } = {}) {
+  const isS5 = mode === "section-5";
+
+  return `
+    <div class="frontmatter-card rounded-2xl border border-base-300 bg-base-200/50 p-5 md:p-6 shadow-sm">
+      <div class="mb-4 flex items-center justify-between border-b border-base-300/70 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-primary/70"></span>
+          <span class="font-mono text-xs font-semibold text-base-content/80">document.md</span>
+          <span class="font-mono text-[10px] text-base-content/40">frontmatter</span>
+        </div>
+        <span class="badge badge-ghost badge-xs font-mono text-[10px] tracking-wider text-base-content/60">OKF v0.2</span>
+      </div>
+
+      <div class="space-y-3 font-mono text-xs md:text-sm">
+        ${
+          !isS5
+            ? `
+        <!-- type -->
+        <div data-fm-field="type" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+            <div>
+              <span class="text-base-content/50 uppercase tracking-wider text-[10px]">type:</span>
+              <span class="font-semibold text-base-content ml-2">guide</span>
+            </div>
+            ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: author chooses category</span>` : ""}
+          </div>
+        </div>`
+            : ""
+        }
+
+        <!-- sources -->
+        <div data-fm-field="sources" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+          <div class="flex flex-col gap-2">
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+              <span class="text-base-content/50 uppercase tracking-wider text-[10px]">sources:</span>
+              ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human defines authority</span>` : ""}
+            </div>
+            <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-1">
+              <div>
+                <span class="text-base-content/50 text-[11px]">resource:</span>
+                <span class="font-medium text-primary ml-1 break-all">https://internal.corp/spec/v2</span>
+              </div>
+              <div>
+                <span class="text-base-content/50 text-[11px]">id:</span>
+                <span class="text-base-content/80 ml-1">okf-spec-v2</span>
+              </div>
+              <div>
+                <span class="text-base-content/50 text-[11px]">title:</span>
+                <span class="text-base-content/80 ml-1">Core Architecture Specification</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- stale_after -->
+        <div data-fm-field="stale_after" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors ${activeField === "stale_after" ? "ring-2 ring-primary bg-primary/5" : ""}">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+            <div>
+              <span class="text-base-content/50 uppercase tracking-wider text-[10px]">stale_after:</span>
+              <span class="font-bold text-primary ml-2">2026-06-01T00:00:00+00:00</span>
+            </div>
+            ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human sets review budget</span>` : ""}
+          </div>
+        </div>
+
+        ${
+          !isS5
+            ? `
+        <!-- generated (machine-signed) -->
+        <div data-fm-field="generated" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+              <div>
+                <span class="text-base-content/50 uppercase tracking-wider text-[10px]">generated:</span>
+                <span class="badge badge-xs badge-neutral ml-2 font-mono text-[9px]">machine-signed</span>
+              </div>
+              ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: machine stamps model & time</span>` : ""}
+            </div>
+            <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
+              <div><span class="text-base-content/50">by:</span> <span class="text-accent font-medium">claude-3-7-sonnet</span></div>
+              <div><span class="text-base-content/50">at:</span> <span>2026-01-15T09:30:00+00:00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- verified (human-signed twin) -->
+        <div data-fm-field="verified" class="fm-field rounded-lg border border-base-300/60 bg-base-100/70 p-3 transition-colors">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+              <div>
+                <span class="text-base-content/50 uppercase tracking-wider text-[10px]">verified:</span>
+                <span class="badge badge-xs badge-primary ml-2 font-mono text-[9px] text-primary-content">human-signed</span>
+              </div>
+              ${mode === "section-6" ? `<span class="fm-annotation text-[11px] font-sans text-base-content/60 italic">Who supplies: human verifies & signs</span>` : ""}
+            </div>
+            <div class="ml-3 pl-3 border-l-2 border-base-300/80 space-y-0.5 text-xs text-base-content/80">
+              <div><span class="text-base-content/50">by:</span> <span class="text-primary font-bold">human:han</span></div>
+              <div><span class="text-base-content/50">at:</span> <span>2026-02-01T14:15:00+00:00</span></div>
+            </div>
+          </div>
+        </div>`
+            : ""
+        }
+      </div>
+    </div>`;
+}
+
+function mountFrontmatterBlocks() {
+  document.querySelectorAll("[data-frontmatter-mount]").forEach((host) => {
+    const beatId = host.dataset.frontmatterMount;
+    const isSection5 = beatId.startsWith("s5");
+    host.innerHTML = renderFrontmatterBlock({
+      mode: isSection5 ? "section-5" : host.dataset.frontmatterMode || "section-6",
+    });
+  });
+}
+
+mountFrontmatterBlocks();
+
+// S5.1 — machine pass resolves cleanly
+registerActivate("s5-1", (reduced) => {
+  const beat = document.getElementById("s5-1");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+});
+
+// S5.2 — AI pass returns a claim
+registerActivate("s5-2", (reduced) => {
+  const beat = document.getElementById("s5-2");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+});
+
+// S5.3 — human pass stays visibly unresolved
+registerActivate("s5-3", (reduced) => {
+  const beat = document.getElementById("s5-3");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+});
+
 // S9.1 — close: heading lines fade up, then the Venn assembles with human emphasis lit.
 registerActivate("s9-1", (reduced) => {
   const beat = document.getElementById("s9-1");

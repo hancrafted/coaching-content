@@ -528,22 +528,113 @@
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
-                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                <p
+                  class="mb-6 translate-y-3 font-mono text-xs uppercase tracking-[0.3em] text-primary/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
                   S5.1 · Three passes over one file
                 </p>
-                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
-                  The machine pass
-                </h2>
-                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
-                  One real frontmatter block, assessed mechanically. It resolves cleanly — and that
-                  is exactly what mechanical checking is good at.
-                </p>
-                <div
-                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
                 >
-                  <span class="badge badge-ghost badge-sm font-mono">Ticket 09</span>
-                  <span>The frontmatter block, first appearance, plus the machine pass.</span>
+                  The machine pass resolves cleanly
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  One real frontmatter block, assessed mechanically. Syntax parses, URLs resolve,
+                  dates check out. This is what mechanical checking is genuinely good at.
+                </p>
+
+                <!-- 2-col layout: block on left, passes on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div class="lg:col-span-6" data-frontmatter-mount="s5-1"></div>
+                  <div class="lg:col-span-6 space-y-4">
+                    <!-- Machine pass card -->
+                    <div
+                      class="pass-card rounded-xl border border-base-300 bg-base-100/90 p-5 shadow-sm transition-all duration-500"
+                      data-pass="machine"
+                    >
+                      <div class="flex items-center justify-between border-b border-base-200 pb-3">
+                        <span
+                          class="badge badge-neutral badge-sm font-mono uppercase tracking-wider"
+                          >Machine pass</span
+                        >
+                        <span
+                          class="font-mono text-xs font-semibold text-success flex items-center gap-1.5"
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M5 13l4 4L19 7"
+                              stroke="currentColor"
+                              stroke-width="2.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Resolves cleanly
+                        </span>
+                      </div>
+                      <ul class="mt-4 space-y-2 font-mono text-xs text-base-content/75">
+                        <li class="flex items-start gap-2">
+                          <span class="text-success font-bold">✓</span>
+                          <span
+                            ><strong>Syntax:</strong> valid YAML frontmatter delimiter &
+                            structure</span
+                          >
+                        </li>
+                        <li class="flex items-start gap-2">
+                          <span class="text-success font-bold">✓</span>
+                          <span
+                            ><strong>Resource:</strong> https://internal.corp/spec/v2 reachable
+                            (HTTP 200)</span
+                          >
+                        </li>
+                        <li class="flex items-start gap-2">
+                          <span class="text-success font-bold">✓</span>
+                          <span
+                            ><strong>Staleness:</strong> 2026-06-01T00:00:00+00:00 parses with
+                            explicit UTC offset</span
+                          >
+                        </li>
+                      </ul>
+                      <p class="mt-4 text-xs text-base-content/60 border-t border-base-200 pt-3">
+                        Machine checking proves the file is mechanically intact. It cannot tell you
+                        whether the content is true.
+                      </p>
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Point out that OKF only requires type. The staleness date is optional. The
+                    machine pass passes not because the format demanded it, but because our own lint
+                    rule checked for it.
+                  </p>
+                  <p class="mt-3">
+                    The machine checks syntax, parses dates, and verifies that the link resolves.
+                    Everything it was asked to check resolves cleanly. Mechanical checking is the
+                    settled, easy part of the talk.
+                  </p>
+                </aside>
               </div>
             </section>
 
@@ -558,22 +649,122 @@
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
-                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                <p
+                  class="mb-6 translate-y-3 font-mono text-xs uppercase tracking-[0.3em] text-primary/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
                   S5.2 · Three passes over one file
                 </p>
-                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
-                  The AI pass
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
+                >
+                  The AI pass returns a claim
                 </h2>
-                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
-                  The same block, read by an AI. The answer comes back amber: useful, fast, and
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  The same block, read by an AI. The answer comes back amber: rapid, insightful, and
                   itself in need of checking.
                 </p>
-                <div
-                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
-                >
-                  <span class="badge badge-ghost badge-sm font-mono">Ticket 09</span>
-                  <span>The AI pass over the same block.</span>
+
+                <!-- 2-col layout: block on left, passes on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div class="lg:col-span-6" data-frontmatter-mount="s5-2"></div>
+                  <div class="lg:col-span-6 space-y-4">
+                    <!-- Machine pass (compact) -->
+                    <div
+                      class="pass-card rounded-xl border border-base-300/60 bg-base-100/50 p-3.5 text-xs text-base-content/60 flex items-center justify-between"
+                    >
+                      <span class="font-mono">1. Machine pass</span>
+                      <span class="text-success font-mono font-medium">✓ Resolved cleanly</span>
+                    </div>
+
+                    <!-- AI pass card (active) -->
+                    <div
+                      class="pass-card rounded-xl border border-accent/40 bg-accent/5 p-5 shadow-sm ring-1 ring-accent/20 transition-all duration-500"
+                      data-pass="ai"
+                    >
+                      <div class="flex items-center justify-between border-b border-accent/20 pb-3">
+                        <span
+                          class="badge badge-outline border-accent text-accent badge-sm font-mono uppercase tracking-wider"
+                          >AI pass</span
+                        >
+                        <span
+                          class="font-mono text-xs font-semibold text-warning flex items-center gap-1.5"
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                          Needs verification
+                        </span>
+                      </div>
+                      <div class="mt-4 space-y-2 text-xs text-base-content/85 leading-relaxed">
+                        <p>
+                          <strong
+                            class="text-accent font-mono uppercase text-[10px] tracking-wider block mb-1"
+                            >Observation</strong
+                          >
+                          Compared <code class="font-mono text-primary">document.md</code> against
+                          linked spec <code class="font-mono text-primary">v2</code>. Section 4.2 of
+                          the spec updated error responses from HTTP 400 to 409 Conflict.
+                        </p>
+                        <p class="mt-2 text-base-content/70">
+                          <strong
+                            class="text-accent font-mono uppercase text-[10px] tracking-wider block mb-1"
+                            >Proposal</strong
+                          >
+                          Recommend updating the guide and advancing
+                          <code class="font-mono">stale_after</code> by 30 days.
+                        </p>
+                      </div>
+                      <p
+                        class="mt-4 text-xs font-medium text-accent border-t border-accent/20 pt-3 flex items-center gap-1.5"
+                      >
+                        <span class="font-bold">?</span>
+                        <span
+                          >Accelerator, not resolution: this finding is itself a claim requiring
+                          verification.</span
+                        >
+                      </p>
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    Now an AI inspects the file. It ingested the 14-page spec and caught a
+                    discrepancy in section 4.2: error code 400 changed to 409. It proposes a
+                    documentation update and moving the date.
+                  </p>
+                  <p class="mt-3">
+                    Notice what happened: AI gave us an answer, but that answer is not a resolution.
+                    It is a new claim. Is 409 an unreleased draft? Did the API actually deploy?
+                    Whatever AI takes on lands right back in need of checking.
+                  </p>
+                </aside>
               </div>
             </section>
 
@@ -588,21 +779,129 @@
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
               >
-                <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/70">
+                <p
+                  class="mb-6 translate-y-3 font-mono text-xs uppercase tracking-[0.3em] text-primary/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
                   S5.3 · Three passes over one file
                 </p>
-                <h2 class="font-display text-3xl font-bold tracking-tight md:text-5xl">
-                  The human pass
-                </h2>
-                <p class="mt-8 max-w-3xl text-lg font-light leading-relaxed text-base-content/70">
-                  Is it still true? This one deliberately does not resolve on screen.
-                </p>
-                <div
-                  class="mt-12 flex items-center gap-3 rounded-box border border-dashed border-base-300 px-5 py-4 text-sm text-base-content/50"
+                <h2
+                  class="translate-y-3 font-display text-3xl font-bold tracking-tight opacity-0 transition-all duration-500 ease-out md:text-5xl"
+                  data-reveal
                 >
-                  <span class="badge badge-ghost badge-sm font-mono">Ticket 09</span>
-                  <span>The human pass, left visibly unresolved.</span>
+                  The human pass stays unresolved
+                </h2>
+                <p
+                  class="mt-6 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  Is it still true? Does the reference point at the right content? This pass
+                  deliberately does not resolve on screen.
+                </p>
+
+                <!-- 2-col layout: block on left, passes on right -->
+                <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12 items-start">
+                  <div class="lg:col-span-6" data-frontmatter-mount="s5-3"></div>
+                  <div class="lg:col-span-6 space-y-4">
+                    <!-- Machine pass (compact) -->
+                    <div
+                      class="pass-card rounded-xl border border-base-300/60 bg-base-100/50 p-3 text-xs text-base-content/60 flex items-center justify-between"
+                    >
+                      <span class="font-mono">1. Machine pass</span>
+                      <span class="text-success font-mono font-medium">✓ Resolved cleanly</span>
+                    </div>
+
+                    <!-- AI pass (compact) -->
+                    <div
+                      class="pass-card rounded-xl border border-accent/30 bg-accent/5 p-3 text-xs text-base-content/70 flex items-center justify-between"
+                    >
+                      <span class="font-mono">2. AI pass</span>
+                      <span class="text-warning font-mono font-medium"
+                        >⚠ Claim returned (needs check)</span
+                      >
+                    </div>
+
+                    <!-- Human pass card (active and UNRESOLVED) -->
+                    <div
+                      class="pass-card rounded-xl border-2 border-primary bg-primary/5 p-5 shadow-md ring-2 ring-primary/20 transition-all duration-500"
+                      data-pass="human"
+                    >
+                      <div
+                        class="flex items-center justify-between border-b border-primary/20 pb-3"
+                      >
+                        <span
+                          class="badge badge-primary badge-sm font-mono uppercase tracking-wider text-primary-content"
+                          >Human pass</span
+                        >
+                        <span
+                          class="font-mono text-xs font-bold text-primary flex items-center gap-2"
+                        >
+                          <span class="relative flex h-2 w-2">
+                            <span
+                              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
+                            ></span>
+                            <span
+                              class="relative inline-flex rounded-full h-2 w-2 bg-primary"
+                            ></span>
+                          </span>
+                          Open · Unresolved
+                        </span>
+                      </div>
+                      <div class="mt-4 space-y-3 text-xs text-base-content/90">
+                        <div class="flex items-start gap-2.5">
+                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
+                          <span
+                            >Is
+                            <code class="font-mono text-primary font-medium"
+                              >internal.corp/spec/v2</code
+                            >
+                            still the authority, or did the team switch to event-driven v3?</span
+                          >
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
+                          <span>Is HTTP 409 intentional or an unreleased staging draft?</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                          <span class="font-mono font-bold text-primary mt-0.5">?</span>
+                          <span
+                            >Should
+                            <code class="font-mono text-primary font-medium">stale_after</code> move
+                            forward, or does this document need complete retirement?</span
+                          >
+                        </div>
+                      </div>
+                      <p
+                        class="mt-4 text-xs font-semibold text-primary border-t border-primary/20 pt-3"
+                      >
+                        This question stays open on screen. The machine checked the syntax; the AI
+                        drafted a clue; only a human can answer whether it is true.
+                      </p>
+                    </div>
+                  </div>
                 </div>
+
+                <!-- Speaker notes -->
+                <aside
+                  data-speaker-notes
+                  class="mt-10 hidden max-w-3xl rounded-box border border-base-300 bg-base-200/60 p-5 text-sm leading-relaxed text-base-content/80"
+                >
+                  <p
+                    class="mb-2 font-mono text-[0.65rem] uppercase tracking-[0.25em] text-base-content/50"
+                  >
+                    Speaker notes
+                  </p>
+                  <p>
+                    This is the load-bearing beat of section 5: the human pass deliberately stays
+                    unresolved on screen.
+                  </p>
+                  <p class="mt-3">
+                    No machine test and no AI summary can sign this document. Only the human
+                    operator with domain context can determine if the service migrated or if the
+                    staleness date should move. That is why this beat ends with open questions — the
+                    talk does not resolve them for you.
+                  </p>
+                </aside>
               </div>
             </section>
 
