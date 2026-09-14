@@ -1985,11 +1985,45 @@ function effortVennMarkup(emphasis) {
   // §4 shares its slide with three cards; §8 gives the drawing the whole page.
   const size = emphasis === "human" ? "max-h-[58vh] max-w-4xl" : "max-h-[42vh] max-w-3xl";
 
+  // The steer arrow, on the machine mount only. The claim §7 makes is that the
+  // tool *is* the machine side and *reaches into* AI. An arrow says that; a
+  // circle does not — a third circle would read as a fourth actor and contradict
+  // the three-region model §5 spends three beats building.
+  //
+  // It is drawn below the region labels (machine's sit at y≈240–274) and above
+  // the hypothesis footnote (which starts at y=402), in the clear band around
+  // y≈330. At that height the machine circle runs to x=476 and the lens opens at
+  // x=370, so a tip at x=400 lands inside the overlap rather than short of it.
+  // The head is a filled triangle rather than a <marker> so that <defs> stays
+  // untouched and the establish and human mounts keep emitting identical bytes.
+  const steer =
+    emphasis === "machine"
+      ? `
+      <g data-venn-steer data-venn-step="6">
+        <path
+          d="M 246 346 Q 322 316 390 330"
+          fill="none"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          class="stroke-primary"
+        ></path>
+        <path d="M 400 331 L 385 334 L 387 323 Z" class="fill-primary"></path>
+        <text x="318" y="308" text-anchor="middle"
+          class="fill-primary font-mono text-[15px] font-semibold uppercase tracking-[0.12em]">steer</text>
+      </g>`
+      : "";
+
+  // Appended, never substituted, so the other two mounts read exactly as before.
+  const steerLabel =
+    emphasis === "machine"
+      ? " An arrow labelled steer runs from inside the machine region into the AI region."
+      : "";
+
   return `
     <svg
       viewBox="115 15 700 540"
       role="img"
-      aria-label="Venn diagram of three overlapping regions. Machine, labelled deterministic, cheap, fast. Human, drawn largest, labelled non-deterministic, time consuming, trust. AI sits where the two overlap and is labelled non-deterministic, AI judging, token cost; it is marked as a hypothesis that is still unsettled. The three cards below open the slide for each region."
+      aria-label="Venn diagram of three overlapping regions. Machine, labelled deterministic, cheap, fast. Human, drawn largest, labelled non-deterministic, time consuming, trust. AI sits where the two overlap and is labelled non-deterministic, AI judging, token cost; it is marked as a hypothesis that is still unsettled. The three cards below open the slide for each region.${steerLabel}"
       class="venn venn-emphasis-establish isolate mx-auto block h-auto w-full ${size}"
     >
       <defs>
@@ -2077,7 +2111,7 @@ function effortVennMarkup(emphasis) {
           <text x="414" y="516" text-anchor="middle"
             class="fill-accent font-mono text-[15px] font-semibold tracking-[0.02em]">the AI region is my hypothesis — still unsettled</text>
         </g>
-      </g>
+      </g>${steer}
       </g>
     </svg>`;
 }
@@ -2133,7 +2167,7 @@ mountVenns();
 
 /** Emphasis is a class on the svg root, so there is always a state to move from. */
 function setVennEmphasis(svg, emphasis) {
-  svg.classList.remove("venn-emphasis-establish", "venn-emphasis-human");
+  svg.classList.remove("venn-emphasis-establish", "venn-emphasis-machine", "venn-emphasis-human");
   svg.classList.add(`venn-emphasis-${emphasis}`);
 }
 
@@ -2378,6 +2412,10 @@ function mountFrontmatterBlocks() {
     const mode = host.dataset.frontmatterMode || (isWorkedExample ? "section-5" : "section-6");
     host.innerHTML = renderFrontmatterBlock({
       mode,
+      // The "section-7" branch is unreferenced: the beat that mounted the block
+      // with stale_after ringed was replaced by the markdown-harness section,
+      // which mounts no frontmatter block. Left in place deliberately —
+      // removing it is a separate decision.
       activeField: mode === "section-7" ? "stale_after" : null,
     });
   });
@@ -2458,28 +2496,39 @@ registerActivate("s5-1", (reduced) => {
   });
 });
 
-// S6.1 — markdown-harness handoff. Deliberately quiet: one Rise for the
-// headline, one for the sentence, and nothing else moves. The stale_after ring
-// stays as artefact continuity but does not pulse. The contrast with §5's
-// density is the point; the restraint is the design.
+// S6.1 — the third Venn mount. Unlike §7, this one assembles: the audience has
+// not seen the drawing since §4, so it rebuilds actor by actor and only then
+// dims to the machine region, with the steer arrow arriving last as step 6.
+//
+// The emphasis is applied under reduced motion too, rather than returning early
+// the way §7 does. §7 can return because mountVenns already emphasised its mount
+// at load; this one has no such head start, so skipping it would leave the beat
+// sitting in the neutral establish state with nothing to say.
 registerActivate("s6-1", (reduced) => {
   const beat = document.getElementById("s6-1");
   if (!beat) return;
-  revealSequence(beat, reduced, { delay: 200, step: 220 });
+  revealSequence(beat, reduced);
+  const svg = beat.querySelector(".venn");
+  if (!svg) return;
+  playVenn(svg, reduced);
+  // Seven steps at 90ms from a 100ms delay puts the arrow's own rise starting at
+  // 640ms; the dim waits until it has landed so the two gestures do not muddy.
+  if (reduced) setVennEmphasis(svg, "machine");
+  else setTimeout(() => setVennEmphasis(svg, "machine"), 1150);
 });
 
+// S6.2–S6.4 register nothing: fireActivate falls back to revealSequence, which
+// is all these three need.
+
 /* ------------------------------------------------------------------ *
- * S7.1 — the rescue terminal
+ * typeInto — currently unreferenced
  *
- * The question types itself in, once, where it is asked — forty-odd characters
- * is short enough to feel live. The two answers then reveal line by line rather
- * than character by character: typing out two full answers would run past
- * fifteen seconds and blow the timing budget outright, and the point of the
- * beat is the divergence, which line reveal makes legible in about a second.
- *
- * Both legs open on the same command and the same file read. Then they part:
- * one carries on in ignorance, the other is intercepted and turns. The point
- * where they part is marked on both sides.
+ * This drove the old rescue-terminal beat, where the question typed itself in
+ * once at the point it was asked. That beat was replaced by the markdown-harness
+ * section, whose live demo (S6.3) is a holding slide and types nothing. The
+ * helper is left in place because removing dead code is a separate decision;
+ * its companion .deck-caret keyframes are still in animation.css for the same
+ * reason.
  * ------------------------------------------------------------------ */
 
 /** Type a line out character by character, leaving a caret until it lands. */
@@ -2510,21 +2559,6 @@ function typeInto(el, reduced, { at = 0, total = 800 } = {}) {
 
   return at + chars.length * per;
 }
-
-// S7.1 — live demo rescue terminal. ≈2.2s.
-registerActivate("s7-1", (reduced) => {
-  const beat = document.getElementById("s7-1");
-  if (!beat) return;
-  revealSequence(beat, reduced);
-
-  const asked = typeInto(beat.querySelector("[data-type]"), reduced, { at: 400, total: 800 });
-  beat.querySelectorAll("[data-term-line]").forEach((el) => {
-    const at = asked + 120 + Number(el.dataset.termLine) * 100;
-    const show = () => el.classList.remove("opacity-0", "translate-y-3");
-    if (reduced) show();
-    else setTimeout(show, at);
-  });
-});
 
 // S8.1 — the close. The drawing is already on screen; the camera pushes in
 // towards the human region and then holds still. ≈0.9s, and deliberately no

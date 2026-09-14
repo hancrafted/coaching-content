@@ -500,6 +500,27 @@
   filter: drop-shadow(0 0 28px color-mix(in oklab, currentColor 45%, transparent));
 }
 
+/* §6.1's machine emphasis, mirroring §7's human emphasis one region over. No
+   camera push here: §7 earns its dolly by arriving on a drawing the audience
+   has already watched assemble, whereas §6.1 assembles from scratch, and moving
+   the camera during the build reads as a wobble rather than a gesture.
+
+   The steer arrow is deliberately outside [data-venn-actor], so it is not caught
+   by the recede rule below — the arrow stays lit while the region it points into
+   dims, which is the beat's whole claim. */
+.venn.venn-emphasis-machine [data-venn-actor="ai"],
+.venn.venn-emphasis-machine [data-venn-actor="human"] {
+  opacity: 0.25;
+}
+
+.venn [data-venn-actor="machine"] .venn-circle {
+  transition: filter var(--deck-draw) var(--deck-ease);
+}
+
+.venn.venn-emphasis-machine [data-venn-actor="machine"] .venn-circle {
+  filter: drop-shadow(0 0 28px color-mix(in oklab, currentColor 45%, transparent));
+}
+
 /* Linked hover between Effort Venn and the three actor cards below.
    Triggered via [data-active-actor] attribute set by pointer events in JS,
    or via CSS :has() for instant browser-native response. */
@@ -956,6 +977,13 @@ body.notes-visible [data-notes-cue] {
   .venn [data-venn-actor],
   .venn [data-venn-camera],
   .venn [data-venn-actor="human"] .venn-circle {
+    transition: none !important;
+  }
+
+  /* The machine mount's counterpart. S7.1 applies its emphasis on activation
+     even under reduced motion, so the state still lands — it just lands without
+     a transition to watch. */
+  .venn [data-venn-actor="machine"] .venn-circle {
     transition: none !important;
   }
 
