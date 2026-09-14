@@ -995,6 +995,25 @@ function effortVennMarkup(emphasis) {
       aria-label="Three-region Venn: what a machine can check, what AI can help with, and what only a human can check. The human region is drawn largest."
       class="venn isolate mx-auto block h-auto max-h-[48vh] w-full max-w-3xl"
     >
+      <defs>
+        <pattern
+          id="venn-hatch-${emphasis}"
+          width="10"
+          height="10"
+          patternTransform="rotate(45 0 0)"
+          patternUnits="userSpaceOnUse"
+        >
+          <line
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="10"
+            stroke="currentColor"
+            stroke-width="1.2"
+            class="text-accent/25"
+          />
+        </pattern>
+      </defs>
       <g data-venn-actor="machine" class="text-base-content transition-opacity duration-700${dim}">
         <circle
           data-venn-step="0"
@@ -1032,7 +1051,8 @@ function effortVennMarkup(emphasis) {
           d="${VENN_LENS}"
           stroke-width="1.5"
           stroke-dasharray="5 7"
-          class="fill-none stroke-accent/60"
+          fill="url(#venn-hatch-${emphasis})"
+          class="stroke-accent/70"
         ></path>
         <text data-venn-step="4" x="375" y="252" text-anchor="middle"
           class="fill-accent font-display text-[72px] font-bold">?</text>

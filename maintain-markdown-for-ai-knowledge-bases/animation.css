@@ -139,6 +139,24 @@
   filter: drop-shadow(0 0 28px color-mix(in oklab, currentColor 45%, transparent));
 }
 
+/* In dark themes, mix-blend-multiply causes dark muddying against dark surfaces.
+   Switch to mix-blend-mode: screen so the primary human circle remains luminous. */
+:is(
+    [data-theme="business"],
+    [data-theme="night"],
+    [data-theme="dim"],
+    [data-theme="luxury"],
+    [data-theme="dark"],
+    [data-theme="dracula"],
+    [data-theme="black"],
+    [data-theme="halloween"],
+    [data-theme="forest"],
+    [data-theme="synthwave"]
+  )
+  .venn-circle.mix-blend-multiply {
+  mix-blend-mode: screen;
+}
+
 /* -----------------------------------------------------------------------------
    Reduced motion — every Venn step holds its final, fully legible state; the
    emphasis dim/lit states still apply, they just stop transitioning.
@@ -256,4 +274,21 @@ body.notes-visible [data-speaker-notes] {
 html:not(.notes-visible) [data-speaker-notes],
 body:not(.notes-visible) [data-speaker-notes] {
   display: none !important;
+}
+
+/* -----------------------------------------------------------------------------
+   Global reduced motion safety net
+   ----------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .beat-inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
