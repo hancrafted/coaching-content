@@ -148,6 +148,7 @@ function renderSection(section) {
         </span>
         <svg
           data-caret
+          aria-hidden="true"
           class="h-4 w-4 shrink-0 text-base-content/40 transition-transform duration-200"
           width="16"
           height="16"
@@ -431,7 +432,7 @@ function buildThemePicker() {
   host.innerHTML = `
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="btn btn-ghost btn-sm gap-1" aria-label="Choose theme">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
           <path d="M12 3a9 9 0 000 18" fill="currentColor" />
         </svg>
@@ -516,7 +517,7 @@ function buildPresenterControls() {
   host.innerHTML = `
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="btn btn-ghost btn-sm gap-1.5" aria-label="Presenter controls">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 6h16M4 12h10M4 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <span class="hidden sm:inline">Presenter</span>
