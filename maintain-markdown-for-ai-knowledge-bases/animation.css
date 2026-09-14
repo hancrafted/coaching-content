@@ -192,6 +192,30 @@
 }
 
 /* -----------------------------------------------------------------------------
+   S3.1 · Diverging curves
+   ----------------------------------------------------------------------------- */
+.curves-chart [data-crossover-label] {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+}
+
+.curves-chart.curves-on [data-crossover-label] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .curves-chart [data-crossover-label] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* -----------------------------------------------------------------------------
    Presenter controls — presentation mode & speaker notes
    ----------------------------------------------------------------------------- */
 

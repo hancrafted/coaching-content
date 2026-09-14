@@ -777,6 +777,188 @@ registerActivate("s2-1", (reduced) => {
   if (svg) playHubSpoke(svg, reduced);
 });
 
+/* ------------------------------------------------------------------ *
+ * S3.1 — Diverging curves (Why this was always hard)
+ *
+ * Creation effort (accent) collapses as AI generates files.
+ * Verification effort (primary) climbs as volume explodes.
+ * X-axis marks "day zero" where the document reaches production.
+ * Crossover point is marked and labelled "where the work moved".
+ * ------------------------------------------------------------------ */
+
+function divergingCurvesMarkup() {
+  return `
+    <svg
+      viewBox="0 0 900 450"
+      role="img"
+      aria-label="Two diverging curves over time: creation effort collapses after day zero while verification effort climbs. Marked at the crossover: where the work moved."
+      class="curves-chart mx-auto block h-auto max-h-[50vh] w-full max-w-4xl"
+    >
+      <defs>
+        <marker
+          id="axis-arrow"
+          viewBox="0 0 10 10"
+          refX="6"
+          refY="5"
+          markerWidth="6"
+          markerHeight="6"
+          orient="auto-start-reverse"
+        >
+          <path d="M 1 2 L 7 5 L 1 8 z" fill="currentColor" class="text-base-content/40" />
+        </marker>
+      </defs>
+
+      <!-- Grid lines (subtle) -->
+      <g class="text-base-content/10">
+        <line x1="120" y1="115" x2="840" y2="115" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" />
+        <line x1="120" y1="210" x2="840" y2="210" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" />
+        <line x1="120" y1="300" x2="840" y2="300" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" />
+      </g>
+
+      <!-- Axes -->
+      <g class="text-base-content/40">
+        <!-- Y Axis: Effort -->
+        <line x1="120" y1="370" x2="120" y2="55" stroke="currentColor" stroke-width="1.5" marker-end="url(#axis-arrow)" />
+        <text x="110" y="50" text-anchor="end" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
+          Effort
+        </text>
+
+        <!-- X Axis: Time -->
+        <line x1="115" y1="360" x2="850" y2="360" stroke="currentColor" stroke-width="1.5" marker-end="url(#axis-arrow)" />
+        <text x="850" y="385" text-anchor="end" class="fill-base-content/60 font-mono text-[11px] uppercase tracking-widest">
+          Time →
+        </text>
+      </g>
+
+      <!-- Day zero marker & label -->
+      <g class="text-base-content">
+        <line
+          x1="320"
+          y1="55"
+          x2="320"
+          y2="360"
+          class="stroke-base-content/25"
+          stroke-width="1.5"
+          stroke-dasharray="4 4"
+        />
+        <circle cx="320" cy="360" r="4" class="fill-base-content/60" />
+        <text x="320" y="390" text-anchor="middle" class="fill-base-content font-mono text-[12px] font-bold">
+          Day zero
+        </text>
+        <text x="320" y="408" text-anchor="middle" class="fill-base-content/60 text-[11.5px]">
+          Document reaches production
+        </text>
+      </g>
+
+      <!-- Curve 1: Creation effort (collapses with AI, accent) -->
+      <g class="text-accent">
+        <path
+          data-curve="creation"
+          data-target-length="820"
+          d="M 120 115 C 220 115, 300 130, 350 145 C 390 160, 420 190, 440 210 C 470 240, 530 290, 620 315 C 710 335, 770 340, 820 342"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          class="text-accent"
+        />
+        <text x="825" y="346" class="fill-accent font-medium text-[12px]">
+          Creation effort (collapses)
+        </text>
+      </g>
+
+      <!-- Curve 2: Verification effort (climbs with volume, primary) -->
+      <g class="text-primary">
+        <path
+          data-curve="verification"
+          data-target-length="820"
+          d="M 120 335 C 220 335, 300 320, 350 300 C 390 275, 420 235, 440 210 C 470 180, 530 130, 620 100 C 710 80, 770 75, 820 72"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          class="text-primary"
+        />
+        <text x="825" y="76" class="fill-primary font-medium text-[12px]">
+          Verification effort (climbs)
+        </text>
+      </g>
+
+      <!-- Crossover point marker & label -->
+      <g data-crossover-label class="text-primary">
+        <!-- Pulse ring & point -->
+        <circle cx="440" cy="210" r="11" class="fill-primary/20 stroke-primary/50" stroke-width="1.5" />
+        <circle cx="440" cy="210" r="5" class="fill-base-100 stroke-primary" stroke-width="2.5" />
+
+        <!-- Leader dashed line -->
+        <line x1="440" y1="172" x2="440" y2="198" class="stroke-primary" stroke-width="1.5" stroke-dasharray="2 2" />
+
+        <!-- Badge pill -->
+        <rect
+          x="345"
+          y="138"
+          width="190"
+          height="34"
+          rx="17"
+          class="fill-base-100 stroke-primary shadow-lg"
+          stroke-width="2"
+        />
+        <text
+          x="440"
+          y="160"
+          text-anchor="middle"
+          class="fill-primary font-mono text-[11.5px] font-bold uppercase tracking-wider"
+        >
+          where the work moved
+        </text>
+      </g>
+    </svg>`;
+}
+
+document.querySelectorAll("[data-curves]").forEach((host) => {
+  host.innerHTML = divergingCurvesMarkup();
+});
+
+function playCurves(svg, reduced) {
+  const pathCreation = svg.querySelector("[data-curve='creation']");
+  const pathVerification = svg.querySelector("[data-curve='verification']");
+
+  if (reduced) {
+    if (pathCreation) pathCreation.style.strokeDashoffset = "0";
+    if (pathVerification) pathVerification.style.strokeDashoffset = "0";
+    svg.classList.add("curves-on");
+    return;
+  }
+
+  [pathCreation, pathVerification].forEach((path) => {
+    if (!path) return;
+    const len = Math.ceil(path.getTotalLength ? path.getTotalLength() : 820);
+    path.style.strokeDasharray = `${len}`;
+    path.style.strokeDashoffset = `${len}`;
+    path.style.transition = "stroke-dashoffset 1.3s cubic-bezier(0.4, 0, 0.2, 1)";
+  });
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      if (pathCreation) pathCreation.style.strokeDashoffset = "0";
+      if (pathVerification) pathVerification.style.strokeDashoffset = "0";
+    }, 150);
+
+    setTimeout(() => {
+      svg.classList.add("curves-on");
+    }, 1500);
+  });
+}
+
+// S3.1 — heading lines fade up, then the curves draw in and the crossover arrives.
+registerActivate("s3-1", (reduced) => {
+  const beat = document.getElementById("s3-1");
+  if (!beat) return;
+  revealSequence(beat, reduced);
+  const svg = beat.querySelector(".curves-chart");
+  if (svg) playCurves(svg, reduced);
+});
+
 /*
  * S4.1 — the effort Venn. One drawing used twice: section 4 mounts it with
  * emphasis "establish" to set the colour language, and section 9 (ticket 08)
