@@ -409,7 +409,7 @@
               data-section="1"
               data-section-title="The Pre-AI Baseline"
               data-beat="S1.2"
-              data-assertion="The Four Failure Modes re-scored: AI solved one outright (Champion Tax), left one holding (Protectionism), split one (Discoverability vs Trust), and amplified the crisis (Maintenance Cost)."
+              data-assertion="The Four Failure Modes re-scored: Champion Tax is solved, Individual Protectionism is crumbling, Discoverability is solved while Trust is amplified, and Maintenance Cost is severely amplified."
             >
               <div
                 class="beat-inner mx-auto w-full max-w-5xl translate-y-6 opacity-0 transition-all duration-700 ease-out"
@@ -418,9 +418,9 @@
                   <p class="font-mono text-xs uppercase tracking-[0.3em] text-primary/80">
                     S1.2 · The Diagnostic Rubric
                   </p>
-                  <!-- Author's Hypothesis Disclaimer Badge -->
+                  <!-- Author's Hypothesis Disclaimer Badge (Gray, high contrast) -->
                   <div
-                    class="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-2.5 py-0.5 font-mono text-[0.65rem] text-warning"
+                    class="inline-flex items-center gap-1.5 rounded-full border border-base-content/20 bg-base-200/80 px-2.5 py-0.5 font-mono text-[0.68rem] text-base-content/70"
                   >
                     <svg
                       width="12"
@@ -439,7 +439,7 @@
                 </div>
 
                 <h2
-                  class="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl text-base-content"
+                  class="mt-3 font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight text-base-content"
                 >
                   The Four Failure Modes: Pre-AI vs. With AI
                 </h2>
@@ -447,189 +447,207 @@
                 <p
                   class="mt-3 text-base font-light leading-relaxed text-base-content/80 md:text-lg"
                 >
-                  A scoring rubric testing four pre-AI organizational failure modes against what
-                  generative AI actually altered: one solved outright, one holding strong, one split
-                  down the middle, and one amplified into a critical bottleneck.
+                  A diagnostic rubric testing four pre-AI organizational failure modes against what
+                  generative AI actually altered: one solved outright, one actively crumbling, one
+                  split into amplified risk, and maintenance blown wide open.
                 </p>
 
-                <!-- Comparative Cards: Left (Pre-AI) vs Right (With AI) -->
-                <div class="mt-6 space-y-3.5">
-                  <!-- Mode 1: Individual Protectionism -->
+                <!-- T-Shaped Comparison Table -->
+                <div
+                  class="mt-6 rounded-box border border-base-300 bg-base-100 overflow-hidden shadow-xs"
+                >
+                  <!-- T-Header (Global Column Labels) -->
                   <div
-                    class="kb-card rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/30"
+                    class="hidden md:grid md:grid-cols-2 border-b border-base-300 bg-base-200/60 font-mono text-xs font-semibold"
                   >
+                    <div class="px-5 py-2.5 text-base-content/70 flex items-center gap-2">
+                      <span class="text-base-content/40">←</span>
+                      <span>Pre-AI Baseline</span>
+                    </div>
                     <div
-                      class="flex items-center justify-between border-b border-base-300/50 pb-2.5"
+                      class="px-5 py-2.5 text-primary flex items-center justify-between border-l border-base-300"
                     >
-                      <div class="flex items-center gap-2.5">
-                        <span class="badge badge-neutral font-mono text-xs">01</span>
-                        <h3 class="font-display font-bold text-base-content text-base md:text-lg">
-                          Individual Protectionism
-                        </h3>
+                      <div class="flex items-center gap-2">
+                        <span>With Generative AI</span>
+                        <span class="text-primary/60">→</span>
                       </div>
-                      <span class="badge badge-warning font-mono text-xs font-semibold"
-                        >HOLDING</span
+                      <span class="text-[0.65rem] font-normal text-base-content/50"
+                        >Re-Scored Impact</span
                       >
                     </div>
-                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-                      <div class="rounded-lg bg-base-200/50 p-3">
-                        <p
-                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
+                  </div>
+
+                  <!-- 4 Mode Rows -->
+                  <div class="divide-y divide-base-300/60">
+                    <!-- Row 1: Champion Tax (Moved First!) -->
+                    <div class="p-4 md:p-5 transition-colors hover:bg-base-200/20">
+                      <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                          <span class="badge badge-neutral font-mono text-xs">01</span>
+                          <h3 class="font-display font-bold text-base md:text-lg text-base-content">
+                            Champion Tax
+                          </h3>
+                        </div>
+                        <span class="badge badge-success font-mono text-xs font-semibold"
+                          >SOLVED</span
                         >
-                          Pre-AI Baseline
-                        </p>
-                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
+                      </div>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+                        <!-- Left: Pre-AI Baseline -->
+                        <div class="text-xs text-base-content/75 leading-relaxed">
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-base-content/50 block mb-0.5 font-semibold"
+                            >Pre-AI Baseline:</span
+                          >
+                          Writing and structuring documentation was unrewarded volunteer work.
+                          Helpful engineers paid the steepest tax, taking time away from shipping
+                          core product.
+                        </div>
+                        <!-- Right: With Generative AI -->
+                        <div
+                          class="text-xs text-base-content/90 leading-relaxed md:border-l md:border-base-300/80 md:pl-6 bg-success/5 md:bg-transparent rounded p-2 md:p-0"
+                        >
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-success block mb-0.5 font-semibold"
+                            >With Generative AI:</span
+                          >
+                          Drafting is nearly free. Zero blank-page barrier: LLMs generate initial
+                          schemas, convert PR diffs into draft ADRs, and synthesize technical
+                          discussions effortlessly.
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Row 2: Individual Protectionism (CRUMBLING!) -->
+                    <div class="p-4 md:p-5 transition-colors hover:bg-base-200/20">
+                      <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                          <span class="badge badge-neutral font-mono text-xs">02</span>
+                          <h3 class="font-display font-bold text-base md:text-lg text-base-content">
+                            Individual Protectionism
+                          </h3>
+                        </div>
+                        <span
+                          class="badge badge-outline border-error/70 text-error font-mono text-xs font-bold"
+                          >CRUMBLING</span
+                        >
+                      </div>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+                        <!-- Left: Pre-AI Baseline -->
+                        <div class="text-xs text-base-content/75 leading-relaxed">
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-base-content/50 block mb-0.5 font-semibold"
+                            >Pre-AI Baseline:</span
+                          >
                           Knowing the undocumented system was personal leverage and job security.
-                          <em class="block text-base-content/60 mt-0.5"
+                          <em class="text-base-content/60"
                             >&ldquo;If I write it down, I become replaceable.&rdquo;</em
                           >
-                        </p>
-                      </div>
-                      <div class="rounded-lg border border-warning/30 bg-warning/5 p-3">
-                        <div
-                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-warning font-semibold"
-                        >
-                          <span>With Generative AI</span>
-                          <span>Verdict: Holding</span>
                         </div>
-                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
-                          AI commoditizes generic snippet syntax, but repo-shaped architectural
-                          context remains in senior engineers' heads. Undocumented tribal context is
-                          still an intact moat.
-                        </p>
+                        <!-- Right: With Generative AI -->
+                        <div
+                          class="text-xs text-base-content/90 leading-relaxed md:border-l md:border-base-300/80 md:pl-6 bg-error/5 md:bg-transparent rounded p-2 md:p-0"
+                        >
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-error block mb-0.5 font-semibold"
+                            >With Generative AI:</span
+                          >
+                          AI models are increasingly proficient at reverse-engineering codebases,
+                          tracing legacy paths, and identifying undocumented modes. While deep
+                          architectural judgment still defends, individual knowledge hoarding is
+                          actively crumbling under automated analysis.
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <!-- Mode 2: Champion Tax -->
-                  <div
-                    class="kb-card rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/30"
-                  >
-                    <div
-                      class="flex items-center justify-between border-b border-base-300/50 pb-2.5"
-                    >
-                      <div class="flex items-center gap-2.5">
-                        <span class="badge badge-neutral font-mono text-xs">02</span>
-                        <h3 class="font-display font-bold text-base-content text-base md:text-lg">
-                          Champion Tax
-                        </h3>
-                      </div>
-                      <span class="badge badge-success font-mono text-xs font-semibold"
-                        >SOLVED</span
-                      >
-                    </div>
-                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-                      <div class="rounded-lg bg-base-200/50 p-3">
-                        <p
-                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
-                        >
-                          Pre-AI Baseline
-                        </p>
-                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
-                          Writing and structuring docs was unrewarded volunteer work. Helpful
-                          engineers paid the steepest tax, losing time from shipping code.
-                        </p>
-                      </div>
-                      <div class="rounded-lg border border-success/30 bg-success/5 p-3">
-                        <div
-                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-success font-semibold"
-                        >
-                          <span>With Generative AI</span>
-                          <span>Verdict: Solved</span>
+                    <!-- Row 3: Discoverability + Trust (Two labels: Solved + Amplified!) -->
+                    <div class="p-4 md:p-5 transition-colors hover:bg-base-200/20">
+                      <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                          <span class="badge badge-neutral font-mono text-xs">03</span>
+                          <h3 class="font-display font-bold text-base md:text-lg text-base-content">
+                            Discoverability + Trust
+                          </h3>
                         </div>
-                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
-                          Drafting is nearly free. Zero blank-page barrier: models generate initial
-                          schemas, turn PR diffs into draft ADRs, and summarize discussions
-                          effortlessly.
-                        </p>
+                        <div class="flex items-center gap-1.5 font-mono">
+                          <span
+                            class="badge badge-success/15 border border-success/30 text-success text-[0.68rem] font-semibold"
+                          >
+                            Discoverability: SOLVED
+                          </span>
+                          <span class="text-base-content/40 font-bold text-xs">+</span>
+                          <span
+                            class="badge badge-error text-error-content text-[0.68rem] font-bold animate-pulse"
+                          >
+                            Trust: AMPLIFIED
+                          </span>
+                        </div>
+                      </div>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+                        <!-- Left: Pre-AI Baseline -->
+                        <div class="text-xs text-base-content/75 leading-relaxed">
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-base-content/50 block mb-0.5 font-semibold"
+                            >Pre-AI Baseline:</span
+                          >
+                          Finding the right document was needle-in-a-haystack. And once found,
+                          nothing signaled whether it was current truth or 3-year-old dead fiction.
+                        </div>
+                        <!-- Right: With Generative AI -->
+                        <div
+                          class="text-xs text-base-content/90 leading-relaxed md:border-l md:border-base-300/80 md:pl-6 bg-error/5 md:bg-transparent rounded p-2 md:p-0"
+                        >
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-error block mb-0.5 font-semibold"
+                            >With Generative AI:</span
+                          >
+                          <strong>Discoverability is solved</strong>: vector RAG retrieves any page
+                          in milliseconds. But <strong>the impact on trust is amplified</strong>: AI
+                          swallows and regurgitates stale docs with 100% confidence, multiplying the
+                          blast radius of unverified truth.
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <!-- Mode 3: Discoverability + Trust -->
-                  <div
-                    class="kb-card rounded-box border border-base-300 bg-base-100 p-4 transition-all hover:bg-base-200/30"
-                  >
-                    <div
-                      class="flex items-center justify-between border-b border-base-300/50 pb-2.5"
-                    >
-                      <div class="flex items-center gap-2.5">
-                        <span class="badge badge-neutral font-mono text-xs">03</span>
-                        <h3 class="font-display font-bold text-base-content text-base md:text-lg">
-                          Discoverability + Trust
-                        </h3>
-                      </div>
-                      <span class="badge badge-info font-mono text-xs font-semibold">SPLIT</span>
-                    </div>
-                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-                      <div class="rounded-lg bg-base-200/50 p-3">
-                        <p
-                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
-                        >
-                          Pre-AI Baseline
-                        </p>
-                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
-                          Finding the right page was needle-in-a-haystack. And when found, nothing
-                          signaled whether it was current truth or 3-year-old dead fiction.
-                        </p>
-                      </div>
-                      <div class="rounded-lg border border-info/30 bg-info/5 p-3">
-                        <div
-                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-info font-semibold"
-                        >
-                          <span>With Generative AI</span>
-                          <span>Verdict: Split</span>
+                    <!-- Row 4: High Maintenance Cost (AMPLIFIED!) -->
+                    <div class="p-4 md:p-5 transition-colors hover:bg-base-200/20 bg-error/5">
+                      <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5">
+                        <div class="flex items-center gap-2.5">
+                          <span class="badge badge-error font-mono text-xs text-error-content"
+                            >04</span
+                          >
+                          <h3 class="font-display font-bold text-base md:text-lg text-error">
+                            High Maintenance Cost
+                          </h3>
                         </div>
-                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
-                          <strong>Discoverability is solved</strong>: vector RAG &amp; hybrid search
-                          retrieve context in milliseconds. <strong>Trust is broken</strong>: agents
-                          swallow stale docs with 100% confidence.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Mode 4: High Maintenance Cost -->
-                  <div
-                    class="kb-card rounded-box border-2 border-error/40 bg-error/5 p-4 transition-all"
-                  >
-                    <div class="flex items-center justify-between border-b border-error/20 pb-2.5">
-                      <div class="flex items-center gap-2.5">
-                        <span class="badge badge-error font-mono text-xs text-error-content"
-                          >04</span
+                        <span class="badge badge-error font-mono text-xs font-bold animate-pulse"
+                          >AMPLIFIED</span
                         >
-                        <h3 class="font-display font-bold text-error text-base md:text-lg">
-                          High Maintenance Cost
-                        </h3>
                       </div>
-                      <span class="badge badge-error font-mono text-xs font-bold animate-pulse"
-                        >AMPLIFIED</span
-                      >
-                    </div>
-                    <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
-                      <div class="rounded-lg bg-base-200/50 p-3">
-                        <p
-                          class="font-mono text-[0.65rem] uppercase tracking-wider text-base-content/50"
-                        >
-                          Pre-AI Baseline
-                        </p>
-                        <p class="mt-1 text-xs text-base-content/80 leading-relaxed">
-                          Low initial drafting effort, exponential maintenance burden as code
-                          evolved. Docs decayed silently with zero compiler error or CI signal.
-                        </p>
-                      </div>
-                      <div class="rounded-lg border border-error/30 bg-error/10 p-3">
-                        <div
-                          class="flex items-center justify-between font-mono text-[0.65rem] uppercase tracking-wider text-error font-bold"
-                        >
-                          <span>With Generative AI</span>
-                          <span>Verdict: Amplified</span>
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6">
+                        <!-- Left: Pre-AI Baseline -->
+                        <div class="text-xs text-base-content/75 leading-relaxed">
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-base-content/50 block mb-0.5 font-semibold"
+                            >Pre-AI Baseline:</span
+                          >
+                          Low initial authoring effort, but exponential maintenance burden as code
+                          evolved. Documentation decayed silently without any compiler error or CI
+                          crash.
                         </div>
-                        <p class="mt-1 text-xs text-base-content/90 leading-relaxed">
-                          Generation outpaces verification. AI can generate 10,000 words in seconds,
-                          flooding repositories with unverified prose. The verification lag has
-                          become catastrophic.
-                        </p>
+                        <!-- Right: With Generative AI -->
+                        <div
+                          class="text-xs text-base-content/90 leading-relaxed md:border-l md:border-base-300/80 md:pl-6 bg-error/5 md:bg-transparent rounded p-2 md:p-0"
+                        >
+                          <span
+                            class="md:hidden font-mono text-[0.65rem] uppercase text-error block mb-0.5 font-semibold"
+                            >With Generative AI:</span
+                          >
+                          Generation completely outpaces verification. AI can produce 10,000 words
+                          in seconds, flooding repos with plausible but unverified prose.
+                          Verification remains human-bound, turning maintenance into a critical
+                          engineering bottleneck.
+                        </div>
                       </div>
                     </div>
                   </div>
