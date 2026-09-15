@@ -748,6 +748,17 @@ body.presentation-mode #exit-presentation {
   display: inline-flex !important;
 }
 
+/* The companion recording has no place on a slide being presented live.
+   setPresentationMode() also tears the player's iframe down (CSS alone would
+   hide it but keep the audio running); this hides the hero launcher too, and
+   keeps the player hidden even if it is opened some other way. */
+html.presentation-mode #talk-launcher,
+body.presentation-mode #talk-launcher,
+html.presentation-mode #talk-player,
+body.presentation-mode #talk-player {
+  display: none !important;
+}
+
 /* Speaker notes toggle */
 html.notes-visible [data-speaker-notes],
 body.notes-visible [data-speaker-notes] {

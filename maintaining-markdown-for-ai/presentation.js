@@ -571,6 +571,11 @@ const STORAGE_KEY_PRESENTATION = "deck-presentation-mode";
 const STORAGE_KEY_NOTES = "deck-speaker-notes";
 const STORAGE_KEY_SCRIPT = "deck-voice-script";
 
+// Assigned by setupTalkPlayer(). Declared up here so setPresentationMode can
+// tear the player down: presenting the talk while a recording of the same talk
+// plays in the corner is the one combination that must never happen.
+let closeTalkPlayer = null;
+
 function updatePresenterControlsUI() {
   const isPres = document.documentElement.classList.contains("presentation-mode");
   const isNotes = document.documentElement.classList.contains("notes-visible");
@@ -608,6 +613,7 @@ function setPresentationMode(enabled) {
     /* persistence unavailable */
   }
   updatePresenterControlsUI();
+  if (enabled && closeTalkPlayer) closeTalkPlayer();
   if (enabled && document.activeElement instanceof HTMLElement) {
     document.activeElement.blur();
   }
@@ -2785,4 +2791,101 @@ if (beatById[hashId]) {
   revealBeat(document.getElementById(beatOrder[0]));
 }
 
+// Talk player — the companion recording of this same deck.
+//
+// The recording narrates the same content the page carries in text, so the two
+// tracks compete if the video is simply parked on screen. The compromise: it
+// only ever appears because the reader asked for it, it opens big, and it gets
+// out of the way (corner) the moment they scroll on to read. Returning to the
+// hero does NOT re-expand it — a reader who scrolled back up did so on purpose.
+const TALK_VIDEO_ID = "YxCVw4bUbW0";
+const TALK_WIDTHS = {
+  expanded: "min(46rem, calc(100vw - 2rem))",
+  docked: "min(22rem, calc(100vw - 2rem))",
+};
+
+function setupTalkPlayer() {
+  const player = document.getElementById("talk-player");
+  const launcher = document.getElementById("talk-launcher");
+  const kicker = document.getElementById("talk-launcher-kicker");
+  const frame = document.getElementById("talk-player-frame");
+  const resizeBtn = document.getElementById("talk-player-resize");
+  const closeBtn = document.getElementById("talk-player-close");
+  const hero = document.getElementById("s1-1");
+  if (!player || !launcher || !kicker || !frame || !resizeBtn || !closeBtn || !hero) return;
+
+  // Once the reader resizes by hand, scrolling stops resizing for them.
+  let manualResize = false;
+
+  const isOpen = () => !player.classList.contains("hidden");
+
+  function setState(state) {
+    player.dataset.state = state;
+    player.style.width = TALK_WIDTHS[state];
+    resizeBtn.textContent = state === "docked" ? "Expand" : "Shrink";
+    resizeBtn.setAttribute("aria-label", state === "docked" ? "Expand player" : "Shrink player");
+  }
+
+  function open() {
+    if (!frame.firstChild) {
+      const iframe = document.createElement("iframe");
+      // nocookie host, and autoplay is allowed here because the click that got
+      // us into open() is the required user gesture.
+      iframe.src = `https://www.youtube-nocookie.com/embed/${TALK_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`;
+      iframe.title = "Your AI reads stale docs every time — maintaining markdown for AI";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.allowFullscreen = true;
+      iframe.className = "h-full w-full border-0";
+      frame.appendChild(iframe);
+    }
+    manualResize = false;
+    player.classList.remove("hidden");
+    setState("expanded");
+    kicker.textContent = "Now playing";
+  }
+
+  function close() {
+    player.classList.add("hidden");
+    // Removing the iframe is what actually stops the audio — display:none does
+    // not reliably pause an embedded player.
+    frame.replaceChildren();
+    kicker.textContent = "Watch the talk";
+  }
+
+  launcher.addEventListener("click", () => {
+    if (!isOpen()) {
+      open();
+      return;
+    }
+    // Already playing: the launcher doubles as an expand/shrink toggle so a
+    // reader who scrolled back to the hero can pull the video back up.
+    manualResize = true;
+    setState(player.dataset.state === "docked" ? "expanded" : "docked");
+  });
+
+  resizeBtn.addEventListener("click", () => {
+    manualResize = true;
+    setState(player.dataset.state === "docked" ? "expanded" : "docked");
+  });
+
+  closeBtn.addEventListener("click", close);
+  closeTalkPlayer = close;
+
+  // Leaving the hero collapses the player into the corner so the reader can get
+  // on with reading past it.
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting || manualResize || !isOpen()) return;
+        setState("docked");
+      });
+    },
+    { root: tower, threshold: 0.1 },
+  );
+  io.observe(hero);
+}
+
 setupObserver();
+setupTalkPlayer();

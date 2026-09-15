@@ -298,6 +298,51 @@
                   Han Che
                 </p>
 
+                <!--
+                  Launcher for the companion recording of this same talk. Deliberately a
+                  slim bar rather than an inline player: the recording is 22 minutes, so
+                  nobody watches it in place here, and a thumbnail-sized player would
+                  compete with the H1 for the hero's attention.
+                  Opens #talk-player — see setupTalkPlayer() in presentation.js.
+                -->
+                <button
+                  type="button"
+                  id="talk-launcher"
+                  class="group mt-8 flex w-full max-w-md items-center gap-3 rounded-box border border-base-300 bg-base-100/95 px-4 py-3 text-left shadow-xs transition-all hover:border-secondary hover:bg-secondary/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+                >
+                  <!--
+                    YouTube brand mark. Brand red is deliberately NOT a semantic
+                    theme token: this glyph identifies the destination, so it must
+                    stay the same colour in every theme rather than re-skinning.
+                  -->
+                  <span
+                    class="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#FF0000]/10 text-[#FF0000] transition-transform group-hover:scale-110"
+                  >
+                    <svg
+                      width="17"
+                      height="17"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"
+                      />
+                    </svg>
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span
+                      id="talk-launcher-kicker"
+                      class="block font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/50"
+                      >Watch the talk</span
+                    >
+                    <span class="mt-0.5 block text-sm leading-snug text-base-content/80">
+                      Your AI reads stale docs every time
+                      <span class="text-base-content/40">· 22 min</span>
+                    </span>
+                  </span>
+                </button>
+
                 <!-- Speaker notes cue & drawer -->
                 <button
                   type="button"
@@ -4189,6 +4234,49 @@
           </div>
         </aside>
       </div>
+    </div>
+
+    <!--
+      Floating companion player. Anchored bottom-right in BOTH states — expanded
+      and docked differ only in width — so collapsing on scroll is a pure resize
+      from a fixed corner rather than a jump across the viewport, and the iframe
+      is never re-parented (re-parenting reloads it and loses playback position).
+      Lives at body level so `fixed` is resolved against the viewport rather than
+      the #tower scroll container. Width is driven from JS per FE-001.
+    -->
+    <div
+      id="talk-player"
+      data-state="expanded"
+      class="fixed bottom-4 right-4 z-40 hidden w-[min(46rem,calc(100vw-2rem))] overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-2xl transition-[width] duration-500 ease-out motion-reduce:transition-none"
+      role="region"
+      aria-label="Talk recording"
+    >
+      <div class="flex items-center gap-2 border-b border-base-300 bg-base-100/95 px-3 py-1.5">
+        <span class="size-1.5 shrink-0 rounded-full bg-secondary" aria-hidden="true"></span>
+        <span
+          class="min-w-0 flex-1 truncate font-mono text-[0.6rem] uppercase tracking-[0.2em] text-base-content/50"
+        >
+          The talk
+        </span>
+        <button
+          type="button"
+          id="talk-player-resize"
+          class="btn btn-ghost btn-xs font-mono text-[0.6rem] uppercase tracking-[0.15em] text-base-content/60 hover:text-secondary"
+          aria-label="Shrink player"
+        >
+          Shrink
+        </button>
+        <button
+          type="button"
+          id="talk-player-close"
+          class="btn btn-ghost btn-xs font-mono text-[0.6rem] uppercase tracking-[0.15em] text-base-content/60 hover:text-error"
+          aria-label="Close player"
+        >
+          Close
+        </button>
+      </div>
+      <!-- The iframe is created on open and removed on close by setupTalkPlayer() -->
+      <div id="talk-player-frame" class="aspect-video w-full bg-base-300"></div>
     </div>
 
     <!-- Exit presentation mode trigger (floating, visible only in presentation mode) -->
