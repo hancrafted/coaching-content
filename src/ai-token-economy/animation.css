@@ -1,12 +1,89 @@
 /* =============================================================================
-   S2.1 · Motivation — card hover animations
+   AI Token Economy — page-scoped animation stylesheet.
    -----------------------------------------------------------------------------
    FE-001 permits custom CSS "for complex animations." Keyframes live here (a
    dedicated stylesheet), never in a <style> block or inline style= attribute in
    index.html. Colors resolve from `currentColor`, which each element inherits
    from a Tailwind `text-success` / `text-error` utility, so everything stays
    theme-aware. All motion is disabled under prefers-reduced-motion (bottom).
+============================================================================= */
 
+:root {
+  --deck-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --deck-rise: 560ms;
+  --deck-draw: 900ms;
+  --deck-settle: 520ms;
+  --deck-swivel: 520ms;
+  --deck-hover: 180ms;
+  --deck-stagger: 90ms;
+}
+
+.beat-inner,
+[data-reveal],
+[data-term-line] {
+  transition-property: opacity, transform;
+  transition-duration: var(--deck-rise);
+  transition-timing-function: var(--deck-ease);
+}
+
+[data-rise] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition-property: opacity, transform;
+  transition-duration: var(--deck-rise);
+  transition-timing-function: var(--deck-ease);
+}
+
+[data-rise].is-risen {
+  opacity: 1;
+  transform: none;
+}
+
+[data-draw] {
+  transition: stroke-dashoffset var(--deck-draw) var(--deck-ease);
+}
+
+@keyframes deck-settle-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes deck-settle-ring {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.07);
+  }
+}
+
+.deck-settle {
+  position: relative;
+  animation: deck-settle-pop var(--deck-settle) var(--deck-ease) both;
+}
+
+.deck-settle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid color-mix(in oklab, currentColor 70%, transparent);
+  pointer-events: none;
+  animation: deck-settle-ring var(--deck-settle) var(--deck-ease) both;
+}
+
+/* =============================================================================
+   S2.1 · Motivation — card hover animations
+   -----------------------------------------------------------------------------
    Structure of each card in the markup:
      .s21-card (relative, overflow-hidden)
        .s21-frame.s21-frame--<pattern>   → animated border overlay (inset-0)
@@ -489,9 +566,96 @@
 }
 
 /* -----------------------------------------------------------------------------
+   Presenter controls — presentation mode & speaker notes
+   ----------------------------------------------------------------------------- */
+
+/* Presentation mode hides navbar, TOC rail, and adjusts layout to full width */
+html.presentation-mode header.navbar,
+body.presentation-mode header.navbar,
+html.presentation-mode #toc-rail,
+body.presentation-mode #toc-rail {
+  display: none !important;
+}
+
+html.presentation-mode .deck-layout,
+body.presentation-mode .deck-layout {
+  grid-template-columns: 1fr !important;
+}
+
+html.presentation-mode #progress-bar-top,
+body.presentation-mode #progress-bar-top {
+  display: block !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+html.presentation-mode #exit-presentation,
+body.presentation-mode #exit-presentation {
+  display: inline-flex !important;
+}
+
+/* The companion recording has no place on a slide being presented live.
+   setPresentationMode() also tears the player's iframe down (CSS alone would
+   hide it but keep the audio running); this hides the hero launcher too, and
+   keeps the player hidden even if it is opened some other way. */
+html.presentation-mode #talk-launcher,
+body.presentation-mode #talk-launcher,
+html.presentation-mode #talk-player,
+body.presentation-mode #talk-player {
+  display: none !important;
+}
+
+/* Speaker notes toggle */
+html.notes-visible [data-speaker-notes],
+body.notes-visible [data-speaker-notes] {
+  display: block !important;
+}
+
+html:not(.notes-visible) [data-speaker-notes],
+body:not(.notes-visible) [data-speaker-notes] {
+  display: none !important;
+}
+
+html.notes-visible [data-notes-cue],
+body.notes-visible [data-notes-cue] {
+  display: none !important;
+}
+
+/* -----------------------------------------------------------------------------
    Respect users who ask for less motion: no animations, no lingering overlays.
 ----------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  .beat-inner,
+  [data-reveal],
+  [data-term-line] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  [data-rise] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  [data-draw] {
+    transition: none !important;
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .deck-settle {
+    animation: none !important;
+  }
+
+  .deck-settle::after {
+    display: none;
+  }
+
   .s21-card *,
   .s21-card *::before {
     animation: none !important;

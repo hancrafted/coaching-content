@@ -1,4 +1,4 @@
-import "../src/style.css";
+import "../style.css";
 
 /**
  * AI Token Economy — scroll-tower engine.
@@ -11,13 +11,22 @@ import "../src/style.css";
  */
 
 const STORAGE_KEY = "token-economy-theme";
-const THEMES = [
+
+const CURATED_THEMES = [
+  { value: "corporate", label: "Corporate" },
+  { value: "winter", label: "Winter" },
+  { value: "business", label: "Business" },
+  { value: "night", label: "Night" },
+  { value: "dim", label: "Dim" },
+  { value: "luxury", label: "Luxury" },
+];
+
+const OTHER_THEMES = [
   { value: "light", label: "Light" },
   { value: "dark", label: "Dark" },
   { value: "cupcake", label: "Cupcake" },
   { value: "bumblebee", label: "Bumblebee" },
   { value: "emerald", label: "Emerald" },
-  { value: "corporate", label: "Corporate" },
   { value: "synthwave", label: "Synthwave" },
   { value: "retro", label: "Retro" },
   { value: "cyberpunk", label: "Cyberpunk" },
@@ -31,23 +40,21 @@ const THEMES = [
   { value: "fantasy", label: "Fantasy" },
   { value: "wireframe", label: "Wireframe" },
   { value: "black", label: "Black" },
-  { value: "luxury", label: "Luxury" },
   { value: "dracula", label: "Dracula" },
   { value: "cmyk", label: "CMYK" },
   { value: "autumn", label: "Autumn" },
-  { value: "business", label: "Business" },
   { value: "acid", label: "Acid" },
   { value: "lemonade", label: "Lemonade" },
-  { value: "night", label: "Night" },
   { value: "coffee", label: "Coffee" },
-  { value: "winter", label: "Winter" },
-  { value: "dim", label: "Dim" },
   { value: "nord", label: "Nord" },
   { value: "sunset", label: "Sunset" },
   { value: "caramellatte", label: "Caramellatte" },
   { value: "abyss", label: "Abyss" },
   { value: "silk", label: "Silk" },
 ];
+
+const ALL_THEMES = [...CURATED_THEMES, ...OTHER_THEMES];
+const DEFAULT_THEME = "corporate";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const tower = document.getElementById("tower");
@@ -71,6 +78,7 @@ beatEls.forEach((el) => {
     id: el.id,
     section: el.dataset.section,
     code: el.dataset.beat,
+    title: el.dataset.slideTitle || el.dataset.assertion || "",
     assertion: el.dataset.assertion || "",
   };
   beatById[el.id] = beat;
@@ -91,48 +99,67 @@ const sections = Array.from(sectionMap.values());
  * ------------------------------------------------------------------ */
 
 function renderSection(section) {
-  const beats = section.beats
-    .map(
-      (b) => `
+  if (section.beats.length > 1) {
+    const beats = section.beats
+      .map(
+        (b) => `
+        <a
+          href="#${b.id}"
+          data-toc-jump="${b.id}"
+          class="toc-beat block rounded-lg px-3 py-1.5 transition-colors hover:bg-base-300/50"
+        >
+          <span class="toc-beat-title line-clamp-1 block text-xs leading-snug text-base-content/70"
+            >${escapeHtml(b.title || b.assertion)}</span
+          >
+        </a>`,
+      )
+      .join("");
+
+    return `
+      <div class="toc-section" data-toc-section="${section.num}">
+        <button
+          type="button"
+          data-section-toggle="${section.num}"
+          aria-expanded="true"
+          class="toc-section-header flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg px-3 py-2 text-left transition-colors hover:bg-base-300/50"
+        >
+          <span class="flex min-w-0 items-center gap-2">
+            <span class="font-mono text-xs text-base-content/40">${pad2(section.num)}</span>
+            <span class="truncate font-display text-sm font-semibold">${escapeHtml(section.title)}</span>
+          </span>
+          <svg
+            data-caret
+            aria-hidden="true"
+            class="h-4 w-4 shrink-0 text-base-content/40 transition-transform duration-200 rotate-180"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div data-section-beats="${section.num}" class="toc-beats pl-6 space-y-0.5 mt-0.5">${beats}</div>
+      </div>`;
+  }
+
+  // Single-slide flat entry — no fake hierarchy
+  const b = section.beats[0];
+  return `
+    <div class="toc-section" data-toc-section="${section.num}">
       <a
         href="#${b.id}"
         data-toc-jump="${b.id}"
         class="toc-beat block rounded-lg px-3 py-2 transition-colors hover:bg-base-300/50"
       >
-        <span class="font-mono text-[0.6rem] uppercase tracking-widest text-base-content/40">${escapeHtml(
-          b.code,
-        )}</span>
-        <span class="toc-beat-title mt-0.5 line-clamp-2 block text-sm leading-snug text-base-content/70"
-          >${escapeHtml(b.assertion)}</span
-        >
-      </a>`,
-    )
-    .join("");
-
-  return `
-    <div class="toc-section" data-toc-section="${section.num}">
-      <button
-        type="button"
-        data-section-toggle="${section.num}"
-        class="toc-section-header cursor-pointer flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left transition-colors hover:bg-base-300/50"
-      >
-        <span class="flex min-w-0 items-center gap-2">
+        <span class="flex items-center gap-2">
           <span class="font-mono text-xs text-base-content/40">${pad2(section.num)}</span>
-          <span class="truncate font-display text-sm font-semibold">${escapeHtml(section.title)}</span>
+          <span class="toc-beat-title line-clamp-2 font-display text-sm font-semibold text-base-content/80">${escapeHtml(
+            section.title,
+          )}</span>
         </span>
-        <svg
-          data-caret
-          class="h-4 w-4 shrink-0 text-base-content/40 transition-transform duration-200"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <div data-section-beats="${section.num}" class="toc-beats hidden pl-2">${beats}</div>
+      </a>
     </div>`;
 }
 
@@ -156,11 +183,11 @@ const progressEls = ["progress-desktop", "progress-mobile"]
 
 function markBeatAnchor(anchor, active) {
   const title = anchor.querySelector(".toc-beat-title");
-  anchor.classList.toggle("bg-primary/10", active);
+  anchor.classList.toggle("bg-secondary/10", active);
   if (title) {
     title.classList.toggle("text-base-content/70", !active);
-    title.classList.toggle("text-primary", active);
-    title.classList.toggle("font-medium", active);
+    title.classList.toggle("text-secondary", active);
+    title.classList.toggle("font-bold", active);
   }
 }
 
@@ -168,6 +195,9 @@ function setSectionExpanded(num, expanded) {
   document
     .querySelectorAll(`[data-section-beats="${num}"]`)
     .forEach((el) => el.classList.toggle("hidden", !expanded));
+  document
+    .querySelectorAll(`[data-section-toggle="${num}"]`)
+    .forEach((btn) => btn.setAttribute("aria-expanded", String(expanded)));
   document
     .querySelectorAll(`[data-section-toggle="${num}"] [data-caret]`)
     .forEach((caret) => caret.classList.toggle("rotate-180", expanded));
@@ -182,7 +212,11 @@ function setActive(id) {
     .querySelectorAll(".toc-beat")
     .forEach((a) => markBeatAnchor(a, a.getAttribute("data-toc-jump") === id));
 
-  sections.forEach((s) => setSectionExpanded(s.num, s.num === activeSection));
+  sections.forEach((s) => {
+    if (s.beats.length > 1) {
+      setSectionExpanded(s.num, s.num === activeSection);
+    }
+  });
 
   const idx = beatOrder.indexOf(id);
   const pct = total > 1 ? (idx / (total - 1)) * 100 : 100;
@@ -332,15 +366,33 @@ document.addEventListener("click", (e) => {
   }
 });
 
+/** Typing in a form field must never step the deck. */
+function isTypingTarget(el) {
+  if (!el) return false;
+  const tag = el.tagName;
+  return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable === true;
+}
+
 window.addEventListener("keydown", (e) => {
-  const tag = document.activeElement?.tagName;
-  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+  if (isTypingTarget(document.activeElement)) return;
+  if (document.querySelector("dialog[open]")) return;
+
+  if (e.key === "p" || e.key === "P") {
+    e.preventDefault();
+    togglePresentationMode();
+    return;
+  }
+  if (e.key === "n" || e.key === "N") {
+    e.preventDefault();
+    toggleSpeakerNotes();
+    return;
+  }
 
   const idx = beatOrder.indexOf(activeBeatId);
-  if (e.key === "ArrowDown" || e.key === "PageDown") {
+  if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "PageDown") {
     e.preventDefault();
     if (idx < total - 1) scrollToBeat(beatOrder[idx + 1]);
-  } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+  } else if (e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "PageUp") {
     e.preventDefault();
     if (idx > 0) scrollToBeat(beatOrder[idx - 1]);
   } else if (e.key === "Home") {
@@ -362,12 +414,12 @@ window.addEventListener("hashchange", () => {
  * ------------------------------------------------------------------ */
 
 function currentTheme() {
-  return document.documentElement.getAttribute("data-theme") || "corporate";
+  return document.documentElement.getAttribute("data-theme") || DEFAULT_THEME;
 }
 
 function updateThemeChecks() {
   const cur = currentTheme();
-  THEMES.forEach((t) => {
+  ALL_THEMES.forEach((t) => {
     document.querySelectorAll(`[data-theme-check="${t.value}"]`).forEach((el) => {
       el.textContent = t.value === cur ? "✓" : "";
     });
@@ -385,24 +437,28 @@ function setTheme(value) {
   if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
 }
 
+function themeItems(themes) {
+  return themes
+    .map(
+      (t) => `
+      <li>
+        <button type="button" data-theme-value="${t.value}" class="justify-between">
+          <span>${t.label}</span>
+          <span data-theme-check="${t.value}" class="text-primary font-bold"></span>
+        </button>
+      </li>`,
+    )
+    .join("");
+}
+
 function buildThemePicker() {
   const host = document.getElementById("theme-picker");
   if (!host) return;
 
-  const items = THEMES.map(
-    (t) => `
-      <li>
-        <button type="button" data-theme-value="${t.value}" class="justify-between">
-          <span>${t.label}</span>
-          <span data-theme-check="${t.value}" class="text-primary"></span>
-        </button>
-      </li>`,
-  ).join("");
-
   host.innerHTML = `
     <div class="dropdown dropdown-end">
       <div tabindex="0" role="button" class="btn btn-ghost btn-sm gap-1" aria-label="Choose theme">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
           <path d="M12 3a9 9 0 000 18" fill="currentColor" />
         </svg>
@@ -410,9 +466,12 @@ function buildThemePicker() {
       </div>
       <ul
         tabindex="0"
-        class="menu dropdown-content z-50 mt-2 max-h-80 w-48 flex-col flex-nowrap overflow-y-auto rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
+        class="menu dropdown-content z-50 mt-2 max-h-80 w-52 flex-col flex-nowrap overflow-y-auto rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
       >
-        ${items}
+        <li class="menu-title text-[0.65rem] uppercase tracking-[0.2em]">Curated</li>
+        ${themeItems(CURATED_THEMES)}
+        <li class="menu-title text-[0.65rem] uppercase tracking-[0.2em]">Unverified</li>
+        ${themeItems(OTHER_THEMES)}
       </ul>
     </div>`;
 
@@ -423,6 +482,185 @@ function buildThemePicker() {
 
   updateThemeChecks();
 }
+
+/* ------------------------------------------------------------------ *
+ * Presenter controls — presentation mode & speaker notes
+ * ------------------------------------------------------------------ */
+
+const STORAGE_KEY_PRESENTATION = "deck-presentation-mode";
+const STORAGE_KEY_NOTES = "deck-speaker-notes";
+
+// Assigned by setupTalkPlayer(). Declared up here so setPresentationMode can
+// tear the player down: presenting the talk while a recording of the same talk
+// plays in the corner is the one combination that must never happen.
+let closeTalkPlayer = null;
+
+function updatePresenterControlsUI() {
+  const isPres = document.documentElement.classList.contains("presentation-mode");
+  const isNotes = document.documentElement.classList.contains("notes-visible");
+
+  const presCheck = document.getElementById("presentation-mode-check");
+  if (presCheck) presCheck.textContent = isPres ? "✓" : "";
+
+  const notesCheck = document.getElementById("speaker-notes-check");
+  if (notesCheck) notesCheck.textContent = isNotes ? "✓" : "";
+
+  const directNotesBtn = document.getElementById("direct-notes-btn");
+  if (directNotesBtn) {
+    directNotesBtn.classList.toggle("btn-active", isNotes);
+    directNotesBtn.classList.toggle("border-secondary", isNotes);
+    directNotesBtn.classList.toggle("bg-secondary/15", isNotes);
+    directNotesBtn.classList.toggle("text-secondary", isNotes);
+    directNotesBtn.setAttribute("aria-pressed", isNotes ? "true" : "false");
+  }
+
+  const railNotesBtn = document.getElementById("rail-toggle-notes");
+  if (railNotesBtn) {
+    railNotesBtn.classList.toggle("btn-active", isNotes);
+    railNotesBtn.classList.toggle("border-secondary", isNotes);
+    railNotesBtn.classList.toggle("bg-secondary/15", isNotes);
+    railNotesBtn.classList.toggle("text-secondary", isNotes);
+  }
+}
+
+function setPresentationMode(enabled) {
+  document.documentElement.classList.toggle("presentation-mode", enabled);
+  document.body.classList.toggle("presentation-mode", enabled);
+  try {
+    localStorage.setItem(STORAGE_KEY_PRESENTATION, enabled ? "true" : "false");
+  } catch {
+    /* persistence unavailable */
+  }
+  updatePresenterControlsUI();
+  if (enabled && closeTalkPlayer) closeTalkPlayer();
+  if (enabled && document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
+}
+
+function togglePresentationMode() {
+  const current = document.documentElement.classList.contains("presentation-mode");
+  setPresentationMode(!current);
+}
+
+function setSpeakerNotes(enabled) {
+  document.documentElement.classList.toggle("notes-visible", enabled);
+  document.body.classList.toggle("notes-visible", enabled);
+  try {
+    localStorage.setItem(STORAGE_KEY_NOTES, enabled ? "true" : "false");
+  } catch {
+    /* persistence unavailable */
+  }
+  updatePresenterControlsUI();
+}
+
+function toggleSpeakerNotes() {
+  const current = document.documentElement.classList.contains("notes-visible");
+  setSpeakerNotes(!current);
+}
+
+function buildPresenterControls() {
+  const host = document.getElementById("presenter-controls");
+  if (!host) return;
+
+  host.innerHTML = `
+    <div class="flex items-center gap-1.5">
+      <!-- Direct Speaker Notes Button for high discoverability -->
+      <button
+        type="button"
+        id="direct-notes-btn"
+        class="btn btn-ghost btn-sm gap-1.5 border border-base-300 transition-colors"
+        aria-label="Toggle speaker notes"
+        title="Toggle speaker notes (N)"
+      >
+        <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span class="text-xs font-medium">Notes</span>
+        <kbd class="kbd kbd-xs font-mono">N</kbd>
+        <span id="speaker-notes-check" class="text-secondary font-bold text-xs"></span>
+      </button>
+
+      <div class="dropdown dropdown-end">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-square border border-base-300" aria-label="Presenter controls" title="Presenter controls">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6h16M4 12h10M4 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <ul
+          tabindex="0"
+          class="menu dropdown-content z-50 mt-2 w-56 rounded-box border border-base-200 bg-base-100 p-2 shadow-lg"
+        >
+          <li class="menu-title text-[0.65rem] uppercase tracking-[0.2em]">Presenter controls</li>
+          <li>
+            <button type="button" id="toggle-presentation-btn" class="justify-between py-2">
+              <span class="flex items-center gap-2">
+                <span>Presentation mode</span>
+                <kbd class="kbd kbd-xs">P</kbd>
+              </span>
+              <span id="presentation-mode-check" class="text-secondary font-bold"></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" id="toggle-notes-btn" class="justify-between py-2">
+              <span class="flex items-center gap-2">
+                <span>Speaker notes</span>
+                <kbd class="kbd kbd-xs">N</kbd>
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>`;
+
+  const presBtn = document.getElementById("toggle-presentation-btn");
+  if (presBtn) {
+    presBtn.addEventListener("click", () => {
+      togglePresentationMode();
+    });
+  }
+
+  const directBtn = document.getElementById("direct-notes-btn");
+  if (directBtn) {
+    directBtn.addEventListener("click", () => {
+      toggleSpeakerNotes();
+    });
+  }
+
+  const notesBtn = document.getElementById("toggle-notes-btn");
+  if (notesBtn) {
+    notesBtn.addEventListener("click", () => {
+      toggleSpeakerNotes();
+    });
+  }
+
+  const railBtn = document.getElementById("rail-toggle-notes");
+  if (railBtn) {
+    railBtn.addEventListener("click", () => {
+      toggleSpeakerNotes();
+    });
+  }
+
+  const exitBtn = document.getElementById("exit-presentation");
+  if (exitBtn) {
+    exitBtn.addEventListener("click", () => {
+      setPresentationMode(false);
+    });
+  }
+
+  updatePresenterControlsUI();
+}
+
+// Global delegated clicks for slide-level notes triggers and rail
+document.addEventListener("click", (e) => {
+  if (
+    e.target.closest("[data-notes-cue]") ||
+    e.target.closest("[data-close-notes]") ||
+    e.target.closest("#rail-toggle-notes")
+  ) {
+    toggleSpeakerNotes();
+  }
+});
 
 /* ------------------------------------------------------------------ *
  * Ambient hero meter — the invisible, unwatched meter
@@ -606,31 +844,6 @@ registerActivate("s2-5", (reduced) => {
   counts.forEach((el) => countUp(el, Number(el.dataset.countTo), { duration: 1200 }));
   if (winner) window.setTimeout(() => winner.classList.remove("opacity-0"), 900);
 });
-
-/* ------------------------------------------------------------------ *
- * Init
- * ------------------------------------------------------------------ */
-
-buildThemePicker();
-buildTOC();
-
-if (reduceMotion) {
-  document
-    .querySelectorAll(".beat-inner")
-    .forEach((el) => el.classList.remove("opacity-0", "translate-y-6"));
-}
-
-const hashId = window.location.hash.slice(1);
-const initialId = beatById[hashId] ? hashId : beatOrder[0];
-setActive(initialId);
-if (beatById[hashId]) {
-  window.requestAnimationFrame(() => scrollToBeat(hashId));
-} else {
-  revealBeat(document.getElementById(beatOrder[0]));
-}
-
-setupObserver();
-startHeroMeter();
 
 /* --- Injected by Map-Reduce --- */
 
@@ -1138,6 +1351,102 @@ function setupNavMeter() {
   io.observe(hero);
 }
 
+// Talk player — the companion recording of this same deck.
+//
+// The recording narrates the same content the page carries in text, so the two
+// tracks compete if the video is simply parked on screen. The compromise: it
+// only ever appears because the reader asked for it, it opens big, and it gets
+// out of the way (corner) the moment they scroll on to read. Returning to the
+// hero does NOT re-expand it — a reader who scrolled back up did so on purpose.
+const TALK_VIDEO_ID = "S0Nx4faEebY";
+const TALK_WIDTHS = {
+  expanded: "min(46rem, calc(100vw - 2rem))",
+  docked: "min(22rem, calc(100vw - 2rem))",
+};
+
+function setupTalkPlayer() {
+  const player = document.getElementById("talk-player");
+  const launcher = document.getElementById("talk-launcher");
+  const kicker = document.getElementById("talk-launcher-kicker");
+  const frame = document.getElementById("talk-player-frame");
+  const resizeBtn = document.getElementById("talk-player-resize");
+  const closeBtn = document.getElementById("talk-player-close");
+  const hero = document.getElementById("s1-1");
+  if (!player || !launcher || !kicker || !frame || !resizeBtn || !closeBtn || !hero) return;
+
+  // Once the reader resizes by hand, scrolling stops resizing for them.
+  let manualResize = false;
+
+  const isOpen = () => !player.classList.contains("hidden");
+
+  function setState(state) {
+    player.dataset.state = state;
+    player.style.width = TALK_WIDTHS[state];
+    resizeBtn.textContent = state === "docked" ? "Expand" : "Shrink";
+    resizeBtn.setAttribute("aria-label", state === "docked" ? "Expand player" : "Shrink player");
+  }
+
+  function open() {
+    if (!frame.firstChild) {
+      const iframe = document.createElement("iframe");
+      // nocookie host, and autoplay is allowed here because the click that got
+      // us into open() is the required user gesture.
+      iframe.src = `https://www.youtube-nocookie.com/embed/${TALK_VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`;
+      iframe.title = "AI Token Economy — Why you should treat AI as a Freelancer";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.allowFullscreen = true;
+      iframe.className = "h-full w-full border-0";
+      frame.appendChild(iframe);
+    }
+    manualResize = false;
+    player.classList.remove("hidden");
+    setState("expanded");
+    kicker.textContent = "Now playing";
+  }
+
+  function close() {
+    player.classList.add("hidden");
+    // Removing the iframe is what actually stops the audio — display:none does
+    // not reliably pause an embedded player.
+    frame.replaceChildren();
+    kicker.textContent = "Watch the talk";
+  }
+
+  launcher.addEventListener("click", () => {
+    if (!isOpen()) {
+      open();
+      return;
+    }
+    // Already playing: the launcher doubles as an expand/shrink toggle so a
+    // reader who scrolled back to the hero can pull the video back up.
+    manualResize = true;
+    setState(player.dataset.state === "docked" ? "expanded" : "docked");
+  });
+
+  resizeBtn.addEventListener("click", () => {
+    manualResize = true;
+    setState(player.dataset.state === "docked" ? "expanded" : "docked");
+  });
+
+  closeBtn.addEventListener("click", close);
+  closeTalkPlayer = close;
+
+  // Leaving the hero collapses the player into the corner so the reader can get
+  // on with reading past it.
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting || manualResize || !isOpen()) return;
+        setState("docked");
+      });
+    },
+    { root: tower, threshold: 0.1 },
+  );
+  io.observe(hero);
+}
+
 // S3.1 — approximate tokenizer playground: type a sentence, watch it split.
 function setupTokenizerPlayground() {
   const input = document.getElementById("s31-input");
@@ -1280,7 +1589,44 @@ function setupFixesSlider() {
   slider.addEventListener("input", update);
 }
 
+/* ------------------------------------------------------------------ *
+ * Init
+ * ------------------------------------------------------------------ */
+
+buildThemePicker();
+buildPresenterControls();
+buildTOC();
+
+try {
+  if (localStorage.getItem(STORAGE_KEY_PRESENTATION) === "true") {
+    setPresentationMode(true);
+  }
+  if (localStorage.getItem(STORAGE_KEY_NOTES) === "true") {
+    setSpeakerNotes(true);
+  }
+} catch {
+  /* ignore */
+}
+
+if (reduceMotion) {
+  document
+    .querySelectorAll(".beat-inner")
+    .forEach((el) => el.classList.remove("opacity-0", "translate-y-6"));
+}
+
+const hashId = window.location.hash.slice(1);
+const initialId = beatById[hashId] ? hashId : beatOrder[0];
+setActive(initialId);
+if (beatById[hashId]) {
+  window.requestAnimationFrame(() => scrollToBeat(hashId));
+} else if (beatOrder.length) {
+  revealBeat(document.getElementById(beatOrder[0]));
+}
+
+setupObserver();
+startHeroMeter();
 setupNavMeter();
+setupTalkPlayer();
 setupTokenizerPlayground();
 setupThresholdSlider();
 setupContextGaugeSlider();
