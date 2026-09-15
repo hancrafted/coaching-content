@@ -21,6 +21,9 @@
         if (localStorage.getItem("deck-speaker-notes") === "true") {
           document.documentElement.classList.add("notes-visible");
         }
+        if (localStorage.getItem("deck-voice-script") === "true") {
+          document.documentElement.classList.add("script-visible");
+        }
       } catch (e) {
         /* localStorage unavailable — fall back to defaults */
       }
@@ -373,6 +376,91 @@
                     establishes these stakes before Section 02 broadens the scope across every
                     context type an AI consumes.
                   </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~60–75s · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>
+                      Welcome. Before we start — imagine you're onboarding a new colleague. A
+                      freelancer, a consultant, whoever. You hand them a list of documents and tell
+                      them to read up.
+                    </p>
+                    <p>
+                      Now: some of those documents were written a year ago and went out of date six
+                      months ago.
+                    </p>
+                    <p>
+                      A human gets suspicious eventually. They notice something doesn't match, they
+                      ask someone, they self-correct.
+                    </p>
+                    <p>
+                      Your AI never does. It reads that file fresh every time, with no way of
+                      knowing it's stale — and it will confidently act on it the hundredth time and
+                      the thousandth time, exactly as it did the first.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p>
+                      Writing documentation used to be the expensive half. AI made it nearly free.
+                      Checking whether it's still true got more expensive, because now there's far
+                      more of it.
+                    </p>
+                    <p>And that half doesn't get automated. It's nobody else's job.</p>
+                    <p class="font-medium text-base-content">
+                      Maintain markdown for AI. I'm Han Che — let's get into it.
+                    </p>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li>
+                        <strong>Four engineered lines, keep verbatim:</strong> the "your AI never
+                        does" contrast; "the hundredth time and the thousandth time"; the cost
+                        inversion; "it's nobody else's job."
+                      </li>
+                      <li>
+                        <strong>"doesn't get automated"</strong>, never "isn't automated yet."
+                      </li>
+                      <li>
+                        <strong>Do not say "markdown" in the first thirty seconds.</strong> Format
+                        word is earned after problem is felt.
+                      </li>
+                      <li><strong>No hedging frame.</strong> Go straight from thesis to title.</li>
+                      <li><strong>Say the name.</strong> Permanent YouTube reference.</li>
+                      <li><strong>Target 60–75 seconds.</strong></li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
 
@@ -962,34 +1050,124 @@
                     </button>
                   </div>
                   <p>
-                    Markdown won because it lets you enrich a file with context, not just words.
-                    Heading, bold, list, checkbox — a second layer of structure over otherwise
-                    unstructured text, with no special skills needed to add it.
+                    While section 01 established the stakes without naming the format, this section
+                    introduces it and widens the scope from a static wiki to everything an AI reads.
+                    For an audience that still pictures AI as a 2023 chatbot you paste text into,
+                    the concept of a document warning an agent is unintelligible. Today’s agents
+                    read and write local files, invoke external tools, search the web, and execute
+                    tasks iteratively in loops.
                   </p>
                   <p class="mt-3">
-                    Three places you already meet it:
-                    <strong class="font-semibold text-accent">knowledge</strong> — the wiki,
-                    increasingly authored and maintained by an agent rather than a person;
-                    <strong class="font-semibold text-secondary">instructions</strong> — a repeated
-                    workflow packaged as a skill;
-                    <strong class="font-semibold text-primary">memory</strong> — what an agent needs
-                    to know about your project at all times, e.g. AGENTS.md or CLAUDE.md.
+                    In this environment, markdown’s importance lies not in syntax or formatting
+                    quirks, but simply as a plain text file defined by how and when it is consumed.
+                    Those files divide into three core patterns:
+                    <strong class="font-semibold text-accent">knowledge</strong>, retrieved on
+                    demand only when a task requires it;
+                    <strong class="font-semibold text-secondary">instructions</strong> or skills,
+                    codified once and triggered by name; and
+                    <strong class="font-semibold text-primary">memory</strong>, loaded automatically
+                    at the start of every session.
                   </p>
                   <p class="mt-3">
-                    The split that matters is <em>when</em> each one is paid for. Memory is static
-                    context: always loaded, every interaction, whether or not it is relevant — so
-                    length is a budget. Knowledge and instructions are dynamic: retrieved on demand,
-                    or loaded when a task matches the skill's description. That boundary is a
-                    first-class architectural decision, and the paper argues it should be reviewed
-                    and versioned like any other configuration.
+                    Memory serves as the closer because it carries the quietest failure mode: an
+                    obsolete memory file is accepted as fact across every single interaction,
+                    silently and invisibly to the operator. That compounding surface creates the
+                    volume crisis quantified in section 03.
                   </p>
-                  <p class="mt-3">
-                    At moderate scale — roughly a hundred sources, a few hundred pages — an index
-                    file plus linked markdown works better than expected and needs no
-                    embedding-based retrieval infrastructure at all. Karpathy's LLM-wiki gist says
-                    exactly this. Obsidian is the everyday version: the agent edits on one side, you
-                    browse the graph on the other.
-                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~90s · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>
+                      Before we start, I want to establish why markdown files matter so much in AI
+                      workflows.
+                    </p>
+                    <p>
+                      We're in the agentic era now — it isn't 2023 anymore. Agents aren't chatbots
+                      you copy-paste into. They read files on your machine, write files, call tools,
+                      search the web. Put those in a loop and they carry out real tasks, the way the
+                      new colleague you just onboarded would.
+                    </p>
+                    <p>
+                      And like that colleague, an agent needs the right information at the right
+                      time. That information lives in markdown — which is just a plain text file.
+                    </p>
+                    <p>Those files fall into three categories.</p>
+                    <p>
+                      <strong class="text-accent">Knowledge</strong> — what the agent looks up on
+                      demand, when the task calls for it. You don't hand a new starter everything on
+                      day one.
+                    </p>
+                    <p>
+                      <strong class="text-secondary">Instructions</strong> — skills. How to do a
+                      release, step by step. Written once, called by name.
+                    </p>
+                    <p>
+                      <strong class="text-primary">And memory.</strong> Not ChatGPT's memory — a
+                      file the agent reads at the start of every single conversation.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p>
+                      And if that file is stale, or wrong, the agent reads that wrong information
+                      every single time. Confidently, and silently — without you ever noticing.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p class="font-medium text-base-content">And that's one document.</p>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li><strong>Beat of separation</strong> between the three category names.</li>
+                      <li><strong>Load-bearing pause</strong> before memory closer.</li>
+                      <li>
+                        <strong>"Silently, without you ever noticing"</strong> — keep phrasing.
+                      </li>
+                      <li><strong>Name "skills" explicitly</strong> in its own half-sentence.</li>
+                      <li><strong>Keep day-one anchor</strong> on knowledge category.</li>
+                      <li>
+                        <strong>Do not explain markdown features</strong> (headers, tables,
+                        frontmatter).
+                      </li>
+                      <li>
+                        <strong>Do not re-explain onboarding analogy</strong> (one-clause callback
+                        only).
+                      </li>
+                      <li><strong>Target 90 seconds.</strong></li>
+                      <li><strong>"And that's one document"</strong> bridges into section 03.</li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -1110,32 +1288,119 @@
                     </button>
                   </div>
                   <p>
-                    The chart is not the point — <strong>the gap is</strong>. Creating a document
-                    was always the cheap half, even before AI. The hard half was always keeping it
-                    alive and keeping it trustworthy.
+                    Taking the single stale document from section 02, this section scales the
+                    problem first through time and then across an entire corpus. Long before AI,
+                    enterprise knowledge management struggled with this exact dynamic. The left
+                    chart illustrates why: after an initial spike of authoring effort, investment
+                    plunges while drift climbs. Nobody budgets for ongoing maintenance—it is never
+                    in the plan, which produces this decay curve rather than anyone being at fault.
                   </p>
                   <p class="mt-3">
-                    AI did not invent that problem, it amplified it. An agent reading an unverified
-                    file assumes it is current and never tells you otherwise.
+                    The right chart shows why scaling is not simply more of the same. While files
+                    accumulate steadily, the verification burden does not track document count:
+                    every document makes claims about and references to others, compounding into an
+                    interlocking web where every claim must be validated against every other.
                   </p>
                   <p class="mt-3">
-                    And nobody schedules maintenance. It gets treated the way technical debt gets
-                    treated — real, accumulating, never on anyone&rsquo;s plan — unless someone
-                    actually owns the files. That is true of a handful of AGENTS.md files, and it is
-                    true of a thousand-file repository where documents start contradicting each
-                    other.
+                    Establishing that knowledge management was always structurally hard makes the
+                    core realization clear: AI did not create this dilemma, but removed the
+                    constraint holding it in check. Writing was the historical brake and the human
+                    was the bottleneck; now that this brake is gone, volume completely outruns
+                    review.
                   </p>
-                  <p class="mt-3">
-                    Information architecture was always the answer to this — organising a knowledge
-                    base so it does not grow organically and explode in maintenance cost. That
-                    problem predates AI entirely.
-                  </p>
-                  <p class="mt-3 border-l-2 border-base-300 pl-3 text-base-content/70">
-                    If pushed outside the source: Karpathy&rsquo;s LLM-wiki gist argues the same
-                    shift independently — the wiki is written and read by an agent, and the
-                    human&rsquo;s job moves from authoring to curating and verifying. Already linked
-                    on the Knowledge card in section 2.
-                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~75s · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p class="font-medium text-base-content">And that's one document.</p>
+                    <p>
+                      There's a reason knowledge management was always hard in enterprise — long
+                      before any of this. And it's this shape.
+                    </p>
+                    <p>
+                      One document, over time. The blue line is effort. There's a spike at the
+                      start, when someone writes it. At least, that's how it used to be — with AI,
+                      creating a document now costs almost nothing.
+                    </p>
+                    <p>
+                      After that, effort drops. Because nobody budgets for maintenance. It's never
+                      in the plan.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p>
+                      And as effort drops, drift climbs. The document is still sitting there. It's
+                      just quietly stopped being true.
+                    </p>
+                    <p>
+                      Now scale that. Your documents don't arrive one at a time — they accumulate,
+                      steadily.
+                    </p>
+                    <p>
+                      And you're not just verifying each file. You're verifying every claim each
+                      file makes about the others. Every reference. That compounds.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p>
+                      So here's what changed. Writing was the brake. The human was the bottleneck —
+                      you could only produce documentation as fast as someone could write it, and
+                      that held the whole thing in check.
+                    </p>
+                    <p class="font-medium text-base-content">That brake is gone.</p>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li>
+                        <strong>Claim before chart.</strong> Name what chart shows before walking
+                        it.
+                      </li>
+                      <li><strong>Pause before "drift climbs"</strong> is load-bearing.</li>
+                      <li><strong>"That brake is gone"</strong> gets trailing silence.</li>
+                      <li>
+                        <strong>Verbatim lines:</strong> "it's quietly stopped being true", "every
+                        claim each file makes about the others", and the brake close.
+                      </li>
+                      <li><strong>Say maintenance-budget point once.</strong></li>
+                      <li>
+                        <strong>No chart vocabulary</strong> on corpus side (accumulate steadily).
+                      </li>
+                      <li><strong>Do not restate cost inversion</strong> from section 01.</li>
+                      <li><strong>Do not hedge close.</strong> Stated flat.</li>
+                      <li><strong>Target 75 seconds.</strong></li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -1332,26 +1597,85 @@
                     </button>
                   </div>
                   <p>
-                    Machine verification is deterministic — same input, same output, always. It is
-                    cheap and fast, which means it should run constantly, and the AI should be
-                    running it too as a self-check loop.
+                    Section 03 ended on a loss: writing was the historical brake holding
+                    documentation sprawl in check, and that brake is gone. This section answers the
+                    immediate question that creates: what does it actually take to verify a
+                    document? The answer is that verification is not one job, but three
+                    non-interchangeable tiers ordered strictly by cost and certainty—from cheap and
+                    deterministic at one end to expensive and human at the other.
                   </p>
                   <p class="mt-3">
-                    Human verification is semantic. Is this fact still true? Is the linked source
-                    still the right one? Does it still say what we claimed it says? No algorithm
-                    catches that.
+                    Machine checks are deterministic, cheap, fast, and binary: they validate
+                    metadata shape, parse dates, and resolve links. Their ceiling is confirming that
+                    a field exists, never whether its contents are true. In contrast, AI operates in
+                    natural language on the non-deterministic side, consuming tokens to generate
+                    signals. It traverses references and flags contradictions—such as differing lead
+                    times—raising targeted tickets that narrow what a human must inspect.
                   </p>
                   <p class="mt-3">
-                    AI sits in the overlap, and it is genuinely new — the first tool that works with
-                    meaning rather than structure. That is why this region is unsettled: people are
-                    still working out what belongs in it. My hypothesis is that AI does the grunt
-                    work. Summarising, researching, orienting you, drafting the executive summary.
-                    What it does not do is deliver the verdict.
+                    Ultimately, only human judgment supplies the ground truth neither tooling can
+                    provide, because the human owns the operational process and remains accountable
+                    when it fails. The machine narrows it, the AI narrows it further, and what is
+                    left was always yours.
                   </p>
-                  <p class="mt-3">
-                    Handing an AI the judgment that a document is still true and then walking away
-                    is the dangerous path — and it is the first thing most people reach for.
-                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script · 04.1
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        boundaries · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>
+                      So the brake is gone. Which raises the obvious question: what does it actually
+                      take to check a document?
+                    </p>
+                    <p>It's not one job. It's three, and they're not interchangeable.</p>
+                    <p>
+                      On the left, the machine. Deterministic — same input, same answer, every time.
+                      Binary: it passes or it fails. Cheap, and fast. This is the part you want
+                      doing as much as possible.
+                    </p>
+                    <p>
+                      On the right, the human. Not deterministic, slow, expensive. This is where the
+                      semantic work happens — is this actually true, is it still useful. And it's
+                      still where almost all trust comes from.
+                    </p>
+                    <p>
+                      And in the middle, AI. It works in natural language, so it sits on the human
+                      side of that line — not deterministic. It costs tokens. What it can and can't
+                      be trusted with is genuinely unsettled.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p class="font-medium text-base-content">
+                      Left to right. Cheap and certain, to expensive and human. Let's take them in
+                      order.
+                    </p>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -1518,37 +1842,63 @@
                     </button>
                   </div>
                   <p>
-                    This is the metadata block at the top of the file. Not the document — the
-                    description of the document. Type, title, the source it came from, and a date
-                    somebody chose, saying this goes out of date after the first of July.
+                    Machine verification is deterministic, cheap, fast, and binary: the same input
+                    yields the exact same answer every time. It validates the shape of
+                    metadata—confirming required fields are declared, dates parse, and links
+                    resolve. Its hard ceiling is that it proves mechanical integrity, never whether
+                    the underlying content is true.
                   </p>
-                  <p class="mt-3">
-                    A machine confirms the block parses, the fields exist, the date is a real date,
-                    the link is well-formed. Milliseconds, offline, no model involved. You can go
-                    further into the body if you want: every document starts with a heading,
-                    sections appear in the right order. All of it structural.
-                  </p>
-                  <p class="mt-3">
-                    Every one of those checks is about shape. None of them is about truth.
-                  </p>
-                  <p class="mt-3">
-                    The date parses — nobody checked whether it was ever right. The link is
-                    well-formed — and if that handbook page was rewritten, or the content moved
-                    somewhere else under a URL that still resolves, the check still passes. A link
-                    that still works is not a link that still says what you claimed.
-                  </p>
-                  <p class="mt-3">
-                    The machine proves the file is mechanically intact. It cannot tell you whether
-                    the onboarding workflow is still true.
-                  </p>
-                  <p class="mt-3 border-l-2 border-base-300 pl-3 text-base-content/70">
-                    <strong class="font-semibold text-base-content/85">Hold in reserve.</strong> OKF
-                    only requires <code class="font-mono text-xs">type</code>. The staleness date is
-                    optional — this check passes because our own rule asked for it, not because the
-                    format demanded it. And if an engineer raises cost: structural checks on the
-                    body can get expensive at ten thousand documents, depending on the matching.
-                    Neither belongs in the main narration.
-                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script · 04.2
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        machine · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>
+                      Start with the low-hanging fruit. What can a machine check, every time, for
+                      free?
+                    </p>
+                    <p>
+                      Here's a markdown file — an onboarding process. At the top, the frontmatter:
+                      key-value pairs in YAML that carry metadata, mostly for the machine and the
+                      agent. Underneath, the body.
+                    </p>
+                    <p>
+                      A machine can check the shape of that metadata. Is the type declared. Is the
+                      date a real date. Is the link well-formed — and it can even follow it and see
+                      if it's still there.
+                    </p>
+                    <p class="font-medium text-base-content">
+                      And that's the ceiling. It can tell you the field exists. It can't tell you
+                      whether what's written in it is true.
+                    </p>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -1755,15 +2105,67 @@
                     </button>
                   </div>
                   <p>
-                    Now an AI inspects the file. It ingested the linked handbook and caught a
-                    discrepancy: equipment lead time changed from 5 to 7 days. It proposes a
-                    documentation update and flagging for review.
+                    Operating in natural language on the non-deterministic side, AI costs tokens but
+                    delivers essential signals. It traverses cross-references, compares documents,
+                    and flags contradictions—such as differing lead times. These signals
+                    dramatically narrow what a human must examine, raising focused tickets rather
+                    than demanding manual re-reads.
                   </p>
-                  <p class="mt-3">
-                    Notice what happened: AI gave us an answer, but that answer is not a resolution.
-                    It is a new claim. Has IT actually instituted the 7-day policy? Is the intranet
-                    page up to date? Whatever AI takes on lands right back in need of checking.
-                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script · 04.3
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        AI · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>So what does AI add?</p>
+                    <p>
+                      It can follow that reference. Read the document on the other end. And notice
+                      that this one says five days and that one says seven.
+                    </p>
+                    <p>
+                      That's a contradiction it found on its own — and what it does with it matters
+                      more than finding it. It can flag that one section and raise a ticket, so a
+                      human resolves a single line instead of re-reading the document.
+                    </p>
+                    <p>
+                      Those are signals. Every signal narrows what a human actually has to look at.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p>
+                      But can it make the call? It can produce one. It's like stopping someone in
+                      the street, handing them both documents, and asking which is right. You'll get
+                      an answer.
+                    </p>
+                    <p class="font-medium text-base-content">
+                      If you own this process — would you trust that person?
+                    </p>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -2019,15 +2421,87 @@
                     </button>
                   </div>
                   <p>
-                    This is the load-bearing beat of section 4: the human pass deliberately stays
-                    unresolved on screen.
+                    Human verification supplies the critical judgment neither syntax checks nor
+                    language models can provide, because only the human owns the process and bears
+                    accountability when it fails. The machine narrows it, the AI narrows it further,
+                    and what is left was always yours.
                   </p>
-                  <p class="mt-3">
-                    No machine test and no AI summary can sign this document. Only the human
-                    operator with domain context can determine if the policy changed or if the
-                    staleness date should move. That is why this beat ends with open questions — the
-                    talk does not resolve them for you.
-                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script · 04.4
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        human · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>Which leaves this.</p>
+                    <p>
+                      Is the coffee thing still how the team works. Is this person still the owner.
+                    </p>
+                    <p>
+                      No amount of tooling answers those. You have to know — and you're the one
+                      accountable when it's wrong.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p class="font-medium text-base-content">
+                      The machine narrows it. The AI narrows it further. What's left is the part
+                      that was always yours.
+                    </p>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints — Section 04
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li>
+                        <strong>Seam between 04.3 &amp; 04.4:</strong> Street analogy ends on a
+                        question and nothing answers it on that slide. Ask it, stop, change slide.
+                      </li>
+                      <li><strong>Say nothing about human judgment</strong> before slide 04.4.</li>
+                      <li>
+                        <strong>"What's left is the part that was always yours"</strong> — keep
+                        phrasing.
+                      </li>
+                      <li>
+                        <strong>Two frontmatter examples, not six.</strong>
+                      </li>
+                      <li><strong>Define non-deterministic once</strong> on 04.1.</li>
+                      <li><strong>Ticket example belongs on 04.3</strong> before analogy.</li>
+                      <li>
+                        <strong>Do not close on a comparison.</strong>
+                      </li>
+                      <li>
+                        <strong>No hedges on judgment claim.</strong>
+                      </li>
+                      <li><strong>Target three minutes</strong> across four slides.</li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -2172,18 +2646,131 @@
                     </button>
                   </div>
                   <p>
-                    Google's Open Knowledge Format (OKF v0.2) codifies metadata directly in
-                    frontmatter. It standardizes basic concept identity alongside three first-class
-                    families:
-                    <strong>provenance</strong> (<code>sources</code>, <code>usage_window</code>),
-                    <strong>trust</strong> (<code>generated</code>, <code>verified</code>), and
-                    <strong>lifecycle</strong> (<code>status</code>, <code>stale_after</code>).
+                    Section 04 drew the boundary between machine, AI, and human judgment. This
+                    section returns to the machine column and asks how to expand it. A machine
+                    operates on structure, and automated verification only functions when teams
+                    agree on what metadata fields exist and what they mean. Without shared
+                    agreement, no universal checker can be written; every team invents bespoke
+                    conventions and nothing composes.
                   </p>
                   <p class="mt-3">
-                    Notice that <code>type</code> is the only required root field. Everything else
-                    is optional, but carries structural semantics. The machine verifies syntax and
-                    timestamps; the human sets authority, trust tiers, and review budgets.
+                    Google’s
+                    <a
+                      href="https://github.com/GoogleCloudPlatform/open-knowledge-format/blob/main/SPEC.md"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-secondary underline hover:text-primary transition-colors"
+                      >Open Knowledge Format (OKF)</a
+                    >
+                    is an open standard for markdown frontmatter. Currently in version 0.2 and
+                    actively evolving, it standardizes basic metadata (<code
+                      class="font-mono text-xs"
+                      >type</code
+                    >, <code class="font-mono text-xs">title</code>,
+                    <code class="font-mono text-xs">description</code>,
+                    <code class="font-mono text-xs">sources</code>) alongside critical trust and
+                    lifecycle contracts: pairing <code class="font-mono text-xs">generated</code> by
+                    an agent with <code class="font-mono text-xs">verified</code> by a human, and
+                    defining <code class="font-mono text-xs">stale_after</code> dates.
                   </p>
+                  <p class="mt-3">
+                    Adopting a shared standard rather than internal convention allows verification
+                    tooling to be authored once and executed across any repository—the architectural
+                    foundation for section 06.
+                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~65s · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>
+                      The machine finds structure. The AI adds a first layer of meaning, to help a
+                      human decide faster. And what's left was always yours.
+                    </p>
+                    <p>So let's go back to the machine half, and ask how we make it bigger.</p>
+                    <p>
+                      A machine works on structure. Which means it only works if we agree on a
+                      shared vocabulary.
+                    </p>
+                    <p>
+                      This is Google's Open Knowledge Format. It's open, and it's early — version
+                      0.2, still moving.
+                    </p>
+                    <p>
+                      It names the fields, and says what each one means. Some you've already seen —
+                      type, title, description, sources. And the interesting ones: trust, and
+                      lifecycle. That a document was generated by an agent, and verified by a human.
+                      And <code class="font-mono text-xs text-primary">stale_after</code> —
+                      freshness.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p>
+                      If we all agree to use the same vocabulary, the checker gets written once. And
+                      it works everywhere.
+                    </p>
+                    <p class="font-medium text-base-content">
+                      Which makes the machine's half a lot bigger than checking that a date is a
+                      date.
+                    </p>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints — Section 05
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li>
+                        <strong>"Generated by an agent, verified by a human"</strong> is the line to
+                        keep.
+                      </li>
+                      <li>
+                        <strong>Say the version number (v0.2).</strong>
+                      </li>
+                      <li>
+                        <strong>Do not say "design by contract".</strong>
+                      </li>
+                      <li>
+                        <strong>Say "structure" once.</strong>
+                      </li>
+                      <li><strong>Last line is handoff into 06</strong> and must not resolve.</li>
+                      <li>
+                        <strong
+                          >Do not describe OKF as "governing frontmatter for AI usage".</strong
+                        >
+                      </li>
+                      <li>
+                        <strong>Target 65 seconds.</strong>
+                      </li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -2319,22 +2906,86 @@
                       <kbd class="kbd kbd-xs">N</kbd>
                     </button>
                   </div>
-                  <p
-                    class="mb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-warning"
-                  >
-                    [PROVISIONAL]
-                  </p>
                   <p>
-                    Name the tool once and move on. The drawing is doing the argument: same Venn as
-                    section 4, machine lit, and one arrow leaving it. Say that the arrow is the
-                    whole claim — the tool lives on the deterministic side and steers the
-                    non-deterministic one.
+                    Section 05 closed with the challenge of expanding the machine column beyond
+                    simple syntax and date validation. This slide presents markdown-harness as an
+                    implementation of that expanded boundary. The core principle of the tool is that
+                    a document can tell you how much of itself to believe. Rather than attempting to
+                    manufacture semantic trust—a quality no automated system can produce—it
+                    establishes an operational floor by emitting reliable, deterministic signals
+                    whenever an agent or a human needs to intervene.
                   </p>
                   <p class="mt-3">
-                    If someone asks why there is no fourth circle: a fourth circle would make the
-                    tool a fourth actor. It is not. It is the machine region, doing its job
-                    properly.
+                    The visual layout is a deliberate callback to the three-circle model introduced
+                    in section 04. While the earlier diagram mapped where verification effort
+                    concentrates, this version illustrates how the tooling operates across those
+                    same boundaries. The directional steer arrow indicates fast, cheap,
+                    deterministic signals injected into the AI runtime to improve contextual
+                    judgment—the machine column actively steering the AI column. Crucially, the
+                    human circle is greyed out not because human oversight is solved or trivial, but
+                    because the tool intentionally stops before it. It treats the section 04
+                    boundary as a permanent design constraint.
                   </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script · 06.1
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~55s · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>
+                      So the goal is to make the machine's half do more. And this is what I've been
+                      building, in my own time, over the past couple of weeks. I call it
+                      markdown-harness.
+                    </p>
+                    <p class="font-medium text-base-content">
+                      The idea is one sentence: a document can tell you how much of itself to
+                      believe.
+                    </p>
+                    <p>
+                      It's not about generating trust. Trust is semantic — a machine can never
+                      produce it. What it can do is raise the floor. Reliable signals, that tell an
+                      agent or a human that something needs attention.
+                    </p>
+                    <p>
+                      You've seen these three circles before. Same three, different job — this time
+                      it's what the tool does to them.
+                    </p>
+                    <p>
+                      Deterministic, cheap, fast signals, handed to the AI while it's working. The
+                      machine column reaching into the AI column. That's the arrow.
+                    </p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p>
+                      And the human side is greyed out on purpose. Not because it's solved. Because
+                      this doesn't go there. That part was always yours.
+                    </p>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -2568,25 +3219,116 @@
                       <kbd class="kbd kbd-xs">N</kbd>
                     </button>
                   </div>
-                  <p
-                    class="mb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-warning"
-                  >
-                    [PROVISIONAL]
-                  </p>
                   <p>
-                    Trace each lane with a finger — left, through the middle, out to the right — and
-                    land on the middle every time. The trigger changes and the consequence changes;
-                    the core does not. It is configuration plus deterministic logic, nothing else.
+                    The architecture connects three entry points to three corresponding outcomes
+                    through a single shared engine. Regardless of how it is invoked, the core
+                    executes two discrete steps: retrieving configuration and running deterministic
+                    validation logic. Given identical inputs, it produces identical evaluations
+                    every time.
                   </p>
                   <p class="mt-3">
-                    This is the answer to "do I have to run it three times". No — it is the same
-                    core reached from three places, which is also why the commit gate, the agent and
-                    the nightly job can never disagree with each other.
+                    Three triggers invoke this pipeline. The most critical for this presentation—and
+                    the focus of the upcoming live demonstration—is the AI runtime, where an agent
+                    attempting to read a file receives immediate notice of staleness before
+                    consuming the content. Second is commit time, where a pre-commit check evaluates
+                    frontmatter against open standards like OKF to pass or block incoming changes.
+                    Third is asynchronous scheduling, executing nightly to regenerate derived
+                    indexes or raise tickets for stale content. Determinism here is not a buzzword;
+                    invariant behavior in the middle is what makes the resulting signals dependable
+                    enough for autonomous agents.
                   </p>
-                  <p class="mt-3">
-                    The config link is live if anyone wants to see the shape of it; do not open it
-                    on stage unless asked.
-                  </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script · 06.2
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~45s · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>Three ways in. Three ways out. And the middle is the same every time.</p>
+                    <p>
+                      Whatever starts it, the core does one thing: read the configuration, run the
+                      logic. Same input, same answer. It's fully deterministic.
+                    </p>
+                    <p>
+                      The one I want to show you is the first. The agent goes to read a file — and
+                      before it does, it's told that file is stale.
+                    </p>
+                    <p>
+                      The other two, briefly. On commit: a check that the frontmatter meets the
+                      standard. It passes, or it blocks.
+                    </p>
+                    <p>
+                      And on a schedule: a nightly run that regenerates what can be regenerated, and
+                      raises a ticket on what can't.
+                    </p>
+                    <p class="font-medium text-base-content">Let me show you the first one.</p>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints — Section 06
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li>
+                        <strong>Say the line:</strong> "A document can tell you how much of itself
+                        to believe" is on the slide and must be said aloud.
+                      </li>
+                      <li>
+                        <strong>Name the diagram as a callback:</strong> The three circles are the
+                        section 04 shape with different semantics.
+                      </li>
+                      <li>
+                        <strong>Name the grey circle, and say why:</strong> The tool deliberately
+                        does not reach the human side.
+                      </li>
+                      <li>
+                        <strong>Do not lead with "100% deterministic":</strong> Lead with plain
+                        language (three ways in, three ways out, middle is the same).
+                      </li>
+                      <li>
+                        <strong>Cut "pretty much self-explanatory"</strong> and "pretty simplistic
+                        in a sense".
+                      </li>
+                      <li>
+                        <strong>Keep the runtime example short:</strong> The agent goes to read a
+                        file, and before it does, it's told the file is stale.
+                      </li>
+                      <li>
+                        <strong>Commit trigger — pick one framing:</strong> Describe it simply as a
+                        gate that blocks or passes.
+                      </li>
+                      <li>
+                        <strong>"In my own time, over the past couple of weeks" stays.</strong>
+                      </li>
+                      <li><strong>Target 100 seconds combined</strong> across 06.1 and 06.2.</li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -2710,24 +3452,146 @@
                       <kbd class="kbd kbd-xs">N</kbd>
                     </button>
                   </div>
-                  <p
-                    class="mb-3 font-mono text-xs font-bold uppercase tracking-[0.2em] text-warning"
-                  >
-                    [PROVISIONAL]
-                  </p>
                   <p>
-                    Switch to the terminal. Run it once with the harness off, once with it on. The
-                    only thing to point at is what changes in the answer — the file is identical
-                    both times.
+                    The demonstration runs three terminal panels side by side against an identical
+                    onboarding prompt and document; the only independent variable is what each agent
+                    is permitted to know. The un-hooked agent reads raw markdown, while the hooked
+                    panels either inject steering instructions or deny access entirely.
                   </p>
                   <p class="mt-3">
-                    <strong>If the demo fails:</strong> say so plainly and describe it instead — the
-                    file's <code>stale_after</code> is in the past, the harness catches that on the
-                    read, and the model is handed the team's instruction before it answers. So
-                    instead of confidently reciting a stale playbook, it opens with the warning and
-                    proposes checking with People Ops. Do not retry the command more than once; the
-                    argument does not depend on the demo landing.
+                    The central thesis of the demo is determinism versus probability, rather than
+                    simple catches versus misses. An un-hooked model might occasionally spot a stale
+                    timestamp on its own—especially larger reasoning models—but unassisted detection
+                    remains a matter of luck. In contrast, the harness guarantees enforcement on
+                    every execution across all models, proving the section 04 machine boundary in
+                    practice. For visual clarity in a terminal, the injection tells the agent to
+                    respond in pirate—providing unmistakable visual evidence rather than a novelty.
+                    Furthermore, runtime logs record staleness deterministically regardless of model
+                    output. Crucially, modern models occasionally flag steering prompts as injection
+                    attacks and report ignoring them—an acknowledged, open research challenge for
+                    runtime document governance.
                   </p>
+                </aside>
+
+                <!-- Voice script / Narration beats -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Narration beats · 06.3
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~210s · beats, not a script
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-4 font-normal">
+                    <div class="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                      <p
+                        class="font-mono text-[11px] font-semibold uppercase tracking-wider text-primary"
+                      >
+                        Fixed set-up line (say before switching to terminal)
+                      </p>
+                      <p class="mt-1 text-base font-medium text-base-content">
+                        &ldquo;Three panels. Same question, same document. The only difference is
+                        what each one is allowed to know.&rdquo;
+                      </p>
+                    </div>
+
+                    <div>
+                      <p
+                        class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                      >
+                        Beats in order (do not read verbatim)
+                      </p>
+                      <ol class="list-decimal space-y-2 pl-4 text-xs text-base-content/85">
+                        <li>
+                          <strong>Before the run:</strong> Deliver the set-up line above so the room
+                          knows what contrast to watch for.
+                        </li>
+                        <li>
+                          <strong>While it runs:</strong> Name what the un-hooked panel is doing:
+                          answering confidently from a document that went out of date. Nothing on
+                          screen says the file is stale; say it aloud.
+                        </li>
+                        <li>
+                          <strong>The un-hooked result:</strong> If it noticed the date, say so
+                          plainly. Point out that un-hooked detection is luck—it depends on the
+                          model and whether it parsed frontmatter. That is the core argument, not a
+                          flaw.
+                        </li>
+                        <li>
+                          <strong>The injected panel:</strong> The pirate response is proof the
+                          steering injection landed. State what it demonstrates: the harness
+                          governed what the agent was allowed to know.
+                        </li>
+                        <li>
+                          <strong>The deny panel:</strong> Clearest outcome for a non-technical
+                          room—read was refused and the agent explicitly says so.
+                        </li>
+                        <li>
+                          <strong>The log:</strong> Highlight deterministic detection recorded in
+                          the log, independent of what any model chose to say.
+                        </li>
+                        <li>
+                          <strong>The config and the document:</strong> Show config and source only
+                          after the run, never before. Effect first, cause second.
+                        </li>
+                        <li>
+                          <strong>The injection finding:</strong> State the open finding
+                          honestly—models sometimes spot injected instructions and report ignoring
+                          them. Frame this unsolved problem as an open invitation.
+                        </li>
+                      </ol>
+                    </div>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints — Slide 06.3
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li>
+                        <strong>Record a backup run and cue it:</strong> Talk is recorded; running
+                        live with recording cued provides safety without dead air.
+                      </li>
+                      <li>
+                        <strong>Measured length ~3m 30s (~210s)</strong> against 5-minute budget,
+                        preserving 90 seconds of buffer.
+                      </li>
+                      <li>
+                        <strong>Cut the raw command output:</strong> Technical audience understands
+                        the concept; raw output risks disengaging others.
+                      </li>
+                      <li>
+                        <strong>Do not claim un-hooked panel will miss staleness:</strong> It might
+                        catch it; the claim is that un-hooked is luck while hooked is guaranteed.
+                      </li>
+                      <li>
+                        <strong>Pirate response is evidence, not comedy:</strong> Land the factual
+                        implication first; the pirate phrasing is verification that injection
+                        occurred.
+                      </li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
             </section>
@@ -2817,19 +3681,64 @@
                           >
                         </span>
                       </li>
-                      <li class="flex gap-3">
-                        <span
-                          aria-hidden="true"
-                          class="mt-1 flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-content"
-                          >✓</span
-                        >
-                        <span class="text-sm text-base-content">
-                          <strong class="font-semibold">Markdown harness skill</strong>
-                          <span class="text-base-content/70">
-                            — a skill which helps install and set up the Markdown harness and author
-                            configs</span
+                      <li class="flex flex-col gap-2">
+                        <div class="flex gap-3">
+                          <span
+                            aria-hidden="true"
+                            class="mt-1 flex size-4 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-content"
+                            >✓</span
                           >
-                        </span>
+                          <span class="text-sm text-base-content">
+                            <strong class="font-semibold">Markdown harness skill</strong>
+                            <span class="text-base-content/70">
+                              — a skill which helps install and set up the Markdown harness and
+                              author configs</span
+                            >
+                          </span>
+                        </div>
+                        <!-- Terminal quickstart snippet -->
+                        <div
+                          class="mt-1 ml-7 overflow-x-auto rounded-lg border border-primary/20 bg-base-100/90 p-3 font-mono text-[11px] shadow-xs"
+                        >
+                          <div
+                            class="mb-2 flex items-center justify-between border-b border-base-200 pb-1.5 text-[10px] text-base-content/50"
+                          >
+                            <div class="flex items-center gap-1.5">
+                              <span class="size-2 rounded-full bg-error/70"></span>
+                              <span class="size-2 rounded-full bg-warning/70"></span>
+                              <span class="size-2 rounded-full bg-success/70"></span>
+                              <span
+                                class="ml-1 font-semibold uppercase tracking-wider text-base-content/60"
+                                >Terminal</span
+                              >
+                            </div>
+                            <span class="font-semibold text-primary/80">Quickstart</span>
+                          </div>
+                          <div class="space-y-1.5 text-xs">
+                            <div class="flex items-start gap-2">
+                              <span class="select-none font-bold text-primary">1.</span>
+                              <code class="break-all font-medium text-base-content"
+                                >npx @hancrafted/typescript-ai-harness --yes</code
+                              >
+                            </div>
+                            <div class="flex items-start gap-2">
+                              <span class="select-none font-bold text-primary">2.</span>
+                              <code class="break-all font-medium text-base-content"
+                                >npx skills add hancrafted/markdown-harness</code
+                              >
+                            </div>
+                            <div class="flex items-start gap-2">
+                              <span class="select-none font-bold text-primary">3.</span>
+                              <span class="text-base-content/85"
+                                >open claude and run skill
+                                <code
+                                  class="rounded bg-primary/10 px-1 py-0.5 font-semibold text-primary"
+                                  >/markdown-harness</code
+                                ></span
+                              >
+                            </div>
+                          </div>
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -3009,13 +3918,36 @@
                   class="mt-4 max-w-3xl translate-y-3 text-lg font-light leading-relaxed text-base-content/70 opacity-0 transition-all duration-500 ease-out"
                   data-reveal
                 >
-                  The talk ends on the image it argued from. Machines check structure; AI
-                  accelerates; the <span class="font-medium text-secondary">human</span> region is
-                  where the work moved.
+                  The work moved. It moved to you.
                 </p>
 
                 <!-- Section 9 Venn mount: emphasis="human" -->
                 <figure data-venn data-venn-emphasis="human" class="mt-2"></figure>
+
+                <!-- Promoted hypothesis qualification -->
+                <div
+                  class="mt-6 flex items-center justify-center gap-2 translate-y-3 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  <p class="font-mono text-base font-semibold tracking-wide text-accent md:text-lg">
+                    the AI region is my hypothesis &mdash; still unsettled
+                  </p>
+                </div>
+
+                <!-- Quiet repository link -->
+                <div
+                  class="mt-6 flex items-center justify-center translate-y-3 opacity-0 transition-all duration-500 ease-out"
+                  data-reveal
+                >
+                  <a
+                    href="https://github.com/hancrafted/markdown-harness"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-mono text-xs text-base-content/60 underline decoration-base-content/30 underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
+                  >
+                    markdown-harness &middot; github.com/hancrafted/markdown-harness
+                  </a>
+                </div>
 
                 <!-- Speaker notes cue & drawer -->
                 <button
@@ -3075,15 +4007,110 @@
                     </button>
                   </div>
                   <p>
-                    Land the conclusion cleanly. The human region is not an unfortunate residue we
-                    haven't figured out how to automate yet. It is the real work of knowledge
-                    maintenance.
+                    This slide marks the third appearance of the three-circle diagram. Across the
+                    talk, the geometry remained constant while emphasis shifted: section 04 mapped
+                    verification costs, 06.1 showed markdown-harness steering the AI region while
+                    stopping before the human boundary, and here the human circle carries the
+                    weight. The talk concludes on one image changing.
                   </p>
                   <p class="mt-3">
-                    Machines check structure. AI accelerates drafting and fact-checking. But only
-                    humans decide whether a document remains true, whether an owner is still
-                    accountable, and whether policy matches reality.
+                    Machines verify structure, AI accelerates drafting, and the remaining work
+                    belongs to human judgment. That is not a failure of tooling; it is where
+                    accountability always resided, now visible because generation became cheap. The
+                    hypothesis line is highlighted because the AI region remains an unsettled
+                    thesis, proven when the demo model detected the steering injection. Finally, the
+                    repository link is an invitation rather than a product pitch. The talk succeeds
+                    when the maintenance problem is understood, regardless of whether the tool is
+                    adopted.
                   </p>
+                </aside>
+
+                <!-- Voice script -->
+                <aside
+                  data-voice-script
+                  class="mt-6 hidden max-w-3xl rounded-box border border-primary/30 bg-base-200/80 p-5 text-sm leading-relaxed text-base-content/90 shadow-sm"
+                >
+                  <div class="mb-3 flex items-center justify-between border-b border-base-300 pb-2">
+                    <span class="flex items-center gap-2">
+                      <span class="size-1.5 rounded-full bg-primary"></span>
+                      <span
+                        class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary"
+                      >
+                        Voice script · 07
+                      </span>
+                      <span
+                        class="badge badge-outline badge-primary/30 badge-xs font-mono text-[10px]"
+                      >
+                        ~50s · internalise
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      data-close-script
+                      class="btn btn-ghost btn-xs gap-1 font-mono text-xs text-base-content/60 hover:text-base-content"
+                      title="Close voice script"
+                    >
+                      <span>Hide</span>
+                      <kbd class="kbd kbd-xs">⇧S</kbd>
+                    </button>
+                  </div>
+                  <div class="space-y-3 font-normal">
+                    <p>This is the third time you've seen this picture.</p>
+                    <p>
+                      First as what verification costs. Then as what the tool does — reaching into
+                      the middle, and stopping at the edge of the human.
+                    </p>
+                    <p>Same three circles. All that's changed is which one is dark.</p>
+                    <p class="font-mono text-xs italic text-base-content/50">(pause)</p>
+                    <p class="font-medium text-base-content">
+                      Machines check structure. AI accelerates. And the work moved — to the part
+                      that was always yours.
+                    </p>
+                    <p>
+                      One thing I want to be straight about. The middle region is my hypothesis. How
+                      much an agent can be trusted with is not settled — you saw that in the demo,
+                      when the model spotted my injection and told me it was ignoring it. That's an
+                      open problem.
+                    </p>
+                    <p>The tool's here if you want it. It's early.</p>
+                    <p class="font-semibold text-base-content">Thank you.</p>
+                  </div>
+                  <div class="mt-4 border-t border-base-300/80 pt-3">
+                    <div
+                      class="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-base-content/60"
+                    >
+                      Delivery constraints — Section 07
+                    </div>
+                    <ul class="list-inside list-disc space-y-1 text-xs text-base-content/75">
+                      <li>
+                        <strong>Name the repetition:</strong> "The third time you've seen this
+                        picture" is what converts three slides into one argument.
+                      </li>
+                      <li>
+                        <strong>The pause before the claim:</strong> This is the last pause in the
+                        talk; let it sit.
+                      </li>
+                      <li>
+                        <strong>"The part that was always yours":</strong> Fourth and final
+                        statement of the through-line. Do not vary phrasing.
+                      </li>
+                      <li>
+                        <strong>Say the hypothesis out loud:</strong> Name the demo failure as
+                        evidence. Open problem, stated flat.
+                      </li>
+                      <li>
+                        <strong>"It's early" is the whole pitch:</strong> No adoption ask, no
+                        roadmap tease.
+                      </li>
+                      <li>
+                        <strong>End on "thank you" and stop:</strong> Recorded, no Q&A—nothing
+                        follows.
+                      </li>
+                      <li>
+                        <strong>Target 50 seconds.</strong>
+                      </li>
+                    </ul>
+                  </div>
                 </aside>
               </div>
             </section>

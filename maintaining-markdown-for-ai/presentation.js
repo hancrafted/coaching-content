@@ -462,6 +462,11 @@ window.addEventListener("keydown", (e) => {
     toggleSpeakerNotes();
     return;
   }
+  if (e.shiftKey && (e.key === "S" || e.key === "s" || e.code === "KeyS")) {
+    e.preventDefault();
+    toggleVoiceScript();
+    return;
+  }
 
   const idx = beatOrder.indexOf(activeBeatId);
   if (e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "PageDown") {
@@ -564,6 +569,7 @@ function buildThemePicker() {
 
 const STORAGE_KEY_PRESENTATION = "deck-presentation-mode";
 const STORAGE_KEY_NOTES = "deck-speaker-notes";
+const STORAGE_KEY_SCRIPT = "deck-voice-script";
 
 function updatePresenterControlsUI() {
   const isPres = document.documentElement.classList.contains("presentation-mode");
@@ -626,6 +632,21 @@ function setSpeakerNotes(enabled) {
 function toggleSpeakerNotes() {
   const current = document.documentElement.classList.contains("notes-visible");
   setSpeakerNotes(!current);
+}
+
+function setVoiceScript(enabled) {
+  document.documentElement.classList.toggle("script-visible", enabled);
+  document.body.classList.toggle("script-visible", enabled);
+  try {
+    localStorage.setItem(STORAGE_KEY_SCRIPT, enabled ? "true" : "false");
+  } catch {
+    /* persistence unavailable */
+  }
+}
+
+function toggleVoiceScript() {
+  const current = document.documentElement.classList.contains("script-visible");
+  setVoiceScript(!current);
 }
 
 function buildPresenterControls() {
@@ -728,6 +749,9 @@ document.addEventListener("click", (e) => {
     e.target.closest("#rail-toggle-notes")
   ) {
     toggleSpeakerNotes();
+  }
+  if (e.target.closest("[data-close-script]")) {
+    toggleVoiceScript();
   }
 });
 
@@ -2080,11 +2104,10 @@ function effortVennMarkup(emphasis) {
       </g>`
       : "";
 
-  // The hypothesis footnote is §4's caveat and §7 keeps it. §6.1 drops it: that
-  // beat is about where the tool acts, and re-raising an open question about the
-  // region it steers into only muddies the claim.
+  // The hypothesis footnote is §4's caveat. §6.1 drops it, and §7 promotes it
+  // into the slide body rather than leaving it as a dimmed 15px SVG footnote.
   const hypothesis =
-    emphasis === "machine"
+    emphasis === "machine" || emphasis === "human"
       ? ""
       : `
           <path
@@ -2739,6 +2762,9 @@ try {
   }
   if (localStorage.getItem(STORAGE_KEY_NOTES) === "true") {
     setSpeakerNotes(true);
+  }
+  if (localStorage.getItem(STORAGE_KEY_SCRIPT) === "true") {
+    setVoiceScript(true);
   }
 } catch {
   /* ignore */

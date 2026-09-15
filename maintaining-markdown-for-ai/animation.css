@@ -764,6 +764,17 @@ body.notes-visible [data-notes-cue] {
   display: none !important;
 }
 
+/* Voice script toggle (Shift+S) */
+html.script-visible [data-voice-script],
+body.script-visible [data-voice-script] {
+  display: block !important;
+}
+
+html:not(.script-visible) [data-voice-script],
+body:not(.script-visible) [data-voice-script] {
+  display: none !important;
+}
+
 /* =============================================================================
    Section 2 — Animated arrows from Markdown card to Knowledge, Instructions, Memory
 ============================================================================= */
