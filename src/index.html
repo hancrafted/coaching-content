@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-theme="corporate" class="h-full">
+<html lang="en" data-theme="corporate">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Apply saved theme before first paint — shares a theme with the workshop pages -->
+    <!-- Apply saved theme before first paint — shares a theme with the deck pages -->
     <script>
       try {
         var savedTheme = localStorage.getItem("token-economy-theme");
@@ -16,10 +16,10 @@
       }
     </script>
 
-    <title>Coaching Content Hub — AI Leadership Workshops</title>
+    <title>Han Che — training and coaching for software teams</title>
     <meta
       name="description"
-      content="Practical workshops on AI literacy and cost for decision-makers — CTOs, VPs, and team leads. No engineering background required."
+      content="Han Che runs sessions on where AI moves the work in software organisations — onto budgets nobody watches, verification nobody owns, and people who never agreed to carry it. Presentations, recorded talks, and upcoming sessions."
     />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,286 +30,496 @@
     />
     <link rel="stylesheet" href="./style.css" />
   </head>
-  <body class="flex min-h-full flex-col bg-base-100 font-sans text-base-content antialiased">
-    <!-- Identity bar -->
-    <header class="border-b border-base-200 px-6 py-4 md:px-16 lg:px-24">
-      <div class="mx-auto flex max-w-7xl items-center justify-between">
-        <span class="font-display text-sm font-semibold tracking-wide">Coaching Content Hub</span>
-        <div class="flex items-center gap-3">
-          <span
-            class="hidden font-mono text-xs uppercase tracking-[0.25em] text-base-content/40 sm:inline"
-            >AI Leadership Workshops</span
-          >
+  <body class="bg-base-100 font-sans text-base-content antialiased">
+    <!-- Sticky nav — the name lives here so the hero does not have to carry it -->
+    <header class="sticky top-0 z-50 border-b border-base-200 bg-base-100/90 backdrop-blur">
+      <div
+        class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-16 lg:px-24"
+      >
+        <a href="#top" class="font-display text-sm font-semibold tracking-wide">Han Che</a>
+        <nav class="flex items-center gap-3 text-xs sm:gap-5 sm:text-sm" aria-label="Sections">
+          <a href="#presentations" class="link link-hover">Presentations</a>
+          <a href="#about" class="link link-hover">About</a>
+          <a href="#building" class="link link-hover">Building</a>
           <div id="theme-picker"></div>
-        </div>
+        </nav>
       </div>
     </header>
 
-    <!-- Hero — the thesis, typographic -->
-    <section class="relative px-6 py-24 md:px-16 lg:px-24">
-      <div class="mx-auto max-w-7xl">
-        <p class="mb-8 font-mono text-xs uppercase tracking-[0.3em] text-primary/60">
-          For CTOs, VPs &amp; team leads
-        </p>
-        <h1
-          class="font-display text-5xl font-extrabold leading-[1.02] tracking-tight md:text-6xl lg:text-7xl"
-        >
-          <span class="block">Your team is already spending</span>
-          <span class="block">money on AI.</span>
-          <span class="mt-2 block text-primary">Does anyone know how much?</span>
-        </h1>
-        <p
-          class="mt-8 max-w-2xl text-lg font-light leading-relaxed text-base-content/60 md:text-xl"
-        >
-          Workshops that turn AI from an invisible cost into a budget your team can actually manage
-          — built for decision-makers, not engineers.
-        </p>
-      </div>
-
-      <!-- Ambient, unwatched meter — the thesis this hub is selling, made literal -->
-      <div
-        class="pointer-events-none absolute bottom-8 right-6 select-none text-right md:right-16 lg:right-24"
-        aria-hidden="true"
-      >
-        <p class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/30">
-          tokens billed · unwatched
-        </p>
-        <p
-          id="hub-meter"
-          class="mt-1 font-mono text-2xl leading-none tabular-nums text-base-content/20 md:text-4xl"
-        >
-          0
-        </p>
-      </div>
-    </section>
-
-    <!-- Workshops — an editorial list, not a card grid -->
-    <main class="flex-1 border-t border-base-200 px-6 pb-24 pt-16 md:px-16 lg:px-24">
-      <div class="mx-auto max-w-7xl">
-        <p class="mb-12 font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
-          Workshops
-        </p>
-
-        <!-- Featured workshop -->
-        <article class="border-b border-base-200 pb-16" id="card-token-economy">
-          <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-16">
-            <div class="shrink-0 lg:w-56">
-              <span
-                class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-wider text-primary"
-                >Available now</span
-              >
-              <p class="mt-4 font-mono text-sm tabular-nums text-base-content/50">20 min</p>
-              <p class="font-mono text-xs text-base-content/40">CTOs · VPs · team leads</p>
-            </div>
-            <div class="flex-1">
-              <h2 class="font-display text-3xl font-bold leading-tight md:text-4xl">
-                The AI Token Economy
-              </h2>
-              <p class="mt-4 max-w-2xl text-base font-light leading-relaxed text-base-content/60">
-                What an AI actually costs, why the meter stays invisible, and why every employee —
-                from junior to senior — now owns a budget they never signed up to manage.
-              </p>
-              <div class="mt-8 flex flex-wrap items-center gap-3">
-                <a
-                  href="./ai-token-economy/index.html"
-                  class="btn btn-primary gap-2"
-                  id="link-token-economy"
-                >
-                  Start the workshop
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M5 12h14M12 5l7 7-7 7"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </a>
-                <!--
-                  Recording of the same talk. Leaves the site, so it opens in a new
-                  tab and carries rel="noopener". The brand red is intentionally not
-                  a theme token — see the note in the deck's own launcher.
-                -->
-                <a
-                  href="https://www.youtube.com/watch?v=S0Nx4faEebY"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-ghost gap-2 text-base-content/70 hover:text-base-content"
-                  id="watch-token-economy"
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="text-[#FF0000]"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"
-                    />
-                  </svg>
-                  Watch the talk
-                  <span class="font-mono text-xs tabular-nums text-base-content/40">34 min</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Workshop: Maintaining markdown for AI -->
-        <article class="border-b border-base-200 pb-16 pt-16" id="card-maintaining-markdown">
-          <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-16">
-            <div class="shrink-0 lg:w-56">
-              <span
-                class="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-wider text-primary"
-                >Available now</span
-              >
-              <p class="mt-4 font-mono text-sm tabular-nums text-base-content/50">20 min</p>
-              <p class="font-mono text-xs text-base-content/40">AI All-Hands · Decision Makers</p>
-            </div>
-            <div class="flex-1">
-              <h2 class="font-display text-3xl font-bold leading-tight md:text-4xl">
-                Maintaining markdown for AI
-              </h2>
-              <p class="mt-4 max-w-2xl text-base font-light leading-relaxed text-base-content/60">
-                AI collapsed the cost of writing documentation and raised the cost of verifying it.
-                What a machine can check, what AI can help with, and what only a human can check —
-                and why the verifying half is nobody else's job.
-              </p>
-              <div class="mt-8 flex flex-wrap items-center gap-3">
-                <a
-                  href="./maintaining-markdown-for-ai/index.html"
-                  class="btn btn-primary gap-2"
-                  id="link-maintaining-markdown"
-                >
-                  Start the workshop
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M5 12h14M12 5l7 7-7 7"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </a>
-                <!-- Recording of the same talk — see the note on the card above. -->
-                <a
-                  href="https://www.youtube.com/watch?v=YxCVw4bUbW0"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn btn-ghost gap-2 text-base-content/70 hover:text-base-content"
-                  id="watch-maintaining-markdown"
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    class="text-[#FF0000]"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"
-                    />
-                  </svg>
-                  Watch the talk
-                  <span class="font-mono text-xs tabular-nums text-base-content/40">22 min</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Coming soon -->
-        <div class="mt-12 grid gap-6 md:grid-cols-2">
-          <article
-            class="cursor-not-allowed rounded-box border border-base-200 p-6 opacity-50"
-            id="card-placeholder-1"
-            aria-disabled="true"
+    <main>
+      <!--
+        Hero — thesis first, name second. Deliberately ends above the fold at
+        1440x900 so the sessions list below is cut by the viewport edge. That cut
+        is the scroll cue; do not add a full-height hero or an arrow.
+      -->
+      <section class="px-6 pb-14 pt-12 md:px-16 md:pb-16 md:pt-14 lg:px-24">
+        <div class="mx-auto max-w-7xl">
+          <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/60">
+            Training and coaching · Karlsruhe
+          </p>
+          <h1
+            class="font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl"
           >
-            <span class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/40"
-              >In draft</span
-            >
-            <h2 class="mt-3 font-display text-xl font-semibold text-base-content/70">
-              Multi-Agent Systems &amp; Swarms
-            </h2>
-            <p class="mt-2 text-sm font-light leading-relaxed text-base-content/40">
-              Engineering patterns for designing robust swarms of specialized agents with dynamic
-              routing.
-            </p>
-          </article>
-
-          <article
-            class="cursor-not-allowed rounded-box border border-dashed border-base-content/15 p-6 opacity-40"
-            aria-disabled="true"
+            <span class="block">AI didn&rsquo;t remove the work.</span>
+            <span class="block text-primary">It moved it.</span>
+          </h1>
+          <p
+            class="mt-6 max-w-2xl text-base font-light leading-relaxed text-base-content/60 md:text-lg"
           >
-            <span class="font-mono text-[0.6rem] uppercase tracking-[0.25em] text-base-content/30"
-              >Planned</span
-            >
-            <h2 class="mt-3 font-display text-xl font-semibold text-base-content/50">
-              More workshops
-            </h2>
-            <p class="mt-2 text-sm font-light leading-relaxed text-base-content/30">
-              More sessions on AI leadership are planned for 2026.
-            </p>
-          </article>
+            Every AI win shifts cost somewhere else — onto a budget nobody is watching, onto
+            verification nobody owns, onto people who never agreed to carry it. I run sessions on
+            where it lands and what to do about it.
+          </p>
+          <p class="mt-6 font-mono text-xs text-base-content/50 sm:text-sm">
+            Han Che — Engineering Manager, trainer, and the person running your session.
+          </p>
         </div>
-      </div>
+      </section>
+
+      <!--
+        Sessions — dated deliveries. A session links to a presentation when one
+        exists and is plain text when it does not.
+
+        Every row below is one self-contained <li> with identical classes, so
+        moving a session from Upcoming to Past is a cut-and-paste of that row
+        with no other edit.
+      -->
+      <section
+        id="sessions"
+        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
+      >
+        <div class="mx-auto max-w-7xl">
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
+            Sessions
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/60">
+            A session is a dated delivery to a particular room. Some run on a presentation below;
+            some do not.
+          </p>
+
+          <h3 class="mb-1 mt-10 font-display text-lg font-semibold">Upcoming</h3>
+          <ul>
+            <li
+              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+            >
+              <time
+                datetime="2026-09-24"
+                class="font-mono text-sm tabular-nums text-base-content/50"
+              >
+                24 Sep 2026
+              </time>
+              <div>
+                <p class="font-medium">Pitching for investors and competitions</p>
+                <p class="mt-0.5 text-sm text-base-content/50">
+                  <!-- TODO: Axel (Karlsruhe energy accelerator) — author to supply URL -->
+                  <a href="TODO" class="link link-hover">Axel</a>
+                </p>
+              </div>
+              <a href="#pres-pitching" class="link link-hover text-sm text-primary"
+                >Pitching presentation</a
+              >
+            </li>
+            <li
+              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+            >
+              <time
+                datetime="2026-10-20"
+                class="font-mono text-sm tabular-nums text-base-content/50"
+              >
+                20 Oct 2026
+              </time>
+              <div>
+                <p class="font-medium">Sales for early-stage teams</p>
+                <p class="mt-0.5 text-sm text-base-content/50">
+                  <!-- TODO: Axel (Karlsruhe energy accelerator) — author to supply URL -->
+                  <a href="TODO" class="link link-hover">Axel</a>
+                </p>
+              </div>
+            </li>
+            <li
+              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+            >
+              <time
+                datetime="2026-10-23"
+                class="font-mono text-sm tabular-nums text-base-content/50"
+              >
+                23 Oct 2026
+              </time>
+              <div>
+                <p class="font-medium">Agentic workflows</p>
+                <p class="mt-0.5 text-sm text-base-content/50">
+                  <!-- TODO: Axel (Karlsruhe energy accelerator) — author to supply URL -->
+                  <a href="TODO" class="link link-hover">Axel</a>
+                </p>
+              </div>
+            </li>
+            <li
+              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+            >
+              <!-- TODO: date not yet confirmed — replace both the datetime and the text -->
+              <time datetime="2026-11" class="font-mono text-sm tabular-nums text-base-content/40">
+                TBC · Nov 2026
+              </time>
+              <div>
+                <p class="font-medium">Agentic workflows</p>
+                <p class="mt-0.5 text-sm text-base-content/50">
+                  <!-- TODO: Cyber Forum Academy — author to supply URL -->
+                  <a href="TODO" class="link link-hover">Cyber Forum Academy</a>
+                </p>
+              </div>
+            </li>
+            <li
+              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+            >
+              <time
+                datetime="2026-11-18"
+                class="font-mono text-sm tabular-nums text-base-content/50"
+              >
+                18 Nov 2026
+              </time>
+              <div>
+                <p class="font-medium">Master Club preview</p>
+                <p class="mt-0.5 text-sm text-base-content/50">
+                  <!-- TODO: Cyber Lab (affiliated with Cyber Forum) — author to supply URL -->
+                  <a href="TODO" class="link link-hover">Cyber Lab</a>
+                </p>
+              </div>
+            </li>
+          </ul>
+
+          <h3 class="mb-1 mt-10 font-display text-lg font-semibold">Past</h3>
+          <ul>
+            <li
+              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+            >
+              <time
+                datetime="2026-09-15"
+                class="font-mono text-sm tabular-nums text-base-content/50"
+              >
+                15 Sep 2026
+              </time>
+              <div>
+                <p class="font-medium">Maintaining markdown for AI</p>
+                <p class="mt-0.5 text-sm text-base-content/50">Company all-hands</p>
+              </div>
+              <a href="#pres-markdown" class="link link-hover text-sm text-primary"
+                >Markdown presentation</a
+              >
+            </li>
+            <li
+              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+            >
+              <time
+                datetime="2026-07-07"
+                class="font-mono text-sm tabular-nums text-base-content/50"
+              >
+                07 Jul 2026
+              </time>
+              <div>
+                <p class="font-medium">The AI Token Economy</p>
+                <p class="mt-0.5 text-sm text-base-content/50">Company all-hands</p>
+              </div>
+              <a href="#pres-token-economy" class="link link-hover text-sm text-primary"
+                >Token Economy presentation</a
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!--
+        Presentations — the durable artefacts. Three identical cards, same weight.
+        The audience label answers "who is this for"; all three are presentations,
+        so the format carries no information and is never labelled.
+      -->
+      <section
+        id="presentations"
+        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
+      >
+        <div class="mx-auto max-w-7xl">
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
+            Presentations
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/60">
+            Self-guided decks, each with the recorded talk beside it. Undated, and built to be given
+            again.
+          </p>
+
+          <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <article
+              id="pres-token-economy"
+              class="card scroll-mt-20 border border-base-200 bg-base-100"
+            >
+              <div class="card-body gap-0">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span
+                    class="badge badge-ghost badge-sm font-mono text-[0.65rem] uppercase tracking-wider"
+                    >Engineering leaders</span
+                  >
+                  <span class="font-mono text-xs tabular-nums text-base-content/50">34 min</span>
+                </div>
+                <h3 class="mt-4 font-display text-2xl font-bold leading-tight">
+                  The AI Token Economy
+                </h3>
+                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/60">
+                  What an AI actually costs, why the meter stays invisible, and why every employee —
+                  from junior to senior — now owns a budget they never signed up to manage.
+                </p>
+                <div class="card-actions mt-6 flex-wrap items-center gap-2">
+                  <a href="./ai-token-economy/index.html" class="btn btn-primary btn-sm">
+                    Open the deck
+                  </a>
+                  <!--
+                    Recording of the same talk. Leaves the site, so it opens in a new
+                    tab and carries rel="noopener". The mark is drawn in currentColor
+                    so it inherits the button's semantic token — this spec forbids
+                    custom hex values, including the YouTube brand red.
+                  -->
+                  <a
+                    href="https://www.youtube.com/watch?v=S0Nx4faEebY"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-ghost btn-sm gap-2 text-base-content/70 hover:text-base-content"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"
+                      />
+                    </svg>
+                    Watch the talk
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <article
+              id="pres-markdown"
+              class="card scroll-mt-20 border border-base-200 bg-base-100"
+            >
+              <div class="card-body gap-0">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span
+                    class="badge badge-ghost badge-sm font-mono text-[0.65rem] uppercase tracking-wider"
+                    >Whole team</span
+                  >
+                  <span class="font-mono text-xs tabular-nums text-base-content/50">22 min</span>
+                </div>
+                <h3 class="mt-4 font-display text-2xl font-bold leading-tight">
+                  Maintaining markdown for AI
+                </h3>
+                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/60">
+                  AI collapsed the cost of writing documentation and raised the cost of verifying
+                  it. What a machine can check, what AI can help with, what only a human can check —
+                  and why the verifying half is nobody else&rsquo;s job.
+                </p>
+                <div class="card-actions mt-6 flex-wrap items-center gap-2">
+                  <a href="./maintaining-markdown-for-ai/index.html" class="btn btn-primary btn-sm">
+                    Open the deck
+                  </a>
+                  <!-- Recording of the same talk — see the note on the card above. -->
+                  <a
+                    href="https://www.youtube.com/watch?v=YxCVw4bUbW0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn btn-ghost btn-sm gap-2 text-base-content/70 hover:text-base-content"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814ZM9.545 15.568V8.432L15.818 12l-6.273 3.568Z"
+                      />
+                    </svg>
+                    Watch the talk
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!--
+              Same card, same weight. It is quieter only because it has no actions
+              yet — do not style it as disabled.
+            -->
+            <article
+              id="pres-pitching"
+              class="card scroll-mt-20 border border-base-200 bg-base-100"
+            >
+              <div class="card-body gap-0">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span
+                    class="badge badge-ghost badge-sm font-mono text-[0.65rem] uppercase tracking-wider"
+                    >Founders and students</span
+                  >
+                  <span class="font-mono text-xs text-base-content/50">In preparation</span>
+                </div>
+                <h3 class="mt-4 font-display text-2xl font-bold leading-tight">
+                  Pitching for investors and competitions
+                </h3>
+                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/60">
+                  What the room is actually listening for, which slides earn their place, and why
+                  the deck that wins a competition is not the deck that raises money.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- About — the fuller half; the hero carries the two-line version -->
+      <section
+        id="about"
+        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
+      >
+        <div class="mx-auto max-w-7xl">
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">About</h2>
+          <div
+            class="mt-6 max-w-2xl space-y-5 text-base font-light leading-relaxed text-base-content/70"
+          >
+            <p>
+              Problems in software organisations are socio-technological. People and technology are
+              intertwined, and improving one side on its own does not work. When AI makes coding
+              cheap, the pressure does not disappear — it moves to the next node along: review,
+              verification, decision-making, budget. Every node has to scale in proportion, and the
+              ones that do not are where a team starts to hurt.
+            </p>
+            <p>
+              I have spent eleven years across the SaaS value chain — sales and business
+              development, solution engineering, full-stack, requirements and UX, and now
+              engineering management. Today I lead an international engineering team. Before that I
+              was Tech Lead on a seven-figure Audi digitisation project, and a founding engineer at
+              a Karlsruhe startup building a manufacturing execution system that runs in five
+              European factories.
+            </p>
+            <p>
+              Since 2010 I have put in more than 2,000 hours as a trainer and coach, mentored over
+              twenty juniors and interns, and I coach student startups here in Karlsruhe. I hold an
+              MSc in Information Engineering and Management from KIT.
+            </p>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+            <a
+              href="https://www.linkedin.com/in/han-che"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link link-hover"
+              >LinkedIn</a
+            >
+            <a
+              href="https://github.com/hancrafted"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link link-hover"
+              >GitHub</a
+            >
+            <!-- TODO: YouTube channel — author to supply URL (only per-talk links are known) -->
+            <a href="TODO" class="link link-hover">YouTube</a>
+            <a href="mailto:hanche2001@gmail.com" class="link link-hover">hanche2001@gmail.com</a>
+          </div>
+        </div>
+      </section>
+
+      <!--
+        Building — the section that shows the author builds rather than explains.
+        Two entries by design. A third can be appended with no layout change.
+      -->
+      <section
+        id="building"
+        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
+      >
+        <div class="mx-auto max-w-7xl">
+          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
+            Building
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/60">
+            Things I maintain in the open.
+          </p>
+
+          <ul class="mt-8 grid gap-8 md:grid-cols-2">
+            <li>
+              <h3 class="font-display text-xl font-semibold">markdown-harness</h3>
+              <p class="mt-2 max-w-prose text-sm font-light leading-relaxed text-base-content/60">
+                Governance for a markdown knowledge base that agents help maintain. A config
+                declares what each path must carry; documents state their own provenance and expiry
+                in the file.
+              </p>
+              <p class="mt-3 text-sm">
+                <a
+                  href="https://github.com/hancrafted/markdown-harness"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link link-hover text-primary"
+                  >github.com/hancrafted/markdown-harness</a
+                >
+              </p>
+              <p class="mt-2 text-xs text-base-content/50">
+                The same argument as
+                <a href="#pres-markdown" class="link link-hover">Maintaining markdown for AI</a>, in
+                code rather than slides.
+              </p>
+            </li>
+            <li>
+              <h3 class="font-display text-xl font-semibold">The commit skill</h3>
+              <p class="mt-2 max-w-prose text-sm font-light leading-relaxed text-base-content/60">
+                An agent skill for structured, reviewable commits — a conventional header, a
+                changelog body, and a gate that refuses anything else.
+              </p>
+              <p class="mt-3 text-sm">
+                <a
+                  href="https://github.com/hancrafted/skills"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="link link-hover text-primary"
+                  >github.com/hancrafted/skills</a
+                >
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
     </main>
 
     <footer class="border-t border-base-200 px-6 py-10 md:px-16 lg:px-24">
       <div
-        class="mx-auto flex max-w-7xl flex-col gap-2 text-center sm:flex-row sm:justify-between sm:text-left"
+        class="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
-        <p class="font-mono text-xs text-base-content/30">&copy; 2026 Han</p>
-        <p class="font-mono text-xs text-base-content/30">
-          Built with Vite · Tailwind CSS v4 · daisyUI v5
-        </p>
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+          <a
+            href="https://www.linkedin.com/in/han-che"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link link-hover"
+            >LinkedIn</a
+          >
+          <a
+            href="https://github.com/hancrafted"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link link-hover"
+            >GitHub</a
+          >
+          <!-- TODO: YouTube channel — author to supply URL (only per-talk links are known) -->
+          <a href="TODO" class="link link-hover">YouTube</a>
+          <a href="mailto:hanche2001@gmail.com" class="link link-hover">Email</a>
+        </div>
+        <div class="flex flex-col gap-1 sm:items-end">
+          <p class="font-mono text-xs text-base-content/30">&copy; 2026 Han Che</p>
+          <p class="font-mono text-xs text-base-content/30">
+            Built with Vite · Tailwind CSS v4 · daisyUI v5
+          </p>
+        </div>
       </div>
     </footer>
 
-    <!-- Ambient meter — same metaphor as the workshop it introduces: a cost that never stops -->
-    <script>
-      (function () {
-        var el = document.getElementById("hub-meter");
-        if (!el) return;
-        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        var fmt = function (n) {
-          return Math.floor(n).toLocaleString("en-US");
-        };
-        var value = 1472318; // the meter has been running long before you arrived
-        if (reduced) {
-          el.textContent = fmt(value);
-          return;
-        }
-        var last = null;
-        function step(ts) {
-          if (last === null) last = ts;
-          value += (ts - last) * 3.2;
-          last = ts;
-          el.textContent = fmt(value);
-          window.requestAnimationFrame(step);
-        }
-        window.requestAnimationFrame(step);
-      })();
-    </script>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
