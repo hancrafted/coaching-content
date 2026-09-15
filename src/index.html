@@ -52,25 +52,30 @@
         1440x900 so the sessions list below is cut by the viewport edge. That cut
         is the scroll cue; do not add a full-height hero or an arrow.
       -->
-      <section class="px-6 pb-14 pt-12 md:px-16 md:pb-16 md:pt-14 lg:px-24">
-        <div class="mx-auto max-w-7xl">
-          <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-primary/60">
+      <section
+        class="flex items-center px-6 pb-12 pt-12 md:px-16 md:pb-14 md:pt-16 lg:px-24 [@media(min-height:700px)_and_(min-width:768px)]:min-h-[33rem]"
+      >
+        <div class="mx-auto w-full max-w-7xl">
+          <!-- Not text-primary: at 12px the accent lands at 4.1:1 on corporate and
+               1.9:1 on business. The accent stays on the headline, which is large
+               enough to clear the 3:1 threshold. -->
+          <p class="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-base-content/70">
             Training and coaching · Karlsruhe
           </p>
           <h1
-            class="font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl"
+            class="font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl"
           >
             <span class="block">AI didn&rsquo;t remove the work.</span>
             <span class="block text-primary">It moved it.</span>
           </h1>
           <p
-            class="mt-6 max-w-2xl text-base font-light leading-relaxed text-base-content/60 md:text-lg"
+            class="mt-7 max-w-2xl text-base font-light leading-relaxed text-base-content/70 md:text-lg"
           >
             Every AI win shifts cost somewhere else — onto a budget nobody is watching, onto
             verification nobody owns, onto people who never agreed to carry it. I run sessions on
             where it lands and what to do about it.
           </p>
-          <p class="mt-6 font-mono text-xs text-base-content/50 sm:text-sm">
+          <p class="mt-7 font-mono text-xs text-base-content/70 sm:text-sm">
             Han Che — Engineering Manager, trainer, and the person running your session.
           </p>
         </div>
@@ -83,103 +88,104 @@
         Every row below is one self-contained <li> with identical classes, so
         moving a session from Upcoming to Past is a cut-and-paste of that row
         with no other edit.
+
+        The Upcoming/Past emphasis difference therefore lives on the <ul>, not
+        on the rows: the past list steps the type down and mutes it via
+        descendant variants, so a row picks up its group's weight on arrival.
       -->
-      <section
-        id="sessions"
-        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
-      >
+      <section id="sessions" class="scroll-mt-20 bg-base-200 px-6 py-12 md:px-16 md:py-14 lg:px-24">
         <div class="mx-auto max-w-7xl">
-          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
+          <h2 class="font-mono text-xs font-medium uppercase tracking-[0.3em] text-base-content/70">
             Sessions
           </h2>
-          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/60">
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/70">
             A session is a dated delivery to a particular room. Some run on a presentation below;
             some do not.
           </p>
 
-          <h3 class="mb-1 mt-10 font-display text-lg font-semibold">Upcoming</h3>
-          <ul>
+          <h3 class="mb-1 mt-9 font-display text-lg font-semibold">Upcoming</h3>
+          <!-- Capped short of the 7xl container: at 1440px the full width strands
+               the presentation link a screen away from the title it belongs to. -->
+          <ul class="max-w-5xl">
             <li
-              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+              class="grid grid-cols-1 gap-1 border-b border-base-300 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
             >
               <time
                 datetime="2026-09-24"
-                class="font-mono text-sm tabular-nums text-base-content/50"
+                class="font-mono text-sm tabular-nums text-base-content/80"
               >
                 24 Sep 2026
               </time>
               <div>
                 <p class="font-medium">Pitching for investors and competitions</p>
-                <p class="mt-0.5 text-sm text-base-content/50">
+                <p class="mt-0.5 text-sm text-base-content/80">
                   <!-- TODO: Axel (Karlsruhe energy accelerator) — author to supply URL -->
                   <a href="TODO" class="link link-hover">Axel</a>
                 </p>
               </div>
-              <a href="#pres-pitching" class="link link-hover text-sm text-primary"
-                >Pitching presentation</a
-              >
+              <a href="#pres-pitching" class="link text-sm">Pitching presentation</a>
             </li>
             <li
-              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+              class="grid grid-cols-1 gap-1 border-b border-base-300 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
             >
               <time
                 datetime="2026-10-20"
-                class="font-mono text-sm tabular-nums text-base-content/50"
+                class="font-mono text-sm tabular-nums text-base-content/80"
               >
                 20 Oct 2026
               </time>
               <div>
                 <p class="font-medium">Sales for early-stage teams</p>
-                <p class="mt-0.5 text-sm text-base-content/50">
+                <p class="mt-0.5 text-sm text-base-content/80">
                   <!-- TODO: Axel (Karlsruhe energy accelerator) — author to supply URL -->
                   <a href="TODO" class="link link-hover">Axel</a>
                 </p>
               </div>
             </li>
             <li
-              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+              class="grid grid-cols-1 gap-1 border-b border-base-300 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
             >
               <time
                 datetime="2026-10-23"
-                class="font-mono text-sm tabular-nums text-base-content/50"
+                class="font-mono text-sm tabular-nums text-base-content/80"
               >
                 23 Oct 2026
               </time>
               <div>
                 <p class="font-medium">Agentic workflows</p>
-                <p class="mt-0.5 text-sm text-base-content/50">
+                <p class="mt-0.5 text-sm text-base-content/80">
                   <!-- TODO: Axel (Karlsruhe energy accelerator) — author to supply URL -->
                   <a href="TODO" class="link link-hover">Axel</a>
                 </p>
               </div>
             </li>
             <li
-              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+              class="grid grid-cols-1 gap-1 border-b border-base-300 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
             >
               <!-- TODO: date not yet confirmed — replace both the datetime and the text -->
-              <time datetime="2026-11" class="font-mono text-sm tabular-nums text-base-content/40">
+              <time datetime="2026-11" class="font-mono text-sm tabular-nums text-base-content/70">
                 TBC · Nov 2026
               </time>
               <div>
                 <p class="font-medium">Agentic workflows</p>
-                <p class="mt-0.5 text-sm text-base-content/50">
+                <p class="mt-0.5 text-sm text-base-content/80">
                   <!-- TODO: Cyber Forum Academy — author to supply URL -->
                   <a href="TODO" class="link link-hover">Cyber Forum Academy</a>
                 </p>
               </div>
             </li>
             <li
-              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+              class="grid grid-cols-1 gap-1 border-b border-base-300 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
             >
               <time
                 datetime="2026-11-18"
-                class="font-mono text-sm tabular-nums text-base-content/50"
+                class="font-mono text-sm tabular-nums text-base-content/80"
               >
                 18 Nov 2026
               </time>
               <div>
                 <p class="font-medium">Master Club preview</p>
-                <p class="mt-0.5 text-sm text-base-content/50">
+                <p class="mt-0.5 text-sm text-base-content/80">
                   <!-- TODO: Cyber Lab (affiliated with Cyber Forum) — author to supply URL -->
                   <a href="TODO" class="link link-hover">Cyber Lab</a>
                 </p>
@@ -187,41 +193,46 @@
             </li>
           </ul>
 
-          <h3 class="mb-1 mt-10 font-display text-lg font-semibold">Past</h3>
-          <ul>
+          <h3 class="mb-1 mt-9 font-display text-base font-semibold text-base-content/70">Past</h3>
+          <!--
+            Group-level emphasis only. `text-sm` steps the row titles down by
+            inheritance, and the descendant variants outrank the rows' own
+            colour utilities — so the rows themselves stay byte-identical to
+            the Upcoming ones. Links keep `text-primary`; muting them would
+            remove the affordance the spec asks these rows to keep.
+          -->
+          <ul
+            class="max-w-5xl text-sm [&_p]:font-normal [&_p]:text-base-content/70 [&_time]:text-base-content/70"
+          >
             <li
-              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+              class="grid grid-cols-1 gap-1 border-b border-base-300 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
             >
               <time
                 datetime="2026-09-15"
-                class="font-mono text-sm tabular-nums text-base-content/50"
+                class="font-mono text-sm tabular-nums text-base-content/80"
               >
                 15 Sep 2026
               </time>
               <div>
                 <p class="font-medium">Maintaining markdown for AI</p>
-                <p class="mt-0.5 text-sm text-base-content/50">Company all-hands</p>
+                <p class="mt-0.5 text-sm text-base-content/80">Company all-hands</p>
               </div>
-              <a href="#pres-markdown" class="link link-hover text-sm text-primary"
-                >Markdown presentation</a
-              >
+              <a href="#pres-markdown" class="link text-sm">Markdown presentation</a>
             </li>
             <li
-              class="grid grid-cols-1 gap-1 border-b border-base-200 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
+              class="grid grid-cols-1 gap-1 border-b border-base-300 py-4 sm:grid-cols-[8.5rem_1fr_auto] sm:items-baseline sm:gap-6"
             >
               <time
                 datetime="2026-07-07"
-                class="font-mono text-sm tabular-nums text-base-content/50"
+                class="font-mono text-sm tabular-nums text-base-content/80"
               >
                 07 Jul 2026
               </time>
               <div>
                 <p class="font-medium">The AI Token Economy</p>
-                <p class="mt-0.5 text-sm text-base-content/50">Company all-hands</p>
+                <p class="mt-0.5 text-sm text-base-content/80">Company all-hands</p>
               </div>
-              <a href="#pres-token-economy" class="link link-hover text-sm text-primary"
-                >Token Economy presentation</a
-              >
+              <a href="#pres-token-economy" class="link text-sm">Token Economy presentation</a>
             </li>
           </ul>
         </div>
@@ -232,23 +243,28 @@
         The audience label answers "who is this for"; all three are presentations,
         so the format carries no information and is never labelled.
       -->
-      <section
-        id="presentations"
-        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
-      >
+      <section id="presentations" class="scroll-mt-20 px-6 py-16 md:px-16 md:py-24 lg:px-24">
         <div class="mx-auto max-w-7xl">
-          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
+          <h2 class="font-mono text-xs font-medium uppercase tracking-[0.3em] text-base-content/70">
             Presentations
           </h2>
-          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/60">
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/70">
             Self-guided decks, each with the recorded talk beside it. Undated, and built to be given
             again.
           </p>
 
-          <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <!--
+            Cards stretch to the row height, and each card's action row is
+            pinned with `mt-auto`, so unequal description lengths still leave
+            the buttons level. The grid is driven by column count alone — a
+            fourth card drops in with no edit here.
+          -->
+          <div
+            class="mt-10 grid items-stretch gap-6 md:grid-cols-2 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2 lg:grid-cols-3"
+          >
             <article
               id="pres-token-economy"
-              class="card scroll-mt-20 border border-base-200 bg-base-100"
+              class="card h-full scroll-mt-20 border border-base-200 bg-base-100 hover:border-base-300 hover:shadow-lg motion-safe:transition-shadow"
             >
               <div class="card-body gap-0">
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -256,17 +272,26 @@
                     class="badge badge-ghost badge-sm font-mono text-[0.65rem] uppercase tracking-wider"
                     >Engineering leaders</span
                   >
-                  <span class="font-mono text-xs tabular-nums text-base-content/50">34 min</span>
+                  <span class="font-mono text-xs tabular-nums text-base-content/70">34 min</span>
                 </div>
                 <h3 class="mt-4 font-display text-2xl font-bold leading-tight">
                   The AI Token Economy
                 </h3>
-                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/60">
+                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/70">
                   What an AI actually costs, why the meter stays invisible, and why every employee —
                   from junior to senior — now owns a budget they never signed up to manage.
                 </p>
-                <div class="card-actions mt-6 flex-wrap items-center gap-2">
-                  <a href="./ai-token-economy/index.html" class="btn btn-primary btn-sm">
+                <div class="card-actions mt-auto flex-wrap items-center gap-2 pt-7">
+                  <!--
+                    Three cards repeat these two labels, so each carries an
+                    aria-label naming its presentation — the visible text stays
+                    short, and a screen-reader link list stays unambiguous.
+                  -->
+                  <a
+                    href="./ai-token-economy/index.html"
+                    class="btn btn-primary btn-md sm:btn-sm"
+                    aria-label="Open the deck: The AI Token Economy"
+                  >
                     Open the deck
                   </a>
                   <!--
@@ -279,7 +304,8 @@
                     href="https://www.youtube.com/watch?v=S0Nx4faEebY"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="btn btn-ghost btn-sm gap-2 text-base-content/70 hover:text-base-content"
+                    class="btn btn-ghost btn-md gap-2 sm:btn-sm"
+                    aria-label="Watch the talk on YouTube: The AI Token Economy"
                   >
                     <svg
                       width="16"
@@ -300,7 +326,7 @@
 
             <article
               id="pres-markdown"
-              class="card scroll-mt-20 border border-base-200 bg-base-100"
+              class="card h-full scroll-mt-20 border border-base-200 bg-base-100 hover:border-base-300 hover:shadow-lg motion-safe:transition-shadow"
             >
               <div class="card-body gap-0">
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -308,18 +334,22 @@
                     class="badge badge-ghost badge-sm font-mono text-[0.65rem] uppercase tracking-wider"
                     >Whole team</span
                   >
-                  <span class="font-mono text-xs tabular-nums text-base-content/50">22 min</span>
+                  <span class="font-mono text-xs tabular-nums text-base-content/70">22 min</span>
                 </div>
                 <h3 class="mt-4 font-display text-2xl font-bold leading-tight">
                   Maintaining markdown for AI
                 </h3>
-                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/60">
+                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/70">
                   AI collapsed the cost of writing documentation and raised the cost of verifying
                   it. What a machine can check, what AI can help with, what only a human can check —
                   and why the verifying half is nobody else&rsquo;s job.
                 </p>
-                <div class="card-actions mt-6 flex-wrap items-center gap-2">
-                  <a href="./maintaining-markdown-for-ai/index.html" class="btn btn-primary btn-sm">
+                <div class="card-actions mt-auto flex-wrap items-center gap-2 pt-7">
+                  <a
+                    href="./maintaining-markdown-for-ai/index.html"
+                    class="btn btn-primary btn-md sm:btn-sm"
+                    aria-label="Open the deck: Maintaining markdown for AI"
+                  >
                     Open the deck
                   </a>
                   <!-- Recording of the same talk — see the note on the card above. -->
@@ -327,7 +357,8 @@
                     href="https://www.youtube.com/watch?v=YxCVw4bUbW0"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="btn btn-ghost btn-sm gap-2 text-base-content/70 hover:text-base-content"
+                    class="btn btn-ghost btn-md gap-2 sm:btn-sm"
+                    aria-label="Watch the talk on YouTube: Maintaining markdown for AI"
                   >
                     <svg
                       width="16"
@@ -347,12 +378,14 @@
             </article>
 
             <!--
-              Same card, same weight. It is quieter only because it has no actions
-              yet — do not style it as disabled.
+              Quiet by recession, not by fade: it sits on base-200 and keeps
+              full-contrast text, so it reads as forthcoming rather than
+              disabled. The status badge occupies the same slot the other two
+              cards use for a duration.
             -->
             <article
               id="pres-pitching"
-              class="card scroll-mt-20 border border-base-200 bg-base-100"
+              class="card h-full scroll-mt-20 border border-base-200 bg-base-200"
             >
               <div class="card-body gap-0">
                 <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -360,12 +393,15 @@
                     class="badge badge-ghost badge-sm font-mono text-[0.65rem] uppercase tracking-wider"
                     >Founders and students</span
                   >
-                  <span class="font-mono text-xs text-base-content/50">In preparation</span>
+                  <span
+                    class="badge badge-outline badge-sm font-mono text-[0.65rem] uppercase tracking-wider text-base-content/70"
+                    >In preparation</span
+                  >
                 </div>
                 <h3 class="mt-4 font-display text-2xl font-bold leading-tight">
                   Pitching for investors and competitions
                 </h3>
-                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/60">
+                <p class="mt-3 text-sm font-light leading-relaxed text-base-content/70">
                   What the room is actually listening for, which slides earn their place, and why
                   the deck that wins a competition is not the deck that raises money.
                 </p>
@@ -378,12 +414,15 @@
       <!-- About — the fuller half; the hero carries the two-line version -->
       <section
         id="about"
-        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
+        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 md:py-20 lg:px-24"
       >
         <div class="mx-auto max-w-7xl">
-          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">About</h2>
+          <h2 class="font-mono text-xs font-medium uppercase tracking-[0.3em] text-base-content/70">
+            About
+          </h2>
+          <!-- max-w-prose caps the measure at ~65 characters; max-w-2xl ran to ~85. -->
           <div
-            class="mt-6 max-w-2xl space-y-5 text-base font-light leading-relaxed text-base-content/70"
+            class="mt-6 max-w-prose space-y-5 text-base font-light leading-relaxed text-base-content/80"
           >
             <p>
               Problems in software organisations are socio-technological. People and technology are
@@ -434,20 +473,20 @@
       -->
       <section
         id="building"
-        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 lg:px-24"
+        class="scroll-mt-20 border-t border-base-200 px-6 py-14 md:px-16 md:py-20 lg:px-24"
       >
         <div class="mx-auto max-w-7xl">
-          <h2 class="font-mono text-xs uppercase tracking-[0.3em] text-base-content/40">
+          <h2 class="font-mono text-xs font-medium uppercase tracking-[0.3em] text-base-content/70">
             Building
           </h2>
-          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/60">
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-base-content/70">
             Things I maintain in the open.
           </p>
 
-          <ul class="mt-8 grid gap-8 md:grid-cols-2">
+          <ul class="mt-8 grid max-w-5xl gap-8 md:grid-cols-2">
             <li>
               <h3 class="font-display text-xl font-semibold">markdown-harness</h3>
-              <p class="mt-2 max-w-prose text-sm font-light leading-relaxed text-base-content/60">
+              <p class="mt-2 max-w-prose text-sm font-light leading-relaxed text-base-content/70">
                 Governance for a markdown knowledge base that agents help maintain. A config
                 declares what each path must carry; documents state their own provenance and expiry
                 in the file.
@@ -457,11 +496,11 @@
                   href="https://github.com/hancrafted/markdown-harness"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="link link-hover text-primary"
+                  class="link"
                   >github.com/hancrafted/markdown-harness</a
                 >
               </p>
-              <p class="mt-2 text-xs text-base-content/50">
+              <p class="mt-2 text-xs text-base-content/70">
                 The same argument as
                 <a href="#pres-markdown" class="link link-hover">Maintaining markdown for AI</a>, in
                 code rather than slides.
@@ -469,7 +508,7 @@
             </li>
             <li>
               <h3 class="font-display text-xl font-semibold">The commit skill</h3>
-              <p class="mt-2 max-w-prose text-sm font-light leading-relaxed text-base-content/60">
+              <p class="mt-2 max-w-prose text-sm font-light leading-relaxed text-base-content/70">
                 An agent skill for structured, reviewable commits — a conventional header, a
                 changelog body, and a gate that refuses anything else.
               </p>
@@ -478,7 +517,7 @@
                   href="https://github.com/hancrafted/skills"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="link link-hover text-primary"
+                  class="link"
                   >github.com/hancrafted/skills</a
                 >
               </p>
@@ -488,7 +527,7 @@
       </section>
     </main>
 
-    <footer class="border-t border-base-200 px-6 py-10 md:px-16 lg:px-24">
+    <footer class="bg-base-200 px-6 py-10 md:px-16 lg:px-24">
       <div
         class="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
@@ -512,8 +551,8 @@
           <a href="mailto:hanche2001@gmail.com" class="link link-hover">Email</a>
         </div>
         <div class="flex flex-col gap-1 sm:items-end">
-          <p class="font-mono text-xs text-base-content/30">&copy; 2026 Han Che</p>
-          <p class="font-mono text-xs text-base-content/30">
+          <p class="font-mono text-xs text-base-content/70">&copy; 2026 Han Che</p>
+          <p class="font-mono text-xs text-base-content/70">
             Built with Vite · Tailwind CSS v4 · daisyUI v5
           </p>
         </div>
