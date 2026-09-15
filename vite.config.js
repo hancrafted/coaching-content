@@ -6,8 +6,9 @@ import tailwindcss from "@tailwindcss/vite";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = resolve(__filename, "..");
+const srcDir = resolve(__dirname, "src");
 
-// Helper to recursively find index.html files in subdirectories
+// Helper to recursively find index.html files in subdirectories of src
 function getHtmlInputs(dir, fileList = {}) {
   const files = readdirSync(dir);
 
@@ -22,11 +23,11 @@ function getHtmlInputs(dir, fileList = {}) {
     if (stat.isDirectory()) {
       getHtmlInputs(filePath, fileList);
     } else if (file === "index.html") {
-      const relPath = relative(__dirname, filePath);
+      const relPath = relative(srcDir, filePath);
       if (relPath === "index.html") {
         fileList["main"] = resolve(filePath);
       } else {
-        // e.g. 'ai-token-economy-101/index.html' -> key 'ai-token-economy-101'
+        // e.g. 'ai-token-economy/index.html' -> key 'ai-token-economy'
         const key = relPath.replace("/index.html", "").replace("\\index.html", "");
         fileList[key] = resolve(filePath);
       }
@@ -37,13 +38,16 @@ function getHtmlInputs(dir, fileList = {}) {
 }
 
 export default defineConfig({
+  root: srcDir,
+  publicDir: resolve(__dirname, "public"),
   plugins: [tailwindcss()],
   // Base configuration should match repository name for sub-path hosting on GitHub Pages
   base: "/coaching-content/",
   build: {
-    outDir: "dist",
+    outDir: resolve(__dirname, "dist"),
+    emptyOutDir: true,
     rollupOptions: {
-      input: getHtmlInputs(__dirname),
+      input: getHtmlInputs(srcDir),
     },
   },
 });

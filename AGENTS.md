@@ -19,20 +19,20 @@ Always run these commands from the repository root:
 
 1. **Verify Before Push**: Always run `npm run verify` locally before committing or pushing changes. This is enforced by Husky pre-commit and pre-push hooks.
 2. **Never Bypass Hooks**: Do not use `--no-verify` or `-n` with `git commit`. If hooks fail, resolve the issues instead of bypassing them.
-3. **Atomic Commits**: Follow `governance/rules/RULE-001-git-commits.md`. One commit must address exactly one scope (e.g. `src`, `ai-token-economy-101`, `root`, `.archgate`, etc.).
+3. **Atomic Commits**: Follow `governance/rules/RULE-001-git-commits.md`. One commit must address exactly one scope (e.g. `src`, `ai-token-economy`, `maintaining-markdown-for-ai`, `root`, `.archgate`, etc.).
 4. **Design Integrity**: All styles and components must use **Tailwind CSS v4** and **daisyUI v5** components. Raw inline styling (`style="..."`) or inline `<style>` tags are blocked or warned against via Archgate ADR rules (`FE-001-design`).
 
 ## Directory Structure
 
-| Directory                      | Purpose                                              | Must-read                                  |
-| ------------------------------ | ---------------------------------------------------- | ------------------------------------------ |
-| `src/`                         | Core shared frontend code (style.css, main.js)       | `src/style.css`                            |
-| `ai-token-economy-101/`        | Interactive deck/presentation (token economy)        | `ai-token-economy-101/index.html`          |
-| `maintaining-markdown-for-ai/` | Interactive deck/presentation (markdown maintenance) | `maintaining-markdown-for-ai/index.html`   |
-| `.archgate/adrs/`              | Architecture Decision Records & Rules                | `FE-001-design`                            |
-| `governance/rules/`            | Repository conventions and rules                     | `governance/rules/RULE-001-git-commits.md` |
-| `scripts/`                     | Project utility and validation scripts               | `scripts/validate-commit-hook.mjs`         |
-| `.husky/`                      | Git hooks configuration                              | `.husky/pre-commit`                        |
+| Directory                          | Purpose                                                          | Must-read                                    |
+| ---------------------------------- | ---------------------------------------------------------------- | -------------------------------------------- |
+| `src/`                             | Core shared frontend code & hub (index.html, style.css, main.js) | `src/style.css`                              |
+| `src/ai-token-economy/`            | Interactive deck/presentation (token economy)                    | `src/ai-token-economy/index.html`            |
+| `src/maintaining-markdown-for-ai/` | Interactive deck/presentation (markdown maintenance)             | `src/maintaining-markdown-for-ai/index.html` |
+| `.archgate/adrs/`                  | Architecture Decision Records & Rules                            | `FE-001-design`                              |
+| `governance/rules/`                | Repository conventions and rules                                 | `governance/rules/RULE-001-git-commits.md`   |
+| `scripts/`                         | Project utility and validation scripts                           | `scripts/validate-commit-hook.mjs`           |
+| `.husky/`                          | Git hooks configuration                                          | `.husky/pre-commit`                          |
 
 ## Design Theme & Libraries
 
