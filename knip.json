@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "src/**/index.html",
+    "src/**/presentation.js",
+    "scripts/validate-commit-hook.mjs",
+    ".archgate/adrs/*.rules.ts"
+  ],
+  "project": ["src/**/*.js", "*.ts", "scripts/**/*.mjs", ".archgate/**/*.ts"],
+  "ignoreDependencies": ["daisyui", "tailwindcss"],
+  "ignoreExportsUsedInFile": true
+}
