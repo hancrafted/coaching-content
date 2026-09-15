@@ -8,10 +8,10 @@ One commit = one scope. Never mix files across different scopes in a single comm
 
 **Staged files are mapped to the following scopes:**
 
-- `root` (files directly at the repository root, e.g. `package.json`, `index.html`)
-- `src` (files under `src/`)
-- `ai-token-economy-101` (files under `ai-token-economy-101/`)
-- `maintaining-markdown-for-ai` (files under `maintaining-markdown-for-ai/`)
+- `root` (files directly at the repository root, e.g. `package.json`, `vite.config.js`)
+- `src` (files directly under `src/`, e.g. `src/index.html`, `src/style.css`, `src/main.js`)
+- `ai-token-economy` (files under `src/ai-token-economy/`)
+- `maintaining-markdown-for-ai` (files under `src/maintaining-markdown-for-ai/`)
 - `docs` (files under `docs/`)
 - `governance` (files under `governance/`)
 - `scripts` (files under `scripts/`)
