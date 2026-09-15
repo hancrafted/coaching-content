@@ -92,11 +92,17 @@ export function validateMessage(rawMessage) {
 /**
  * Map a repo-relative file path to its commit scope.
  * Repo-root files -> 'root'; dot-dirs (.archgate/.github/.husky/.claude) -> dir name;
- * otherwise the top-level directory (src, ai-token-economy-101, etc.).
+ * workshop subdirectories under src/ -> workshop folder name (ai-token-economy, etc.);
+ * otherwise the top-level directory (src, docs, scripts, etc.).
  */
 export function getScopeForFile(file) {
   const parts = file.split("/");
   if (parts.length === 1) return "root";
+  if (parts[0] === "src" && parts.length > 2) {
+    if (parts[1] === "ai-token-economy" || parts[1] === "maintaining-markdown-for-ai") {
+      return parts[1];
+    }
+  }
   return parts[0];
 }
 

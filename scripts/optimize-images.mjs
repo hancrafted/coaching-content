@@ -9,13 +9,13 @@ const ROOT_DIR = path.resolve(__dirname, "..");
 const RAW_DIR = path.join(ROOT_DIR, "raw");
 
 // Define where optimized images should go based on their subfolder in /raw
-// e.g. raw/ai-token-economy-101/hero.png -> ai-token-economy-101/assets/hero.webp
+// e.g. raw/ai-token-economy/hero.png -> src/ai-token-economy/assets/hero.webp
 // raw/hero.png -> src/assets/hero.webp
 function getDestDir(subDir) {
   if (!subDir || subDir === ".") {
     return path.join(ROOT_DIR, "src", "assets");
   }
-  return path.join(ROOT_DIR, subDir, "assets");
+  return path.join(ROOT_DIR, "src", subDir, "assets");
 }
 
 async function processDirectory(dir, relPath = "") {
@@ -52,7 +52,7 @@ async function run() {
   if (!fs.existsSync(RAW_DIR)) {
     fs.mkdirSync(RAW_DIR);
     console.log(
-      "Created /raw directory. Place your large PNGs here in subfolders (e.g. raw/ai-token-economy-101/)",
+      "Created /raw directory. Place your large PNGs here in subfolders (e.g. raw/ai-token-economy/)",
     );
     return;
   }
