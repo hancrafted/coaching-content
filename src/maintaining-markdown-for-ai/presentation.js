@@ -1,4 +1,4 @@
-import "../src/style.css";
+import "../style.css";
 
 /**
  * Maintaining markdown for AI — scroll-tower engine.
